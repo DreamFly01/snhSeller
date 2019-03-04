@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+  <dimen name="txtSize_24">24pt</dimen>
+  <dimen name="txtSize_26">26pt</dimen>
+  <dimen name="txtSize_28">28pt</dimen>
+  <dimen name="txtSize_30">30pt</dimen>
+  <dimen name="txtSize_34">32pt</dimen>
+  <dimen name="txtSize_36">34pt</dimen>
+  <dimen name="txtSize_38">36pt</dimen>
+  <dimen name="txtSize_40">38pt</dimen>
+
+  <!--分割线 start-->
+  <dimen name="divider">0.5dp</dimen>
+</resources>

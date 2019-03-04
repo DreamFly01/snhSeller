@@ -1,0 +1,16 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <string name="app_name" tools:ignore="MissingTranslation">算你狠商家版</string>
+    <string name="share_tip" tools:ignore="MissingTranslation">我在算你狠发现一个不错的店铺，赶快来看看吧~</string>
+    <string name="tip_person" tools:ignore="MissingTranslation">自产农副产品，家庭手工业产品，依照法律法规不需要进行工商注册登记的。</string>
+    <string name="tip_company" tools:ignore="MissingTranslation">适合公司/企业入驻，提供营业执照等资料即可入驻</string>
+    <string name="tip_aer" tools:ignore="MissingTranslation">适合本地个体，连锁店</string>
+    <string name="tip_kaihu" tools:ignore="MissingTranslation">说明：开户许可证是指入驻企业在银行开设基本存款账户时取得的凭证，应用银行出具</string>
+    <string name="tab_main1" tools:ignore="MissingTranslation">消息</string>
+    <string name="tab_main2" tools:ignore="MissingTranslation">订单</string>
+    <string name="tab_main3" tools:ignore="MissingTranslation">商品</string>
+    <string name="tab_main4" tools:ignore="MissingTranslation">我的</string>
+    <string name="tab_sale1" tools:ignore="MissingTranslation">业务管理</string>
+    <string name="tab_sale2" tools:ignore="MissingTranslation">商户列表</string>
+    <string name="tab_sale3" tools:ignore="MissingTranslation">打卡记录</string>
+    <string name="tab_sale4" tools:ignore="MissingTranslation">我的</string>
+</resources>

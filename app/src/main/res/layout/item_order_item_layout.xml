@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="2pt"
+    android:background="@color/white"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:orientation="horizontal"
+        android:padding="30pt">
+
+        <ImageView
+            android:id="@+id/iv_product_logo1"
+            android:layout_width="120pt"
+            android:layout_height="120pt" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:orientation="vertical"
+            android:paddingLeft="20pt">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:textColor="@color/txt_dark"
+                    android:id="@+id/tv_GoodsName"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:ellipsize="end"
+                    android:maxLines="2"
+                    android:text="hahahahhahahhhhhhhhhhhhh"
+                    android:textSize="@dimen/txtSize_28" />
+
+                <TextView
+                    android:textColor="@color/txt_dark"
+                    android:id="@+id/tv_price"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0"
+                    android:text="80"
+                    android:textSize="@dimen/txtSize_28" />
+
+            </LinearLayout>
+
+            <TextView
+                android:textColor="@color/txt_dark"
+                android:id="@+id/tv_sku"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="[黑色，均码]"
+                android:textSize="@dimen/txtSize_28"
+                android:visibility="visible" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10pt"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:textColor="@color/txt_dark"
+                    android:id="@+id/tv_Number1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="x1"
+                    android:textSize="@dimen/txtSize_28" />
+
+                <TextView
+                    android:visibility="gone"
+                    android:id="@+id/tv_state"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/shape_red_20_bg"
+                    android:paddingLeft="20pt"
+                    android:paddingTop="10pt"
+                    android:paddingRight="20pt"
+                    android:paddingBottom="10pt"
+                    android:text="改价"
+                    android:textColor="@color/app_red"
+                    android:textSize="@dimen/txtSize_28" />
+            </LinearLayout>
+        </LinearLayout>
+
+    </LinearLayout>
+
+</LinearLayout>

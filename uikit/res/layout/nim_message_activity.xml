@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/message_fragment_container"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+    <LinearLayout
+        android:id="@+id/ll_top"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#fc1a4e"
+            android:paddingBottom="20pt">
+            <LinearLayout
+                android:id="@+id/heard_back"
+                android:layout_width="50pt"
+                android:layout_height="50pt"
+                android:layout_marginLeft="32pt"
+                android:gravity="center">
+                <ImageView
+                    android:layout_width="20pt"
+                    android:layout_height="31pt"
+                    android:src="@drawable/left_black" />
+            </LinearLayout>
+            <TextView
+                android:id="@+id/heard_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:text=""
+                android:textColor="@color/white"
+                android:textSize="36pt" />
+        </RelativeLayout>
+    </LinearLayout>
+    <!--<android.support.design.widget.AppBarLayout-->
+        <!--android:id="@+id/app_bar_layout"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:theme="@style/AppTheme.AppBarOverlay"-->
+        <!--app:elevation="0dp">-->
+
+        <!--<android.support.v7.widget.Toolbar-->
+            <!--android:id="@+id/toolbar"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="?attr/actionBarSize"-->
+            <!--android:background="?attr/colorPrimary"-->
+            <!--app:titleTextAppearance="@style/Toolbar.TitleText"-->
+            <!--app:subtitleTextAppearance="@style/Toolbar.SubTitleText"/>-->
+    <!--</android.support.design.widget.AppBarLayout>-->
+
+</LinearLayout>

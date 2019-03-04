@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/rl_head"
+        android:orientation="vertical">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingRight="20pt"
+        android:paddingLeft="20pt"
+        android:paddingBottom="20pt"
+        android:background="@color/app_red">
+
+        <LinearLayout
+            android:id="@+id/heard_back"
+            android:layout_width="50pt"
+            android:layout_height="50pt"
+            android:gravity="center">
+
+            <ImageView
+                android:layout_width="20pt"
+                android:layout_height="31pt"
+                android:src="@drawable/left_black" />
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/heard_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:text="title"
+            android:textColor="@color/white"
+            android:textSize="36pt" />
+
+        <FrameLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="30pt"
+            android:visibility="visible"
+            >
+            <Button
+                android:enabled="false"
+                android:background="@drawable/shape_soild_blue_5_bg"
+                android:id="@+id/heard_tv_menu"
+                android:layout_width="100pt"
+                android:layout_height="50pt"
+                android:textSize="30pt"
+                android:textColor="@color/white"
+                android:text="完成"
+                />
+        </FrameLayout>
+    </RelativeLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:background="@color/white"
+        android:gravity="center"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+        <EditText
+            android:id="@+id/et_info"
+            android:gravity="center|left"
+            android:padding="40pt"
+            android:background="@null"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:textSize="@dimen/txtSize_30"/>
+    </LinearLayout>
+
+</LinearLayout>

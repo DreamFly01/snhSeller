@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/color_app_bg">
+    <include layout="@layout/heard_layout"></include>
+    <LinearLayout
+        android:layout_width="680pt"
+        android:layout_height="90pt"
+        android:layout_gravity="center"
+        android:layout_marginTop="53pt"
+        android:orientation="horizontal">
+
+        <EditText
+            android:inputType="phone"
+            android:id="@+id/et_user_phone"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:layout_marginLeft="30pt"
+            android:background="@null"
+            android:hint="请输入手机号"
+            android:maxLength="11"
+            android:textColor="@color/txt_dark"
+            android:textColorHint="@color/txt_gay"
+            android:textSize="30pt" />
+    </LinearLayout>
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="1pt"
+        android:layout_marginLeft="60pt"
+        android:layout_marginRight="60pt"
+        android:background="@color/txt_gay"/>
+    <LinearLayout
+        android:layout_width="680pt"
+        android:layout_height="90pt"
+        android:layout_gravity="center"
+        android:layout_marginTop="20pt"
+        android:orientation="horizontal">
+
+
+        <EditText
+            android:inputType="number"
+            android:id="@+id/et_code"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:layout_marginLeft="30pt"
+            android:layout_weight="1"
+            android:background="@null"
+            android:hint="请输入验证码"
+            android:maxLength="6"
+            android:textSize="30pt"
+            android:textColor="@color/txt_dark"
+            android:textColorHint="@color/txt_gay"
+            />
+        <com.snh.snhseller.wediget.IdentifyCodeView
+            android:layout_marginTop="17pt"
+            android:id="@+id/ic_getCode"
+            android:layout_marginRight="34pt"
+            android:layout_gravity="center"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="17pt"
+            />
+
+    </LinearLayout>
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="1pt"
+        android:layout_marginLeft="60pt"
+        android:layout_marginRight="60pt"
+        android:background="@color/txt_gay"/>
+    <include layout="@layout/commit_layout"></include>
+</LinearLayout>
+
