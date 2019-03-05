@@ -1,5 +1,6 @@
 package com.snh.snhseller.ui.loging;
 
+import android.graphics.Color;
 import android.graphics.Paint;
 import android.os.Bundle;
 import android.view.View;
@@ -13,6 +14,7 @@ import com.snh.snhseller.BaseActivity;
 import com.snh.snhseller.R;
 import com.snh.snhseller.bean.BaseResultBean;
 import com.snh.snhseller.bean.UserBean;
+import com.snh.snhseller.bean.salebean.SaleUserBean;
 import com.snh.snhseller.requestApi.NetSubscriber;
 import com.snh.snhseller.requestApi.RequestClient;
 import com.snh.snhseller.ui.salesmanManagement.SalesmanMainActivity;
@@ -20,6 +22,7 @@ import com.snh.snhseller.utils.AnimUtil;
 import com.snh.snhseller.utils.DBManager;
 import com.snh.snhseller.utils.DialogUtils;
 import com.snh.snhseller.utils.IsBang;
+import com.snh.snhseller.utils.JumpUtils;
 import com.snh.snhseller.utils.Md5Utils;
 import com.snh.snhseller.utils.StrUtils;
 import com.snh.snhseller.wediget.IdentifyCodeView;
@@ -70,9 +73,12 @@ public class LogingActivity extends BaseActivity {
     TextView tvRegist;
     @BindView(R.id.tv_opreation)
     TextView tvOpreation;
+    @BindView(R.id.tv_store)
+    TextView tvStore;
 
     private boolean accountOrPhone = true;//true 为账号密码登录 false 为手机验证码登录
     private DialogUtils dialogUtils;
+    private int type = 1;//1:商家，2业务员
 
     @Override
     protected void initContentView(Bundle savedInstanceState) {
@@ -85,6 +91,8 @@ public class LogingActivity extends BaseActivity {
     public void setUpViews() {
         IsBang.setImmerHeard(this, rlHead);
 //        tvOpreation.setVisibility(View.GONE);
+        heardTvMenu.setText("注册");
+        heardTvMenu.setTextColor(Color.WHITE);
         heardBack.setVisibility(View.GONE);
         heardTitle.setText("登录");
         tvPhone.getPaint().setFlags(Paint.UNDERLINE_TEXT_FLAG);
@@ -103,9 +111,12 @@ public class LogingActivity extends BaseActivity {
         });
     }
 
-    @OnClick({R.id.tv_foget_psw, R.id.btn_commit, R.id.tv_phone, R.id.tv_regist,R.id.tv_opreation})
+    @OnClick({R.id.heard_tv_menu, R.id.tv_foget_psw, R.id.btn_commit, R.id.tv_phone, R.id.tv_regist, R.id.tv_opreation, R.id.tv_store})
     public void onClick(View view) {
         switch (view.getId()) {
+            case R.id.heard_tv_menu:
+                jumpActivity(com.snh.snhseller.ui.merchantEntry.LogingActivity.class);
+                break;
             case R.id.tv_foget_psw:
                 jumpActivity(ForgotPswActivity.class);
                 break;
@@ -133,7 +144,19 @@ public class LogingActivity extends BaseActivity {
                 jumpActivity(com.snh.snhseller.ui.merchantEntry.LogingActivity.class);
                 break;
             case R.id.tv_opreation:
-                jumpActivity(SalesmanMainActivity.class);
+                type = 2;
+                tvOpreation.setBackgroundResource(R.drawable.shape_soild_red_right_bg);
+                tvStore.setBackgroundResource(R.drawable.shape_range_red_left_bg);
+                tvOpreation.setTextColor(Color.WHITE);
+                tvStore.setTextColor(Color.BLACK);
+//                jumpActivity(SalesmanMainActivity.class);
+                break;
+            case R.id.tv_store:
+                type = 1;
+                tvOpreation.setBackgroundResource(R.drawable.shape_range_red_right_bg);
+                tvStore.setBackgroundResource(R.drawable.shape_soild_red_left_bg);
+                tvOpreation.setTextColor(Color.BLACK);
+                tvStore.setTextColor(Color.WHITE);
                 break;
         }
     }
@@ -175,30 +198,63 @@ public class LogingActivity extends BaseActivity {
     }
 
     private void getCode() {
-        addSubscription(RequestClient.PostSms(etPhone.getText().toString().trim(), 1, this, new NetSubscriber<BaseResultBean>(this, true) {
-            @Override
-            public void onResultNext(BaseResultBean model) {
-                icGetCode.StartCountDown(60000);
-            }
-        }));
-    }
-
-    private void loggin() {
-        if (accountOrPhone) {
-            addSubscription(RequestClient.LoginPhone(etUserName.getText().toString().trim(), "", Md5Utils.md5(etUserPsw.getText().toString().trim()), this, new NetSubscriber<BaseResultBean<UserBean>>(this, true) {
+        if(type == 1){
+            addSubscription(RequestClient.PostSms(etPhone.getText().toString().trim(), 1, this, new NetSubscriber<BaseResultBean>(this, true) {
                 @Override
-                public void onResultNext(BaseResultBean<UserBean> model) {
-                    DBManager.getInstance(LogingActivity.this).logingSuccess(model.data, LogingActivity.this);
-                }
-            }));
-        } else {
-            addSubscription(RequestClient.LoginPhone(etPhone.getText().toString().trim(), etCode.getText().toString().trim(), "", this, new NetSubscriber<BaseResultBean<UserBean>>(this, true) {
-                @Override
-                public void onResultNext(BaseResultBean<UserBean> model) {
-                    DBManager.getInstance(LogingActivity.this).logingSuccess(model.data, LogingActivity.this);
+                public void onResultNext(BaseResultBean model) {
+                    icGetCode.StartCountDown(60000);
                 }
             }));
         }
+        if(type == 2){
+            addSubscription(RequestClient.SaleSendSms(etPhone.getText().toString().trim(), 1, this, new NetSubscriber<BaseResultBean>(this) {
+                @Override
+                public void onResultNext(BaseResultBean model) {
+                    icGetCode.StartCountDown(60000);
+                }
+            }));
+        }
+    }
+
+    private void loggin() {
+        if (type == 1) {
+            if (accountOrPhone) {
+                addSubscription(RequestClient.LoginPhone(etUserName.getText().toString().trim(), "", Md5Utils.md5(etUserPsw.getText().toString().trim()), this, new NetSubscriber<BaseResultBean<UserBean>>(this, true) {
+                    @Override
+                    public void onResultNext(BaseResultBean<UserBean> model) {
+                        DBManager.getInstance(LogingActivity.this).logingSuccess(model.data, LogingActivity.this);
+                    }
+                }));
+            } else {
+                addSubscription(RequestClient.LoginPhone(etPhone.getText().toString().trim(), etCode.getText().toString().trim(), "", this, new NetSubscriber<BaseResultBean<UserBean>>(this, true) {
+                    @Override
+                    public void onResultNext(BaseResultBean<UserBean> model) {
+                        DBManager.getInstance(LogingActivity.this).logingSuccess(model.data, LogingActivity.this);
+                    }
+                }));
+            }
+        }
+        if (type == 2) {
+            if (accountOrPhone) {
+            addSubscription(RequestClient.LoginSale(etUserName.getText().toString().trim(), Md5Utils.md5(etUserPsw.getText().toString().trim()), this, new NetSubscriber<BaseResultBean<SaleUserBean>>(this, true) {
+                @Override
+                public void onResultNext(BaseResultBean<SaleUserBean> model) {
+                    DBManager.getInstance(LogingActivity.this).saveSaleUser(model.data);
+                    JumpUtils.simpJump(LogingActivity.this, SalesmanMainActivity.class, true);
+                }
+            }));
+            }else {
+                addSubscription(RequestClient.SalePhoneLogin(etPhone.getText().toString().trim(), etCode.getText().toString().trim(), this, new NetSubscriber<BaseResultBean<SaleUserBean>>(this,true) {
+                    @Override
+                    public void onResultNext(BaseResultBean<SaleUserBean> model) {
+                        DBManager.getInstance(LogingActivity.this).saveSaleUser(model.data);
+                        JumpUtils.simpJump(LogingActivity.this, SalesmanMainActivity.class, true);
+                    }
+                }));
+            }
+
+        }
+
     }
 
 

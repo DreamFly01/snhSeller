@@ -7,12 +7,15 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.os.SystemClock;
 import android.view.Display;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.WindowManager;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -37,7 +40,7 @@ public class DialogUtils {
     private ChoseClickLisener choseClickLisener;
     private HeadImgChoseLisener headImgChoseLisener;
     private OnItemClick onItemClick;
-
+    private EditClickLisener editClickLisener;
     public static DialogUtils instance;
 
 
@@ -50,7 +53,10 @@ public class DialogUtils {
 
         void onCancelClick(View v);
     }
-
+    public interface  EditClickLisener{
+        void onCancelClick(View v);
+        void onConfirmClick(View v,String content);
+    }
     public interface HeadImgChoseLisener {
         void onCancelClick(View v);
 
@@ -85,10 +91,12 @@ public class DialogUtils {
 
         builder = new AlertDialog.Builder(mContext);
         inflater = LayoutInflater.from(mContext);
-        v = inflater.inflate(R.layout.dialog_simple_layout, null);
+        if (null == DBManager.getInstance(mContext).getSaleInfo()) {
+            v = inflater.inflate(R.layout.dialog_simple_layout, null);
+        }else {
+            v = inflater.inflate(R.layout.dialog_simple1_layout, null);
+        }
         Button comfirm = (Button) v.findViewById(R.id.btn_comfirm);
-
-
         TextView txcontent = (TextView) v.findViewById(R.id.iv_dialog_content);
         txcontent.setText(content);
 
@@ -127,7 +135,11 @@ public class DialogUtils {
         this.confirmClickLisener = confirmClickLisener;
         builder = new AlertDialog.Builder(mContext);
         inflater = LayoutInflater.from(mContext);
-        v = inflater.inflate(R.layout.dialog_simple_layout, null);
+        if (null == DBManager.getInstance(mContext).getSaleInfo()) {
+            v = inflater.inflate(R.layout.dialog_simple_layout, null);
+        }else {
+            v = inflater.inflate(R.layout.dialog_simple1_layout, null);
+        }
         Button comfirm = (Button) v.findViewById(R.id.btn_comfirm);
 
 
@@ -170,7 +182,11 @@ public class DialogUtils {
         this.choseClickLisener = choseClickLisener;
         builder = new AlertDialog.Builder(mContext);
         inflater = LayoutInflater.from(mContext);
+        if (null == DBManager.getInstance(mContext).getSaleInfo()) {
         v = inflater.inflate(R.layout.dialog_two_btn_layout, null);
+        }else {
+            v = inflater.inflate(R.layout.dialog_two_btn1_layout, null);
+        }
         Button comfirm = (Button) v.findViewById(R.id.btn_comfirm);
         Button cancle = (Button) v.findViewById(R.id.btn_cancel);
 
@@ -208,6 +224,59 @@ public class DialogUtils {
         return this;
     }
 
+    /**
+     * 有输入框的弹窗
+     * @param flag
+     * @return
+     */
+    public DialogUtils editeDialog(String titlestr,final EditClickLisener editClickLisener, boolean flag) {
+        this.editClickLisener = editClickLisener;
+        builder = new AlertDialog.Builder(mContext);
+        inflater = LayoutInflater.from(mContext);
+        if (null == DBManager.getInstance(mContext).getSaleInfo()) {
+            v = inflater.inflate(R.layout.dialog_two_btn_layout, null);
+        }else {
+            v = inflater.inflate(R.layout.dialog_edit1_layout, null);
+        }
+        Button comfirm = (Button) v.findViewById(R.id.btn_comfirm);
+        Button cancle = (Button) v.findViewById(R.id.btn_cancel);
+        final EditText editText = v.findViewById(R.id.et_content);
+        TextView title = v.findViewById(R.id.tv_title);
+        title.setText(titlestr);
+//        TextView txcontent = (TextView) v.findViewById(R.id.iv_dialog_content);
+//        txcontent.setText(content);
+
+
+        dialog = builder.create();
+        dialog.setCanceledOnTouchOutside(flag);
+        dialog.setCancelable(flag);
+        dialog.show();
+
+        dialog.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_ALT_FOCUSABLE_IM);
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+
+        WindowManager windowManager = mActivity.getWindowManager();
+        Display display = windowManager.getDefaultDisplay();
+        WindowManager.LayoutParams layoutParams = dialog.getWindow().getAttributes();
+        layoutParams.width = (int) (display.getWidth() * 0.8);
+        dialog.getWindow().setAttributes(layoutParams);
+        dialog.getWindow().setContentView(v);
+        //dialog.getWindow().setGravity(Gravity.CENTER);//可以设置显示的位置
+        comfirm.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                editClickLisener.onConfirmClick(view,editText.getText().toString().trim());
+            }
+        });
+        cancle.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                editClickLisener.onCancelClick(view);
+            }
+        });
+
+        return this;
+    }
     /**
      * 头像选择弹窗
      *
@@ -293,7 +362,7 @@ public class DialogUtils {
         friend.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ShareUtils.ShareWechat(title,  name, bitmap);
+                ShareUtils.ShareWechat(title, name, bitmap);
                 dialog.dismiss();
             }
         });
@@ -301,7 +370,7 @@ public class DialogUtils {
         commends.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ShareUtils.ShareWechatMom(title,  name, bitmap);
+                ShareUtils.ShareWechatMom(title, name, bitmap);
                 dialog.dismiss();
             }
         });

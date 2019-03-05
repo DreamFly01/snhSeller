@@ -98,6 +98,7 @@ public class SetActivity extends BaseActivity {
                     @Override
                     public void onConfirmClick(View v) {
                         GlideCacheUtil.getInstance().clearImageAllCache(SetActivity.this);
+                        tvCahe.setText("(0.00K)");
                         dialogUtils.dismissDialog();
                     }
 

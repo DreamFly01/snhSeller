@@ -35,8 +35,8 @@
             android:textColor="@color/white"
             android:textSize="36pt" />
 
-        <FrameLayout
-
+        <RelativeLayout
+            android:layout_centerInParent="true"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
@@ -56,7 +56,7 @@
                 android:layout_height="50pt"
                 android:textSize="30pt"
                 />
-        </FrameLayout>
+        </RelativeLayout>
     </RelativeLayout>
 
 </LinearLayout>

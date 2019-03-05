@@ -1,26 +1,23 @@
 package com.snh.snhseller.ui.salesmanManagement.cardRecord;
 
-import android.annotation.SuppressLint;
-import android.content.Context;
 import android.os.Bundle;
-import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.haibin.calendarview.Calendar;
-import com.haibin.calendarview.CalendarLayout;
-import com.haibin.calendarview.CalendarView;
 import com.snh.snhseller.BaseFragment;
 import com.snh.snhseller.R;
+import com.snh.snhseller.ui.salesmanManagement.adapter.SimplePagerAdapter;
+import com.test.tudou.library.WeekPager.adapter.WeekViewAdapter;
+import com.test.tudou.library.WeekPager.view.WeekDayViewPager;
+import com.test.tudou.library.WeekPager.view.WeekRecyclerView;
+import com.test.tudou.library.model.CalendarDay;
+import com.test.tudou.library.util.DayUtils;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -33,10 +30,32 @@ import butterknife.Unbinder;
  * <p>changeTime：2019/2/26<p>
  * <p>version：1<p>
  */
-public class CardRecordFragment extends BaseFragment{
+public class CardRecordFragment extends BaseFragment implements WeekDayViewPager.DayScrollListener {
+
+    private final static String TAG = "WeekPagerActivity";
 
 
+    @BindView(R.id.heard_back)
+    LinearLayout heardBack;
+    @BindView(R.id.heard_title)
+    TextView heardTitle;
+    @BindView(R.id.heard_menu)
+    ImageView heardMenu;
+    @BindView(R.id.heard_tv_menu)
+    TextView heardTvMenu;
+    @BindView(R.id.rl_head)
+    LinearLayout rlHead;
+    @BindView(R.id.header_recycler_view)
+    WeekRecyclerView mWeekRecyclerView;
+    @BindView(R.id.text_day_label)
+    TextView mTextView;
+    @BindView(R.id.view_pager)
+    WeekDayViewPager mViewPagerContent;
+    Unbinder unbinder;
 
+    private SimplePagerAdapter mPagerAdapter;
+    private WeekViewAdapter mWeekViewAdapter;
+    private static final int OFFSCREEN_PAGE_LIMIT = 1;
 
     @Override
     public int initContentView() {
@@ -45,7 +64,8 @@ public class CardRecordFragment extends BaseFragment{
 
     @Override
     public void setUpViews(View view) {
-
+        setUpPager();
+        setUpData();
     }
 
     @Override
@@ -53,28 +73,55 @@ public class CardRecordFragment extends BaseFragment{
 
     }
 
-    @SuppressWarnings("all")
-    private Calendar getSchemeCalendar(int year, int month, int day, int color, String text) {
-        Calendar calendar = new Calendar();
-        calendar.setYear(year);
-        calendar.setMonth(month);
-        calendar.setDay(day);
-        calendar.setSchemeColor(color);//如果单独标记颜色、则会使用这个颜色
-        calendar.setScheme(text);
-        return calendar;
+    private void setUpPager() {
+        mPagerAdapter = new SimplePagerAdapter(getActivity().getSupportFragmentManager());
+        mViewPagerContent.setOffscreenPageLimit(OFFSCREEN_PAGE_LIMIT);
+        mViewPagerContent.setAdapter(mPagerAdapter);
+        mViewPagerContent.setWeekRecyclerView(mWeekRecyclerView);
+        mViewPagerContent.setDayScrollListener(this);
+        mWeekViewAdapter = new WeekViewAdapter(getContext(), mViewPagerContent);
+        mWeekViewAdapter.setTextNormalColor(getResources().getColor(android.R.color.darker_gray));
+        mWeekRecyclerView.setAdapter(mWeekViewAdapter);
     }
 
+    private void setUpData() {
+        ArrayList<CalendarDay> reachAbleDays = new ArrayList<>();
+        reachAbleDays.add(new CalendarDay(2015, 5, 1));
+        reachAbleDays.add(new CalendarDay(2015, 5, 4));
+        reachAbleDays.add(new CalendarDay(2015, 5, 6));
+        reachAbleDays.add(new CalendarDay(2015, 5, 20));
+        mWeekViewAdapter.setData(reachAbleDays.get(0), reachAbleDays.get(reachAbleDays.size() - 1), null);
+        mPagerAdapter.setData(reachAbleDays.get(0), reachAbleDays.get(reachAbleDays.size() - 1));
+//        mViewPagerContent.set(DayUtils.calculateDayPosition(mWeekViewAdapter.getItemCount(), new CalendarDay(2015, 5, 6)));
+    }
+
+    @Override
+    public void onDayPageScrolled(int position, float positionOffset,
+                                  int positionOffsetPixels) {
+        mTextView.setText(DayUtils.formatEnglishTime(mPagerAdapter.getDatas().get(position).getTime()));
+    }
+
+    @Override
+    public void onDayPageSelected(int position) {
+    }
+
+    @Override
+    public void onDayPageScrollStateChanged(int state) {
+
+    }
 
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // TODO: inflate a fragment view
         View rootView = super.onCreateView(inflater, container, savedInstanceState);
+        unbinder = ButterKnife.bind(this, rootView);
         return rootView;
     }
 
     @Override
     public void onDestroyView() {
         super.onDestroyView();
+        unbinder.unbind();
     }
 }

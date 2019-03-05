@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/color_app_bg"
+    android:orientation="vertical">
+
+    <include layout="@layout/heard_blue_layout"></include>
+    <LinearLayout
+        android:id="@+id/ll_01"
+        android:gravity="center"
+        android:layout_marginTop="20pt"
+        android:background="@color/white"
+        android:padding="30pt"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <TextView
+            android:layout_marginLeft="20pt"
+            android:layout_weight="1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="费用申请"
+            android:textSize="30pt"
+            android:textColor="@color/txt_dark"
+            />
+        <ImageView
+            android:layout_width="15pt"
+            android:layout_height="25pt"
+            android:background="@drawable/img_aray_right"/>
+    </LinearLayout>
+    <LinearLayout
+        android:id="@+id/ll_02"
+        android:gravity="center"
+        android:layout_marginTop="20pt"
+        android:background="@color/white"
+        android:padding="30pt"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <TextView
+            android:layout_marginLeft="20pt"
+            android:layout_weight="1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="申请记录"
+            android:textSize="30pt"
+            android:textColor="@color/txt_dark"
+            />
+        <ImageView
+            android:layout_width="15pt"
+            android:layout_height="25pt"
+            android:background="@drawable/img_aray_right"/>
+    </LinearLayout>
+</LinearLayout>

@@ -15,4 +15,7 @@ public class Contans {
     public static final String DISTRICT = "district";
     public static final String LAUNCH_FRIST = "launchFrist";
     public static final String WEIXIN_APP_ID = "wxbffbb975260288cc";
+
+    public static final String LATITUDE="latitude";
+    public static final String LONGITUDE="longitude";
 }

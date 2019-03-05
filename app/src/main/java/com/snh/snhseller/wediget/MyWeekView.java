@@ -56,6 +56,7 @@ public class MyWeekView extends WeekView {
         mDisablePaint.setStrokeWidth(dipToPx(context,2));
         mDisablePaint.setFakeBoldText(true);
 
+        mSchemePaint.setColor(Color.WHITE);
         mH = dipToPx(context, 18);
     }
 

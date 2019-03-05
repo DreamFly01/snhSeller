@@ -12,6 +12,7 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.snh.snhseller.ui.loging.LogingActivity;
+import com.snh.snhseller.ui.salesmanManagement.SalesmanMainActivity;
 import com.snh.snhseller.utils.Contans;
 import com.snh.snhseller.utils.DBManager;
 import com.snh.snhseller.utils.JumpUtils;
@@ -174,7 +175,9 @@ public class WelcomActivity extends BaseActivity {
             Bundle bundle = new Bundle();
             if (null != DBManager.getInstance(this).getUserInfo()) {
                 JumpUtils.dataJump(WelcomActivity.this, MainActivity.class, bundle, true);
-            } else {
+            } else if(null != DBManager.getInstance(this).getSaleInfo()){
+                JumpUtils.dataJump(WelcomActivity.this, SalesmanMainActivity.class, bundle, true);
+            }else  {
                 JumpUtils.dataJump(WelcomActivity.this, LogingActivity.class, bundle, true);
             }
         } else {

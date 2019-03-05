@@ -87,7 +87,7 @@ public class ChangePswActivity extends BaseActivity {
     private void changePsw() {
         String oldPsw = Md5Utils.md5(etOld.getText().toString().trim());
         String newPsw = Md5Utils.md5(etNew.getText().toString().trim());
-        addSubscription(RequestClient.OldPwdToNewPwd(oldPsw, newPsw, this, new NetSubscriber<BaseResultBean>(this, true) {
+        addSubscription(RequestClient.ChangePsw(oldPsw, newPsw, this, new NetSubscriber<BaseResultBean>(this, true) {
             @Override
             public void onResultNext(BaseResultBean model) {
                 dialogUtils.simpleDialog("密码修改成功", new DialogUtils.ConfirmClickLisener() {

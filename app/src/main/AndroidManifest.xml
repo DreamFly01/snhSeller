@@ -159,6 +159,12 @@
         <activity android:name=".ui.home.accoutData.DataStatisticsActivity"></activity>
 
         <activity android:name=".ui.salesmanManagement.SalesmanMainActivity"></activity>
+        <activity android:name=".ui.salesmanManagement.home.SetActivity"></activity>
+        <activity android:name=".ui.salesmanManagement.home.ChangePswActivity"></activity>
+        <activity android:name=".ui.salesmanManagement.home.declaration.Declaration1Activity"></activity>
+        <activity android:name=".ui.salesmanManagement.home.declaration.DeclarationActivity"></activity>
+        <activity android:name=".ui.salesmanManagement.home.declaration.DeclarationListActivity"></activity>
+        <activity android:name=".ui.salesmanManagement.home.declaration.DeclarationDetailsActivity"></activity>
     </application>
 
 

@@ -11,6 +11,10 @@ import com.snh.snhseller.bean.DataBean;
 import com.snh.snhseller.bean.OrderBean;
 import com.snh.snhseller.bean.ProductBean;
 import com.snh.snhseller.bean.UserBean;
+import com.snh.snhseller.bean.salebean.ApplyBean;
+import com.snh.snhseller.bean.salebean.OperationBean;
+import com.snh.snhseller.bean.salebean.RecordBean;
+import com.snh.snhseller.bean.salebean.SaleUserBean;
 import com.snh.snhseller.utils.DBManager;
 import com.snh.snhseller.utils.NetworkUtils;
 import com.snh.snhseller.utils.StrUtils;
@@ -303,6 +307,7 @@ public class RequestClient {
 
     /**
      * 获取店铺商品
+     *
      * @param commType
      * @param pageIndex
      * @param commtenantName
@@ -316,7 +321,7 @@ public class RequestClient {
         map.put("pageSize", 10);
         if (StrUtils.isEmpty(commtenantName)) {
             map.put("commtenantName", "");
-        }else {
+        } else {
             map.put("commtenantName", commtenantName);
         }
         map.put("commType", commType);
@@ -329,13 +334,14 @@ public class RequestClient {
 
     /**
      * 商品上下架
+     *
      * @param CommtenantId
-     * @param Type 1,上架   2，下架
+     * @param Type         1,上架   2，下架
      * @param context
      * @param observer
      * @return
      */
-    public static Subscription UpOrDownProduct(int CommtenantId, int Type,  Context context, NetSubscriber<BaseResultBean> observer) {
+    public static Subscription UpOrDownProduct(int CommtenantId, int Type, Context context, NetSubscriber<BaseResultBean> observer) {
         Map<String, Object> map = new TreeMap<>();
         map.put("SupplierId", DBManager.getInstance(context).getUseId());
         map.put("CommtenantId", CommtenantId);
@@ -348,12 +354,13 @@ public class RequestClient {
 
     /**
      * 删除商品
+     *
      * @param CommtenantId
      * @param context
      * @param observer
      * @return
      */
-    public static Subscription DelProduct(int CommtenantId,Context context, NetSubscriber<BaseResultBean> observer) {
+    public static Subscription DelProduct(int CommtenantId, Context context, NetSubscriber<BaseResultBean> observer) {
         Map<String, Object> map = new TreeMap<>();
         map.put("SupplierId", DBManager.getInstance(context).getUseId());
         map.put("CommtenantId", CommtenantId);
@@ -365,12 +372,13 @@ public class RequestClient {
 
     /**
      * 新增商品
+     *
      * @param map
      * @param context
      * @param observer
      * @return
      */
-    public static Subscription AddProduct(Map<String, Object> map,Context context, NetSubscriber<BaseResultBean> observer) {
+    public static Subscription AddProduct(Map<String, Object> map, Context context, NetSubscriber<BaseResultBean> observer) {
 
         return doRequest(RetrofitProxy.
                         getApiService(context, "").
@@ -380,12 +388,13 @@ public class RequestClient {
 
     /**
      * 编辑商品
+     *
      * @param map
      * @param context
      * @param observer
      * @return
      */
-    public static Subscription EditProduct(Map<String, Object> map,Context context, NetSubscriber<BaseResultBean> observer) {
+    public static Subscription EditProduct(Map<String, Object> map, Context context, NetSubscriber<BaseResultBean> observer) {
 
         return doRequest(RetrofitProxy.
                         getApiService(context, "").
@@ -395,15 +404,16 @@ public class RequestClient {
 
     /**
      * 修改用户头像
+     *
      * @param Icon
      * @param context
      * @param observer
      * @return
      */
-    public static Subscription ModifShopLogo(String Icon,Context context, NetSubscriber<BaseResultBean> observer) {
+    public static Subscription ModifShopLogo(String Icon, Context context, NetSubscriber<BaseResultBean> observer) {
         Map<String, Object> map = new TreeMap<>();
-        map.put("SupplierId",DBManager.getInstance(context).getUseId());
-        map.put("Icon",Icon);
+        map.put("SupplierId", DBManager.getInstance(context).getUseId());
+        map.put("Icon", Icon);
         return doRequest(RetrofitProxy.
                         getApiService(context, "").
                         ModifShopLogo(map),
@@ -412,12 +422,13 @@ public class RequestClient {
 
     /**
      * 修改店铺信息
+     *
      * @param map
      * @param context
      * @param observer
      * @return
      */
-    public static Subscription ModifInfo(Map<String, Object> map,Context context, NetSubscriber<BaseResultBean> observer) {
+    public static Subscription ModifInfo(Map<String, Object> map, Context context, NetSubscriber<BaseResultBean> observer) {
 
         return doRequest(RetrofitProxy.
                         getApiService(context, "").
@@ -427,15 +438,16 @@ public class RequestClient {
 
     /**
      * 修改店铺描述
+     *
      * @param Describe
      * @param context
      * @param observer
      * @return
      */
-    public static Subscription ModifDesc(String Describe,Context context, NetSubscriber<BaseResultBean> observer) {
+    public static Subscription ModifDesc(String Describe, Context context, NetSubscriber<BaseResultBean> observer) {
         Map<String, Object> map = new TreeMap<>();
-        map.put("SupplierId",DBManager.getInstance(context).getUseId());
-        map.put("Describe",Describe);
+        map.put("SupplierId", DBManager.getInstance(context).getUseId());
+        map.put("Describe", Describe);
         return doRequest(RetrofitProxy.
                         getApiService(context, "").
                         ModifDesc(map),
@@ -452,11 +464,11 @@ public class RequestClient {
      * @param observer
      * @return
      */
-    public static Subscription OldPwdToNewPwd(String OldPwd,String NewPwd,Context context, NetSubscriber<BaseResultBean> observer) {
+    public static Subscription OldPwdToNewPwd(String OldPwd, String NewPwd, Context context, NetSubscriber<BaseResultBean> observer) {
         Map<String, Object> map = new TreeMap<>();
-        map.put("SupplierId",DBManager.getInstance(context).getUseId());
-        map.put("OldPwd",OldPwd);
-        map.put("NewPwd",NewPwd);
+        map.put("SupplierId", DBManager.getInstance(context).getUseId());
+        map.put("OldPwd", OldPwd);
+        map.put("NewPwd", NewPwd);
         return doRequest(RetrofitProxy.
                         getApiService(context, "").
                         OldPwdToNewPwd(map),
@@ -465,6 +477,7 @@ public class RequestClient {
 
     /**
      * 提交意见反馈
+     *
      * @param Starlevel
      * @param ImgUrlList
      * @param Content
@@ -473,12 +486,12 @@ public class RequestClient {
      * @return
      */
 
-    public static Subscription CommitFeedBack(String Starlevel,String ImgUrlList,String Content,Context context, NetSubscriber<BaseResultBean> observer) {
+    public static Subscription CommitFeedBack(String Starlevel, String ImgUrlList, String Content, Context context, NetSubscriber<BaseResultBean> observer) {
         Map<String, Object> map = new TreeMap<>();
-        map.put("SupplierId",DBManager.getInstance(context).getUseId());
-        map.put("Starlevel",Starlevel);
-        map.put("ImgUrlList",ImgUrlList);
-        map.put("Content",Content);
+        map.put("SupplierId", DBManager.getInstance(context).getUseId());
+        map.put("Starlevel", Starlevel);
+        map.put("ImgUrlList", ImgUrlList);
+        map.put("Content", Content);
         return doRequest(RetrofitProxy.
                         getApiService(context, "").
                         CommitFeedBack(map),
@@ -488,19 +501,257 @@ public class RequestClient {
 
     /**
      * 获取统计数据
+     *
      * @param context
      * @param observer
      * @return
      */
     public static Subscription DataStatistics(Context context, NetSubscriber<BaseResultBean<DataBean>> observer) {
         Map<String, Object> map = new TreeMap<>();
-        map.put("SupplierId",DBManager.getInstance(context).getUseId());
+        map.put("SupplierId", DBManager.getInstance(context).getUseId());
         return doRequest(RetrofitProxy.
                         getApiService(context, "").
                         DataStatistics(map),
                 context, observer);
     }
     /**-------------------------------------------------------分割线-----------------------------------------------——————————————————————————————————————**/
+
+    /**
+     * 业务员账号密码登录
+     *
+     * @param username
+     * @param psw
+     * @param context
+     * @param observer
+     * @return
+     */
+    public static Subscription LoginSale(String username, String psw, Context context, NetSubscriber<BaseResultBean<SaleUserBean>> observer) {
+        Map<String, Object> map = new TreeMap<>();
+        map.put("UserName", username);
+        map.put("PassWord", psw);
+
+        return doRequest(RetrofitProxy.
+                        getApiService(context, "").
+                        LoginSale(map),
+                context, observer);
+    }
+
+    /**
+     * 发送短信验证码
+     *
+     * @param PhoneNumer
+     * @param Type       1.短信登录   2.注册   3.修改支付密码    4.修改手机号码
+     * @param context
+     * @param observer
+     * @return
+     */
+    public static Subscription SaleSendSms(String PhoneNumer, int Type, Context context, NetSubscriber<BaseResultBean> observer) {
+        Map<String, Object> map = new TreeMap<>();
+        map.put("PhoneNumer", PhoneNumer);
+        map.put("Type", Type);
+
+        return doRequest(RetrofitProxy.
+                        getApiService(context, "").
+                        SaleSendSms(map),
+                context, observer);
+    }
+
+
+    /**
+     * 手机验证码登录
+     *
+     * @param PhoneNumer
+     * @param Code
+     * @param context
+     * @param observer
+     * @return
+     */
+    public static Subscription SalePhoneLogin(String PhoneNumer, String Code, Context context, NetSubscriber<BaseResultBean<SaleUserBean>> observer) {
+        Map<String, Object> map = new TreeMap<>();
+        map.put("PhoneNumer", PhoneNumer);
+        map.put("Code", Code);
+
+        return doRequest(RetrofitProxy.
+                        getApiService(context, "").
+                        SalePhoneLogin(map),
+                context, observer);
+    }
+
+    /**
+     * 修改密码
+     *
+     * @param OldPwd
+     * @param NewPwd
+     * @param context
+     * @param observer
+     * @return
+     */
+    public static Subscription ChangePsw(String OldPwd, String NewPwd, Context context, NetSubscriber<BaseResultBean> observer) {
+        Map<String, Object> map = new TreeMap<>();
+        map.put("SalesmanId", DBManager.getInstance(context).getSaleInfo().SalesmanId);
+        map.put("OldPwd", OldPwd);
+        map.put("NewPwd", NewPwd);
+
+        return doRequest(RetrofitProxy.
+                        getApiService(context, "").
+                        OldPwdAlterNewPwd(map),
+                context, observer);
+    }
+
+
+    /**
+     * 获取我的供应商商户列表
+     *
+     * @param pageIndex
+     * @param context
+     * @param observer
+     * @return
+     */
+    public static Subscription CommTenantList(int pageIndex,String condition, Context context, NetSubscriber<BaseResultBean<OperationBean>> observer) {
+        Map<String, Object> map = new TreeMap<>();
+        map.put("SalesmanId", DBManager.getInstance(context).getSaleInfo().SalesmanId);
+        map.put("pageIndex", pageIndex);
+        map.put("pageSize", 10);
+        if(!StrUtils.isEmpty(condition)){
+            map.put("condition",condition);
+        }
+        return doRequest(RetrofitProxy.
+                        getApiService(context, "").
+                        CommTenantList(map),
+                context, observer);
+    }
+
+    /**
+     * 获取商户列表
+     * @param pageIndex
+     * @param context
+     * @param observer
+     * @return
+     */
+    public static Subscription MyCommTenantList(int pageIndex, Context context, NetSubscriber<BaseResultBean<OperationBean>> observer) {
+        Map<String, Object> map = new TreeMap<>();
+        map.put("SalesmanId", DBManager.getInstance(context).getSaleInfo().SalesmanId);
+        map.put("pageIndex", pageIndex);
+        map.put("pageSize", 10);
+
+
+        return doRequest(RetrofitProxy.
+                        getApiService(context, "").
+                        MyManagerCommtenantList(map),
+                context, observer);
+    }
+
+    /**
+     * 添加成为我的商户
+     * @param CommtenantId
+     * @param context
+     * @param observer
+     * @return
+     */
+    public static Subscription AddToMyCommtenant(int CommtenantId, Context context, NetSubscriber<BaseResultBean> observer) {
+        Map<String, Object> map = new TreeMap<>();
+        map.put("SalesmanId", DBManager.getInstance(context).getSaleInfo().SalesmanId);
+        map.put("CommtenantId", CommtenantId);
+
+        return doRequest(RetrofitProxy.
+                        getApiService(context, "").
+                        AddToMyCommtenant(map),
+                context, observer);
+    }
+
+    /**
+     * 删除我的商户
+     * @param CommtenantId
+     * @param context
+     * @param observer
+     * @return
+     */
+    public static Subscription DelMyCommtenant(int CommtenantId, Context context, NetSubscriber<BaseResultBean> observer) {
+        Map<String, Object> map = new TreeMap<>();
+        map.put("SalesmanId", DBManager.getInstance(context).getSaleInfo().SalesmanId);
+        map.put("CommtenantId", CommtenantId);
+
+        return doRequest(RetrofitProxy.
+                        getApiService(context, "").
+                        DelMyCommtenant(map),
+                context, observer);
+    }
+    /**
+     * 业务员打卡
+     * @param CommtenantId
+     * @param Content
+     * @param Type
+     * @param context
+     * @param observer
+     * @return
+     */
+    public static Subscription RecordClockIn(int CommtenantId, String Content,int Type, Context context, NetSubscriber<BaseResultBean> observer) {
+        Map<String, Object> map = new TreeMap<>();
+        map.put("SalesmanId", DBManager.getInstance(context).getSaleInfo().SalesmanId);
+        map.put("CommtenantId", CommtenantId);
+        if (StrUtils.isEmpty(Content)) {
+            map.put("Content", "");
+        } else {
+            map.put("Content", Content);
+        }
+        map.put("Type",Type);
+        return doRequest(RetrofitProxy.
+                        getApiService(context, "").
+                        RecordClockIn(map),
+                context, observer);
+    }
+
+    /**
+     * 获取打卡记录
+     * @param index
+     * @param time
+     * @param context
+     * @param observer
+     * @return
+     */
+    public static Subscription GetClockInRecord(int index,String time, Context context, NetSubscriber<BaseResultBean<List<RecordBean>>> observer) {
+        Map<String, Object> map = new TreeMap<>();
+        map.put("SalesmanId", DBManager.getInstance(context).getSaleInfo().SalesmanId);
+        map.put("pageIndex", index);
+        map.put("pageSize",20);
+        map.put("time",time);
+        return doRequest(RetrofitProxy.
+                        getApiService(context, "").
+                        GetClockInRecord(map),
+                context, observer);
+    }
+
+    /**
+     * 费用申请
+     * @param map
+     * @param context
+     * @param observer
+     * @return
+     */
+    public static Subscription PostApply(Map<String,Object> map, Context context, NetSubscriber<BaseResultBean> observer) {
+        return doRequest(RetrofitProxy.
+                        getApiService(context, "").
+                        PostApply(map),
+                context, observer);
+    }
+
+    /**
+     * 费用申请列表
+     * @param pageIndex
+     * @param context
+     * @param observer
+     * @return
+     */
+    public static Subscription GetApplyList(int pageIndex, Context context, NetSubscriber<BaseResultBean<List<ApplyBean>>> observer) {
+        Map<String,Object> map = new TreeMap<>();
+        map.put("salesmanId",DBManager.getInstance(context).getSaleInfo().SalesmanId);
+        map.put("pageSize",10);
+        map.put("pageIndex",pageIndex);
+        return doRequest(RetrofitProxy.
+                        getApiService(context, "").
+                        GetApplyList(map),
+                context, observer);
+    }
     /***
      * 包装请求后再发起请求
      *

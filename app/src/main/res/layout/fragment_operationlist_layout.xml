@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/color_app_bg"
+    android:orientation="vertical">
+    <LinearLayout
+        android:id="@+id/rl_head"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:background="@color/blue"
+        android:gravity="center_horizontal"
+        android:paddingBottom="20pt"
+        >
+        <LinearLayout
+            android:layout_gravity="center_vertical"
+            android:layout_marginRight="10pt"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:id="@+id/layout_location"
+            android:paddingLeft="30pt"
+            android:paddingRight="30pt"
+            >
+
+
+        <LinearLayout
+            android:id="@+id/layout_search"
+            android:layout_width="match_parent"
+            android:layout_height="60pt"
+            android:background="@drawable/bg_home_search"
+            >
+            <ImageView
+                android:layout_width="30pt"
+                android:layout_height="30pt"
+                android:layout_gravity="center_vertical"
+                android:src="@drawable/home_search_icon"
+                android:layout_marginLeft="25pt"
+                />
+            <EditText
+                android:lines="1"
+                android:singleLine="true"
+                android:imeOptions="actionSearch"
+                android:id="@+id/et_search"
+                android:background="@null"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:textSize="26pt"
+                android:textColor="@color/txt_dark"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="10pt"
+                android:hint="搜索商户名称"
+                android:textColorHint="@color/gray_1"
+                />
+        </LinearLayout>
+    </LinearLayout>
+
+</LinearLayout>
+    <include layout="@layout/refresh_layout"></include>
+</LinearLayout>

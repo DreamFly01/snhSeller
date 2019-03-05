@@ -16,12 +16,14 @@ import com.gyf.barlibrary.ImmersionBar;
 import com.netease.nim.uikit.common.activity.UI;
 import com.snh.snhseller.BaseActivity;
 import com.snh.snhseller.R;
-import com.snh.snhseller.ui.home.HomeFragment;
 import com.snh.snhseller.ui.msg.MsgFragment;
 import com.snh.snhseller.ui.order.OrderFragment;
 import com.snh.snhseller.ui.product.ProductFragment;
 import com.snh.snhseller.ui.salesmanManagement.cardRecord.CardRecordFragment;
+import com.snh.snhseller.ui.salesmanManagement.cardRecord.RecordFragment;
+import com.snh.snhseller.ui.salesmanManagement.home.HomeFragment;
 import com.snh.snhseller.ui.salesmanManagement.operation.OperationFragment;
+import com.snh.snhseller.ui.salesmanManagement.operationList.OperationListFragment;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -60,6 +62,9 @@ public class SalesmanMainActivity extends UI {
 
     private OperationFragment operationFragment;
     private CardRecordFragment cardRecordFragment;
+    private HomeFragment homeFragment;
+    private OperationListFragment operationListFragment;
+    private RecordFragment recordFragment;
 
 
     @Override
@@ -153,24 +158,29 @@ public class SalesmanMainActivity extends UI {
                 }
                 break;
             case 1:
-
-                break;
-            case 2:
-                if(cardRecordFragment == null){
-                    cardRecordFragment = new CardRecordFragment();
-                    transaction.add(R.id.main_frameLayout,cardRecordFragment);
+                if (operationListFragment == null) {
+                    operationListFragment = new OperationListFragment();
+                    transaction.add(R.id.main_frameLayout, operationListFragment);
                 }else {
-                    transaction.show(cardRecordFragment);
+                    transaction.show(operationListFragment);
                 }
                 break;
-//            case 3:
-//                if(homeFragment == null){
-//                    homeFragment = new HomeFragment();
-//                    transaction.add(R.id.main_frameLayout,homeFragment);
-//                }else {
-//                    transaction.show(homeFragment);
-//                }
-//                break;
+            case 2:
+                if(recordFragment == null){
+                    recordFragment = new RecordFragment();
+                    transaction.add(R.id.main_frameLayout,recordFragment);
+                }else {
+                    transaction.show(recordFragment);
+                }
+                break;
+            case 3:
+                if(homeFragment == null){
+                    homeFragment = new HomeFragment();
+                    transaction.add(R.id.main_frameLayout,homeFragment);
+                }else {
+                    transaction.show(homeFragment);
+                }
+                break;
         }
         transaction.commit();
     }
@@ -181,21 +191,21 @@ public class SalesmanMainActivity extends UI {
                 transaction.hide(operationFragment);
             }
         }
-        if(cardRecordFragment !=null){
-            if(!cardRecordFragment.isHidden()){
-                transaction.hide(cardRecordFragment);
+        if(recordFragment !=null){
+            if(!recordFragment.isHidden()){
+                transaction.hide(recordFragment);
             }
         }
-//        if(productFragment != null){
-//            if(!productFragment.isHidden()){
-//                transaction.hide(productFragment);
-//            }
-//        }
-//        if(homeFragment != null){
-//            if(!homeFragment.isHidden()){
-//                transaction.hide(homeFragment);
-//            }
-//        }
+        if(operationListFragment != null){
+            if(!operationListFragment.isHidden()){
+                transaction.hide(operationListFragment);
+            }
+        }
+        if(homeFragment != null){
+            if(!homeFragment.isHidden()){
+                transaction.hide(homeFragment);
+            }
+        }
     }
     @Override
     protected void onDestroy() {

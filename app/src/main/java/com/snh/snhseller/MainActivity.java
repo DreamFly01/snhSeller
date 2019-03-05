@@ -19,6 +19,7 @@ import com.snh.snhseller.ui.msg.MsgFragment;
 import com.snh.snhseller.ui.order.OrderFragment;
 import com.snh.snhseller.ui.product.ProductFragment;
 import com.snh.snhseller.ui.salesmanManagement.cardRecord.CardRecordFragment;
+import com.snh.snhseller.ui.salesmanManagement.cardRecord.RecordFragment;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;

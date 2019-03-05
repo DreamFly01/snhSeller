@@ -13,8 +13,10 @@ import com.netease.nimlib.sdk.auth.LoginInfo;
 import com.snh.snhseller.MainActivity;
 import com.snh.snhseller.bean.UserBean;
 import com.snh.snhseller.bean.beanDao.UserEntity;
+import com.snh.snhseller.bean.salebean.SaleUserBean;
 import com.snh.snhseller.greendao.DaoMaster;
 import com.snh.snhseller.greendao.DaoSession;
+import com.snh.snhseller.greendao.SaleUserBeanDao;
 import com.snh.snhseller.greendao.UserEntityDao;
 
 import java.util.List;
@@ -108,6 +110,10 @@ public class DBManager {
         JumpUtils.simpJump(activity,MainActivity.class,true);
     }
 
+    public void saveSaleUser(SaleUserBean bean){
+        SaleUserBeanDao userBeanDao = getDaoSession().getSaleUserBeanDao();
+        userBeanDao.insert(bean);
+    }
     public int getUseId() {
         UserEntityDao userEntityDao = getDaoSession().getUserEntityDao();
         List<UserEntity> list = userEntityDao.queryBuilder().list();
@@ -118,8 +124,18 @@ public class DBManager {
         List<UserEntity> list = userEntityDao.queryBuilder().list();
         return list.size()>0?list.get(0):null;
     }
+    public SaleUserBean getSaleInfo(){
+        SaleUserBeanDao userBeanDao = getDaoSession().getSaleUserBeanDao();
+        List<SaleUserBean> list = userBeanDao.queryBuilder().list();
+        return list.size()>0?list.get(0):null;
+    }
     public void cleanUser(){
         UserEntityDao userEntityDao = getDaoSession().getUserEntityDao();
         userEntityDao.deleteAll();
     }
+    public void cleanSale(){
+        SaleUserBeanDao userBeanDao = getDaoSession().getSaleUserBeanDao();
+        userBeanDao.deleteAll();
+    }
+
 }

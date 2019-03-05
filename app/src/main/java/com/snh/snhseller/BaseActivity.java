@@ -53,8 +53,8 @@ public abstract class BaseActivity extends FragmentActivity implements View.OnCl
         setUpLisener();
         getDataOnCreate();
         immersionBar = ImmersionBar.with(this);
+        immersionBar.titleBar(R.id.rl_head);
         if (isImm) {
-            immersionBar.titleBar(R.id.rl_head);
             immersionBar.statusBarColor(R.color.app_red);
         }
         immersionBar.statusBarDarkFont(false);
@@ -63,9 +63,11 @@ public abstract class BaseActivity extends FragmentActivity implements View.OnCl
         daoMaster = new DaoMaster(db);
         daoSession = daoMaster.newSession();
     }
-    public  DaoSession getDaoSession(){
+
+    public DaoSession getDaoSession() {
         return daoSession;
     }
+
     /**
      * 处理点击事件分发，判断是否隐藏键盘
      *
@@ -251,7 +253,7 @@ public abstract class BaseActivity extends FragmentActivity implements View.OnCl
         if (userList.size() > 0) {
 //            UserEntity user = userList.get(0);
             return true;
-        }else {
+        } else {
             return false;
         }
     }

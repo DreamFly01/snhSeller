@@ -6,6 +6,10 @@ import com.snh.snhseller.bean.DataBean;
 import com.snh.snhseller.bean.OrderBean;
 import com.snh.snhseller.bean.ProductBean;
 import com.snh.snhseller.bean.UserBean;
+import com.snh.snhseller.bean.salebean.ApplyBean;
+import com.snh.snhseller.bean.salebean.OperationBean;
+import com.snh.snhseller.bean.salebean.RecordBean;
+import com.snh.snhseller.bean.salebean.SaleUserBean;
 
 import java.util.List;
 import java.util.Map;
@@ -225,4 +229,129 @@ public interface RequestApi {
      */
     @GET("SupplierDataStatistics/DataStatistics")
     Observable<BaseResultBean<DataBean>> DataStatistics(@QueryMap Map<String,Object> params);
+
+    /**---------------------------华丽的分割线--------------------------------**/
+    /**---------------------------业务员接口---------------------------------**/
+
+    /**
+     * 业务员管理登录
+     * @param params
+     * @return
+     */
+    @FormUrlEncoded
+    @POST("SalesmanUser/Login")
+    Observable<BaseResultBean<SaleUserBean>> LoginSale(@FieldMap Map<String,Object> params);
+
+    /**
+     * 获取验证码
+     * @param params
+     * @return
+     */
+    @FormUrlEncoded
+    @POST("SalesmanUser/sendphonecode")
+    Observable<BaseResultBean> SaleSendSms(@FieldMap Map<String,Object> params);
+
+    /**
+     * 手机号码登录
+     * @param params
+     * @return
+     */
+    @FormUrlEncoded
+    @POST("SalesmanUser/PhoneLogin")
+    Observable<BaseResultBean<SaleUserBean>> SalePhoneLogin(@FieldMap Map<String,Object> params);
+
+    /**
+     * 修改密码
+     * @param params
+     * @return
+     */
+    @FormUrlEncoded
+    @POST("SalesmanUser/OldPwdAlterNewPwd")
+    Observable<BaseResultBean<SaleUserBean>> OldPwdAlterNewPwd(@FieldMap Map<String,Object> params);
+
+    /**
+     * 供应商商户列表
+     * @param params
+     * @return
+     */
+    @GET("CommTenantManager/CommTenantList")
+    Observable<BaseResultBean<OperationBean>> CommTenantList(@QueryMap Map<String,Object> params);
+
+
+    /**
+     * 添加成为我的管理商户
+     * @param params
+     * @return
+     */
+    @FormUrlEncoded
+    @POST("CommTenantManager/AddToMyCommtenant")
+    Observable<BaseResultBean> AddToMyCommtenant(@FieldMap Map<String,Object> params);
+
+    /**
+     * 我的管理商户列表
+     */
+    @GET("CommTenantManager/MyManagerCommtenantList")
+    Observable<BaseResultBean<OperationBean>> MyManagerCommtenantList(@QueryMap Map<String,Object> params);
+
+    /**
+     * 移除管理商户
+     * @param params
+     * @return
+     */
+    @FormUrlEncoded
+    @POST("CommTenantManager/DelMyCommtenant")
+    Observable<BaseResultBean<SaleUserBean>> DelMyCommtenant(@FieldMap Map<String,Object> params);
+
+    /**
+     * 业务员打卡
+     * @param params
+     * @return
+     */
+    @FormUrlEncoded
+    @POST("CommTenantManager/RecordClockIn")
+    Observable<BaseResultBean> RecordClockIn(@FieldMap Map<String,Object> params);
+
+    /**
+     * 业务员行程记录
+     * @param params
+     * @return
+     */
+    @POST("CommTenantManager/RecordRoute")
+    Observable<BaseResultBean<SaleUserBean>> RecordRoute(@QueryMap Map<String,Object> params);
+
+
+    /**
+     * 我的行程记录
+     * @param params
+     * @return
+     */
+    @POST("Record/GetRouteRecordList")
+    Observable<BaseResultBean<SaleUserBean>> GetRouteRecordList(@QueryMap Map<String,Object> params);
+
+    /**
+     * 打卡记录
+     * @param params
+     * @return
+     */
+    @GET("Record/GetClockInRecord")
+    Observable<BaseResultBean<List<RecordBean>>> GetClockInRecord(@QueryMap Map<String,Object> params);
+
+    /**
+     * 费用申请
+     * @param params
+     * @return
+     */
+
+    @POST("SalesmanCost/CostApply")
+    Observable<BaseResultBean> PostApply(@Body Map<String,Object> params);
+
+    /**
+     * 获取费用列表
+     * @param params
+     * @return
+     */
+    @GET("SalesmanCost/CostApplyList")
+    Observable<BaseResultBean<List<ApplyBean>>> GetApplyList(@QueryMap Map<String,Object> params);
+
+
 }
