@@ -18,8 +18,6 @@ import com.snh.snhseller.ui.home.HomeFragment;
 import com.snh.snhseller.ui.msg.MsgFragment;
 import com.snh.snhseller.ui.order.OrderFragment;
 import com.snh.snhseller.ui.product.ProductFragment;
-import com.snh.snhseller.ui.salesmanManagement.cardRecord.CardRecordFragment;
-import com.snh.snhseller.ui.salesmanManagement.cardRecord.RecordFragment;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -108,20 +106,20 @@ public class MainActivity extends UI {
         radioStore.setCompoundDrawables(null, drawable3, null, null);
         radioHome.setCompoundDrawables(null, drawable4, null, null);
         if (index == -1 | index == 0) {
-            radioGroupButton.check(R.id.radio_chat);
+            radioGroupButton.check(R.id.radio_store);
         }
         radioGroupButton.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup radioGroup, int i) {
                 switch (i) {
                     case R.id.radio_chat:
-                        setTabSelection(0);
+                        setTabSelection(2);
                         break;
                     case R.id.radio_order:
                         setTabSelection(1);
                         break;
                     case R.id.radio_store:
-                        setTabSelection(2);
+                        setTabSelection(0);
                         break;
                     case R.id.radio_home:
                         setTabSelection(3);
@@ -150,11 +148,11 @@ public class MainActivity extends UI {
         hideFragments();
         switch (index) {
             case 0:
-                if (msgFragment == null) {
-                    msgFragment = new MsgFragment();
-                    transaction.add(R.id.main_frameLayout, msgFragment);
+                if(productFragment == null){
+                    productFragment = new ProductFragment();
+                    transaction.add(R.id.main_frameLayout,productFragment);
                 }else {
-                    transaction.show(msgFragment);
+                    transaction.show(productFragment);
                 }
                 break;
             case 1:
@@ -166,12 +164,13 @@ public class MainActivity extends UI {
                 }
                 break;
             case 2:
-                if(productFragment == null){
-                    productFragment = new ProductFragment();
-                    transaction.add(R.id.main_frameLayout,productFragment);
+                if (msgFragment == null) {
+                    msgFragment = new MsgFragment();
+                    transaction.add(R.id.main_frameLayout, msgFragment);
                 }else {
-                    transaction.show(productFragment);
+                    transaction.show(msgFragment);
                 }
+
                 break;
             case 3:
                 if(homeFragment == null){

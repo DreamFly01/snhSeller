@@ -1,5 +1,6 @@
 package com.snh.snhseller.ui.salesmanManagement.cardRecord;
 
+import android.content.Context;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -17,7 +18,10 @@ import com.haibin.calendarview.Calendar;
 import com.haibin.calendarview.CalendarLayout;
 import com.haibin.calendarview.CalendarView;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
+import com.scwang.smartrefresh.layout.api.DefaultRefreshFooterCreator;
+import com.scwang.smartrefresh.layout.api.RefreshFooter;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
+import com.scwang.smartrefresh.layout.footer.ClassicsFooter;
 import com.scwang.smartrefresh.layout.listener.OnLoadMoreListener;
 import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 import com.snh.snhseller.BaseFragment;
@@ -84,7 +88,7 @@ public class RecordFragment extends BaseFragment implements CalendarView.OnCalen
     @Override
     public void setUpViews(View view) {
         ImmersionBar.setTitleBar(getActivity(), rlHead);
-        IsBang.setImmerHeard(getContext(), rlHead);
+        IsBang.setImmerHeard(getContext(), rlHead,"");
         heardBack.setVisibility(View.GONE);
         heardTitle.setText("打卡记录");
         heardTvMenu.setText("今天");
@@ -96,6 +100,7 @@ public class RecordFragment extends BaseFragment implements CalendarView.OnCalen
         time = TimeUtils.getDateString(System.currentTimeMillis());
         getData(time);
         tvTime.setText(calendarView.getCurYear() + "年" + calendarView.getCurMonth() + "月" + calendarView.getCurDay());
+        refreshLayout.setEnableRefresh(false);
     }
 
     private void setRecyclerView() {
@@ -196,7 +201,7 @@ public class RecordFragment extends BaseFragment implements CalendarView.OnCalen
                         adapter.setNewData(model.data);
                     } else {
                         adapter.setNewData(null);
-                        adapter.setEmptyView(R.layout.empty_layout, recyclerView);
+                        adapter.setEmptyView(R.layout.empty1_layout, recyclerView);
                     }
                 } else {
                     if (model.data.size() > 0) {

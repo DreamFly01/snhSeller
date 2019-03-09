@@ -2,6 +2,7 @@ package com.snh.snhseller.utils;
 
 import android.app.Activity;
 import android.content.Context;
+import android.graphics.Color;
 import android.os.Build;
 import android.widget.LinearLayout;
 
@@ -125,6 +126,16 @@ public class IsBang {
             params.height = LinearLayout.LayoutParams.WRAP_CONTENT;
             heard.setLayoutParams(params);
             heard.setPadding(0, ImmersionBar.getActionBarHeight((Activity) context) / 2 + 10, 0, 20);
+        }
+    }
+
+    public static void setImmerHeard(Context context,LinearLayout heard,String color){
+        if(IsBang.getInt("isBang",(Activity) context)|IsBang.hasNotchAtHuawei(context)|IsBang.hasNotchAtOPPO(context)|IsBang.hasNotchAtVivo(context)){
+            LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) heard.getLayoutParams();
+            params.height = LinearLayout.LayoutParams.WRAP_CONTENT;
+            heard.setLayoutParams(params);
+            heard.setPadding(0, ImmersionBar.getActionBarHeight((Activity) context) / 2 + 10, 0, 20);
+            heard.setBackgroundColor(Color.parseColor("#2E8AFF"));
         }
     }
 }

@@ -31,6 +31,7 @@
             android:background="@drawable/img_aray_right"/>
     </LinearLayout>
     <LinearLayout
+        android:visibility="gone"
         android:id="@+id/ll_02"
         android:gravity="center"
         android:layout_marginTop="4pt"

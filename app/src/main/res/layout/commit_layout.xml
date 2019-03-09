@@ -5,14 +5,14 @@
     android:layout_marginTop="59pt"
 
     android:gravity="center">
-    <Button
-        android:id="@+id/btn_commit"
-        android:layout_gravity="center"
-        android:gravity="center"
-        android:layout_width="690pt"
-        android:layout_height="100pt"
-        android:text="登录"
-        android:textColor="@color/txt_white"
-        android:textSize="36pt"
-        android:background="@drawable/commit_color_selector"/>
+        <Button
+            android:id="@+id/btn_commit"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:layout_width="690pt"
+            android:layout_height="100pt"
+            android:text="登录"
+            android:textColor="@color/txt_white"
+            android:textSize="36pt"
+            android:background="@drawable/commit_color_selector"/>
 </LinearLayout>

@@ -22,6 +22,8 @@ import com.snh.snhseller.requestApi.NetSubscriber;
 import com.snh.snhseller.requestApi.RequestClient;
 import com.snh.snhseller.ui.salesmanManagement.BaseActivity;
 import com.snh.snhseller.ui.salesmanManagement.adapter.DeclarationAdapter;
+import com.snh.snhseller.utils.IsBang;
+import com.snh.snhseller.utils.JumpUtils;
 import com.snh.snhseller.wediget.RecycleViewDivider;
 
 import java.util.ArrayList;
@@ -57,6 +59,7 @@ public class DeclarationListActivity extends BaseActivity {
     private List<ApplyBean> datas = new ArrayList<>();
     private int index = 1;
     private DeclarationAdapter adapter;
+    private Bundle bundle;
     @Override
     protected void initContentView(Bundle savedInstanceState) {
         setContentView(R.layout.activity_declarationlist_layout);
@@ -64,6 +67,7 @@ public class DeclarationListActivity extends BaseActivity {
 
     @Override
     public void setUpViews() {
+        IsBang.setImmerHeard(this,rlHead,"");
         heardTitle.setText("申请记录");
         setRecyclerView();
         getData();
@@ -95,6 +99,9 @@ public class DeclarationListActivity extends BaseActivity {
         adapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
+                bundle = new Bundle();
+                bundle.putInt("id",datas.get(position).CostId);
+                JumpUtils.dataJump(DeclarationListActivity.this,DeclarationDetailsActivity.class,bundle,false);
 
             }
         });
@@ -124,7 +131,7 @@ public class DeclarationListActivity extends BaseActivity {
                         datas.addAll(model.data);
                         adapter.setNewData(model.data);
                     }else {
-                        adapter.setEmptyView(R.layout.empty_layout,recyclerView);
+                        adapter.setEmptyView(R.layout.empty1_layout,recyclerView);
                     }
                 }else{
                     datas.addAll(model.data);

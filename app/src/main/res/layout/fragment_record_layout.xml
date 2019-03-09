@@ -6,13 +6,14 @@
     android:orientation="vertical">
     <include layout="@layout/heard_blue_layout"></include>
     <TextView
+        android:background="@color/blue"
         android:id="@+id/tv_time"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="30pt"
         android:gravity="center"
         android:textSize="30pt"
-        android:textColor="@color/txt_dark"
+        android:textColor="@color/white"
         />
     <com.haibin.calendarview.CalendarLayout
         android:id="@+id/calendarLayout"
@@ -20,14 +21,15 @@
         android:layout_height="match_parent"
         android:background="#fff"
         android:orientation="vertical"
-        app:calendar_show_mode="only_week_view"
+        app:calendar_show_mode="both_month_week_view"
+        app:default_status="shrink"
         app:calendar_content_view_id="@+id/refreshLayout">
 
         <com.haibin.calendarview.CalendarView
             android:id="@+id/calendarView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="#fff"
+            android:background="@color/blue"
             app:calendar_padding="10dp"
             app:current_month_lunar_text_color="#CFCFCF"
             app:current_month_text_color="#333333"
@@ -42,8 +44,8 @@
             app:selected_lunar_text_color="#fff"
             app:selected_text_color="#fff"
             app:selected_theme_color="#108cd4"
-            app:week_background="#fff"
-            app:week_text_color="#111"
+            app:week_background="@color/blue"
+            app:week_text_color="@color/white"
             app:select_mode="single_mode"
             app:week_view="com.snh.snhseller.wediget.MyWeekView"
             app:year_view_day_text_color="#333333"
@@ -56,7 +58,10 @@
             android:id="@+id/refreshLayout"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
-
+            <com.scwang.smartrefresh.layout.header.ClassicsHeader
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+            </com.scwang.smartrefresh.layout.header.ClassicsHeader>
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/recyclerView"
                 android:layout_width="match_parent"

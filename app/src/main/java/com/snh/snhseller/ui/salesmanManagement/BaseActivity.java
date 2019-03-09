@@ -2,7 +2,9 @@ package com.snh.snhseller.ui.salesmanManagement;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.Resources;
 import android.database.sqlite.SQLiteDatabase;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.view.MotionEvent;
@@ -59,6 +61,7 @@ public abstract class BaseActivity extends FragmentActivity implements View.OnCl
         db = DBManager.getInstance(this).getWritableDatabase();
         daoMaster = new DaoMaster(db);
         daoSession = daoMaster.newSession();
+
     }
 
     public DaoSession getDaoSession() {

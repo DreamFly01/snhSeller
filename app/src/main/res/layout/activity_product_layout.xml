@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:id="@+id/ll_back"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+        <ImageView
+            android:layout_width="40pt"
+            android:layout_height="40pt"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <include layout="@layout/refresh_layout"></include>
+
+        <Button
+            android:id="@+id/btn_commit"
+            android:layout_width="690pt"
+            android:layout_height="80pt"
+            android:layout_gravity="center"
+            android:layout_marginBottom="20pt"
+            android:background="@drawable/commit_color_selector"
+            android:gravity="center"
+            android:text="订购"
+            android:textColor="@color/txt_white"
+            android:textSize="30pt" />
+
+    </LinearLayout>
+
+</RelativeLayout>

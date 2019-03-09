@@ -8,6 +8,7 @@ import android.widget.TextView;
 
 import com.snh.snhseller.R;
 import com.snh.snhseller.ui.salesmanManagement.BaseActivity;
+import com.snh.snhseller.utils.IsBang;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -44,6 +45,7 @@ public class DeclarationActivity extends BaseActivity {
 
     @Override
     public void setUpViews() {
+        IsBang.setImmerHeard(this,rlHead,"");
         heardTitle.setText("费用申报");
     }
 

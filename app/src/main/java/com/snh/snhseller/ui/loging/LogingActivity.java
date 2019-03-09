@@ -86,12 +86,12 @@ public class LogingActivity extends BaseActivity {
         dialogUtils = new DialogUtils(this);
     }
 
-    //业务员账号：18374975750
+    //业务员账号：18374975750  13637315267  123456
     @Override
     public void setUpViews() {
         IsBang.setImmerHeard(this, rlHead);
 //        tvOpreation.setVisibility(View.GONE);
-        heardTvMenu.setText("注册");
+        heardTvMenu.setText("入驻");
         heardTvMenu.setTextColor(Color.WHITE);
         heardBack.setVisibility(View.GONE);
         heardTitle.setText("登录");

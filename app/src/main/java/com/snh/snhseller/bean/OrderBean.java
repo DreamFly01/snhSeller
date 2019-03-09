@@ -20,12 +20,26 @@ public class OrderBean implements Parcelable {
     public String UserIcon;
     public double OrderPrice;
     public int Freight;
-    public int OrderStates;
+//    public int OrderStates;
     public int PayStates;
-    public long OrderCreateTime;
+    public String OrderCreateTime;
     public String ReceivingName;
     public String ReceivingPhone;
     public String ReceivingAddress;
+
+//    public int OrderId;
+    public String OrderNo;
+    public String CommTenantName;
+    public String CommTenantIconUrl;
+    public int SumCommodity;
+    public String CommodityName;
+    public String CommodityIconUrl;
+//    public double OrderPrice;
+    public int OrderStates;//0.全部 1.待付款 2.待发货 3.已发货 4.已完成 5.退款中 6.退款成功 7.退款失败
+    public String Delivery;
+    public String PayMethod;//1.微信支付 2.支付宝支付 3.银联支付 4.货到付款  5.其他
+    public String LeaveWord;
+//    public String OrderCreateTime;
     public List<OrderGoodsBean> OrderGoodsList;
 
     protected OrderBean(Parcel in) {
@@ -36,12 +50,21 @@ public class OrderBean implements Parcelable {
         UserIcon = in.readString();
         OrderPrice = in.readDouble();
         Freight = in.readInt();
-        OrderStates = in.readInt();
         PayStates = in.readInt();
-        OrderCreateTime = in.readLong();
+        OrderCreateTime = in.readString();
         ReceivingName = in.readString();
         ReceivingPhone = in.readString();
         ReceivingAddress = in.readString();
+        OrderNo = in.readString();
+        CommTenantName = in.readString();
+        CommTenantIconUrl = in.readString();
+        SumCommodity = in.readInt();
+        CommodityName = in.readString();
+        CommodityIconUrl = in.readString();
+        OrderStates = in.readInt();
+        Delivery = in.readString();
+        PayMethod = in.readString();
+        LeaveWord = in.readString();
         OrderGoodsList = in.createTypedArrayList(OrderGoodsBean.CREATOR);
     }
 
@@ -71,12 +94,21 @@ public class OrderBean implements Parcelable {
         dest.writeString(UserIcon);
         dest.writeDouble(OrderPrice);
         dest.writeInt(Freight);
-        dest.writeInt(OrderStates);
         dest.writeInt(PayStates);
-        dest.writeLong(OrderCreateTime);
+        dest.writeString(OrderCreateTime);
         dest.writeString(ReceivingName);
         dest.writeString(ReceivingPhone);
         dest.writeString(ReceivingAddress);
+        dest.writeString(OrderNo);
+        dest.writeString(CommTenantName);
+        dest.writeString(CommTenantIconUrl);
+        dest.writeInt(SumCommodity);
+        dest.writeString(CommodityName);
+        dest.writeString(CommodityIconUrl);
+        dest.writeInt(OrderStates);
+        dest.writeString(Delivery);
+        dest.writeString(PayMethod);
+        dest.writeString(LeaveWord);
         dest.writeTypedList(OrderGoodsList);
     }
 }

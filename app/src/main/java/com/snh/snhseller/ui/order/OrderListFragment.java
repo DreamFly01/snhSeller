@@ -22,9 +22,11 @@ import com.snh.snhseller.bean.OrderBean;
 import com.snh.snhseller.requestApi.NetSubscriber;
 import com.snh.snhseller.requestApi.RequestClient;
 import com.snh.snhseller.utils.DBManager;
+import com.snh.snhseller.utils.JumpUtils;
 import com.snh.snhseller.wediget.LoadingDialog;
 import com.snh.snhseller.wediget.RecycleViewDivider;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
@@ -48,14 +50,18 @@ public class OrderListFragment extends BaseFragment {
     @BindView(R.id.refreshLayout)
     SmartRefreshLayout refreshLayout;
     Unbinder unbinder;
-    private int type;
+    private int type;//订单状态
     private int index = 1;
     private OrderAdapter adapter;
     private LoadingDialog loadingDialog;
+    private int orderType;//订单类型 0 :我的订单 1:出库订单 2：进货订单
+    List<OrderBean> datas = new ArrayList<>();
+
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         type = getArguments().getInt("type");
+        orderType = getArguments().getInt("orderType");
         if (!mIsDataInited) {
             if (getUserVisibleHint()) {
                 setView();
@@ -74,14 +80,17 @@ public class OrderListFragment extends BaseFragment {
     public void setUpViews(View view) {
 
     }
-    public void setView(){
+
+    public void setView() {
         loadingDialog = LoadingDialog.getInstance(getContext());
         loadingDialog.show();
         setRecyclerView();
     }
-    private void setRecyclerView(){
+
+    private void setRecyclerView() {
         adapter = new OrderAdapter(R.layout.item_order_layout, null);
-        recyclerView.addItemDecoration(new RecycleViewDivider(getContext(),LinearLayoutManager.VERTICAL,R.drawable.line));
+        adapter.setType(orderType);
+        recyclerView.addItemDecoration(new RecycleViewDivider(getContext(), LinearLayoutManager.VERTICAL, R.drawable.line));
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerView.setAdapter(adapter);
         adapter.setOnLoadMoreListener(new BaseQuickAdapter.RequestLoadMoreListener() {
@@ -90,13 +99,25 @@ public class OrderListFragment extends BaseFragment {
                 recyclerView.postDelayed(new Runnable() {
                     @Override
                     public void run() {
-                        index+=1;
+                        index += 1;
                         getData();
                     }
-                },1000);
+                }, 1000);
             }
         }, recyclerView);
+        adapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
+                if (orderType != 0) {
+                    Bundle bundle = new Bundle();
+                    bundle.putInt("orderId", datas.get(position).OrderId);
+                    bundle.putInt("orderType", orderType);
+                    JumpUtils.dataJump(getActivity(), OrderDetailsActivity.class, bundle, false);
+                }
+            }
+        });
     }
+
     @Override
     public void setUpLisener() {
         refreshLayout.setEnableLoadMore(false);
@@ -125,56 +146,114 @@ public class OrderListFragment extends BaseFragment {
     }
 
     private void getData() {
-        isFrist = false;
-        if (type == 0) {
-            addSubscription(RequestClient.getOrderList("", type + "", index, getContext(), new NetSubscriber<BaseResultBean<List<OrderBean>>>(getContext()) {
-                @Override
-                public void onResultNext(BaseResultBean<List<OrderBean>> model) {
+//        isFrist = false;
+        switch (orderType) {
+            case 0:
+                if (type == 0) {
+                    addSubscription(RequestClient.getOrderList("", type + "", index, getContext(), new NetSubscriber<BaseResultBean<List<OrderBean>>>(getContext()) {
+                        @Override
+                        public void onResultNext(BaseResultBean<List<OrderBean>> model) {
 
-                    if (index == 1) {
-                        if (model.data.size() > 0) {
-                            adapter.setNewData(model.data);
-                        }else {
-                            adapter.setEmptyView(R.layout.empty_layout);
+                            if (index == 1) {
+                                if (model.data.size() > 0) {
+                                    adapter.setNewData(model.data);
+                                } else {
+                                    adapter.setEmptyView(R.layout.empty_layout, recyclerView);
+                                }
+                            } else {
+                                if (model.data.size() > 0) {
+                                    adapter.addData(model.data);
+                                    adapter.loadMoreComplete();
+                                } else {
+                                    adapter.loadMoreEnd();
+                                }
+                            }
+                            loadingDialog.dismiss();
+                            refreshLayout.finishRefresh();
                         }
-                    } else {
-                        if (model.data.size() > 0) {
-                            adapter.addData(model.data);
-                            adapter.loadMoreComplete();
-                        } else {
-                            adapter.loadMoreEnd();
+                    }));
+                } else {
+                    addSubscription(RequestClient.getOrderList(type + "", "", index, getContext(), new NetSubscriber<BaseResultBean<List<OrderBean>>>(getContext()) {
+                        @Override
+                        public void onResultNext(BaseResultBean<List<OrderBean>> model) {
+                            if (index == 1) {
+                                if (model.data.size() > 0) {
+                                    adapter.setNewData(model.data);
+                                } else {
+                                    adapter.setNewData(null);
+                                    adapter.setEmptyView(R.layout.empty_layout);
+                                }
+                            } else {
+                                if (model.data.size() > 0) {
+                                    adapter.addData(model.data);
+                                    adapter.loadMoreComplete();
+                                } else {
+                                    adapter.loadMoreEnd();
+                                }
+                            }
+                            loadingDialog.dismiss();
+                            refreshLayout.finishRefresh();
                         }
-                    }
-                    loadingDialog.dismiss();
-                    refreshLayout.finishRefresh();
+                    }));
                 }
-            }));
-        } else {
-            addSubscription(RequestClient.getOrderList(type + "", "", index, getContext(), new NetSubscriber<BaseResultBean<List<OrderBean>>>(getContext()) {
-                @Override
-                public void onResultNext(BaseResultBean<List<OrderBean>> model) {
-                    if (index == 1) {
-                        if (model.data.size() > 0) {
-                            adapter.setNewData(model.data);
-                        }else {
-                            adapter.setNewData(null);
-                            adapter.setEmptyView(R.layout.empty_layout);
-                        }
-                    } else {
-                        if (model.data.size() > 0) {
-                            adapter.addData(model.data);
-                            adapter.loadMoreComplete();
+                break;
+            case 1:
+                addSubscription(RequestClient.MyShipmentOrderList(type, index, "", getContext(), new NetSubscriber<BaseResultBean<List<OrderBean>>>(getContext()) {
+                    @Override
+                    public void onResultNext(BaseResultBean<List<OrderBean>> model) {
+                        if (index == 1) {
+                            datas = model.data;
+                            if (model.data.size() > 0) {
+                                adapter.setNewData(model.data);
+                            } else {
+                                adapter.setEmptyView(R.layout.empty_layout);
+                            }
                         } else {
-                            adapter.loadMoreEnd();
+                            datas.addAll(model.data);
+                            if (model.data.size() > 0) {
+                                adapter.addData(model.data);
+                                adapter.loadMoreComplete();
+                            } else {
+                                adapter.loadMoreEnd();
+                            }
                         }
+                        loadingDialog.dismiss();
+                        refreshLayout.finishRefresh();
                     }
-                    loadingDialog.dismiss();
-                    refreshLayout.finishRefresh();
-                }
-            }));
+                }));
+                break;
+
+            case 2:
+                addSubscription(RequestClient.MyStockOrderList(type, index, "", getContext(), new NetSubscriber<BaseResultBean<List<OrderBean>>>(getContext()) {
+                    @Override
+                    public void onResultNext(BaseResultBean<List<OrderBean>> model) {
+                        if (index == 1) {
+                            datas = model.data;
+                            if (model.data.size() > 0) {
+                                adapter.setNewData(model.data);
+                            } else {
+                                adapter.setEmptyView(R.layout.empty_layout);
+                            }
+                        } else {
+                            datas.addAll(model.data);
+                            if (model.data.size() > 0) {
+                                adapter.addData(model.data);
+                                adapter.loadMoreComplete();
+                            } else {
+                                adapter.loadMoreEnd();
+                            }
+                        }
+                        loadingDialog.dismiss();
+                        refreshLayout.finishRefresh();
+                    }
+                }));
+                break;
         }
+
     }
+
     private boolean isFrist = true;
+
     @Override
     public void setUserVisibleHint(boolean isVisibleToUser) {
         super.setUserVisibleHint(isVisibleToUser);
@@ -193,6 +272,12 @@ public class OrderListFragment extends BaseFragment {
             index = 1;
             getData();
         }
+        isFrist = false;
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
     }
 
 }

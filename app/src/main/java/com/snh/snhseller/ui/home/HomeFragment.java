@@ -13,7 +13,9 @@ import com.snh.snhseller.BaseFragment;
 import com.snh.snhseller.R;
 import com.snh.snhseller.ui.home.account.ShopInfoActivity;
 import com.snh.snhseller.ui.home.accoutData.DataStatisticsActivity;
+import com.snh.snhseller.ui.home.set.QRcodeActivity;
 import com.snh.snhseller.ui.home.set.SetActivity;
+import com.snh.snhseller.ui.home.supplier.MySupplierActivity;
 import com.snh.snhseller.utils.DBManager;
 import com.snh.snhseller.utils.ImageUtils;
 import com.snh.snhseller.utils.IsBang;
@@ -47,7 +49,14 @@ public class HomeFragment extends BaseFragment {
     @BindView(R.id.ll_04)
     LinearLayout ll04;
     Unbinder unbinder;
+    @BindView(R.id.ll_05)
+    LinearLayout ll05;
+    @BindView(R.id.ll_06)
+    LinearLayout ll06;
+    @BindView(R.id.ll_07)
+    LinearLayout ll07;
 
+    private Bundle bundle;
     @Override
     public int initContentView() {
         return R.layout.fragment_home_layout;
@@ -55,9 +64,9 @@ public class HomeFragment extends BaseFragment {
 
     @Override
     public void setUpViews(View view) {
-        ImmersionBar.setTitleBar(getActivity(),llHeard);
-        IsBang.setImmerHeard(getContext(),llHeard);
-        ImageUtils.loadUrlCorners(getContext(),DBManager.getInstance(getContext()).getUserInfo().Logo,ivHeard);
+        ImmersionBar.setTitleBar(getActivity(), llHeard);
+        IsBang.setImmerHeard(getContext(), llHeard);
+        ImageUtils.loadUrlCorners(getContext(), DBManager.getInstance(getContext()).getUserInfo().Logo, ivHeard);
         tvName.setText(DBManager.getInstance(getContext()).getUserInfo().ShopName);
 
     }
@@ -81,30 +90,46 @@ public class HomeFragment extends BaseFragment {
         unbinder.unbind();
     }
 
-    @OnClick({R.id.ll_heard, R.id.ll_01, R.id.ll_02, R.id.ll_03, R.id.ll_04})
+    @OnClick({R.id.ll_heard, R.id.ll_01, R.id.ll_02, R.id.ll_03, R.id.ll_04, R.id.ll_05, R.id.ll_06, R.id.ll_07})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.ll_heard:
-                Bundle bundle = new Bundle();
-                JumpUtils.dataJump(getActivity(),ShopInfoActivity.class,bundle,false);
+                bundle = new Bundle();
+                JumpUtils.dataJump(getActivity(), ShopInfoActivity.class, bundle, false);
                 break;
             case R.id.ll_01:
                 break;
             case R.id.ll_02:
-                JumpUtils.simpJump(getActivity(),DataStatisticsActivity.class,false);
+                JumpUtils.simpJump(getActivity(), DataStatisticsActivity.class, false);
                 break;
             case R.id.ll_03:
+                JumpUtils.simpJump(getActivity(),QRcodeActivity.class,false);
                 break;
             case R.id.ll_04:
-                JumpUtils.simpJump(getActivity(),SetActivity.class,false);
+                break;
+            case R.id.ll_05:
+                bundle = new Bundle();
+                bundle.putInt("type",1);
+                JumpUtils.dataJump(getActivity(),MySupplierActivity.class,bundle,false);
+                break;
+            case R.id.ll_06:
+                bundle = new Bundle();
+                bundle.putInt("type",2);
+                JumpUtils.dataJump(getActivity(),MySupplierActivity.class,bundle,false);
+                break;
+
+            case R.id.ll_07:
+                JumpUtils.simpJump(getActivity(), SetActivity.class, false);
+
                 break;
         }
     }
+
     @Override
     public void onResume() {
         super.onResume();
-        if(!this.isHidden()){
-            ImageUtils.loadUrlCorners(getContext(),DBManager.getInstance(getContext()).getUserInfo().Logo,ivHeard);
+        if (!this.isHidden()) {
+            ImageUtils.loadUrlCorners(getContext(), DBManager.getInstance(getContext()).getUserInfo().Logo, ivHeard);
             System.out.println(DBManager.getInstance(getContext()).getUserInfo().Logo);
             tvName.setText(DBManager.getInstance(getContext()).getUserInfo().ShopName);
         }

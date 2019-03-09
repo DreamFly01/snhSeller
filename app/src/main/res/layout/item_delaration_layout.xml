@@ -12,6 +12,7 @@
     android:padding="30pt"
     >
     <TextView
+        android:id="@+id/tv_sales_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="费用"
@@ -20,15 +21,21 @@
         />
     <TextView
         android:id="@+id/tv_state"
-        android:layout_weight="1"
+        android:paddingTop="4pt"
+        android:paddingBottom="4pt"
+        android:paddingLeft="20pt"
+        android:paddingRight="20pt"
+        android:background="@drawable/shape_state_green_bg"
         android:layout_marginLeft="20pt"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="审批中"
         android:textSize="@dimen/txtSize_30"
-        android:textColor="@color/txt_dark"
+        android:textColor="@color/green"
         />
     <TextView
+        android:layout_weight="1"
+        android:gravity="right"
         android:id="@+id/tv_time"
         android:layout_marginLeft="20pt"
         android:layout_width="wrap_content"

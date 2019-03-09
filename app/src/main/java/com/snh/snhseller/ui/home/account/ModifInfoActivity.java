@@ -72,6 +72,7 @@ public class ModifInfoActivity extends BaseActivity {
     @Override
     public void setUpViews() {
         IsBang.setImmerHeard(this, rlHead);
+        heardTitle.setText("修改");
         if (type == 4) {
             etInfo.setHint("请输入店铺描述");
             heardTitle.setText("店铺描述");

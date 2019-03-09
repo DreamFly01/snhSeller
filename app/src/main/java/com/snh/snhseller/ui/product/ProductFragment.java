@@ -1,6 +1,7 @@
 package com.snh.snhseller.ui.product;
 
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -44,8 +45,6 @@ public class ProductFragment extends BaseFragment {
     TextView heardTitle;
     @BindView(R.id.heard_menu)
     ImageView heardMenu;
-    @BindView(R.id.heard_tv_menu)
-    TextView heardTvMenu;
     @BindView(R.id.rl_head1)
     LinearLayout rlHead;
     @BindView(R.id.tab_order)
@@ -53,6 +52,8 @@ public class ProductFragment extends BaseFragment {
     @BindView(R.id.tab_vp)
     ViewPager tabVp;
     Unbinder unbinder;
+    @BindView(R.id.fab)
+    ImageView fab;
     private String[] titles = {"出售中", "审核中", "已下架"};
     private List<Fragment> list = new ArrayList<>();
     private Bundle bundle;
@@ -127,14 +128,20 @@ public class ProductFragment extends BaseFragment {
         unbinder.unbind();
     }
 
-    @OnClick(R.id.heard_tv_menu)
-    public void onClick() {
-        if (DBManager.getInstance(getContext()).getUserInfo().suppType.equals("商超士多")) {
-            bundle = new Bundle();
-            bundle.putInt("type", 1);
-            JumpUtils.dataJump(getActivity(), EditProductActivity.class, bundle, false);
-        }else {
-            Toast.makeText(getContext(),"请前往电脑端添加",Toast.LENGTH_SHORT).show();
+    @OnClick({R.id.fab, R.id.heard_menu})
+    public void onClick(View view) {
+        switch (view.getId()) {
+            case R.id.fab:
+                if (DBManager.getInstance(getContext()).getUserInfo().suppType.equals("商超士多")) {
+                    bundle = new Bundle();
+                    bundle.putInt("type", 1);
+                    JumpUtils.dataJump(getActivity(), EditProductActivity.class, bundle, false);
+                }else {
+                    Toast.makeText(getContext(),"请前往电脑端添加",Toast.LENGTH_SHORT).show();
+                }
+                break;
+            case R.id.heard_menu:
+                break;
         }
     }
 

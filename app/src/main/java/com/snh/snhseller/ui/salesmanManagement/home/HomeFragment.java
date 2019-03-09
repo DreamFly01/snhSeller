@@ -54,7 +54,8 @@ public class HomeFragment extends BaseFragment {
     @Override
     public void setUpViews(View view) {
         heardTitle.setText("我的");
-        IsBang.setImmerHeard(getContext(),rlHead);
+        heardBack.setVisibility(View.GONE);
+        IsBang.setImmerHeard(getContext(),rlHead,"");
         ImmersionBar.setTitleBar(getActivity(),rlHead);
     }
 

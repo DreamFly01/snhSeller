@@ -8,10 +8,13 @@ import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.SystemClock;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.Display;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.Window;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
@@ -19,7 +22,14 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.snh.snhseller.R;
+import com.snh.snhseller.adapter.CustomAdapter;
+import com.zhy.adapter.recyclerview.MultiItemTypeAdapter;
+
+import java.util.List;
+
+import static android.widget.ListPopupWindow.WRAP_CONTENT;
 
 /**
  * <p>desc：<p>
@@ -53,10 +63,13 @@ public class DialogUtils {
 
         void onCancelClick(View v);
     }
-    public interface  EditClickLisener{
+
+    public interface EditClickLisener {
         void onCancelClick(View v);
-        void onConfirmClick(View v,String content);
+
+        void onConfirmClick(View v, String content);
     }
+
     public interface HeadImgChoseLisener {
         void onCancelClick(View v);
 
@@ -93,7 +106,7 @@ public class DialogUtils {
         inflater = LayoutInflater.from(mContext);
         if (null == DBManager.getInstance(mContext).getSaleInfo()) {
             v = inflater.inflate(R.layout.dialog_simple_layout, null);
-        }else {
+        } else {
             v = inflater.inflate(R.layout.dialog_simple1_layout, null);
         }
         Button comfirm = (Button) v.findViewById(R.id.btn_comfirm);
@@ -137,7 +150,7 @@ public class DialogUtils {
         inflater = LayoutInflater.from(mContext);
         if (null == DBManager.getInstance(mContext).getSaleInfo()) {
             v = inflater.inflate(R.layout.dialog_simple_layout, null);
-        }else {
+        } else {
             v = inflater.inflate(R.layout.dialog_simple1_layout, null);
         }
         Button comfirm = (Button) v.findViewById(R.id.btn_comfirm);
@@ -183,8 +196,8 @@ public class DialogUtils {
         builder = new AlertDialog.Builder(mContext);
         inflater = LayoutInflater.from(mContext);
         if (null == DBManager.getInstance(mContext).getSaleInfo()) {
-        v = inflater.inflate(R.layout.dialog_two_btn_layout, null);
-        }else {
+            v = inflater.inflate(R.layout.dialog_two_btn_layout, null);
+        } else {
             v = inflater.inflate(R.layout.dialog_two_btn1_layout, null);
         }
         Button comfirm = (Button) v.findViewById(R.id.btn_comfirm);
@@ -226,16 +239,17 @@ public class DialogUtils {
 
     /**
      * 有输入框的弹窗
+     *
      * @param flag
      * @return
      */
-    public DialogUtils editeDialog(String titlestr,final EditClickLisener editClickLisener, boolean flag) {
+    public DialogUtils editeDialog(String titlestr, final EditClickLisener editClickLisener, boolean flag) {
         this.editClickLisener = editClickLisener;
         builder = new AlertDialog.Builder(mContext);
         inflater = LayoutInflater.from(mContext);
         if (null == DBManager.getInstance(mContext).getSaleInfo()) {
             v = inflater.inflate(R.layout.dialog_two_btn_layout, null);
-        }else {
+        } else {
             v = inflater.inflate(R.layout.dialog_edit1_layout, null);
         }
         Button comfirm = (Button) v.findViewById(R.id.btn_comfirm);
@@ -265,7 +279,7 @@ public class DialogUtils {
         comfirm.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                editClickLisener.onConfirmClick(view,editText.getText().toString().trim());
+                editClickLisener.onConfirmClick(view, editText.getText().toString().trim());
             }
         });
         cancle.setOnClickListener(new View.OnClickListener() {
@@ -277,6 +291,7 @@ public class DialogUtils {
 
         return this;
     }
+
     /**
      * 头像选择弹窗
      *
@@ -328,6 +343,52 @@ public class DialogUtils {
                 headImgChoseLisener.onCancelClick(view);
             }
         });
+        return this;
+    }
+
+    /**
+     * 自定义弹窗
+     *
+     * @param onItemClick
+     * @param mTop
+     * @param mRight
+     * @param width
+     * @param datas
+     * @param imgList
+     * @return
+     */
+    public DialogUtils customDialog(final OnItemClick onItemClick, int mTop, int mRight, int width, List<String> datas, List<Integer> imgList) {
+        this.onItemClick = onItemClick;
+        builder = new AlertDialog.Builder(mContext, R.style.dialog);
+        inflater = LayoutInflater.from(mContext);
+        v = inflater.inflate(R.layout.dialog_custom_layout, null);
+        RecyclerView recyclerView = (RecyclerView) v.findViewById(R.id.recyclerView_dialog_custom);
+        CustomAdapter adapter = new CustomAdapter(R.layout.item_dialog_custom, datas);
+        adapter.setImgList(imgList);
+        adapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
+                onItemClick.onItemClick(view, position);
+            }
+        });
+
+        recyclerView.setLayoutManager(new LinearLayoutManager(mContext));
+        recyclerView.setAdapter(adapter);
+
+        dialog = builder.create();
+        dialog.setContentView(v);
+        dialog.show();
+
+
+        Window window = dialog.getWindow();
+        WindowManager.LayoutParams params = window.getAttributes();
+        params.x = mRight - 40;//设置x坐标
+        params.y = mTop;//设置y坐标
+        params.width = 350;
+        params.height = WRAP_CONTENT;
+        window.setGravity(Gravity.LEFT | Gravity.TOP);
+        window.setAttributes(params);
+        dialog.getWindow().setContentView(v, params);
         return this;
     }
 

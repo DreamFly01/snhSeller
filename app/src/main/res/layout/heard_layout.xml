@@ -35,28 +35,28 @@
             android:textColor="@color/white"
             android:textSize="36pt" />
 
-        <FrameLayout
-
+        <RelativeLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:layout_marginRight="30pt"
             android:visibility="visible"
-
+            android:id="@+id/rl_menu"
             >
             <ImageView
                 android:id="@+id/heard_menu"
                 android:layout_width="42pt"
                 android:layout_height="40pt"
-                android:src="@drawable/store_share"
-                android:visibility="gone" />
+                android:visibility="visible"
+                />
             <TextView
+                android:layout_toRightOf="@+id/heard_menu"
                 android:id="@+id/heard_tv_menu"
                 android:layout_width="wrap_content"
                 android:layout_height="50pt"
                 android:textSize="30pt"
                 />
-        </FrameLayout>
+        </RelativeLayout>
     </RelativeLayout>
 
 </LinearLayout>

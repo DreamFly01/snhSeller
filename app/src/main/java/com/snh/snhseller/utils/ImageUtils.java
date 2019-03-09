@@ -75,6 +75,7 @@ public class ImageUtils {
      */
     public static void loadUrlCircleImage(Context context, String url, ImageView imageView) {
         RequestOptions options = new RequestOptions()
+                .diskCacheStrategy(DiskCacheStrategy.ALL)
                 .circleCrop()
                 .error(R.drawable.img_load_error)
                 .placeholder(R.drawable.img_load_error);

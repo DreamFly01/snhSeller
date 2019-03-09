@@ -40,7 +40,7 @@ public class MyWeekView extends WeekView {
         setLayerType(View.LAYER_TYPE_SOFTWARE, mSelectedPaint);
         //4.0以上硬件加速会导致无效
         mSelectedPaint.setMaskFilter(new BlurMaskFilter(30, BlurMaskFilter.Blur.SOLID));
-
+        mSelectedPaint.setColor(Color.RED);
         setLayerType(View.LAYER_TYPE_SOFTWARE, mSchemePaint);
         mSchemePaint.setMaskFilter(new BlurMaskFilter(30, BlurMaskFilter.Blur.SOLID));
 
@@ -53,10 +53,11 @@ public class MyWeekView extends WeekView {
 
         mDisablePaint.setColor(0xFF9f9f9f);
         mDisablePaint.setAntiAlias(true);
-        mDisablePaint.setStrokeWidth(dipToPx(context,2));
+        mDisablePaint.setStrokeWidth(0);
         mDisablePaint.setFakeBoldText(true);
+        mDisablePaint.setStrikeThruText(false);
+        mDisablePaint.clearShadowLayer();
 
-        mSchemePaint.setColor(Color.WHITE);
         mH = dipToPx(context, 18);
     }
 
@@ -65,6 +66,10 @@ public class MyWeekView extends WeekView {
         mRadius = Math.min(mItemWidth, mItemHeight) / 6 * 2;
         mRingRadius = Math.min(mItemWidth, mItemHeight) / 5 * 2;
         mSelectTextPaint.setTextSize(dipToPx(getContext(),17));
+
+        mSchemePaint.setColor(Color.WHITE);
+        mSchemeTextPaint.setColor(Color.WHITE);
+        mOtherMonthTextPaint.setColor(Color.WHITE);
     }
 
     /**
@@ -107,19 +112,21 @@ public class MyWeekView extends WeekView {
                     cx,
                     baselineY,
                     calendar.isCurrentDay() ? mCurDayTextPaint :
-                            calendar.isCurrentMonth() ? mSchemeTextPaint : mOtherMonthTextPaint);
+                            calendar.isCurrentMonth() ? mSelectTextPaint : mSelectTextPaint);
 
         } else {
             canvas.drawText(calendar.isCurrentDay() ? "今" : String.valueOf(calendar.getDay()),
                     cx,
                     baselineY,
                     calendar.isCurrentDay() ? mCurDayTextPaint :
-                            calendar.isCurrentMonth() ? mCurMonthTextPaint : mOtherMonthTextPaint);
+                            calendar.isCurrentMonth() ? mSelectTextPaint : mSelectTextPaint);
         }
 
         //日期是否可用？拦截
         if (onCalendarIntercept(calendar)) {
-            canvas.drawLine(x + mH, mH, x + mItemWidth - mH, mItemHeight - mH, mDisablePaint);
+//            canvas.drawLine(x + mH, mH, x + mItemWidth - mH, mItemHeight - mH, mOtherMonthTextPaint);
+//            canvas.drawText(String.valueOf(calendar.getDay()), cx,
+//                    baselineY,mDisablePaint);
         }
     }
 

@@ -165,6 +165,18 @@
         <activity android:name=".ui.salesmanManagement.home.declaration.DeclarationActivity"></activity>
         <activity android:name=".ui.salesmanManagement.home.declaration.DeclarationListActivity"></activity>
         <activity android:name=".ui.salesmanManagement.home.declaration.DeclarationDetailsActivity"></activity>
+        <activity android:name=".ui.home.supplier.MySupplierActivity"></activity>
+        <activity android:name=".ui.home.supplier.StoreActivity"></activity>
+        <activity android:name=".ui.home.supplier.ProductActivity"></activity>
+        <activity android:name=".ui.home.supplier.CommitOrderActivity"></activity>
+        <activity android:name=".ui.home.supplier.PayActivity"></activity>
+        <activity android:name=".ui.home.supplier.PayResultActivity"></activity>
+        <activity android:name=".ui.home.supplier.AllSupplierActiviy"></activity>
+        <activity android:name=".ui.order.OrderDetailsActivity"></activity>
+
+        <activity android:name=".wxapi.WXPayEntryActivity"
+            android:exported="true"
+            android:launchMode="singleTop"></activity>
     </application>
 
 

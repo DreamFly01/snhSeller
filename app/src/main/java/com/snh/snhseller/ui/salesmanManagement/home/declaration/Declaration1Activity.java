@@ -32,12 +32,14 @@ import com.jph.takephoto.permission.PermissionManager;
 import com.jph.takephoto.permission.TakePhotoInvocationHandler;
 import com.snh.snhseller.R;
 import com.snh.snhseller.bean.BaseResultBean;
+import com.snh.snhseller.bean.salebean.TypeBean;
 import com.snh.snhseller.requestApi.NetSubscriber;
 import com.snh.snhseller.requestApi.RequestClient;
 import com.snh.snhseller.ui.salesmanManagement.BaseActivity;
 import com.snh.snhseller.utils.DBManager;
 import com.snh.snhseller.utils.DialogUtils;
 import com.snh.snhseller.utils.ImageUtils;
+import com.snh.snhseller.utils.IsBang;
 import com.snh.snhseller.utils.StrUtils;
 import com.snh.snhseller.utils.TimeUtils;
 
@@ -122,6 +124,9 @@ public class Declaration1Activity extends BaseActivity implements TakePhoto.Take
 
     private Map<String, Object> dataMap = new TreeMap<>();
     private int ApplyType = 0;
+    int mYear;
+    int mMonth;
+    int mDay;
 
     @Override
     protected void initContentView(Bundle savedInstanceState) {
@@ -133,8 +138,10 @@ public class Declaration1Activity extends BaseActivity implements TakePhoto.Take
 
     @Override
     public void setUpViews() {
+        IsBang.setImmerHeard(this,rlHead,"");
         heardTitle.setText("费用申请");
         btnCommit.setText("提交");
+        getType();
     }
 
     @Override
@@ -311,71 +318,9 @@ public class Declaration1Activity extends BaseActivity implements TakePhoto.Take
         }, true);
     }
 
-    int mYear;
-    int mMonth;
-    int mDay;
 
-    private void showPickeView() {
-        if (type1 == 1) {
-            options1Items.add("差旅费");
-            options1Items.add("招待费");
-            options1Items.add("市场营销");
-            options1Items.add("其他");
-            OptionsPickerView pvOptions = new OptionsPickerBuilder(Declaration1Activity.this, new OnOptionsSelectListener() {
-                @Override
-                public void onOptionsSelect(int options1, int option2, int options3, View v) {
-                    //返回的分别是三个级别的选中位置
-                    String tx = options1Items.get(options1);
-                    tvType.setText(tx);
-                    switch (tx) {
-                        case "差旅费":
-                            ApplyType = 1;
-                            break;
-                        case "招待费":
-                            ApplyType = 2;
-                            break;
-                        case "市场营销":
-                            ApplyType = 3;
-                            break;
-                        case "其他":
-                            ApplyType = 4;
-                            break;
 
-                    }
-                }
-            }).setDecorView((ViewGroup) getWindow().getDecorView().findViewById(android.R.id.content)).build();
-            pvOptions.setPicker(options1Items);
-            pvOptions.show();
-        }
-        if (type1 == 2) {
-            long currenTime = System.currentTimeMillis();
-            Calendar c = Calendar.getInstance();//
-            c.setTimeInMillis(currenTime);
 
-            mYear = c.get(Calendar.YEAR); // 获取当前年份
-            mMonth = c.get(Calendar.MONTH);// 获取当前月份
-            mDay = c.get(Calendar.DAY_OF_MONTH);// 获取当日期
-            Calendar startDate = Calendar.getInstance();
-            //startDate.set(2013,1,1);
-            Calendar endDate = Calendar.getInstance();
-            //endDate.set(2020,1,1);
-
-            //正确设置方式 原因：注意事项有说明
-            startDate.set(2017, 0, 1);
-            endDate.set(mYear, mMonth, mDay);
-            TimePickerView pvTime = new TimePickerBuilder(Declaration1Activity.this, new OnTimeSelectListener() {
-                @Override
-                public void onTimeSelect(Date date, View v) {
-                    tvTime.setText(TimeUtils.getDataString(date));
-                }
-            })
-                    .setRangDate(startDate, endDate)
-                    .setDecorView((ViewGroup) getWindow().getDecorView().findViewById(android.R.id.content)).build();
-
-            pvTime.show();
-        }
-
-    }
 
     private boolean check() {
         if (StrUtils.isEmpty(etName.getText().toString().trim())) {
@@ -426,5 +371,68 @@ public class Declaration1Activity extends BaseActivity implements TakePhoto.Take
                     },false);
             }
         }));
+    }
+
+    List<TypeBean> typeBeans = new ArrayList<>();
+    private void getType(){
+        addSubscription(RequestClient.GetTypeList(this, new NetSubscriber<BaseResultBean<List<TypeBean>>>(this) {
+            @Override
+            public void onResultNext(BaseResultBean<List<TypeBean>> model) {
+                typeBeans = model.data;
+                for (TypeBean bean : typeBeans )
+                {
+                    options1Items.add(bean.Name);
+                }
+            }
+        }));
+    }
+    private void showPickeView() {
+        if (type1 == 1) {
+            OptionsPickerView pvOptions = new OptionsPickerBuilder(Declaration1Activity.this, new OnOptionsSelectListener() {
+                @Override
+                public void onOptionsSelect(int options1, int option2, int options3, View v) {
+                    //返回的分别是三个级别的选中位置
+                    String tx = options1Items.get(options1);
+                    tvType.setText(tx);
+                    for (TypeBean bean : typeBeans)
+                    {
+                        if(StrUtils.equals(bean.Name,tx)){
+                            ApplyType = bean.Id;
+                        }
+                    }
+                }
+            }).setDecorView((ViewGroup) getWindow().getDecorView().findViewById(android.R.id.content)).build();
+            pvOptions.setPicker(options1Items);
+            pvOptions.show();
+        }
+        if (type1 == 2) {
+            long currenTime = System.currentTimeMillis();
+            Calendar c = Calendar.getInstance();//
+            c.setTimeInMillis(currenTime);
+
+            mYear = c.get(Calendar.YEAR); // 获取当前年份
+            mMonth = c.get(Calendar.MONTH);// 获取当前月份
+            mDay = c.get(Calendar.DAY_OF_MONTH);// 获取当日期
+            Calendar startDate = Calendar.getInstance();
+            //startDate.set(2013,1,1);
+            Calendar endDate = Calendar.getInstance();
+            //endDate.set(2020,1,1);
+            Calendar currentDate = Calendar.getInstance();
+            currentDate.set(mYear,mMonth,mDay);
+            //正确设置方式 原因：注意事项有说明
+            startDate.set(mYear-1, 0, 1);
+            endDate.set(mYear+1, 11, 1);
+            TimePickerView pvTime = new TimePickerBuilder(Declaration1Activity.this, new OnTimeSelectListener() {
+                @Override
+                public void onTimeSelect(Date date, View v) {
+                    tvTime.setText(TimeUtils.getDataString(date));
+                }
+            })
+                    .setRangDate(startDate, endDate)
+                    .setDecorView((ViewGroup) getWindow().getDecorView().findViewById(android.R.id.content)).build();
+            pvTime.setDate(currentDate);
+            pvTime.show();
+        }
+
     }
 }

@@ -3,6 +3,7 @@ package com.snh.snhseller.wediget;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.os.Bundle;
+import android.view.View;
 
 import com.snh.snhseller.R;
 import com.wang.avi.AVLoadingIndicatorView;
@@ -40,12 +41,12 @@ public class LoadingDialog extends AlertDialog {
     @Override
     public void show() {
         super.show();
-        avi.show();
+        avi.setVisibility(View.VISIBLE);
     }
 
     @Override
     public void dismiss() {
         super.dismiss();
-        avi.hide();
+        avi.setVisibility(View.GONE);
     }
 }

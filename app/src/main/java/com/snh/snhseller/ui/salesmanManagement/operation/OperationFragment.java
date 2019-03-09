@@ -101,9 +101,10 @@ public class OperationFragment extends BaseFragment {
     @Override
     public void setUpViews(View view) {
         ImmersionBar.setTitleBar(getActivity(), rlHead);
-        IsBang.setImmerHeard(getContext(), rlHead);
+        IsBang.setImmerHeard(getContext(), rlHead,"");
         dialogUtils = new DialogUtils(getContext());
         heardTitle.setText("业务员管理");
+        heardBack.setVisibility(View.GONE);
         tvNick.setText(DBManager.getInstance(getContext()).getSaleInfo().NickName);
         tvPhone.setText(DBManager.getInstance(getContext()).getSaleInfo().PhoneNumber);
         ImageUtils.loadUrlCorners(getContext(), "http://cdn.duitang.com/uploads/item/201409/25/20140925003424_uzG3A.thumb.700_0.jpeg", ivLogo);
@@ -214,7 +215,7 @@ public class OperationFragment extends BaseFragment {
                         datas.addAll(model.data.MyCommTenantList);
                         adapter.loadMoreComplete();
                     } else {
-                        adapter.setEmptyView(R.layout.empty_layout,recyclerView);
+                        adapter.setEmptyView(R.layout.empty1_layout,recyclerView);
                         adapter.loadMoreEnd();
                     }
                     adapter.setNewData(datas);
@@ -231,15 +232,24 @@ public class OperationFragment extends BaseFragment {
     }
 
     private void initLocation() {
+
+        LocationClientOption option = new LocationClientOption();
+        option.setOpenGps(true);
+        option.setLocationMode(LocationClientOption.LocationMode.Hight_Accuracy);
+        option.setCoorType("bd09ll");
+        option.setIsNeedAddress(true);
         mLocationClient = new LocationClient(getContext().getApplicationContext());
+        mLocationClient.setLocOption(option);
+        mLocationClient.start();
+
         //声明LocationClient类
         mLocationClient.registerLocationListener(new BDAbstractLocationListener() {
             @Override
             public void onReceiveLocation(BDLocation bdLocation) {
                 if (null != bdLocation) {
                     float radius = bdLocation.getRadius();
-                    latitude = bdLocation.getLatitude();
-                    longitude = bdLocation.getLongitude();
+                   String latitude = bdLocation.getLatitude()+"";
+                   String longitude = bdLocation.getLongitude()+"";
                     SPUtils.getInstance(getContext()).saveData(Contans.LATITUDE, bdLocation.getLatitude() + "");
                     SPUtils.getInstance(getContext()).saveData(Contans.LONGITUDE, bdLocation.getLongitude() + "");
                     getNewData();
@@ -248,19 +258,8 @@ public class OperationFragment extends BaseFragment {
         });
         //注册监听函数
 
-        LocationClientOption option = new LocationClientOption();
-        option.setOpenGps(true);
-        option.setLocationMode(LocationClientOption.LocationMode.Hight_Accuracy);
-        option.setCoorType("bd09ll");
-        option.setIsNeedAddress(true);
-//可选，是否需要地址信息，默认为不需要，即参数为false
-//如果开发者需要获得当前点的地址信息，此处必须为true
 
-        mLocationClient.setLocOption(option);
-//mLocationClient为第二步初始化过的LocationClient对象
-//需将配置好的LocationClientOption对象，通过setLocOption方法传递给LocationClient对象使用
-//        cityPickerLocation = false;
-        mLocationClient.start();
+
     }
 
     private void checkPerm() {

@@ -49,11 +49,11 @@ public class MyMonthView extends MonthView {
         setLayerType(View.LAYER_TYPE_SOFTWARE, mRingPaint);
         mRingPaint.setMaskFilter(new BlurMaskFilter(30, BlurMaskFilter.Blur.SOLID));
 
-        mDisablePaint.setColor(0xFF9f9f9f);
-        mDisablePaint.setAntiAlias(true);
-        mDisablePaint.setStrokeWidth(dipToPx(context,2));
-        mDisablePaint.setFakeBoldText(true);
-
+//        mDisablePaint.setColor(0xFF9f9f9f);
+//        mDisablePaint.setColor(Color.TRANSPARENT);
+//        mDisablePaint.setAntiAlias(true);
+//        mDisablePaint.setStrokeWidth(dipToPx(context,2));
+//        mDisablePaint.setFakeBoldText(true);
         mH = dipToPx(context, 18);
 
     }
@@ -108,19 +108,19 @@ public class MyMonthView extends MonthView {
                     cx,
                     baselineY,
                     calendar.isCurrentDay() ? mCurDayTextPaint :
-                            calendar.isCurrentMonth() ? mSchemeTextPaint : mOtherMonthTextPaint);
+                            calendar.isCurrentMonth() ? mSelectTextPaint : mSelectTextPaint);
 
         } else {
             canvas.drawText(calendar.isCurrentDay() ? "今" : String.valueOf(calendar.getDay()),
                     cx,
                     baselineY,
                     calendar.isCurrentDay() ? mCurDayTextPaint :
-                            calendar.isCurrentMonth() ? mCurMonthTextPaint : mOtherMonthTextPaint);
+                            calendar.isCurrentMonth() ? mSelectTextPaint : mSelectTextPaint);
         }
 
         //日期是否可用？拦截
         if (onCalendarIntercept(calendar)) {
-            canvas.drawLine(x + mH, y + mH, x + mItemWidth - mH, y + mItemHeight - mH, mDisablePaint);
+//            canvas.drawLine(x + mH, y + mH, x + mItemWidth - mH, y + mItemHeight - mH, mDisablePaint);
         }
 
     }

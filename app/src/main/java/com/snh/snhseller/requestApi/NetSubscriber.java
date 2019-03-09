@@ -8,6 +8,7 @@ import com.snh.snhseller.bean.BaseResultBean;
 import com.snh.snhseller.utils.DialogUtils;
 import com.snh.snhseller.utils.StrUtils;
 import com.snh.snhseller.wediget.CustomProgress;
+import com.snh.snhseller.wediget.LoadingDialog;
 
 import rx.Subscriber;
 
@@ -25,6 +26,7 @@ public abstract class NetSubscriber <T> extends Subscriber<T> {
      * 菊花转,默认情况下是关闭状态
      */
     private CustomProgress mCustomProgress;
+    private LoadingDialog loadingDialog;
 
     /**
      * 是否显示菊花转
@@ -44,7 +46,9 @@ public abstract class NetSubscriber <T> extends Subscriber<T> {
     public void onStart() {
         super.onStart();
         if (context != null && mIsShowLoading) {
-            mCustomProgress = CustomProgress.show((Activity) context, null);
+//            mCustomProgress = CustomProgress.show((Activity) context, null);
+            loadingDialog = LoadingDialog.getInstance(context);
+            loadingDialog.show();
         }
     }
 
@@ -81,6 +85,7 @@ public abstract class NetSubscriber <T> extends Subscriber<T> {
         dialogUtils = new DialogUtils(context, (Activity) context);
         if (StrUtils.isEmpty(erro.msg)) {
             erro.msg = "连接服务器失败";
+            dismissLoadingView();
         }
 //        Log.d(HttpLogger.LOGKYE, "erro: " + erro.msg);
         dialogUtils.simpleDialog(erro.msg, new DialogUtils.ConfirmClickLisener() {
@@ -94,8 +99,11 @@ public abstract class NetSubscriber <T> extends Subscriber<T> {
     }
 
     public void dismissLoadingView() {
-        if (mIsShowLoading && null != mCustomProgress) {
-            mCustomProgress.dismiss();
+//        if (mIsShowLoading && null != mCustomProgress) {
+//            mCustomProgress.dismiss();
+//        }
+        if(mIsShowLoading && null !=loadingDialog){
+            loadingDialog.dismiss();
         }
     }
 

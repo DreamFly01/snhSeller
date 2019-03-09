@@ -12,6 +12,7 @@ public class BaseResultBean<T> {
     public String msg;
     public T data;
     public String filepath;
+    public String orderNo;
     public BaseResultBean() {
     }
 

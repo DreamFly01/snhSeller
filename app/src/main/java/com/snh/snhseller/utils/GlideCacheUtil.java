@@ -1,6 +1,7 @@
 package com.snh.snhseller.utils;
 
 import android.content.Context;
+import android.os.Environment;
 import android.os.Looper;
 import android.text.TextUtils;
 
@@ -78,8 +79,9 @@ public class GlideCacheUtil {
      * @return CacheSize
      */
     public String getCacheSize(Context context) {
+        appRootPath = context.getCacheDir().getPath();
         try {
-            return getFormatSize(getFolderSize(new File(context.getCacheDir() + "/"+InternalCacheDiskCacheFactory.DEFAULT_DISK_CACHE_DIR)));
+            return getFormatSize(getFolderSize(new File(context.getCacheDir() + "/"+getStorageDirectory()+"/GlideDisk")));
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -175,4 +177,12 @@ public class GlideCacheUtil {
         return result4.setScale(2, BigDecimal.ROUND_HALF_UP).toPlainString() + "TB";
     }
 
+    //外部路径
+    private String sdRootPath = Environment.getExternalStorageDirectory().getPath();
+    private String appRootPath = null;
+
+    private String getStorageDirectory(){
+        return Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED) ?
+                sdRootPath : appRootPath;
+    }
 }

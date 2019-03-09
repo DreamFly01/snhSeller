@@ -16,12 +16,14 @@
         android:gravity="center"
         android:paddingTop="30pt">
         <ImageView
+            android:scaleType="fitXY"
             android:id="@+id/iv_logo"
             android:layout_width="80pt"
             android:layout_height="80pt"
             android:layout_marginLeft="30pt"
             />
         <TextView
+            android:id="@+id/tv_name1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:paddingLeft="20pt"
@@ -32,17 +34,22 @@
             android:textColor="@color/txt_dark"
             />
         <TextView
+            android:layout_marginLeft="10pt"
             android:id="@+id/tv_state"
-            android:layout_weight="1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:paddingLeft="20pt"
             android:paddingTop="10pt"
             android:paddingBottom="10pt"
+            android:paddingRight="20pt"
             android:text="我的费用"
             android:textSize="@dimen/txtSize_24"
             android:textColor="@color/txt_dark"
             />
+        <TextView
+            android:layout_weight="1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
     </LinearLayout>
     <LinearLayout
         android:layout_width="match_parent"
@@ -195,7 +202,8 @@
             android:text="备         注"
             android:textSize="@dimen/txtSize_30"
             />
-        <TextView
+        <EditText
+            android:background="@null"
             android:id="@+id/tv_desc"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -224,6 +232,7 @@
             android:textSize="@dimen/txtSize_30"
             />
         <ImageView
+            android:scaleType="fitXY"
             android:id="@+id/iv_01"
             android:layout_marginTop="20pt"
             android:layout_width="80pt"
@@ -231,6 +240,7 @@
             android:layout_marginLeft="10pt"
             />
         <ImageView
+            android:scaleType="fitXY"
             android:id="@+id/iv_02"
             android:layout_marginTop="20pt"
             android:layout_width="80pt"
@@ -238,6 +248,7 @@
             android:layout_marginLeft="10pt"
             />
         <ImageView
+            android:scaleType="fitXY"
             android:id="@+id/iv_03"
             android:layout_marginTop="20pt"
             android:layout_width="80pt"
@@ -267,6 +278,7 @@
         android:layout_marginLeft="40pt"
         />
         <ImageView
+            android:scaleType="fitXY"
             android:id="@+id/iv_logo1"
             android:layout_marginLeft="20pt"
             android:layout_width="60pt"
@@ -283,12 +295,45 @@
             />
     </LinearLayout>
     <LinearLayout
-        android:id="@+id/ll_menu"
+        android:visibility="gone"
+        android:id="@+id/ll_edit"
+        android:padding="10pt"
+        android:layout_marginTop="20pt"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
         android:background="@color/white"
+        android:gravity="center">
+        <LinearLayout
+            android:gravity="center"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+        <ImageView
+            android:layout_width="40pt"
+            android:layout_height="40pt"
+            android:background="@drawable/edit_bg"/>
+        <TextView
+            android:layout_marginLeft="20pt"
+            android:layout_weight="1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/txtSize_30"
+            android:text="添加备注"
+            android:textColor="@color/txt_dark"
+            />
+        </LinearLayout>
+
+    </LinearLayout>
+    <LinearLayout
+        android:id="@+id/ll_menu"
+        android:background="@color/color_app_bg"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="horizontal">
         <LinearLayout
+            android:background="@color/white"
             android:id="@+id/ll_01"
             android:gravity="center"
             android:layout_gravity="bottom"
@@ -299,16 +344,24 @@
             android:padding="20pt"
             >
             <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+                android:layout_width="40pt"
+                android:layout_height="40pt"
+                android:background="@drawable/press_bg"/>
             <TextView
+                android:layout_marginLeft="20pt"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="@color/txt_dark"
                 android:text="催办"
                 android:textSize="@dimen/txtSize_36"/>
         </LinearLayout>
+        <ImageView
+            android:layout_gravity="bottom"
+            android:layout_width="2pt"
+            android:layout_height="80pt"
+            android:background="@color/color_app_bg"/>
         <LinearLayout
+            android:background="@color/white"
             android:id="@+id/ll_02"
             android:layout_gravity="bottom"
             android:layout_weight="1"
@@ -319,16 +372,24 @@
             android:padding="20pt"
             >
             <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+                android:layout_width="40pt"
+                android:layout_height="40pt"
+                android:background="@drawable/revoke_bg"/>
             <TextView
+                android:layout_marginLeft="20pt"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="@color/txt_dark"
                 android:text="撤销"
                 android:textSize="@dimen/txtSize_36"/>
         </LinearLayout>
+        <ImageView
+            android:layout_gravity="bottom"
+            android:layout_width="2pt"
+            android:layout_height="80pt"
+            android:background="@color/color_app_bg"/>
         <LinearLayout
+            android:background="@color/white"
             android:padding="20pt"
             android:id="@+id/ll_03"
             android:layout_gravity="bottom"
@@ -339,13 +400,15 @@
             android:gravity="center"
             >
             <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+                android:layout_width="40pt"
+                android:layout_height="40pt"
+                android:background="@drawable/again_bg"/>
             <TextView
+                android:layout_marginLeft="20pt"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="@color/txt_dark"
-                android:text="催办"
+                android:text="重新提交"
                 android:textSize="@dimen/txtSize_36"/>
         </LinearLayout>
     </LinearLayout>

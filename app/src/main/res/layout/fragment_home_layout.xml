@@ -84,9 +84,10 @@
             android:background="@drawable/img_aray_right"/>
     </LinearLayout>
     <LinearLayout
+
         android:id="@+id/ll_02"
         android:gravity="center"
-        android:layout_marginTop="4pt"
+        android:layout_marginTop="20pt"
         android:background="@color/white"
         android:padding="30pt"
         android:layout_width="match_parent"
@@ -112,6 +113,32 @@
     <LinearLayout
         android:id="@+id/ll_03"
         android:gravity="center"
+        android:layout_marginTop="4pt"
+        android:background="@color/white"
+        android:padding="30pt"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <ImageView
+            android:layout_width="30pt"
+            android:layout_height="30pt"
+            android:background="@drawable/set_two_2_bg"/>
+        <TextView
+            android:layout_marginLeft="20pt"
+            android:layout_weight="1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="店铺二维码"
+            android:textSize="30pt"
+            android:textColor="@color/txt_dark"
+            />
+        <ImageView
+            android:layout_width="15pt"
+            android:layout_height="25pt"
+            android:background="@drawable/img_aray_right"/>
+    </LinearLayout>
+    <LinearLayout
+        android:id="@+id/ll_04"
+        android:gravity="center"
         android:layout_marginTop="20pt"
         android:background="@color/white"
         android:padding="30pt"
@@ -136,9 +163,61 @@
             android:background="@drawable/img_aray_right"/>
     </LinearLayout>
     <LinearLayout
-        android:id="@+id/ll_04"
+        android:id="@+id/ll_05"
         android:gravity="center"
         android:layout_marginTop="4pt"
+        android:background="@color/white"
+        android:padding="30pt"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <ImageView
+            android:layout_width="30pt"
+            android:layout_height="30pt"
+            android:background="@drawable/gys_bg"/>
+        <TextView
+            android:layout_marginLeft="20pt"
+            android:layout_weight="1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="我的供应商"
+            android:textSize="30pt"
+            android:textColor="@color/txt_dark"
+            />
+        <ImageView
+            android:layout_width="15pt"
+            android:layout_height="25pt"
+            android:background="@drawable/img_aray_right"/>
+    </LinearLayout>
+    <LinearLayout
+        android:id="@+id/ll_06"
+        android:gravity="center"
+        android:layout_marginTop="4pt"
+        android:background="@color/white"
+        android:padding="30pt"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <ImageView
+            android:layout_width="30pt"
+            android:layout_height="30pt"
+            android:background="@drawable/sh_bg"/>
+        <TextView
+            android:layout_marginLeft="20pt"
+            android:layout_weight="1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="我的商户"
+            android:textSize="30pt"
+            android:textColor="@color/txt_dark"
+            />
+        <ImageView
+            android:layout_width="15pt"
+            android:layout_height="25pt"
+            android:background="@drawable/img_aray_right"/>
+    </LinearLayout>
+    <LinearLayout
+        android:id="@+id/ll_07"
+        android:gravity="center"
+        android:layout_marginTop="20pt"
         android:background="@color/white"
         android:padding="30pt"
         android:layout_width="match_parent"

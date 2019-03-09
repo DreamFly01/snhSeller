@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:background="@color/white"
+    android:padding="30pt"
+    android:gravity="center"
+    >
+<ImageView
+    android:id="@+id/iv_logo"
+    android:layout_width="120pt"
+    android:layout_height="120pt" />
+    <LinearLayout
+        android:paddingLeft="20pt"
+        android:layout_weight="1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+        <TextView
+            android:id="@+id/tv_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/txtSize_30"
+            android:textColor="@color/txt_dark"
+            />
+        <TextView
+            android:id="@+id/tv_phone"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/txtSize_30"
+            android:textColor="@color/txt_dark"
+            />
+        <TextView
+            android:id="@+id/tv_introduce"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/txtSize_30"
+            android:textColor="@color/txt_dark"
+            />
+    </LinearLayout>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="＞"
+        android:textSize="@dimen/txtSize_30"
+        android:textColor="@color/txt_dark"/>
+</LinearLayout>

@@ -13,6 +13,7 @@ import com.snh.snhseller.ui.salesmanManagement.BaseActivity;
 import com.snh.snhseller.utils.DBManager;
 import com.snh.snhseller.utils.DialogUtils;
 import com.snh.snhseller.utils.GlideCacheUtil;
+import com.snh.snhseller.utils.IsBang;
 import com.snh.snhseller.utils.JumpUtils;
 
 import butterknife.BindView;
@@ -55,6 +56,7 @@ public class SetActivity extends BaseActivity {
 
     @Override
     public void setUpViews() {
+        IsBang.setImmerHeard(this,rlHead,"");
         heardTitle.setText("设置");
         btnCommit.setText("退出登录");
         tvCahe.setText("(" + GlideCacheUtil.getInstance().getCacheSize(this) + ")");

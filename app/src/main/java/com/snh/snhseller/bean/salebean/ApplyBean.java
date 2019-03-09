@@ -14,4 +14,5 @@ public class ApplyBean {
     public String CostName;
     public double Budget;
     public String CreateTime;
+    public String SalesmanName;
 }

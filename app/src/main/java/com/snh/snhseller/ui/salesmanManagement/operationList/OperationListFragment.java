@@ -17,6 +17,7 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.baidu.location.BDAbstractLocationListener;
 import com.baidu.location.BDLocation;
@@ -97,7 +98,7 @@ public class OperationListFragment extends BaseFragment {
     public void setUpViews(View view) {
         dialogUtils = new DialogUtils(getContext());
         ImmersionBar.setTitleBar(getActivity(),rlHead);
-        IsBang.setImmerHeard(getContext(),rlHead);
+        IsBang.setImmerHeard(getContext(),rlHead,"");
         setRecyclerView();
     }
 
@@ -196,7 +197,7 @@ public class OperationListFragment extends BaseFragment {
                         datas.addAll(model.data.CommTenantList);
                         adapter.loadMoreComplete();
                     } else {
-                        adapter.setEmptyView(R.layout.empty_layout,recyclerView);
+                        adapter.setEmptyView(R.layout.empty1_layout,recyclerView);
                         adapter.loadMoreEnd();
                     }
                     adapter.setNewData(datas);
@@ -245,7 +246,8 @@ public class OperationListFragment extends BaseFragment {
         addSubscription(RequestClient.RecordClockIn(id, content, 1, getContext(), new NetSubscriber<BaseResultBean>(getContext(), true) {
             @Override
             public void onResultNext(BaseResultBean model) {
-                dialogUtils.noBtnDialog("打卡成功");
+                dialogUtils.dismissDialog();
+                Toast.makeText(getContext(), "打卡成功", Toast.LENGTH_SHORT).show();
             }
         }));
     }

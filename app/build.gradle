@@ -124,4 +124,11 @@ dependencies {
     implementation 'com.haibin:calendarview:3.5.4'
     implementation 'com.github.todou:calendarpager:1.0.0'
     implementation files('libs/commons-lang3-3.8.1.jar')
+    //悬浮按钮
+    implementation 'com.github.clans:fab:1.6.4'
+
+    //banner
+    implementation 'com.youth.banner:banner:1.4.10'
+
+    compile (name: 'alipaySdk-15.6.0-20190226104053', ext: 'aar')
 }

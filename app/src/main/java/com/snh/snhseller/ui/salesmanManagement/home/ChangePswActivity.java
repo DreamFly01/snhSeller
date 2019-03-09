@@ -60,6 +60,7 @@ public class ChangePswActivity extends BaseActivity {
 
     @Override
     public void setUpViews() {
+        IsBang.setImmerHeard(this,rlHead,"");
         btnCommit.setText("提交");
         heardTitle.setText("修改密码");
     }

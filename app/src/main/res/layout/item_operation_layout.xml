@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@color/white"
@@ -32,7 +33,7 @@
             android:id="@+id/tv_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="溶解超市"
+            android:text=""
             android:textSize="@dimen/txtSize_30"
             android:textColor="@color/txt_dark"
             />
@@ -41,7 +42,7 @@
                 android:id="@+id/tv_distance"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="溶解超市"
+                android:text=""
                 android:textSize="@dimen/txtSize_30"
                 android:textColor="@color/txt_dark"
                 />
@@ -52,7 +53,7 @@
             android:id="@+id/tv_phone"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="溶解超市"
+            android:text=""
             android:textSize="@dimen/txtSize_30"
             android:textColor="@color/txt_dark"
             />
@@ -61,7 +62,7 @@
             android:id="@+id/tv_address"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="溶解超市"
+            android:text=""
             android:textSize="@dimen/txtSize_30"
             android:textColor="@color/txt_dark"
             />
@@ -94,7 +95,7 @@
             android:paddingLeft="30pt"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="打卡"
+            android:text="拜访"
             android:textSize="30pt"
             android:textColor="@color/white"
             android:background="@drawable/commit_blue_dk"

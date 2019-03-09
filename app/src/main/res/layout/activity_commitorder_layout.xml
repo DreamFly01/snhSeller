@@ -1,0 +1,190 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/color_app_bg"
+    android:orientation="vertical">
+
+    <include layout="@layout/heard_layout"></include>
+            <LinearLayout
+                android:id="@+id/ll_address"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20pt"
+                android:background="@color/color_app_bg"
+                android:orientation="vertical"
+                android:paddingBottom="20pt">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="@color/white"
+                    android:gravity="center"
+                    android:orientation="horizontal"
+                    android:padding="30pt">
+
+                    <LinearLayout
+                        android:id="@+id/ll_change_address"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/tv_name_phone"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textSize="@dimen/txtSize_30" />
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="30pt"
+                            android:gravity="center"
+                            android:orientation="horizontal">
+
+                            <ImageView
+                                android:layout_width="20pt"
+                                android:layout_height="20pt"
+                                android:layout_gravity="center"
+                                android:background="@drawable/address_logo" />
+
+                            <TextView
+                                android:id="@+id/tv_address"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginLeft="10pt"
+                                android:ellipsize="end"
+                                android:lines="1"
+                                android:textSize="@dimen/txtSize_30" />
+                        </LinearLayout>
+                    </LinearLayout>
+                </LinearLayout>
+
+                <ImageView
+
+                    android:layout_width="match_parent"
+                    android:layout_height="4pt"
+                    android:background="@drawable/address_line" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20pt"
+                    android:background="@color/white"
+                    android:orientation="horizontal"
+                    android:paddingLeft="30pt"
+                    android:paddingTop="10pt"
+                    android:paddingBottom="10pt">
+
+                    <ImageView
+                        android:id="@+id/iv_shop_logo"
+                        android:layout_width="50pt"
+                        android:layout_height="50pt"
+                        android:scaleType="fitXY" />
+
+                    <TextView
+                        android:id="@+id/tv_shopName"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginLeft="20pt"
+                        android:textSize="@dimen/txtSize_26" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20pt"
+                    android:background="@color/color_app_bg"
+                    android:orientation="horizontal"
+                    android:padding="30pt">
+
+                    <ImageView
+                        android:id="@+id/iv_product_logo"
+                        android:layout_width="100pt"
+                        android:layout_height="100pt" />
+
+                    <TextView
+                        android:id="@+id/tv_product_Name"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginLeft="20pt"
+                        android:textSize="@dimen/txtSize_26" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/recyclerView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"></android.support.v7.widget.RecyclerView>
+                <LinearLayout
+                    android:padding="30pt"
+                    android:layout_marginTop="20pt"
+                    android:layout_below="@+id/recyclerView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/white">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/txt_dark"
+                        android:textSize="@dimen/txtSize_30"
+                        android:text="留言"/>
+                    <EditText
+                        android:id="@+id/et_msg"
+                        android:background="@null"
+                        android:layout_marginLeft="20pt"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textSize="@dimen/txtSize_30"
+                        android:textColor="@color/txt_dark"
+                        android:hint="请输入留言"/>
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentBottom="true"
+                    android:background="@color/white"
+                    android:gravity="bottom"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="right"
+                        android:paddingLeft="40pt"
+                        android:paddingTop="40pt"
+                        android:paddingBottom="40pt"
+                        android:text="总合计：￥"
+                        android:textSize="30pt" />
+
+                    <TextView
+                        android:id="@+id/tv_TotalMoney"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="48"
+                        android:textColor="@color/app_red"
+                        android:textSize="30pt" />
+
+                    <TextView
+                        android:id="@+id/tv_commit"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="20pt"
+                        android:background="@color/app_red"
+                        android:padding="40pt"
+                        android:text="提交订单"
+                        android:textColor="@color/white"
+                        android:textSize="30pt" />
+                </LinearLayout>
+            </RelativeLayout>
+
+</LinearLayout>

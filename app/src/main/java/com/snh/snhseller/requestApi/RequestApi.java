@@ -4,12 +4,19 @@ import com.snh.snhseller.bean.AgreementBean;
 import com.snh.snhseller.bean.BaseResultBean;
 import com.snh.snhseller.bean.DataBean;
 import com.snh.snhseller.bean.OrderBean;
+import com.snh.snhseller.bean.OrderDetailBean;
+import com.snh.snhseller.bean.PayWxBean;
 import com.snh.snhseller.bean.ProductBean;
 import com.snh.snhseller.bean.UserBean;
 import com.snh.snhseller.bean.salebean.ApplyBean;
+import com.snh.snhseller.bean.salebean.CostDetialsBean;
 import com.snh.snhseller.bean.salebean.OperationBean;
 import com.snh.snhseller.bean.salebean.RecordBean;
 import com.snh.snhseller.bean.salebean.SaleUserBean;
+import com.snh.snhseller.bean.salebean.TypeBean;
+import com.snh.snhseller.bean.supplierbean.AllSupplierBean;
+import com.snh.snhseller.bean.supplierbean.GoodsBean;
+import com.snh.snhseller.bean.supplierbean.SupplierBean;
 
 import java.util.List;
 import java.util.Map;
@@ -118,7 +125,7 @@ public interface RequestApi {
     Observable<BaseResultBean<List<AgreementBean>>> GetAgreementList();
 
     /**
-     * 获取订单列表
+     * 获取我的订单列表
      * @param params
      * @return
      */
@@ -126,6 +133,21 @@ public interface RequestApi {
     Observable<BaseResultBean<List<OrderBean>>> getOrderList(@QueryMap Map<String,Object> params);
 
 
+    /**
+     * 获取出库订单列表
+     * @param params
+     * @return
+     */
+    @GET("Distribution/MyShipmentOrderList")
+    Observable<BaseResultBean<List<OrderBean>>> MyShipmentOrderList(@QueryMap Map<String,Object> params);
+
+    /**
+     * 获取进货订单
+     * @param params
+     * @return
+     */
+    @GET("Distribution/MyStockOrderList")
+    Observable<BaseResultBean<List<OrderBean>>> MyStockOrderList(@QueryMap Map<String,Object> params);
     /**
      * 修改订单商品价格
      * @param params
@@ -346,6 +368,13 @@ public interface RequestApi {
     Observable<BaseResultBean> PostApply(@Body Map<String,Object> params);
 
     /**
+     * 获取类型列表
+     * @return
+     */
+    @GET("SalesmanCost/GetApplyTypeList")
+    Observable<BaseResultBean<List<TypeBean>>> GetTypeList();
+
+    /**
      * 获取费用列表
      * @param params
      * @return
@@ -354,4 +383,142 @@ public interface RequestApi {
     Observable<BaseResultBean<List<ApplyBean>>> GetApplyList(@QueryMap Map<String,Object> params);
 
 
+    /**
+     * 获取费用详情
+     * @param params
+     * @return
+     */
+    @GET("SalesmanCost/CostDetail")
+    Observable<BaseResultBean<CostDetialsBean>> GetCostDetail(@QueryMap Map<String,Object> params);
+
+    /**
+     * 重新提交申请
+     * @param params
+     * @return
+     */
+    @POST("SalesmanCost/AnewCommit")
+    Observable<BaseResultBean> AgainCommit(@Body Map<String,Object> params);
+
+    /**
+     * 撤销申请
+     * @param params
+     * @return
+     */
+    @POST("SalesmanCost/RevocationApply")
+    Observable<BaseResultBean> RevocationApply(@Body Map<String,Object> params);
+
+    /**---------------------------------------分销系统-------------------------------------**/
+
+    /**
+     * 获取我的供销商/商户
+     * @param params
+     * @return
+     */
+    @GET("webapi/Distribution/MySupplier")
+    Observable<BaseResultBean<List<SupplierBean>>> MySupplier(@QueryMap Map<String,Object> params);
+
+    /**
+     * 获取商店商品列表
+     * @param params
+     * @return
+     */
+    @GET("webapi/Distribution/CommTenantDetail")
+    Observable<BaseResultBean<List<GoodsBean>>> CommTenantDetail(@QueryMap Map<String,Object> params);
+
+    /**
+     * 获取商品详情
+     * @param params
+     * @return
+     */
+    @GET("webapi/Distribution/ShopGoodsDetail")
+    Observable<BaseResultBean<com.snh.snhseller.bean.supplierbean.ProductBean>> ShopGoodsDetail(@QueryMap Map<String,Object> params);
+
+
+    /**
+     * 提交订单
+     * @param params
+     * @return
+     */
+    @POST("webapi/Distribution/PlaceOrder")
+    Observable<BaseResultBean> PostOrder(@Body Map<String,Object> params);
+
+    /**
+     * 获取账户余额
+     * @param params
+     * @return
+     */
+    @GET("webapi/Distribution/GetSupplierBalance")
+    Observable<BaseResultBean<String>> GetSupplierBalance(@QueryMap Map<String,Object> params);
+
+    /**
+     * 订单支付
+     * @param params
+     * @return
+     */
+    @POST("webapi/Distribution/OnlinePay")
+    Observable<BaseResultBean<PayWxBean>> OnlinePay(@Body Map<String,Object> params);
+
+    /**
+     * 在线支付
+     * @param params
+     * @return
+     */
+    @POST("webapi/Distribution/OnlinePay")
+    Observable<BaseResultBean> OnlinePay1(@Body Map<String,Object> params);
+    @POST("webapi/Distribution/OnlinePay")
+    Observable<BaseResultBean<String>> OnlinePay2(@Body Map<String,Object> params);
+
+    /**
+     * 获取所有商户列表
+     * @param params
+     * @return
+     */
+    @GET("webapi/Distribution/SeekCommTenant")
+    Observable<BaseResultBean<List<AllSupplierBean>>> SeekCommTenant(@QueryMap Map<String,Object> params);
+
+    /**
+     * 申请成为我的供应商/商户
+     * @param params
+     * @return
+     */
+    @POST("webapi/Distribution/ApplyFor")
+    Observable<BaseResultBean> ApplyFor(@QueryMap Map<String,Object> params);
+
+    /**
+     * 删除我的供应商/商户
+     * @param params
+     * @return
+     */
+    @POST("webapi/Distribution/DelMySupplier")
+    Observable<BaseResultBean> DelMySupplier(@Body Map<String,Object> params);
+
+    /**
+     * 取消订单
+     * @param params
+     * @return
+     */
+    @POST("webapi/Distribution/CancelOrder")
+    Observable<BaseResultBean> CancelOrder(@Body Map<String,Object> params);
+
+    /**
+     * 确认收/发货
+     * @param params
+     * @return
+     */
+    @POST("webapi/Distribution/AffirmSSStates")
+    Observable<BaseResultBean> AffirmSSStates(@Body Map<String,Object> params);
+
+    /**
+     * 提醒发货
+     */
+    @POST("webapi/Distribution/Remind")
+    Observable<BaseResultBean> Remind(@Body Map<String,Object> params);
+
+    /**
+     * 订单详情
+     * @param params
+     * @return
+     */
+    @GET("webapi/Distribution/OrderDetail")
+    Observable<BaseResultBean<OrderDetailBean>> GetOrderDetail(@QueryMap Map<String,Object> params);
 }

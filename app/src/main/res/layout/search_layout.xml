@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:background="@color/gray7"
+    android:paddingLeft="30pt"
+    android:paddingRight="30pt"
+    android:paddingTop="10pt"
+    android:paddingBottom="10pt"
+    >
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="10pt"
+        android:background="@drawable/shape_search_bg"
+        android:orientation="horizontal">
+        <ImageView
+            android:layout_width="30pt"
+            android:layout_height="30pt"
+            android:background="@drawable/home_search_icon"/>
+        <EditText
+            android:id="@+id/et_search"
+            android:background="@null"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:hint="输入商户名称搜索"
+            android:textSize="@dimen/txtSize_24"
+            android:textColor="@color/txt_dark"
+            android:lines="1"
+            android:singleLine="true"
+            android:imeOptions="actionSearch"
+            />
+    </LinearLayout>
+</LinearLayout>

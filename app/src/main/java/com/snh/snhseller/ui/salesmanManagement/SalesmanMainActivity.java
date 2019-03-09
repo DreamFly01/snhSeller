@@ -14,12 +14,7 @@ import android.widget.Toast;
 
 import com.gyf.barlibrary.ImmersionBar;
 import com.netease.nim.uikit.common.activity.UI;
-import com.snh.snhseller.BaseActivity;
 import com.snh.snhseller.R;
-import com.snh.snhseller.ui.msg.MsgFragment;
-import com.snh.snhseller.ui.order.OrderFragment;
-import com.snh.snhseller.ui.product.ProductFragment;
-import com.snh.snhseller.ui.salesmanManagement.cardRecord.CardRecordFragment;
 import com.snh.snhseller.ui.salesmanManagement.cardRecord.RecordFragment;
 import com.snh.snhseller.ui.salesmanManagement.home.HomeFragment;
 import com.snh.snhseller.ui.salesmanManagement.operation.OperationFragment;
@@ -61,7 +56,6 @@ public class SalesmanMainActivity extends UI {
     public static final int EXIT_TIME = 2000;
 
     private OperationFragment operationFragment;
-    private CardRecordFragment cardRecordFragment;
     private HomeFragment homeFragment;
     private OperationListFragment operationListFragment;
     private RecordFragment recordFragment;

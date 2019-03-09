@@ -99,8 +99,6 @@ public class DataStatisticsActivity extends BaseActivity {
                 this.finish();
                 break;
             case R.id.tv_num1:
-                tvNum.setVisibility(View.GONE);
-                tvNum1.setTextColor(Color.WHITE);
                 tvNum1.setBackgroundResource(R.drawable.shape_soild_blue_left_bg);
                 tvPrice.setTextColor(Color.parseColor("#34a9f9"));
                 tvPrice.setBackgroundResource(R.drawable.shape_rangle_blue_right_bg);
