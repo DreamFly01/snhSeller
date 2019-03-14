@@ -9,6 +9,7 @@ import android.support.annotation.NonNull;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.jph.takephoto.app.TakePhoto;
@@ -24,15 +25,16 @@ import com.snh.snhseller.BaseActivity;
 import com.snh.snhseller.R;
 import com.snh.snhseller.bean.BaseResultBean;
 import com.snh.snhseller.bean.beanDao.UserEntity;
-import com.snh.snhseller.greendao.DaoSession;
 import com.snh.snhseller.greendao.UserEntityDao;
 import com.snh.snhseller.requestApi.NetSubscriber;
 import com.snh.snhseller.requestApi.RequestClient;
+import com.snh.snhseller.utils.Contans;
 import com.snh.snhseller.utils.DBManager;
 import com.snh.snhseller.utils.DialogUtils;
 import com.snh.snhseller.utils.ImageUtils;
 import com.snh.snhseller.utils.IsBang;
 import com.snh.snhseller.utils.JumpUtils;
+import com.snh.snhseller.utils.SPUtils;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -88,6 +90,14 @@ public class ShopInfoActivity extends BaseActivity implements TakePhoto.TakeResu
     TextView tv07;
     @BindView(R.id.ll_05)
     LinearLayout ll05;
+    @BindView(R.id.rl_menu)
+    RelativeLayout rlMenu;
+    @BindView(R.id.tv_08)
+    TextView tv08;
+    @BindView(R.id.btn_select)
+    ImageView btnSelect;
+    @BindView(R.id.ll_06)
+    LinearLayout ll06;
     private UserEntity useInfo;
 
     private Bundle bundle;
@@ -96,6 +106,7 @@ public class ShopInfoActivity extends BaseActivity implements TakePhoto.TakeResu
     private CompressConfig compressConfig;
     private DialogUtils dialogUtils;
     private String path = "";
+
     @Override
     protected void initContentView(Bundle savedInstanceState) {
         setContentView(R.layout.activity_shopinfo_layout);
@@ -107,9 +118,9 @@ public class ShopInfoActivity extends BaseActivity implements TakePhoto.TakeResu
     @Override
     public void setUpViews() {
         heardTitle.setText("店铺信息");
-        IsBang.setImmerHeard(this,rlHead);
+        IsBang.setImmerHeard(this, rlHead);
         useInfo = DBManager.getInstance(this).getUserInfo();
-        ImageUtils.loadUrlImage(this,useInfo.Logo,ivLogo);
+        ImageUtils.loadUrlImage(this, useInfo.Logo, ivLogo);
         tvShopName.setText(useInfo.ShopName);
         tvLeimu.setText(useInfo.BusinessActivities);
         tvAddress.setText(useInfo.Address);
@@ -117,6 +128,11 @@ public class ShopInfoActivity extends BaseActivity implements TakePhoto.TakeResu
         tvPhone.setText(useInfo.ContactsTel);
         tvEmail.setText(useInfo.ContactsQQ);
         tv07.setText(useInfo.Introduction);
+        if (SPUtils.getInstance(this).getBoolean(Contans.IS_HDFK)) {
+            btnSelect.setBackgroundResource(R.drawable.btn_select__bg);
+        } else {
+            btnSelect.setBackgroundResource(R.drawable.btn_no_select_bg);
+        }
     }
 
     @Override
@@ -131,7 +147,7 @@ public class ShopInfoActivity extends BaseActivity implements TakePhoto.TakeResu
         ButterKnife.bind(this);
     }
 
-    @OnClick({R.id.heard_back, R.id.ll_01, R.id.ll_02, R.id.ll_03, R.id.ll_04, R.id.ll_05})
+    @OnClick({R.id.heard_back, R.id.ll_01, R.id.ll_02, R.id.ll_03, R.id.ll_04, R.id.ll_05, R.id.btn_select})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.heard_back:
@@ -168,27 +184,35 @@ public class ShopInfoActivity extends BaseActivity implements TakePhoto.TakeResu
                 break;
             case R.id.ll_02:
                 bundle = new Bundle();
-                bundle.putInt("type",1);
-                bundle.putString("name",tvUserName.getText().toString().trim());
-                JumpUtils.dataJump(this,ModifInfoActivity.class,bundle,false);
+                bundle.putInt("type", 1);
+                bundle.putString("name", tvUserName.getText().toString().trim());
+                JumpUtils.dataJump(this, ModifInfoActivity.class, bundle, false);
                 break;
             case R.id.ll_03:
                 bundle = new Bundle();
-                bundle.putInt("type",2);
-                bundle.putString("phone",tvPhone.getText().toString().trim());
-                JumpUtils.dataJump(this,ModifInfoActivity.class,bundle,false);
+                bundle.putInt("type", 2);
+                bundle.putString("phone", tvPhone.getText().toString().trim());
+                JumpUtils.dataJump(this, ModifInfoActivity.class, bundle, false);
                 break;
             case R.id.ll_04:
                 bundle = new Bundle();
-                bundle.putInt("type",3);
-                bundle.putString("email",useInfo.ContactsQQ);
-                JumpUtils.dataJump(this,ModifInfoActivity.class,bundle,false);
+                bundle.putInt("type", 3);
+                bundle.putString("email", useInfo.ContactsQQ);
+                JumpUtils.dataJump(this, ModifInfoActivity.class, bundle, false);
                 break;
             case R.id.ll_05:
                 bundle = new Bundle();
-                bundle.putInt("type",4);
-                bundle.putString("desc",tv07.getText().toString().trim());
-                JumpUtils.dataJump(this,ModifInfoActivity.class,bundle,false);
+                bundle.putInt("type", 4);
+                bundle.putString("desc", tv07.getText().toString().trim());
+                JumpUtils.dataJump(this, ModifInfoActivity.class, bundle, false);
+                break;
+            case R.id.btn_select:
+                if (SPUtils.getInstance(this).getBoolean(Contans.IS_HDFK)) {
+                    setPayMethod(2);
+                } else {
+                    setPayMethod(1);
+                }
+
                 break;
         }
     }
@@ -197,6 +221,7 @@ public class ShopInfoActivity extends BaseActivity implements TakePhoto.TakeResu
 
     @Override
     public void takeSuccess(TResult result) {
+        pathList.clear();
         ImageUtils.loadUrlImage(this, result.getImage().getOriginalPath(), ivLogo);
         dialogUtils.dismissDialog();
         File file = new File(result.getImage().getOriginalPath());
@@ -204,7 +229,7 @@ public class ShopInfoActivity extends BaseActivity implements TakePhoto.TakeResu
 //            File file1 = new File(result.getImage().getCompressPath());
 //            pathList.add(result.getImage().getCompressPath());
 //        } else {
-            pathList.add(result.getImage().getOriginalPath());
+        pathList.add(result.getImage().getOriginalPath());
 //        }
         upLoadImg(pathList);
     }
@@ -238,7 +263,13 @@ public class ShopInfoActivity extends BaseActivity implements TakePhoto.TakeResu
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+
+        try {
+
         getTakePhoto().onActivityResult(requestCode, resultCode, data);
+        }catch (Exception e){
+            showLongToast("请选择照片");
+        }
 
     }
 
@@ -260,8 +291,8 @@ public class ShopInfoActivity extends BaseActivity implements TakePhoto.TakeResu
             @Override
             public void onResultNext(BaseResultBean model) {
                 StringBuffer sb = new StringBuffer(model.filepath);
-                path = sb.replace(0,1,"h").toString();
-                RequestClient.ModifShopLogo(path, ShopInfoActivity.this, new NetSubscriber<BaseResultBean>(ShopInfoActivity.this,true) {
+                path = sb.replace(0, 1, "h").toString();
+                RequestClient.ModifShopLogo(path, ShopInfoActivity.this, new NetSubscriber<BaseResultBean>(ShopInfoActivity.this, true) {
                     @Override
                     public void onResultNext(BaseResultBean model) {
                         UserEntityDao userEntityDao = DBManager.getInstance(ShopInfoActivity.this).getDaoSession().getUserEntityDao();
@@ -280,7 +311,7 @@ public class ShopInfoActivity extends BaseActivity implements TakePhoto.TakeResu
     protected void onRestart() {
         super.onRestart();
         useInfo = DBManager.getInstance(this).getUserInfo();
-        ImageUtils.loadUrlImage(this,useInfo.Logo,ivLogo);
+        ImageUtils.loadUrlImage(this, useInfo.Logo, ivLogo);
         tvShopName.setText(useInfo.ShopName);
         tvLeimu.setText(useInfo.BusinessActivities);
         tvAddress.setText(useInfo.Address);
@@ -288,5 +319,21 @@ public class ShopInfoActivity extends BaseActivity implements TakePhoto.TakeResu
         tvPhone.setText(useInfo.ContactsTel);
         tvEmail.setText(useInfo.ContactsQQ);
         tv07.setText(useInfo.Introduction);
+    }
+
+    private void setPayMethod(int type) {
+        addSubscription(RequestClient.SetPayMethod(type, this, new NetSubscriber<BaseResultBean>(this, true) {
+            @Override
+            public void onResultNext(BaseResultBean model) {
+                if (SPUtils.getInstance(ShopInfoActivity.this).getBoolean(Contans.IS_HDFK)) {
+                    SPUtils.getInstance(ShopInfoActivity.this).savaBoolean(Contans.IS_HDFK, false).commit();
+                    btnSelect.setBackgroundResource(R.drawable.btn_no_select_bg);
+                } else {
+                    SPUtils.getInstance(ShopInfoActivity.this).savaBoolean(Contans.IS_HDFK, true).commit();
+                    btnSelect.setBackgroundResource(R.drawable.btn_select__bg);
+
+                }
+            }
+        }));
     }
 }

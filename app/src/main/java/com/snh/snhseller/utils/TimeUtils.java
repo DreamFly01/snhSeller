@@ -28,8 +28,8 @@ public class TimeUtils {
 
     public static String getDataString(Date data){
         SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd");
-        java.util.Date date=new java.util.Date();
-        String str=sdf.format(date);
+//        java.util.Date date=new java.util.Date();
+        String str=sdf.format(data);
         return str;
     }
     public static String stringToTime(String dateTime){
@@ -69,5 +69,20 @@ public class TimeUtils {
 
 
         return "";
+    }
+
+    public static String secToString(int sec){
+        String content = "";
+        if(sec/60<1){
+            content =  "00小时01分后关闭";
+        }
+        if(sec/60>1&&sec/60<60){
+            String str = sec/60<10?"0"+sec/60:sec/60+"分后关闭";
+            content =  "00小时"+str;
+        }
+        if(sec/3600>=1){
+            content =  "01小时00分后关闭";
+        }
+        return content;
     }
 }

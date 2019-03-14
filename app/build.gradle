@@ -9,7 +9,7 @@ android {
         minSdkVersion 19
         targetSdkVersion 27
         versionCode 1
-        versionName "1.0"
+        versionName "1.0.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         multiDexEnabled true
     }
@@ -86,7 +86,7 @@ dependencies {
     //时间地区选择器
     implementation 'com.contrarywind:Android-PickerView:4.1.6'
     //baseAdapter
-    implementation 'com.github.CymChad:BaseRecyclerViewAdapterHelper:2.9.30'
+    implementation 'com.github.CymChad:BaseRecyclerViewAdapterHelper:2.9.46'
     //数据库的操作
     implementation 'org.greenrobot:greendao:3.2.2'
     //分包
@@ -131,4 +131,13 @@ dependencies {
     implementation 'com.youth.banner:banner:1.4.10'
 
     compile (name: 'alipaySdk-15.6.0-20190226104053', ext: 'aar')
+
+    //动态更改baseUrl
+    implementation 'me.jessyan:retrofit-url-manager:1.4.0'
+
+    //侧滑菜单
+    implementation 'com.github.mcxtzhang:SwipeDelMenuLayout:V1.3.0'
+    //版本更新
+    implementation 'com.qianwen:update-app:3.5.2'
+    implementation 'com.lzy.net:okgo:3.0.4'
 }

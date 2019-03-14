@@ -28,9 +28,9 @@ public class RecordAdapter extends BaseQuickAdapter<RecordBean,BaseViewHolder> {
         helper.setText(R.id.tv_01, item.RouteTime.substring(11, 16));
         helper.setText(R.id.tv_02, item.CommtenantName);
         if (item.RouteStates == 1) {
-            helper.setText(R.id.tv_03, "已打卡");
+            helper.setText(R.id.tv_03, "已拜访");
         }else {
-            helper.setText(R.id.tv_03,"未打卡");
+            helper.setText(R.id.tv_03,"未拜访");
         }
     }
 }

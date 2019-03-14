@@ -107,6 +107,7 @@ public class DBManager {
         userEntity.Address = userBean.supp.Address;
         userEntity.ContactsQQ = userBean.supp.ContactsQQ;
         userEntityDao.insert(userEntity);
+        SPUtils.getInstance(activity).savaBoolean(Contans.IS_HDFK,userBean.IsHdfk).commit();
         JumpUtils.simpJump(activity,MainActivity.class,true);
     }
 

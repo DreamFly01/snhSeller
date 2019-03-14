@@ -19,8 +19,10 @@ import com.snh.snhseller.bean.supplierbean.SkuBean;
 import com.snh.snhseller.requestApi.NetSubscriber;
 import com.snh.snhseller.requestApi.RequestClient;
 import com.snh.snhseller.utils.DBManager;
+import com.snh.snhseller.utils.DialogUtils;
 import com.snh.snhseller.utils.ImageUtils;
 import com.snh.snhseller.utils.JumpUtils;
+import com.snh.snhseller.utils.StrUtils;
 import com.snh.snhseller.wediget.RecycleViewDivider;
 
 import java.util.ArrayList;
@@ -84,6 +86,9 @@ public class CommitOrderActivity extends BaseActivity {
     private List<SkuBean> skudatas = new ArrayList<>();
     private String levelWord = "";
     private double totalMoney = 0;
+    private String payMethod;
+    private DialogUtils dialogUtils;
+
     @Override
     protected void initContentView(Bundle savedInstanceState) {
         setContentView(R.layout.activity_commitorder_layout);
@@ -94,7 +99,9 @@ public class CommitOrderActivity extends BaseActivity {
             url = bundle.getString("url");
             productName = bundle.getString("name");
             skudatas = bundle.getParcelableArrayList("data");
+            payMethod = bundle.getString("payMethod");
         }
+        dialogUtils = new DialogUtils(this);
     }
 
     @Override
@@ -107,11 +114,10 @@ public class CommitOrderActivity extends BaseActivity {
         tvProductName.setText(productName);
         tvShopName.setText(DBManager.getInstance(this).getUserInfo().ShopName);
         setRecyclerView();
-        for (SkuBean bean:skudatas)
-        {
-            totalMoney += bean.total*bean.Price;
+        for (SkuBean bean : skudatas) {
+            totalMoney += bean.total * bean.Price;
         }
-        tvTotalMoney.setText(totalMoney+"");
+        tvTotalMoney.setText(totalMoney + "");
     }
 
     @Override
@@ -144,30 +150,42 @@ public class CommitOrderActivity extends BaseActivity {
                 break;
         }
     }
+
     private List<NormsBean> data = new ArrayList<>();
-    private NormsBean normsBean ;
-    private void setData(){
-        for (SkuBean bean :skudatas)
-        {
+    private NormsBean normsBean;
+
+    private void setData() {
+        for (SkuBean bean : skudatas) {
             normsBean = new NormsBean();
             normsBean.NormId = bean.NormId;
             normsBean.NumberUnits = bean.total;
-            normsBean.SumPrice = bean.Price*bean.total;
+            normsBean.SumPrice = bean.Price * bean.total;
             data.add(normsBean);
 
         }
     }
+
     private void postOrder() {
         setData();
         levelWord = etMsg.getText().toString().trim();
 
-        addSubscription(RequestClient.PostOrder(shopId, goodsId, totalMoney,levelWord, data, this, new NetSubscriber<BaseResultBean>(this,true) {
+        addSubscription(RequestClient.PostOrder(shopId, goodsId, totalMoney, levelWord, payMethod, data, this, new NetSubscriber<BaseResultBean<String>>(this, true) {
             @Override
-            public void onResultNext(BaseResultBean model) {
-                bundle = new Bundle();
-                bundle.putString("orderNo",model.orderNo);
-                bundle.putDouble("totalMoney",totalMoney);
-                JumpUtils.dataJump(CommitOrderActivity.this,PayActivity.class,bundle,true);
+            public void onResultNext(BaseResultBean<String> model) {
+                if (StrUtils.isEmpty(payMethod)) {
+
+                    bundle = new Bundle();
+                    bundle.putString("orderNo", model.data);
+                    bundle.putDouble("totalMoney", totalMoney);
+                    JumpUtils.dataJump(CommitOrderActivity.this, PayActivity.class, bundle, true);
+                } else {
+                    dialogUtils.simpleDialog("下单成功", new DialogUtils.ConfirmClickLisener() {
+                        @Override
+                        public void onConfirmClick(View v) {
+                            CommitOrderActivity.this.finish();
+                        }
+                    },false);
+                }
             }
         }));
     }

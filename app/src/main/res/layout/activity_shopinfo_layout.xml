@@ -269,4 +269,39 @@
             android:background="@drawable/nim_arrow_right"/>
 
     </LinearLayout>
+    <LinearLayout
+        android:id="@+id/ll_06"
+        android:background="@color/white"
+        android:layout_marginTop="2pt"
+        android:gravity="center"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        <TextView
+            android:padding="30pt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/txt_dark"
+            android:textSize="@dimen/txtSize_30"
+            android:text="货到付款"/>
+        <TextView
+            android:ellipsize="end"
+            android:id="@+id/tv_08"
+            android:gravity="center_vertical|right"
+            android:maxLines="1"
+            android:paddingRight="30pt"
+            android:background="@null"
+            android:layout_weight="1"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:textSize="@dimen/txtSize_30"
+            />
+        <ImageView
+            android:id="@+id/btn_select"
+            android:layout_marginRight="30pt"
+            android:layout_width="103pt"
+            android:layout_height="64pt"
+            android:background="@drawable/btn_no_select_bg"/>
+
+    </LinearLayout>
 </LinearLayout>

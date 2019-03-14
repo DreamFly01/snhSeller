@@ -2,6 +2,7 @@ package com.snh.snhseller.ui.merchantEntry;
 
 import android.os.Bundle;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -171,7 +172,7 @@ public class PerfectPersonTwoActivity extends BaseActivity {
                 String tx = options1Items.get(options1);
                 tvType.setText(tx);
             }
-        }).build();
+        }).setDecorView((ViewGroup) getWindow().getDecorView().findViewById(android.R.id.content)).build();
         pvOptions.setPicker(options1Items);
         pvOptions.show();
     }

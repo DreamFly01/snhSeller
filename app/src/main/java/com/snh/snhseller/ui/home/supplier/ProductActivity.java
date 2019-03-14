@@ -8,10 +8,14 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.bigkoo.pickerview.builder.OptionsPickerBuilder;
+import com.bigkoo.pickerview.listener.OnOptionsSelectListener;
+import com.bigkoo.pickerview.view.OptionsPickerView;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.snh.snhseller.BaseActivity;
 import com.snh.snhseller.R;
@@ -21,8 +25,12 @@ import com.snh.snhseller.bean.supplierbean.ProductBean;
 import com.snh.snhseller.bean.supplierbean.SkuBean;
 import com.snh.snhseller.requestApi.NetSubscriber;
 import com.snh.snhseller.requestApi.RequestClient;
+import com.snh.snhseller.ui.home.salesManagement.EditSalesActivity;
+import com.snh.snhseller.utils.Contans;
 import com.snh.snhseller.utils.GlideImageLoader;
 import com.snh.snhseller.utils.JumpUtils;
+import com.snh.snhseller.utils.SPUtils;
+import com.snh.snhseller.utils.StrUtils;
 import com.snh.snhseller.wediget.RecycleViewDivider;
 import com.youth.banner.Banner;
 
@@ -32,6 +40,7 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import retrofit2.http.QueryMap;
 
 /**
  * <p>desc：商品详情<p>
@@ -72,6 +81,7 @@ public class ProductActivity extends BaseActivity {
     private Bundle bundle;
     private List<String> bannerUrls = new ArrayList<>();
     private int shopId;
+
     @Override
     protected void initContentView(Bundle savedInstanceState) {
         setContentView(R.layout.activity_product_layout);
@@ -86,6 +96,9 @@ public class ProductActivity extends BaseActivity {
 
     @Override
     public void setUpViews() {
+        options1Items.clear();
+        options1Items.add("货到付款");
+        options1Items.add("在线支付");
         heard = (LinearLayout) inflater.inflate(R.layout.heard_banner_layout, null);
         banner = (Banner) heard.findViewById(R.id.banner);
         tvPrice = (TextView) heard.findViewById(R.id.tv_price);
@@ -135,7 +148,8 @@ public class ProductActivity extends BaseActivity {
 
     private List<SkuBean> skuBeans = new ArrayList<>();
     private List<SkuBean> skudatas = new ArrayList<>();
-    private ProductBean bean ;
+    private ProductBean bean;
+
     private void getData() {
         addSubscription(RequestClient.GetGoodsDetail(id, this, new NetSubscriber<BaseResultBean<ProductBean>>(this, isShow) {
             @Override
@@ -157,29 +171,60 @@ public class ProductActivity extends BaseActivity {
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.ll_back:
-
+                this.finish();
                 break;
             case R.id.btn_commit:
                 skudatas.clear();
-                for (SkuBean bean : skuBeans)
-                {
-                    if(bean.total>0){
-                        skudatas.add(bean);
-                    }
+                if (SPUtils.getInstance(this).getBoolean(Contans.IS_HDFK)) {
+                    showPickView();
+                } else {
+                    next("");
                 }
-                if (skudatas.size()>0) {
-                bundle = new Bundle();
-                bundle.putParcelableArrayList("data", (ArrayList<? extends Parcelable>) skudatas);
-                bundle.putString("url",bean.ShopIconUrl);
-                bundle.putString("name",bean.ShopGoodsName);
-                bundle.putInt("shopId",shopId);
-                bundle.putInt("goodsId",bean.ShopGoodsId);
-                bundle.putInt("shopId",shopId);
-                JumpUtils.dataJump(this,CommitOrderActivity.class,bundle,false);
-                }else {
-                    showShortToast("请选择商品规格！");
-                }
+
                 break;
         }
     }
+
+    private List<String> options1Items = new ArrayList<>();
+
+    private void next(String payMethod){
+        for (SkuBean bean : skuBeans) {
+            if (bean.total > 0) {
+                skudatas.add(bean);
+            }
+        }
+        if (skudatas.size() > 0) {
+            bundle = new Bundle();
+            bundle.putParcelableArrayList("data", (ArrayList<? extends Parcelable>) skudatas);
+            bundle.putString("url", bean.ShopIconUrl);
+            bundle.putString("name", bean.ShopGoodsName);
+            bundle.putInt("shopId", shopId);
+            bundle.putInt("goodsId", bean.ShopGoodsId);
+            bundle.putInt("shopId", shopId);
+            bundle.putString("payMethod",payMethod);
+            JumpUtils.dataJump(this, CommitOrderActivity.class, bundle, false);
+        } else {
+            showShortToast("请选择商品规格！");
+        }
+    }
+    private void showPickView() {
+
+        OptionsPickerView pvOptions = new OptionsPickerBuilder(ProductActivity.this, new OnOptionsSelectListener() {
+            @Override
+            public void onOptionsSelect(int options1, int option2, int options3, View v) {
+                //返回的分别是三个级别的选中位置
+                String tx = options1Items.get(options1);
+//                tvSex.setText(tx);
+                if("货到付款".equals(tx)){
+                    next(6+"");
+                }else {
+                    next("");
+                }
+            }
+        }).setDecorView((ViewGroup) getWindow().getDecorView().findViewById(android.R.id.content)).build();
+        pvOptions.setPicker(options1Items);
+        pvOptions.show();
+    }
+
+
 }

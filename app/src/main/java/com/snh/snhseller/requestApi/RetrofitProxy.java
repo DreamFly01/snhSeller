@@ -7,6 +7,7 @@ import com.google.gson.GsonBuilder;
 import com.ihsanbal.logging.Level;
 import com.ihsanbal.logging.LoggingInterceptor;
 import com.snh.snhseller.BuildConfig;
+import com.snh.snhseller.utils.Contans;
 import com.snh.snhseller.utils.StrUtils;
 
 import java.util.Collections;
@@ -51,7 +52,6 @@ public class RetrofitProxy {
                 .build();
 
 
-
         mOkHttpClient = new OkHttpClient().newBuilder()
                 .readTimeout(1, TimeUnit.MINUTES)
                 .writeTimeout(1, TimeUnit.MINUTES)
@@ -65,15 +65,15 @@ public class RetrofitProxy {
                 .build();
 
 
-        if(StrUtils.isEmpty(url)){
+        if (StrUtils.isEmpty(url)) {
             retrofit = new Retrofit.Builder()
                     .addConverterFactory(GsonConverterFactory.create())//使用String作为数据转换器
-                    .baseUrl("http://shop.snihen.com/api/")
+                    .baseUrl(Contans.HOST)
                     .callbackExecutor(executor)
                     .client(mOkHttpClient)
                     .addCallAdapterFactory(RxJavaCallAdapterFactory.create())// 使用RxJava作为回调适配器
                     .build();
-        }else {
+        } else {
             retrofit = new Retrofit.Builder()
                     .addConverterFactory(GsonConverterFactory.create())//使用String作为数据转换器
                     .baseUrl(url)
@@ -82,7 +82,6 @@ public class RetrofitProxy {
                     .addCallAdapterFactory(RxJavaCallAdapterFactory.create())// 使用RxJava作为回调适配器
                     .build();
         }
-
 
 
         apiService = retrofit.create(RequestApi.class);

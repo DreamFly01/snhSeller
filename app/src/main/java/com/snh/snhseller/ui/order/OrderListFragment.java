@@ -111,6 +111,7 @@ public class OrderListFragment extends BaseFragment {
                 if (orderType != 0) {
                     Bundle bundle = new Bundle();
                     bundle.putInt("orderId", datas.get(position).OrderId);
+                    bundle.putInt("type",datas.get(position).OrderStates);
                     bundle.putInt("orderType", orderType);
                     JumpUtils.dataJump(getActivity(), OrderDetailsActivity.class, bundle, false);
                 }
@@ -145,6 +146,7 @@ public class OrderListFragment extends BaseFragment {
         unbinder.unbind();
     }
 
+    private List<OrderBean> datas1= new ArrayList<>();
     private void getData() {
 //        isFrist = false;
         switch (orderType) {
@@ -156,13 +158,15 @@ public class OrderListFragment extends BaseFragment {
 
                             if (index == 1) {
                                 if (model.data.size() > 0) {
+                                    datas1 = model.data;
                                     adapter.setNewData(model.data);
                                 } else {
                                     adapter.setEmptyView(R.layout.empty_layout, recyclerView);
                                 }
                             } else {
                                 if (model.data.size() > 0) {
-                                    adapter.addData(model.data);
+                                    datas1.addAll(model.data);
+                                    adapter.setNewData(datas1);
                                     adapter.loadMoreComplete();
                                 } else {
                                     adapter.loadMoreEnd();
@@ -178,14 +182,16 @@ public class OrderListFragment extends BaseFragment {
                         public void onResultNext(BaseResultBean<List<OrderBean>> model) {
                             if (index == 1) {
                                 if (model.data.size() > 0) {
+                                    datas1 = model.data;
                                     adapter.setNewData(model.data);
                                 } else {
                                     adapter.setNewData(null);
-                                    adapter.setEmptyView(R.layout.empty_layout);
+                                    adapter.setEmptyView(R.layout.empty_layout,recyclerView);
                                 }
                             } else {
                                 if (model.data.size() > 0) {
-                                    adapter.addData(model.data);
+                                    datas1.addAll(model.data);
+                                    adapter.setNewData(datas1);
                                     adapter.loadMoreComplete();
                                 } else {
                                     adapter.loadMoreEnd();
@@ -206,12 +212,12 @@ public class OrderListFragment extends BaseFragment {
                             if (model.data.size() > 0) {
                                 adapter.setNewData(model.data);
                             } else {
-                                adapter.setEmptyView(R.layout.empty_layout);
+                                adapter.setEmptyView(R.layout.empty_layout,recyclerView);
                             }
                         } else {
                             datas.addAll(model.data);
                             if (model.data.size() > 0) {
-                                adapter.addData(model.data);
+                                adapter.setNewData(datas);
                                 adapter.loadMoreComplete();
                             } else {
                                 adapter.loadMoreEnd();
@@ -232,12 +238,12 @@ public class OrderListFragment extends BaseFragment {
                             if (model.data.size() > 0) {
                                 adapter.setNewData(model.data);
                             } else {
-                                adapter.setEmptyView(R.layout.empty_layout);
+                                adapter.setEmptyView(R.layout.empty_layout,recyclerView);
                             }
                         } else {
                             datas.addAll(model.data);
                             if (model.data.size() > 0) {
-                                adapter.addData(model.data);
+                                adapter.setNewData(datas);
                                 adapter.loadMoreComplete();
                             } else {
                                 adapter.loadMoreEnd();
@@ -262,6 +268,14 @@ public class OrderListFragment extends BaseFragment {
             setView();
             getData();
             mIsDataInited = true;
+        }
+    }
+
+    @Override
+    public void onHiddenChanged(boolean hidden) {
+        super.onHiddenChanged(hidden);
+        if(!hidden){
+            getData();
         }
     }
 

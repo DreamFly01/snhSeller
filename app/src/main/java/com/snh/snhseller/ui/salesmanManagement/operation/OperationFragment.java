@@ -17,6 +17,8 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.alibaba.fastjson.JSONException;
+import com.alibaba.fastjson.JSONObject;
 import com.baidu.location.BDAbstractLocationListener;
 import com.baidu.location.BDLocation;
 import com.baidu.location.LocationClient;
@@ -42,8 +44,14 @@ import com.snh.snhseller.utils.IsBang;
 import com.snh.snhseller.utils.JumpUtils;
 import com.snh.snhseller.utils.SPUtils;
 import com.snh.snhseller.utils.StrUtils;
+import com.snh.snhseller.utils.UpdateAppHttpUtil;
 import com.snh.snhseller.wediget.RecycleViewDivider;
 import com.snh.snhseller.wediget.SlideRecyclerView;
+import com.vector.update_app.UpdateAppBean;
+import com.vector.update_app.UpdateAppManager;
+import com.vector.update_app.UpdateCallback;
+import com.vector.update_app.listener.ExceptionHandler;
+import com.vector.update_app.utils.AppUpdateUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -102,6 +110,7 @@ public class OperationFragment extends BaseFragment {
     public void setUpViews(View view) {
         ImmersionBar.setTitleBar(getActivity(), rlHead);
         IsBang.setImmerHeard(getContext(), rlHead,"");
+        updataVersion();
         dialogUtils = new DialogUtils(getContext());
         heardTitle.setText("业务员管理");
         heardBack.setVisibility(View.GONE);
@@ -307,4 +316,92 @@ public class OperationFragment extends BaseFragment {
         adapter.disableLoadMoreIfNotFullPage();
         getData();
     }
+    private void updataVersion() {
+        new UpdateAppManager.Builder()
+                .setActivity(getActivity())
+                .setHttpManager(new UpdateAppHttpUtil())
+                .setUpdateUrl("http://shop.hnyunshang.com/api/webapi/Version/GetVersion?Channel=1&SourceSystem=2")
+                .handleException(new ExceptionHandler() {
+                    @Override
+                    public void onException(Exception e) {
+                        e.printStackTrace();
+                    }
+                })
+                .hideDialogOnDownloading()
+//                .setParams(params)设置自定义参数
+//                .setTopPic(R.drawable.top_3)
+//                .setThemeColor(R.color.app_red)
+                .build()
+                .checkNewApp(new UpdateCallback(){
+                    /**
+                     * 解析json,自定义协议
+                     *
+                     * @param json 服务器返回的json
+                     * @return UpdateAppBean
+                     */
+                    @Override
+                    protected UpdateAppBean parseJson(String json) {
+                        UpdateAppBean updateAppBean = new UpdateAppBean();
+                        String isUpdata="No";
+                        try {
+                            JSONObject jsonObject = JSONObject.parseObject(json);
+                            JSONObject data = jsonObject.getJSONObject("data");
+
+                            if(AppUpdateUtils.getVersionCode(getContext())<Integer.parseInt(data.getString("VersionCode"))){
+                                isUpdata = "Yes";
+                            }
+                            updateAppBean
+                                    //是否更新Yes,No
+                                    .setUpdate(isUpdata)
+                                    //新版本号
+                                    .setNewVersion(data.getString("VersionName"))
+                                    //下载地址
+                                    .setApkFileUrl(data.getString("DownloadPath"))
+                                    //大小
+//                                    .setTargetSize(data.getString("target_size"))
+                                    //更新内容
+                                    .setUpdateLog(jsonObject.getString("Describe"))
+                                    //是否强制更新
+                                    .setConstraint(data.getBoolean("IsCompel"));
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                        return updateAppBean;
+                    }
+
+                    /**
+                     * 有新版本
+                     *
+                     * @param updateApp        新版本信息
+                     * @param updateAppManager app更新管理器
+                     */
+                    @Override
+                    public void hasNewApp(UpdateAppBean updateApp, UpdateAppManager updateAppManager) {
+//                        updateAppManager.showDialog();
+                        updateAppManager.showDialogFragment();
+                    }
+
+                    /**
+                     * 网络请求之前
+                     */
+                    @Override
+                    public void onBefore() {
+//                        CProgressDialogUtils.showProgressDialog(MainActivity.this);
+                    }
+
+                    /**
+                     * 网路请求之后
+                     */
+                    @Override
+                    public void onAfter() {
+//                        CProgressDialogUtils.cancelProgressDialog(MainActivity.this);
+                    }
+
+                    @Override
+                    protected void noNewApp(String error) {
+                        super.noNewApp(error);
+                    }
+                });
+    }
+
 }

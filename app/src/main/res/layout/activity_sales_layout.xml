@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/color_app_bg"
+    android:orientation="vertical"
+    android:focusable="true"
+    android:focusableInTouchMode="true"
+    >
+
+    <include layout="@layout/heard_layout"></include>
+
+    <include layout="@layout/search_layout"></include>
+    <com.scwang.smartrefresh.layout.SmartRefreshLayout
+        android:layout_weight="1"
+        android:id="@+id/refreshLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20pt"
+        >
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/recyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"></android.support.v7.widget.RecyclerView>
+    </com.scwang.smartrefresh.layout.SmartRefreshLayout>
+    <Button
+        android:layout_marginBottom="10pt"
+        android:id="@+id/btn_commit"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:layout_width="690pt"
+        android:layout_height="80pt"
+        android:text="新增业务员"
+        android:textColor="@color/txt_white"
+        android:textSize="30pt"
+        android:background="@drawable/commit_color_selector"/>
+</LinearLayout>

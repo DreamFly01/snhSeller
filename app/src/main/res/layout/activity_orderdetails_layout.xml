@@ -268,6 +268,7 @@
                 android:paddingTop="20pt"
                 android:paddingRight="30pt"
                 android:paddingLeft="30pt"
+                android:paddingBottom="30pt"
                 >
                 <TextView
                     android:layout_weight="1"
@@ -330,6 +331,8 @@
         </LinearLayout>
     </android.support.v4.widget.NestedScrollView>
     <LinearLayout
+        android:background="@color/white"
+        android:paddingTop="10pt"
         android:visibility="gone"
         android:id="@+id/ll_btn"
         android:layout_width="match_parent"

@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.mcxtzhang.swipemenulib.SwipeMenuLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/white">
+    <LinearLayout
+        android:id="@+id/ll_item"
+        android:paddingTop="20pt"
+        android:paddingBottom="20pt"
+        android:paddingLeft="30pt"
+        android:paddingRight="30pt"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center"
+        >
+        <ImageView
+            android:id="@+id/iv_logo"
+            android:layout_width="100pt"
+            android:layout_height="100pt" />
+        <LinearLayout
+            android:layout_marginLeft="20pt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            >
+            <TextView
+                android:id="@+id/tv_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/txtSize_30"
+                android:text="我"
+                />
+            <TextView
+                android:id="@+id/tv_age"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/txtSize_30"
+                android:text="我"
+                />
+            <TextView
+                android:id="@+id/tv_phone"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/txtSize_30"
+                android:text="我"
+                />
+        </LinearLayout>
+        <TextView
+            android:id="@+id/tv_state"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/txtSize_30"
+            android:text="已冻结"
+            />
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/btnFreeze"
+        android:layout_width="60dp"
+        android:layout_height="match_parent"
+        android:background="@color/gray7"
+        android:text="冻结"
+        android:textColor="@android:color/white"/>
+
+    <Button
+        android:id="@+id/btnDelete"
+        android:layout_width="60dp"
+        android:background="@color/app_red"
+        android:layout_height="match_parent"
+        android:text="删除"
+        android:textColor="@android:color/white"/>
+
+</com.mcxtzhang.swipemenulib.SwipeMenuLayout>

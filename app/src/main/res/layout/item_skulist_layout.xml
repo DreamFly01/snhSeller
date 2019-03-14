@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/shape_white_20"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:id="@+id/ll_delete"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingLeft="10pt"
+        android:paddingTop="20pt"
+        android:paddingRight="30pt"
+        android:paddingBottom="20pt">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="规格"
+            android:textSize="@dimen/txtSize_30" />
+
+        <ImageView
+            android:layout_width="25pt"
+            android:layout_height="30pt"
+            android:layout_gravity="center"
+            android:layout_marginRight="10pt"
+            android:background="@drawable/delete_bg" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="删除"
+            android:textSize="@dimen/txtSize_30" />
+    </LinearLayout>
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="2pt"
+        android:background="@color/color_app_bg"/>
+
+    <TextView
+        android:layout_marginTop="20pt"
+        android:id="@+id/tv_sku_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="20pt"
+        android:textSize="@dimen/txtSize_30" />
+
+    <TextView
+        android:layout_marginTop="5pt"
+        android:id="@+id/tv_sku_value"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="20pt"
+        android:textSize="@dimen/txtSize_30" />
+
+    <LinearLayout
+        android:layout_marginTop="5pt"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_weight="1"
+            android:id="@+id/tv_sku_sprice"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20pt"
+            android:textSize="@dimen/txtSize_30" />
+
+        <TextView
+            android:layout_marginRight="30pt"
+            android:gravity="right"
+            android:layout_weight="1"
+            android:id="@+id/tv_sku_mprice"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20pt"
+            android:textSize="@dimen/txtSize_30" />
+
+    </LinearLayout>
+
+    <TextView
+        android:layout_marginBottom="40pt"
+        android:layout_marginTop="5pt"
+        android:id="@+id/tv_sku_inventory"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="20pt"
+        android:textSize="@dimen/txtSize_30" />
+</LinearLayout>

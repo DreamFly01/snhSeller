@@ -12,6 +12,7 @@ public class UserBean {
     public NimResult nimResult;
     public String suppFxUrl;
     public String suppType;
+    public boolean IsHdfk;
     public class Supp {
         public int Id;
         public String Username;

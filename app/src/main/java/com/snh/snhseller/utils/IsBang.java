@@ -126,6 +126,7 @@ public class IsBang {
             params.height = LinearLayout.LayoutParams.WRAP_CONTENT;
             heard.setLayoutParams(params);
             heard.setPadding(0, ImmersionBar.getActionBarHeight((Activity) context) / 2 + 10, 0, 20);
+            heard.setBackgroundColor(Color.parseColor("#F81131"));
         }
     }
 

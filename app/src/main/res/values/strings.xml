@@ -13,4 +13,10 @@
     <string name="tab_sale2" tools:ignore="MissingTranslation">商户列表</string>
     <string name="tab_sale3" tools:ignore="MissingTranslation">打卡记录</string>
     <string name="tab_sale4" tools:ignore="MissingTranslation">我的</string>
+    <string name="sku_tip" tools:ignore="MissingTranslation">1、规格名称命名：例如此商品有多种规格（颜色和尺码）：
+        \n颜色：红色、黑色、白色\n尺码：S码、M码、
+        \n规格名称命名法：红色S码、红色M码、黑色S码，依次类推。
+        \n2、规格值：空格填写正整数，例如：填入数字“10”则表示：10=1*10，单位为“/件”。</string>
+    <string name="sales_tip" tools:ignore="MissingTranslation">*电话号码必须是算你狠平台的注册用户才能添加成为业务员
+    \n*电话号码作为业务员的登录账号</string>
 </resources>

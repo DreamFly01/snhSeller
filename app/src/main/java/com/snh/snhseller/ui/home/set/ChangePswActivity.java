@@ -8,13 +8,18 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.netease.nimlib.sdk.NIMClient;
+import com.netease.nimlib.sdk.auth.AuthService;
 import com.snh.snhseller.BaseActivity;
 import com.snh.snhseller.R;
 import com.snh.snhseller.bean.BaseResultBean;
 import com.snh.snhseller.requestApi.NetSubscriber;
 import com.snh.snhseller.requestApi.RequestClient;
+import com.snh.snhseller.ui.loging.LogingActivity;
+import com.snh.snhseller.utils.DBManager;
 import com.snh.snhseller.utils.DialogUtils;
 import com.snh.snhseller.utils.IsBang;
+import com.snh.snhseller.utils.JumpUtils;
 import com.snh.snhseller.utils.Md5Utils;
 import com.snh.snhseller.utils.StrUtils;
 
@@ -87,14 +92,16 @@ public class ChangePswActivity extends BaseActivity {
     private void changePsw() {
         String oldPsw = Md5Utils.md5(etOld.getText().toString().trim());
         String newPsw = Md5Utils.md5(etNew.getText().toString().trim());
-        addSubscription(RequestClient.ChangePsw(oldPsw, newPsw, this, new NetSubscriber<BaseResultBean>(this, true) {
+        addSubscription(RequestClient.OldPwdToNewPwd(oldPsw, newPsw, this, new NetSubscriber<BaseResultBean>(this, true) {
             @Override
             public void onResultNext(BaseResultBean model) {
                 dialogUtils.simpleDialog("密码修改成功", new DialogUtils.ConfirmClickLisener() {
                     @Override
                     public void onConfirmClick(View v) {
                         dialogUtils.dismissDialog();
-                        ChangePswActivity.this.finish();
+                        DBManager.getInstance(ChangePswActivity.this).cleanUser();
+                        NIMClient.getService(AuthService.class).logout();
+                        JumpUtils.simpJump(ChangePswActivity.this, LogingActivity.class, true);
                     }
                 }, false);
             }

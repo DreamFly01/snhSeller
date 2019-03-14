@@ -115,10 +115,19 @@ public class EditProductActivity extends BaseActivity implements TakePhoto.TakeR
             path = bean.CommTenantIcon;
             ImageUtils.loadUrlImage(this,bean.CommTenantIcon,ivLogo);
             et01.setText(bean.CommTenantName);
+            et01.setSelection(bean.CommTenantName.length());
+            et01.setFocusable(false);
+            et01.setFocusableInTouchMode(false);
             et02.setText(bean.CategoryName);
+            et02.setSelection(bean.CategoryName.length());
+            et02.setFocusable(false);
+            et02.setFocusableInTouchMode(false);
             et03.setText(bean.Price+"");
+            et03.setSelection((bean.Price+"").length());
             et04.setText(bean.UnitsTitle);
+            et04.setSelection(bean.UnitsTitle.length());
             et05.setText(bean.Inventory+"");
+            et05.setSelection((bean.Inventory+"").length());
         }
     }
 
@@ -149,7 +158,6 @@ public class EditProductActivity extends BaseActivity implements TakePhoto.TakeR
 
                     @Override
                     public void onPhotoClick(View v) {
-
                         String name = "takePhoto" + System.currentTimeMillis();
                         ContentValues contentValues = new ContentValues();
                         contentValues.put(MediaStore.Images.Media.TITLE, name);
@@ -158,9 +166,7 @@ public class EditProductActivity extends BaseActivity implements TakePhoto.TakeR
                         Uri uri = getContentResolver().insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, contentValues);
                         takePhoto.onEnableCompress(compressConfig, true);
                         takePhoto.onPickFromCapture(uri);
-
                     }
-
                     @Override
                     public void onAlumClick(View v) {
                         takePhoto.onEnableCompress(compressConfig, true);
@@ -291,7 +297,7 @@ public class EditProductActivity extends BaseActivity implements TakePhoto.TakeR
         map.put("UnitsTitle",et04.getText().toString().trim());
         map.put("Inventory",et05.getText().toString().trim());
         if(null != bean){
-            map.put("GoodId",bean.CategoryId);
+            map.put("GoodId",bean.CommTenantId);
         }
     }
     private void addProduct(){

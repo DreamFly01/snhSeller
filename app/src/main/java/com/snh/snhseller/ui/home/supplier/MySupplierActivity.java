@@ -28,6 +28,7 @@ import com.snh.snhseller.bean.supplierbean.SupplierBean;
 import com.snh.snhseller.requestApi.NetSubscriber;
 import com.snh.snhseller.requestApi.RequestClient;
 import com.snh.snhseller.utils.DialogUtils;
+import com.snh.snhseller.utils.IsBang;
 import com.snh.snhseller.utils.JumpUtils;
 import com.snh.snhseller.utils.KeyBoardUtils;
 import com.snh.snhseller.utils.StrUtils;
@@ -78,6 +79,7 @@ public class MySupplierActivity extends BaseActivity {
     private String condition = "";
     private DialogUtils dialogUtils;
     private String content;
+
     @Override
     protected void initContentView(Bundle savedInstanceState) {
         setContentView(R.layout.activity_mysupplier_layout);
@@ -90,8 +92,10 @@ public class MySupplierActivity extends BaseActivity {
 
     @Override
     public void setUpViews() {
+        IsBang.setImmerHeard(this,rlHead);
         heardTvMenu.setText("订单");
         heardTvMenu.setTextColor(Color.WHITE);
+        heardMenu.setBackgroundResource(R.drawable.order_bg);
         if (type == 1) {
             heardTitle.setText("我的供应商");
             btnCommit.setText("添加供应商");
@@ -170,7 +174,7 @@ public class MySupplierActivity extends BaseActivity {
                     public void onCancelClick(View v) {
                         dialogUtils.dismissDialog();
                     }
-                },false);
+                }, false);
                 return false;
             }
         });
@@ -204,11 +208,14 @@ public class MySupplierActivity extends BaseActivity {
                         datas = model.data;
                         adapter.setNewData(model.data);
                     } else {
-                        adapter.addData(model.data);
                         datas.addAll(model.data);
+                        adapter.setNewData(datas);
                     }
                 } else {
-                    adapter.setEmptyView(R.layout.empty_layout, recyclerView);
+                    if (index == 1) {
+                        adapter.setNewData(null);
+                        adapter.setEmptyView(R.layout.empty_layout, recyclerView);
+                    }
                 }
 
             }
@@ -222,6 +229,9 @@ public class MySupplierActivity extends BaseActivity {
                 this.finish();
                 break;
             case R.id.rl_menu:
+                bundle = new Bundle();
+                bundle.putInt("type", type);
+                JumpUtils.dataJump(this, OrderActivity.class, bundle, false);
                 break;
             case R.id.btn_commit:
                 bundle = new Bundle();

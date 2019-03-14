@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/white"
+    android:gravity="center"
+    android:orientation="horizontal"
+    android:padding="30pt">
+
+    <ImageView
+        android:id="@+id/iv_shop_logo"
+        android:layout_width="100pt"
+        android:layout_height="100pt"
+        android:background="@drawable/sales_man_bg" />
+
+    <LinearLayout
+        android:layout_weight="1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginLeft="20pt"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/tv_01"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="ssssssss"
+            android:textColor="@color/txt_dark"
+            android:textSize="@dimen/txtSize_30" />
+
+        <TextView
+            android:id="@+id/tv_02"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="right"
+            android:text="ssssssss"
+            android:textColor="@color/txt_dark"
+            android:textSize="@dimen/txtSize_30" />
+    </LinearLayout>
+    <TextView
+        android:id="@+id/tv_03"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="right"
+        android:text="ssssssss"
+        android:textColor="@color/txt_dark"
+        android:textSize="@dimen/txtSize_30" />
+    <TextView
+        android:layout_marginLeft="@dimen/txtSize_30"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="right"
+        android:text=">"
+        android:textColor="@color/txt_dark"
+        android:textSize="@dimen/txtSize_30" />
+</LinearLayout>

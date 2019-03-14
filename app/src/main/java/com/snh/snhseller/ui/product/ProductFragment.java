@@ -1,11 +1,13 @@
 package com.snh.snhseller.ui.product;
 
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,12 +17,21 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.alibaba.fastjson.JSONException;
+import com.alibaba.fastjson.JSONObject;
 import com.gyf.barlibrary.ImmersionBar;
 import com.snh.snhseller.BaseFragment;
 import com.snh.snhseller.R;
 import com.snh.snhseller.utils.DBManager;
+import com.snh.snhseller.utils.DialogUtils;
 import com.snh.snhseller.utils.IsBang;
 import com.snh.snhseller.utils.JumpUtils;
+import com.snh.snhseller.utils.UpdateAppHttpUtil;
+import com.vector.update_app.UpdateAppBean;
+import com.vector.update_app.UpdateAppManager;
+import com.vector.update_app.UpdateCallback;
+import com.vector.update_app.listener.ExceptionHandler;
+import com.vector.update_app.utils.AppUpdateUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,7 +42,7 @@ import butterknife.OnClick;
 import butterknife.Unbinder;
 
 /**
- * <p>desc：<p>
+ * <p>desc：用户商品<p>
  * <p>author：DreamFly<p>
  * <p>creatTime：2019/2/22<p>
  * <p>changeTime：2019/2/22<p>
@@ -60,6 +71,10 @@ public class ProductFragment extends BaseFragment {
     private MyAdapter adapter;
     private List<String> listTab = new ArrayList<>();
 
+    private DialogUtils dialogUtils;
+    private List<String> data1 = new ArrayList<>();
+    private List<Integer> data2 = new ArrayList<>();
+    private int[] viewLocation = new int[2];
     @Override
     public int initContentView() {
         return R.layout.fragment_product_layout;
@@ -69,8 +84,10 @@ public class ProductFragment extends BaseFragment {
     public void setUpViews(View view) {
         IsBang.setImmerHeard(getContext(), rlHead);
         ImmersionBar.setTitleBar(getActivity(), rlHead);
-        heardTitle.setText("商品");
+        updataVersion();
+        heardTitle.setText("用户商品");
         heardBack.setVisibility(View.GONE);
+        dialogUtils = new DialogUtils(getContext());
         for (int i = 0; i < titles.length; i++) {
             ProductListFragment fragment = new ProductListFragment();
             bundle = new Bundle();
@@ -141,6 +158,20 @@ public class ProductFragment extends BaseFragment {
                 }
                 break;
             case R.id.heard_menu:
+                heardMenu.getLocationInWindow(viewLocation);
+                data1.clear();
+                data2.clear();
+                data1.add("商家商品");
+
+                data2.add(R.drawable.product2_bg);
+
+                dialogUtils.customDialog(new DialogUtils.OnItemClick() {
+                    @Override
+                    public void onItemClick(View v, int position) {
+                        dialogUtils.dismissDialog();
+                        JumpUtils.simpJump(getActivity(),BusinessProductActivity.class,false);
+                    }
+                },viewLocation[1] + heardMenu.getMeasuredHeight() / 2, viewLocation[0], heardMenu.getWidth(), data1,data2);
                 break;
         }
     }
@@ -171,7 +202,115 @@ public class ProductFragment extends BaseFragment {
             mTv_Title.setTextColor(tabOrder.getTabTextColors());//
             return v;
         }
+        @Override
+        public int getItemPosition(@NonNull Object object) {
+            return PagerAdapter.POSITION_NONE;
+        }
 
+        @Override
+        public Object instantiateItem(ViewGroup container, int position) {
+            ProductListFragment fragment = (ProductListFragment) super.instantiateItem(container,position);
+            switch (position) {
+                case 0:
+                    fragment.updateArguments(1);
+                    break;
+                case 1:
+                    fragment.updateArguments(3);
+                    break;
+                case 2:
+                    fragment.updateArguments(2);
+                    break;
+            }
+
+            return fragment;
+        }
     }
 
+    private void updataVersion() {
+        new UpdateAppManager.Builder()
+                .setActivity(getActivity())
+                .setHttpManager(new UpdateAppHttpUtil())
+                .setUpdateUrl("http://shop.hnyunshang.com/api/webapi/Version/GetVersion?Channel=1&SourceSystem=2")
+                .handleException(new ExceptionHandler() {
+                    @Override
+                    public void onException(Exception e) {
+                        e.printStackTrace();
+                    }
+                })
+                .hideDialogOnDownloading()
+//                .setParams(params)设置自定义参数
+//                .setTopPic(R.drawable.top_3)
+//                .setThemeColor(R.color.app_red)
+                .build()
+                .checkNewApp(new UpdateCallback(){
+                    /**
+                     * 解析json,自定义协议
+                     *
+                     * @param json 服务器返回的json
+                     * @return UpdateAppBean
+                     */
+                    @Override
+                    protected UpdateAppBean parseJson(String json) {
+                        UpdateAppBean updateAppBean = new UpdateAppBean();
+                        String isUpdata="No";
+                        try {
+                            JSONObject jsonObject = JSONObject.parseObject(json);
+                            JSONObject data = jsonObject.getJSONObject("data");
+
+                            if(AppUpdateUtils.getVersionCode(getContext())<Integer.parseInt(data.getString("VersionCode"))){
+                                isUpdata = "Yes";
+                            }
+                            updateAppBean
+                                    //是否更新Yes,No
+                                    .setUpdate(isUpdata)
+                                    //新版本号
+                                    .setNewVersion(data.getString("VersionName"))
+                                    //下载地址
+                                    .setApkFileUrl(data.getString("DownloadPath"))
+                                    //大小
+//                                    .setTargetSize(data.getString("target_size"))
+                                    //更新内容
+                                    .setUpdateLog(jsonObject.getString("Describe"))
+                                    //是否强制更新
+                                    .setConstraint(data.getBoolean("IsCompel"));
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                        return updateAppBean;
+                    }
+
+                    /**
+                     * 有新版本
+                     *
+                     * @param updateApp        新版本信息
+                     * @param updateAppManager app更新管理器
+                     */
+                    @Override
+                    public void hasNewApp(UpdateAppBean updateApp, UpdateAppManager updateAppManager) {
+//                        updateAppManager.showDialog();
+                        updateAppManager.showDialogFragment();
+                    }
+
+                    /**
+                     * 网络请求之前
+                     */
+                    @Override
+                    public void onBefore() {
+//                        CProgressDialogUtils.showProgressDialog(MainActivity.this);
+                    }
+
+                    /**
+                     * 网路请求之后
+                     */
+                    @Override
+                    public void onAfter() {
+//                        CProgressDialogUtils.cancelProgressDialog(MainActivity.this);
+                    }
+
+                    @Override
+                    protected void noNewApp(String error) {
+                        super.noNewApp(error);
+                    }
+                });
+    }
 }

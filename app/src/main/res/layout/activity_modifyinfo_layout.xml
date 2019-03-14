@@ -7,7 +7,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/rl_head"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:background="@color/app_red"
+        >
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -15,7 +17,7 @@
         android:paddingRight="20pt"
         android:paddingLeft="20pt"
         android:paddingBottom="20pt"
-        android:background="@color/app_red">
+        >
 
         <LinearLayout
             android:id="@+id/heard_back"

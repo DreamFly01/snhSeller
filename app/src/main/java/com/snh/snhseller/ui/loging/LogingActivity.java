@@ -3,12 +3,14 @@ package com.snh.snhseller.ui.loging;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.os.Bundle;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.snh.snhseller.BaseActivity;
 import com.snh.snhseller.R;
@@ -132,6 +134,8 @@ public class LogingActivity extends BaseActivity {
                 if (accountOrPhone) {
                     AnimUtil.FlipAnimatorXViewShow(llLoging1, llLoging2, 200);
                     tvPhone.setText("使用账号登录");
+
+
                     accountOrPhone = false;
                 } else {
                     AnimUtil.FlipAnimatorXViewShow(llLoging2, llLoging1, 200);
@@ -149,7 +153,10 @@ public class LogingActivity extends BaseActivity {
                 tvStore.setBackgroundResource(R.drawable.shape_range_red_left_bg);
                 tvOpreation.setTextColor(Color.WHITE);
                 tvStore.setTextColor(Color.BLACK);
-//                jumpActivity(SalesmanMainActivity.class);
+                tvFogetPsw.setText("");
+                tvPhone.setText("");
+                tvFogetPsw.setEnabled(false);
+                tvPhone.setEnabled(false);
                 break;
             case R.id.tv_store:
                 type = 1;
@@ -157,6 +164,10 @@ public class LogingActivity extends BaseActivity {
                 tvStore.setBackgroundResource(R.drawable.shape_soild_red_left_bg);
                 tvOpreation.setTextColor(Color.BLACK);
                 tvStore.setTextColor(Color.WHITE);
+                tvFogetPsw.setText("忘记密码？");
+                tvPhone.setText("用手机验证码登录");
+                tvFogetPsw.setEnabled(true);
+                tvPhone.setEnabled(true);
                 break;
         }
     }
@@ -263,5 +274,27 @@ public class LogingActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         // TODO: add setContentView(...) invocation
         ButterKnife.bind(this);
+    }
+
+    private long mExitTime = 0;
+    public static final int EXIT_TIME = 2000;
+    private Toast toast;
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
+            if ((System.currentTimeMillis() - mExitTime) > EXIT_TIME) {
+                toast = Toast.makeText(this, "再次点击退出应用", Toast.LENGTH_SHORT);
+                toast.show();
+                mExitTime = System.currentTimeMillis();
+            } else {
+                if (null != toast) {
+                    toast.cancel();
+                }
+                finishAffinity();
+                System.exit(0);
+            }
+            return true;
+        }
+        return super.onKeyDown(keyCode, event);
     }
 }

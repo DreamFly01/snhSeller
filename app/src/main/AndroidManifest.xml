@@ -173,7 +173,26 @@
         <activity android:name=".ui.home.supplier.PayResultActivity"></activity>
         <activity android:name=".ui.home.supplier.AllSupplierActiviy"></activity>
         <activity android:name=".ui.order.OrderDetailsActivity"></activity>
-
+        <activity android:name=".ui.home.supplier.OrderActivity"></activity>
+        <activity android:name=".ui.product.BusinessProductActivity"></activity>
+        <activity android:name=".ui.product.SkuListActivity"></activity>
+        <activity android:name=".ui.product.AddSkuActivity"
+            android:windowSoftInputMode="adjustPan"
+            ></activity>
+        <activity android:name=".ui.msg.SupplyNoticeActivity"></activity>
+        <activity android:name=".ui.msg.DeliveryNoticeActivity"></activity>
+        <activity android:name=".ui.msg.CapitalNoticeActivity"></activity>
+        <activity android:name=".ui.msg.SystemNoticeActivity"></activity>
+        <activity android:name=".ui.home.salesManagement.SalesManagementActivity"></activity>
+        <activity android:name=".ui.home.salesManagement.SalesActivity"></activity>
+        <activity android:name=".ui.home.salesManagement.EditSalesActivity"
+            android:windowSoftInputMode="adjustPan"
+            ></activity>
+        <activity android:name=".ui.home.salesManagement.NoManagerActivity"></activity>
+        <activity android:name=".ui.home.salesManagement.SalesCountActivity"></activity>
+        <activity android:name=".ui.home.salesManagement.SalesRecodeActivity"></activity>
+        <activity android:name=".ui.home.costApply.CostApplyActivity"></activity>
+        <activity android:name=".ui.home.costApply.CostApplyDetailsActivity"></activity>
         <activity android:name=".wxapi.WXPayEntryActivity"
             android:exported="true"
             android:launchMode="singleTop"></activity>

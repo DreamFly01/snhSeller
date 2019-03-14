@@ -22,7 +22,9 @@ import com.snh.snhseller.bean.BaseResultBean;
 import com.snh.snhseller.bean.supplierbean.GoodsBean;
 import com.snh.snhseller.requestApi.NetSubscriber;
 import com.snh.snhseller.requestApi.RequestClient;
+import com.snh.snhseller.utils.DialogUtils;
 import com.snh.snhseller.utils.ImageUtils;
+import com.snh.snhseller.utils.IsBang;
 import com.snh.snhseller.utils.JumpUtils;
 import com.snh.snhseller.wediget.RecycleViewDivider;
 
@@ -82,6 +84,7 @@ public class StoreActivity extends BaseActivity {
     private int from = 0;
     private boolean isApply;
 
+    private DialogUtils dialogUtils;
     @Override
     protected void initContentView(Bundle savedInstanceState) {
         setContentView(R.layout.activity_store_layout);
@@ -95,10 +98,13 @@ public class StoreActivity extends BaseActivity {
             from = bundle.getInt("from");
             isApply = bundle.getBoolean("isApply");
         }
+        dialogUtils = new DialogUtils(this);
+        setImm(false);
     }
 
     @Override
     public void setUpViews() {
+        IsBang.setImmerHeard(this,rlHead);
         heardTitle.setText("");
         tvName.setText(name);
         tvPhone.setText(phone);
@@ -188,11 +194,14 @@ public class StoreActivity extends BaseActivity {
                         datas = model.data;
                         adapter.setNewData(model.data);
                     } else {
-                        adapter.addData(model.data);
                         datas.addAll(model.data);
+                        adapter.setNewData(datas);
                     }
                 } else {
+                    if(index == 1){
+                     adapter.setNewData(null);
                     adapter.setEmptyView(R.layout.empty_layout, recyclerView);
+                    }
                 }
             }
         }));
@@ -202,6 +211,9 @@ public class StoreActivity extends BaseActivity {
         addSubscription(RequestClient.ApplyFor(id, from, this, new NetSubscriber<BaseResultBean>(this, true) {
             @Override
             public void onResultNext(BaseResultBean model) {
+                dialogUtils.noBtnDialog("申请成功");
+                tvAdd.setText("等待验证");
+                tvAdd.setEnabled(false);
 
             }
         }));

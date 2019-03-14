@@ -22,8 +22,10 @@ import com.snh.snhseller.bean.BaseResultBean;
 import com.snh.snhseller.bean.ProductBean;
 import com.snh.snhseller.requestApi.NetSubscriber;
 import com.snh.snhseller.requestApi.RequestClient;
+import com.snh.snhseller.utils.Contans;
 import com.snh.snhseller.utils.DialogUtils;
 import com.snh.snhseller.utils.JumpUtils;
+import com.snh.snhseller.utils.SPUtils;
 import com.snh.snhseller.wediget.LoadingDialog;
 import com.snh.snhseller.wediget.RecycleViewDivider;
 
@@ -124,11 +126,12 @@ public class ProductListFragment extends BaseFragment {
                             @Override
                             public void onConfirmClick(View v) {
                                 UpOrDownProduct(datas.get(position).CommTenantId, 2, "下架成功");
+                                SPUtils.getInstance(getContext()).savaBoolean(Contans.PRODUCT_IS_FRESH,true).commit();
                             }
 
                             @Override
                             public void onCancelClick(View v) {
-
+                                dialogUtils.dismissDialog();
                             }
                         }, false);
                         break;
@@ -154,6 +157,7 @@ public class ProductListFragment extends BaseFragment {
                             @Override
                             public void onConfirmClick(View v) {
                                 delProduct(datas.get(position).CommTenantId, "删除商品成功");
+                                SPUtils.getInstance(getContext()).savaBoolean(Contans.PRODUCT_IS_FRESH,true).commit();
                                 getData();
                             }
 
@@ -169,6 +173,7 @@ public class ProductListFragment extends BaseFragment {
                             @Override
                             public void onConfirmClick(View v) {
                                 delProduct(datas.get(position).CommTenantId, "删除商品成功");
+                                SPUtils.getInstance(getContext()).savaBoolean(Contans.PRODUCT_IS_FRESH,true).commit();
                                 getData();
                             }
 
@@ -184,6 +189,7 @@ public class ProductListFragment extends BaseFragment {
                             @Override
                             public void onConfirmClick(View v) {
                                 UpOrDownProduct(datas.get(position).CommTenantId, 1, "上架成功");
+                                SPUtils.getInstance(getContext()).savaBoolean(Contans.PRODUCT_IS_FRESH,true).commit();
                             }
 
                             @Override
@@ -201,6 +207,7 @@ public class ProductListFragment extends BaseFragment {
         addSubscription(RequestClient.GetSaleOfGoods(type, index, "", getContext(), new NetSubscriber<BaseResultBean<List<ProductBean>>>(getContext()) {
             @Override
             public void onResultNext(BaseResultBean<List<ProductBean>> model) {
+                SPUtils.getInstance(getContext()).savaBoolean(Contans.PRODUCT_IS_FRESH,true).commit();
                 for (int i = 0; i < model.data.size(); i++) {
                     model.data.get(i).state = type;
                 }
@@ -210,12 +217,12 @@ public class ProductListFragment extends BaseFragment {
                         adapter.setNewData(model.data);
                     } else {
                         adapter.setNewData(null);
-                        adapter.setEmptyView(R.layout.empty_layout);
+                        adapter.setEmptyView(R.layout.empty_layout,recyclerView);
                     }
                 } else {
                     if (model.data.size() > 0) {
                         datas.addAll(model.data);
-                        adapter.addData(model.data);
+                        adapter.setNewData(datas);
                         adapter.loadMoreComplete();
                     } else {
                         adapter.loadMoreEnd();
@@ -236,7 +243,12 @@ public class ProductListFragment extends BaseFragment {
             getData();
             mIsDataInited = true;
         }
+        if(isVisibleToUser&&SPUtils.getInstance(getContext()).getBoolean(Contans.PRODUCT_IS_FRESH)){
+            index = 1;
+            getData();
+        }
     }
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -284,4 +296,16 @@ public class ProductListFragment extends BaseFragment {
             getData();
         }
     }
+
+    //更新数据
+    public void updateArguments(int pageType) {
+        this.type = pageType;
+        Bundle args = getArguments();
+        if (args != null) {
+//            setView();
+            args.putInt("type", pageType);
+//            getData();
+        }
+    }
+
 }

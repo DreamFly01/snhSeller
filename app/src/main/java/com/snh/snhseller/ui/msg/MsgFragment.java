@@ -4,8 +4,10 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.gyf.barlibrary.ImmersionBar;
@@ -21,9 +23,11 @@ import com.snh.snhseller.BaseFragment;
 import com.snh.snhseller.R;
 import com.snh.snhseller.utils.DBManager;
 import com.snh.snhseller.utils.IsBang;
+import com.snh.snhseller.utils.JumpUtils;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import butterknife.Unbinder;
 
 /**
@@ -44,7 +48,20 @@ public class MsgFragment extends BaseFragment {
     TextView heardTvMenu;
     @BindView(R.id.rl_head)
     LinearLayout rlHead;
+    @BindView(R.id.ll_menu_1)
+    LinearLayout llMenu1;
+    @BindView(R.id.ll_menu_2)
+    LinearLayout llMenu2;
+    @BindView(R.id.ll_menu_3)
+    LinearLayout llMenu3;
+    @BindView(R.id.ll_menu_4)
+    LinearLayout llMenu4;
+    @BindView(R.id.recent_contacts_fragment)
+    FrameLayout recentContactsFragment;
+    @BindView(R.id.rl_menu)
+    RelativeLayout rlMenu;
     private RecentContactsFragment fragment;
+
     @Override
     public int initContentView() {
         return R.layout.fragment_msg_layout;
@@ -52,7 +69,7 @@ public class MsgFragment extends BaseFragment {
 
     @Override
     public void setUpViews(View view) {
-        ImmersionBar.setTitleBar(getActivity(),rlHead);
+        ImmersionBar.setTitleBar(getActivity(), rlHead);
         IsBang.setImmerHeard(getContext(), rlHead);
         heardTitle.setText("消息");
         addRecentContactsFragment();
@@ -70,6 +87,7 @@ public class MsgFragment extends BaseFragment {
         // 如果是activity从堆栈恢复，FM中已经存在恢复而来的fragment，此时会使用恢复来的，而new出来这个会被丢弃掉
         fragment = (RecentContactsFragment) activity.addFragment(fragment);
     }
+
     @Override
     public void setUpLisener() {
 
@@ -89,8 +107,8 @@ public class MsgFragment extends BaseFragment {
         unbinder.unbind();
     }
 
-    private void imLoging(){
-        LoginInfo info = new LoginInfo(DBManager.getInstance(getContext()).getUserInfo().Accid,DBManager.getInstance(getContext()).getUserInfo().Token); // config...
+    private void imLoging() {
+        LoginInfo info = new LoginInfo(DBManager.getInstance(getContext()).getUserInfo().Accid, DBManager.getInstance(getContext()).getUserInfo().Token); // config...
         RequestCallback<LoginInfo> callback = new RequestCallback<LoginInfo>() {
             @Override
             public void onSuccess(LoginInfo param) {
@@ -105,11 +123,28 @@ public class MsgFragment extends BaseFragment {
 
             @Override
             public void onException(Throwable exception) {
-                LogUtil.audio("esception"+exception.getMessage());
+                LogUtil.audio("esception" + exception.getMessage());
             }
         };
         NIMClient.getService(AuthService.class).login(info)
                 .setCallback(callback);
     }
 
+    @OnClick({R.id.ll_menu_1, R.id.ll_menu_2, R.id.ll_menu_3, R.id.ll_menu_4})
+    public void onClick(View view) {
+        switch (view.getId()) {
+            case R.id.ll_menu_1:
+                JumpUtils.simpJump(getActivity(),DeliveryNoticeActivity.class,false);
+                break;
+            case R.id.ll_menu_2:
+                JumpUtils.simpJump(getActivity(),SupplyNoticeActivity.class,false);
+                break;
+            case R.id.ll_menu_3:
+                JumpUtils.simpJump(getActivity(),CapitalNoticeActivity.class,false);
+                break;
+            case R.id.ll_menu_4:
+                JumpUtils.simpJump(getActivity(),SystemNoticeActivity.class,false);
+                break;
+        }
+    }
 }

@@ -2,11 +2,15 @@ package com.snh.snhseller.requestApi;
 
 import com.snh.snhseller.bean.AgreementBean;
 import com.snh.snhseller.bean.BaseResultBean;
+import com.snh.snhseller.bean.BusinessBean;
+import com.snh.snhseller.bean.CostApplyBean;
 import com.snh.snhseller.bean.DataBean;
+import com.snh.snhseller.bean.MyMsgBean;
 import com.snh.snhseller.bean.OrderBean;
 import com.snh.snhseller.bean.OrderDetailBean;
 import com.snh.snhseller.bean.PayWxBean;
 import com.snh.snhseller.bean.ProductBean;
+import com.snh.snhseller.bean.SkuBean;
 import com.snh.snhseller.bean.UserBean;
 import com.snh.snhseller.bean.salebean.ApplyBean;
 import com.snh.snhseller.bean.salebean.CostDetialsBean;
@@ -14,6 +18,10 @@ import com.snh.snhseller.bean.salebean.OperationBean;
 import com.snh.snhseller.bean.salebean.RecordBean;
 import com.snh.snhseller.bean.salebean.SaleUserBean;
 import com.snh.snhseller.bean.salebean.TypeBean;
+import com.snh.snhseller.bean.salesBean.NoManagerBean;
+import com.snh.snhseller.bean.salesBean.SalesCountBean;
+import com.snh.snhseller.bean.salesBean.SalesRecodeBean;
+import com.snh.snhseller.bean.salesBean.SalesmanBean;
 import com.snh.snhseller.bean.supplierbean.AllSupplierBean;
 import com.snh.snhseller.bean.supplierbean.GoodsBean;
 import com.snh.snhseller.bean.supplierbean.SupplierBean;
@@ -47,7 +55,7 @@ public interface RequestApi {
      * @return
      */
     @Multipart
-    @POST("webapi/fileUpload/postfile")
+    @POST("api/ApiSource")
     Observable<BaseResultBean> UpLoadFile(@Part List<MultipartBody.Part> parts);
     /**
      * 商家入驻获取验证码
@@ -440,7 +448,7 @@ public interface RequestApi {
      * @return
      */
     @POST("webapi/Distribution/PlaceOrder")
-    Observable<BaseResultBean> PostOrder(@Body Map<String,Object> params);
+    Observable<BaseResultBean<String>> PostOrder(@Body Map<String,Object> params);
 
     /**
      * 获取账户余额
@@ -482,7 +490,7 @@ public interface RequestApi {
      * @return
      */
     @POST("webapi/Distribution/ApplyFor")
-    Observable<BaseResultBean> ApplyFor(@QueryMap Map<String,Object> params);
+    Observable<BaseResultBean> ApplyFor(@Body Map<String,Object> params);
 
     /**
      * 删除我的供应商/商户
@@ -521,4 +529,159 @@ public interface RequestApi {
      */
     @GET("webapi/Distribution/OrderDetail")
     Observable<BaseResultBean<OrderDetailBean>> GetOrderDetail(@QueryMap Map<String,Object> params);
+
+    /**
+     * 获取商家商品列表
+     * @param params
+     * @return
+     */
+    @GET("webapi/Distribution/MyCommodityList")
+    Observable<BaseResultBean<List<BusinessBean>>> MyCommodityList(@QueryMap Map<String,Object> params);
+
+    /**
+     * 获取规格列表
+     * @param params
+     * @return
+     */
+    @GET("webapi/Distribution/NormList")
+    Observable<BaseResultBean<List<SkuBean>>> GetNormList(@QueryMap Map<String,Object> params);
+
+    /**
+     * 删除某条规格
+     * @param params
+     * @return
+     */
+    @POST("Distribution/DelNorm")
+    Observable<BaseResultBean> DelNorm(@Body Map<String,Object> params);
+
+    /**
+     * 新增规格
+     * @param params
+     * @return
+     */
+    @POST("webapi/Distribution/AddNorm")
+    Observable<BaseResultBean> AddNorm(@Body Map<String,Object> params);
+
+    /**
+     * 获取申请通知列表
+     * @param params
+     * @return
+     */
+    @GET("webapi/Distribution/GetApplyForList")
+    Observable<BaseResultBean<List<com.snh.snhseller.bean.ApplyBean>>> GetApplyForList(@QueryMap Map<String,Object> params);
+
+    /**
+     * 同意/拒绝申请
+     * @param params
+     * @return
+     */
+    @POST("webapi/Distribution/ConsentApplyFor")
+    Observable<BaseResultBean> ConsentApplyFor(@Body Map<String,Object> params);
+
+    /**
+     * 获取我的消息列表
+     * @param params
+     * @return
+     */
+    @GET("webapi/Distribution/MyMsg")
+    Observable<BaseResultBean<List<MyMsgBean>>> MyMsg(@QueryMap Map<String,Object> params);
+
+    /**-----------------------------------------------业务员管理系统------------------------------------------------------------------**/
+    /**
+     * 我的业务员列表
+     * @param params
+     * @return
+     */
+    @GET("SupplierSalesman/SalesmanList")
+    Observable<BaseResultBean<List<SalesmanBean>>> SalesmanList(@QueryMap Map<String,Object> params);
+
+    /**
+     * 删除我的业务员
+     * @param params
+     * @return
+     */
+    @POST("SupplierSalesman/DelSalesman")
+    Observable<BaseResultBean> DelSalesman(@Body Map<String,Object> params);
+
+    /**
+     * 冻结/解冻业务员
+     * @param params
+     * @return
+     */
+    @POST("SupplierSalesman/LockSalesman")
+    Observable<BaseResultBean> LockSalesman(@Body Map<String,Object> params);
+
+    /**
+     * 新增我的业务员
+     * @param params
+     * @return
+     */
+    @POST("SupplierSalesman/AddSalesman")
+    Observable<BaseResultBean> AddSalesman(@Body Map<String,Object> params);
+
+    /**
+     * 编辑业务员
+     * @param params
+     * @return
+     */
+    @POST("SupplierSalesman/EditSalesman")
+    Observable<BaseResultBean> EditSalesman(@Body Map<String,Object> params);
+
+    /**
+     * 商铺管理状态
+     * @param params
+     * @return
+     */
+    @GET("SupplierSalesman/NoManagerCommtenantList")
+    Observable<BaseResultBean<List<NoManagerBean>>> NoManagerCommtenantLis(@QueryMap Map<String,Object> params);
+
+    /**
+     * 业务员打卡记录
+     * @param params
+     * @return
+     */
+    @GET("SupplierSalesman/ClockInRecord")
+    Observable<BaseResultBean<List<SalesRecodeBean>>> ClockInRecord(@QueryMap Map<String,Object> params);
+
+    /**
+     * 业务员打卡统计
+     * @param params
+     * @return
+     */
+    @GET("SupplierSalesman/StatisticsSalesmanClockIn")
+    Observable<BaseResultBean<List<SalesCountBean>>> SalesClockInRecord(@QueryMap Map<String,Object> params);
+
+    /**---------------------------------------费用审批--------------------------------------**/
+
+    /**
+     * 获取费用 列表
+     * @param params
+     * @return
+     */
+    @GET("SupplierSalesman/GetSalesmanCostList")
+    Observable<BaseResultBean<List<CostApplyBean>>> GetSalesmanCostList(@QueryMap Map<String,Object> params);
+
+    /**
+     *
+     * @param params
+     * @return
+     */
+    @POST("SupplierSalesman/ConsentCostApply")
+    Observable<BaseResultBean> ConsentCostApply(@Body Map<String,Object> params);
+
+    /**
+     * 费用申请添加备注
+     * @param params
+     * @return
+     */
+    @POST("SupplierSalesman/AddReMark")
+    Observable<BaseResultBean> AddReMark(@Body Map<String,Object> params);
+
+    /**
+     * 设置是否支持货到付款
+     * @param params
+     * @return
+     */
+    @POST("SupplierUser/SetPayMethod")
+    Observable<BaseResultBean> SetPayMethod(@Body Map<String,Object> params);
 }

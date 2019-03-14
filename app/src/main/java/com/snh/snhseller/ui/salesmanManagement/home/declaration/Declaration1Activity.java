@@ -13,6 +13,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bigkoo.pickerview.builder.OptionsPickerBuilder;
 import com.bigkoo.pickerview.builder.TimePickerBuilder;
@@ -59,7 +60,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 /**
- * <p>desc：<p>
+ * <p>desc：费用申请<p>
  * <p>author：DreamFly<p>
  * <p>creatTime：2019/3/5<p>
  * <p>changeTime：2019/3/5<p>
@@ -138,7 +139,7 @@ public class Declaration1Activity extends BaseActivity implements TakePhoto.Take
 
     @Override
     public void setUpViews() {
-        IsBang.setImmerHeard(this,rlHead,"");
+        IsBang.setImmerHeard(this, rlHead, "");
         heardTitle.setText("费用申请");
         btnCommit.setText("提交");
         getType();
@@ -156,7 +157,7 @@ public class Declaration1Activity extends BaseActivity implements TakePhoto.Take
         ButterKnife.bind(this);
     }
 
-    @OnClick({R.id.heard_back, R.id.tv_type, R.id.tv_time, R.id.iv_01, R.id.iv_02, R.id.iv_03, R.id.iv_del1, R.id.iv_del2, R.id.iv_del3,R.id.btn_commit})
+    @OnClick({R.id.heard_back, R.id.tv_type, R.id.tv_time, R.id.iv_01, R.id.iv_02, R.id.iv_03, R.id.iv_del1, R.id.iv_del2, R.id.iv_del3, R.id.btn_commit})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.heard_back:
@@ -195,7 +196,7 @@ public class Declaration1Activity extends BaseActivity implements TakePhoto.Take
                 Glide.with(this).load(R.drawable.up_img_bg).into(iv03);
                 break;
             case R.id.btn_commit:
-                if(check()){
+                if (check()) {
                     setData();
                     postData();
                 }
@@ -261,7 +262,11 @@ public class Declaration1Activity extends BaseActivity implements TakePhoto.Take
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        getTakePhoto().onActivityResult(requestCode, resultCode, data);
+        try {
+            getTakePhoto().onActivityResult(requestCode, resultCode, data);
+        } catch (Exception e) {
+            Toast.makeText(this,"请重新选择照片",Toast.LENGTH_SHORT).show();
+        }
 
     }
 
@@ -319,9 +324,6 @@ public class Declaration1Activity extends BaseActivity implements TakePhoto.Take
     }
 
 
-
-
-
     private boolean check() {
         if (StrUtils.isEmpty(etName.getText().toString().trim())) {
             dialogUtils.noBtnDialog("请输入项目名称");
@@ -348,6 +350,7 @@ public class Declaration1Activity extends BaseActivity implements TakePhoto.Take
         dataMap.put("ApplyType", ApplyType);
         dataMap.put("Budget", etMoney.getText().toString().trim());
         dataMap.put("OccurDate", tvTime.getText().toString().trim());
+        dataMap.put("ApplyTypeName", tvType.getText().toString().trim());
         if (!StrUtils.isEmpty(etDesc.getText().toString().trim())) {
             dataMap.put("Remark", etDesc.getText().toString().trim());
         }
@@ -362,30 +365,31 @@ public class Declaration1Activity extends BaseActivity implements TakePhoto.Take
         addSubscription(RequestClient.PostApply(dataMap, this, new NetSubscriber<BaseResultBean>(this, true) {
             @Override
             public void onResultNext(BaseResultBean model) {
-                    dialogUtils.simpleDialog("申请成功", new DialogUtils.ConfirmClickLisener() {
-                        @Override
-                        public void onConfirmClick(View v) {
-                            dialogUtils.dismissDialog();
-                            Declaration1Activity.this.finish();
-                        }
-                    },false);
+                dialogUtils.simpleDialog("申请成功", new DialogUtils.ConfirmClickLisener() {
+                    @Override
+                    public void onConfirmClick(View v) {
+                        dialogUtils.dismissDialog();
+                        Declaration1Activity.this.finish();
+                    }
+                }, false);
             }
         }));
     }
 
     List<TypeBean> typeBeans = new ArrayList<>();
-    private void getType(){
+
+    private void getType() {
         addSubscription(RequestClient.GetTypeList(this, new NetSubscriber<BaseResultBean<List<TypeBean>>>(this) {
             @Override
             public void onResultNext(BaseResultBean<List<TypeBean>> model) {
                 typeBeans = model.data;
-                for (TypeBean bean : typeBeans )
-                {
+                for (TypeBean bean : typeBeans) {
                     options1Items.add(bean.Name);
                 }
             }
         }));
     }
+
     private void showPickeView() {
         if (type1 == 1) {
             OptionsPickerView pvOptions = new OptionsPickerBuilder(Declaration1Activity.this, new OnOptionsSelectListener() {
@@ -394,9 +398,8 @@ public class Declaration1Activity extends BaseActivity implements TakePhoto.Take
                     //返回的分别是三个级别的选中位置
                     String tx = options1Items.get(options1);
                     tvType.setText(tx);
-                    for (TypeBean bean : typeBeans)
-                    {
-                        if(StrUtils.equals(bean.Name,tx)){
+                    for (TypeBean bean : typeBeans) {
+                        if (StrUtils.equals(bean.Name, tx)) {
                             ApplyType = bean.Id;
                         }
                     }
@@ -418,10 +421,10 @@ public class Declaration1Activity extends BaseActivity implements TakePhoto.Take
             Calendar endDate = Calendar.getInstance();
             //endDate.set(2020,1,1);
             Calendar currentDate = Calendar.getInstance();
-            currentDate.set(mYear,mMonth,mDay);
+            currentDate.set(mYear, mMonth, mDay);
             //正确设置方式 原因：注意事项有说明
-            startDate.set(mYear-1, 0, 1);
-            endDate.set(mYear+1, 11, 1);
+            startDate.set(mYear - 1, 0, 1);
+            endDate.set(mYear + 1, 11, 1);
             TimePickerView pvTime = new TimePickerBuilder(Declaration1Activity.this, new OnTimeSelectListener() {
                 @Override
                 public void onTimeSelect(Date date, View v) {

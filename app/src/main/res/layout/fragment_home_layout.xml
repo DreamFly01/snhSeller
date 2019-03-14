@@ -1,243 +1,300 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.v4.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/color_app_bg"
     android:orientation="vertical">
 
+
     <LinearLayout
-        android:id="@+id/ll_heard"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/app_red"
-        android:orientation="horizontal"
-        android:padding="40pt">
+        android:layout_height="match_parent"
+        android:background="@color/color_app_bg"
+        android:orientation="vertical">
 
-        <RelativeLayout
-            android:layout_marginLeft="30pt"
-            android:gravity="center"
-            android:padding="2pt"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:background="@color/white">
 
-        <ImageView
-            android:layout_gravity="center"
-            android:id="@+id/iv_heard"
-            android:layout_width="120pt"
-            android:layout_height="120pt"
-            />
-        </RelativeLayout>
-
-        <TextView
-            android:id="@+id/tv_name"
-            android:layout_marginLeft="20pt"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:text="xxx"
-            android:textColor="@color/white"
-            android:textSize="@dimen/txtSize_38" />
         <LinearLayout
-            android:layout_gravity="center"
-            android:layout_weight="1"
-            android:gravity="right"
-            android:layout_width="wrap_content"
+            android:id="@+id/ll_heard"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:background="@color/app_red"
+            android:orientation="horizontal"
+            android:padding="40pt">
 
-        <ImageView
-            android:layout_weight="1"
-            android:layout_width="40pt"
-            android:layout_height="40pt"
-            android:background="@drawable/arrow_white_bg"
-            />
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="30pt"
+                android:background="@color/white"
+                android:gravity="center"
+                android:orientation="vertical"
+                android:padding="2pt">
+
+                <ImageView
+                    android:id="@+id/iv_heard"
+                    android:layout_width="120pt"
+                    android:layout_height="120pt"
+                    android:layout_gravity="center" />
+            </RelativeLayout>
+
+            <TextView
+                android:id="@+id/tv_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="20pt"
+                android:text="xxx"
+                android:textColor="@color/white"
+                android:textSize="@dimen/txtSize_38" />
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                android:gravity="right"
+                android:orientation="vertical">
+
+                <ImageView
+                    android:layout_width="40pt"
+                    android:layout_height="40pt"
+                    android:layout_weight="1"
+                    android:src="@drawable/arrow_white_bg" />
+            </LinearLayout>
+
         </LinearLayout>
 
-    </LinearLayout>
+        <LinearLayout
+            android:id="@+id/ll_01"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20pt"
+            android:background="@color/white"
+            android:gravity="center"
+            android:padding="30pt">
 
-    <LinearLayout
-        android:id="@+id/ll_01"
-        android:gravity="center"
-        android:layout_marginTop="20pt"
-        android:background="@color/white"
-        android:padding="30pt"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-        <ImageView
-            android:layout_width="30pt"
-            android:layout_height="30pt"
-            android:background="@drawable/set_one_bg"/>
-        <TextView
-            android:layout_marginLeft="20pt"
-            android:layout_weight="1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="账号资金"
-            android:textSize="30pt"
-            android:textColor="@color/txt_dark"
-            />
-        <ImageView
-            android:layout_width="15pt"
-            android:layout_height="25pt"
-            android:background="@drawable/img_aray_right"/>
-    </LinearLayout>
-    <LinearLayout
+            <ImageView
+                android:layout_width="30pt"
+                android:layout_height="30pt"
+                android:background="@drawable/set_one_bg" />
 
-        android:id="@+id/ll_02"
-        android:gravity="center"
-        android:layout_marginTop="20pt"
-        android:background="@color/white"
-        android:padding="30pt"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-        <ImageView
-            android:layout_width="30pt"
-            android:layout_height="30pt"
-            android:background="@drawable/set_two_bg"/>
-        <TextView
-            android:layout_marginLeft="20pt"
-            android:layout_weight="1"
-            android:layout_width="wrap_content"
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20pt"
+                android:layout_weight="1"
+                android:text="账号资金"
+                android:textColor="@color/txt_dark"
+                android:textSize="30pt" />
+
+            <ImageView
+                android:layout_width="15pt"
+                android:layout_height="25pt"
+                android:background="@drawable/img_aray_right" />
+        </LinearLayout>
+
+        <LinearLayout
+
+            android:id="@+id/ll_02"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="数据统计"
-            android:textSize="30pt"
-            android:textColor="@color/txt_dark"
-            />
-        <ImageView
-            android:layout_width="15pt"
-            android:layout_height="25pt"
-            android:background="@drawable/img_aray_right"/>
-    </LinearLayout>
-    <LinearLayout
-        android:id="@+id/ll_03"
-        android:gravity="center"
-        android:layout_marginTop="4pt"
-        android:background="@color/white"
-        android:padding="30pt"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-        <ImageView
-            android:layout_width="30pt"
-            android:layout_height="30pt"
-            android:background="@drawable/set_two_2_bg"/>
-        <TextView
-            android:layout_marginLeft="20pt"
-            android:layout_weight="1"
-            android:layout_width="wrap_content"
+            android:layout_marginTop="20pt"
+            android:background="@color/white"
+            android:gravity="center"
+            android:padding="30pt">
+
+            <ImageView
+                android:layout_width="30pt"
+                android:layout_height="30pt"
+                android:background="@drawable/set_two_bg" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20pt"
+                android:layout_weight="1"
+                android:text="数据统计"
+                android:textColor="@color/txt_dark"
+                android:textSize="30pt" />
+
+            <ImageView
+                android:layout_width="15pt"
+                android:layout_height="25pt"
+                android:background="@drawable/img_aray_right" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/ll_03"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="店铺二维码"
-            android:textSize="30pt"
-            android:textColor="@color/txt_dark"
-            />
-        <ImageView
-            android:layout_width="15pt"
-            android:layout_height="25pt"
-            android:background="@drawable/img_aray_right"/>
-    </LinearLayout>
-    <LinearLayout
-        android:id="@+id/ll_04"
-        android:gravity="center"
-        android:layout_marginTop="20pt"
-        android:background="@color/white"
-        android:padding="30pt"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-        <ImageView
-            android:layout_width="30pt"
-            android:layout_height="30pt"
-            android:background="@drawable/set_three_bg"/>
-        <TextView
-            android:layout_marginLeft="20pt"
-            android:layout_weight="1"
-            android:layout_width="wrap_content"
+            android:layout_marginTop="4pt"
+            android:background="@color/white"
+            android:gravity="center"
+            android:padding="30pt">
+
+            <ImageView
+                android:layout_width="30pt"
+                android:layout_height="30pt"
+                android:background="@drawable/set_two_2_bg" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20pt"
+                android:layout_weight="1"
+                android:text="店铺二维码"
+                android:textColor="@color/txt_dark"
+                android:textSize="30pt" />
+
+            <ImageView
+                android:layout_width="15pt"
+                android:layout_height="25pt"
+                android:background="@drawable/img_aray_right" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/ll_04"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="业务员管理"
-            android:textSize="30pt"
-            android:textColor="@color/txt_dark"
-            />
-        <ImageView
-            android:layout_width="15pt"
-            android:layout_height="25pt"
-            android:background="@drawable/img_aray_right"/>
-    </LinearLayout>
-    <LinearLayout
-        android:id="@+id/ll_05"
-        android:gravity="center"
-        android:layout_marginTop="4pt"
-        android:background="@color/white"
-        android:padding="30pt"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-        <ImageView
-            android:layout_width="30pt"
-            android:layout_height="30pt"
-            android:background="@drawable/gys_bg"/>
-        <TextView
-            android:layout_marginLeft="20pt"
-            android:layout_weight="1"
-            android:layout_width="wrap_content"
+            android:layout_marginTop="20pt"
+            android:background="@color/white"
+            android:gravity="center"
+            android:padding="30pt">
+
+            <ImageView
+                android:layout_width="30pt"
+                android:layout_height="30pt"
+                android:background="@drawable/set_three_bg" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20pt"
+                android:layout_weight="1"
+                android:text="业务员管理"
+                android:textColor="@color/txt_dark"
+                android:textSize="30pt" />
+
+            <ImageView
+                android:layout_width="15pt"
+                android:layout_height="25pt"
+                android:background="@drawable/img_aray_right" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/ll_08"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="我的供应商"
-            android:textSize="30pt"
-            android:textColor="@color/txt_dark"
-            />
-        <ImageView
-            android:layout_width="15pt"
-            android:layout_height="25pt"
-            android:background="@drawable/img_aray_right"/>
-    </LinearLayout>
-    <LinearLayout
-        android:id="@+id/ll_06"
-        android:gravity="center"
-        android:layout_marginTop="4pt"
-        android:background="@color/white"
-        android:padding="30pt"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-        <ImageView
-            android:layout_width="30pt"
-            android:layout_height="30pt"
-            android:background="@drawable/sh_bg"/>
-        <TextView
-            android:layout_marginLeft="20pt"
-            android:layout_weight="1"
-            android:layout_width="wrap_content"
+            android:layout_marginTop="2pt"
+            android:background="@color/white"
+            android:gravity="center"
+            android:padding="30pt">
+
+            <ImageView
+                android:layout_width="30pt"
+                android:layout_height="30pt"
+                android:background="@drawable/money_bg" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20pt"
+                android:layout_weight="1"
+                android:text="费用审批"
+                android:textColor="@color/txt_dark"
+                android:textSize="30pt" />
+
+            <ImageView
+                android:layout_width="15pt"
+                android:layout_height="25pt"
+                android:background="@drawable/img_aray_right" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/ll_05"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="我的商户"
-            android:textSize="30pt"
-            android:textColor="@color/txt_dark"
-            />
-        <ImageView
-            android:layout_width="15pt"
-            android:layout_height="25pt"
-            android:background="@drawable/img_aray_right"/>
-    </LinearLayout>
-    <LinearLayout
-        android:id="@+id/ll_07"
-        android:gravity="center"
-        android:layout_marginTop="20pt"
-        android:background="@color/white"
-        android:padding="30pt"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-        <ImageView
-            android:layout_width="30pt"
-            android:layout_height="30pt"
-            android:background="@drawable/set_four_bg"/>
-        <TextView
-            android:layout_marginLeft="20pt"
-            android:layout_weight="1"
-            android:layout_width="wrap_content"
+            android:layout_marginTop="4pt"
+            android:background="@color/white"
+            android:gravity="center"
+            android:padding="30pt">
+
+            <ImageView
+                android:layout_width="30pt"
+                android:layout_height="30pt"
+                android:background="@drawable/gys_bg" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20pt"
+                android:layout_weight="1"
+                android:text="我的供应商"
+                android:textColor="@color/txt_dark"
+                android:textSize="30pt" />
+
+            <ImageView
+                android:layout_width="15pt"
+                android:layout_height="25pt"
+                android:background="@drawable/img_aray_right" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/ll_06"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="设置"
-            android:textSize="30pt"
-            android:textColor="@color/txt_dark"
-            />
-        <ImageView
-            android:layout_width="15pt"
-            android:layout_height="25pt"
-            android:background="@drawable/img_aray_right"/>
+            android:layout_marginTop="4pt"
+            android:background="@color/white"
+            android:gravity="center"
+            android:padding="30pt">
+
+            <ImageView
+                android:layout_width="30pt"
+                android:layout_height="30pt"
+                android:background="@drawable/sh_bg" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20pt"
+                android:layout_weight="1"
+                android:text="我的商户"
+                android:textColor="@color/txt_dark"
+                android:textSize="30pt" />
+
+            <ImageView
+                android:layout_width="15pt"
+                android:layout_height="25pt"
+                android:background="@drawable/img_aray_right" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/ll_07"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20pt"
+            android:background="@color/white"
+            android:gravity="center"
+            android:padding="30pt">
+
+            <ImageView
+                android:layout_width="30pt"
+                android:layout_height="30pt"
+                android:background="@drawable/set_four_bg" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20pt"
+                android:layout_weight="1"
+                android:text="设置"
+                android:textColor="@color/txt_dark"
+                android:textSize="30pt" />
+
+            <ImageView
+                android:layout_width="15pt"
+                android:layout_height="25pt"
+                android:background="@drawable/img_aray_right" />
+        </LinearLayout>
     </LinearLayout>
-</LinearLayout>
+</android.support.v4.widget.NestedScrollView>

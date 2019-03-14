@@ -4,6 +4,7 @@
     android:layout_height="wrap_content"
     android:background="@color/white"
     android:orientation="vertical"
+    android:padding="20pt"
     >
 <LinearLayout
     android:layout_width="match_parent"
@@ -16,7 +17,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="费用"
-        android:textSize="@dimen/txtSize_30"
+        android:textSize="@dimen/txtSize_26"
         android:textColor="@color/txt_dark"
         />
     <TextView
@@ -30,7 +31,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="审批中"
-        android:textSize="@dimen/txtSize_30"
+        android:textSize="@dimen/txtSize_26"
         android:textColor="@color/green"
         />
     <TextView
@@ -41,7 +42,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="20分钟前"
-        android:textSize="@dimen/txtSize_30"
+        android:textSize="@dimen/txtSize_26"
         android:textColor="@color/txt_dark"
         />
 </LinearLayout>
@@ -51,7 +52,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="20分钟前"
-        android:textSize="@dimen/txtSize_30"
+        android:textSize="@dimen/txtSize_26"
         android:textColor="@color/txt_dark"
         />
     <TextView
@@ -61,7 +62,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="20分钟前"
-        android:textSize="@dimen/txtSize_30"
+        android:textSize="@dimen/txtSize_26"
         android:textColor="@color/txt_dark"
         />
     <TextView
@@ -71,7 +72,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="20分钟前"
-        android:textSize="@dimen/txtSize_30"
+        android:textSize="@dimen/txtSize_26"
         android:textColor="@color/txt_dark"
         />
 </LinearLayout>

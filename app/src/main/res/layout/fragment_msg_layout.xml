@@ -71,13 +71,12 @@
         <LinearLayout
             android:gravity="center"
             android:layout_marginTop="20pt"
-            android:layout_marginLeft="30pt"
-            android:layout_marginRight="30pt"
             android:layout_width="match_parent"
             android:layout_height="260pt"
             android:orientation="horizontal"
-            android:background="@drawable/shape_range_gray_50">
+            android:background="@color/white">
             <LinearLayout
+                android:id="@+id/ll_menu_1"
                 android:layout_weight="1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -91,11 +90,12 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textColor="@color/txt_dark"
-                    android:textSize="@dimen/txtSize_36"
-                    android:text="系统通知"/>
+                    android:textSize="@dimen/txtSize_34"
+                    android:text="订单"/>
 
             </LinearLayout>
             <LinearLayout
+                android:id="@+id/ll_menu_2"
                 android:layout_weight="1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -109,11 +109,12 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textColor="@color/txt_dark"
-                    android:textSize="@dimen/txtSize_36"
-                    android:text="发货提醒"/>
+                    android:textSize="@dimen/txtSize_34"
+                    android:text="供销"/>
 
             </LinearLayout>
             <LinearLayout
+                android:id="@+id/ll_menu_3"
                 android:layout_weight="1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -127,10 +128,32 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textColor="@color/txt_dark"
-                    android:textSize="@dimen/txtSize_36"
-                    android:text="店铺通知"/>
+                    android:textSize="@dimen/txtSize_34"
+                    android:text="资金"/>
+            </LinearLayout>
+            <LinearLayout
+                android:id="@+id/ll_menu_4"
+                android:layout_weight="1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:gravity="center">
+                <ImageView
+                    android:layout_width="100pt"
+                    android:layout_height="100pt"
+                    android:background="@drawable/menu_4"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/txt_dark"
+                    android:textSize="@dimen/txtSize_34"
+                    android:text="系统"/>
             </LinearLayout>
         </LinearLayout>
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="2pt"
+                android:background="@color/color_app_bg"/>
         <FrameLayout
             android:id="@+id/recent_contacts_fragment"
             android:layout_width="match_parent"

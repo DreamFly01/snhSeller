@@ -25,6 +25,7 @@ import com.snh.snhseller.bean.BaseResultBean;
 import com.snh.snhseller.bean.supplierbean.AllSupplierBean;
 import com.snh.snhseller.requestApi.NetSubscriber;
 import com.snh.snhseller.requestApi.RequestClient;
+import com.snh.snhseller.utils.IsBang;
 import com.snh.snhseller.utils.JumpUtils;
 import com.snh.snhseller.utils.KeyBoardUtils;
 import com.snh.snhseller.utils.StrUtils;
@@ -72,6 +73,8 @@ public class AllSupplierActiviy extends BaseActivity {
     private AllSupplierAdapter adapter;
     private List<AllSupplierBean> datas = new ArrayList<>();
 
+    private boolean isFrist = true;
+
     @Override
     protected void initContentView(Bundle savedInstanceState) {
         setContentView(R.layout.activity_allsupplier_layout);
@@ -83,6 +86,7 @@ public class AllSupplierActiviy extends BaseActivity {
 
     @Override
     public void setUpViews() {
+        IsBang.setImmerHeard(this,rlHead);
         if (from == 1) {
             heardTitle.setText("添加供应商");
         }
@@ -140,9 +144,9 @@ public class AllSupplierActiviy extends BaseActivity {
         adapter.setOnItemChildClickListener(new BaseQuickAdapter.OnItemChildClickListener() {
             @Override
             public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
-                switch (view.getId())
-                {
+                switch (view.getId()) {
                     case R.id.ll_item:
+                        isFrist = false;
                         bundle = new Bundle();
                         bundle.putInt("id", datas.get(position).SupplierId);
                         bundle.putString("name", datas.get(position).SupplierName);
@@ -177,11 +181,14 @@ public class AllSupplierActiviy extends BaseActivity {
                         datas = model.data;
                         adapter.setNewData(model.data);
                     } else {
-                        adapter.addData(model.data);
                         datas.addAll(model.data);
+                        adapter.setNewData(datas);
                     }
                 } else {
-                    adapter.setEmptyView(R.layout.empty_layout, recyclerView);
+                    if (index == 1) {
+                        adapter.setNewData(null);
+                        adapter.setEmptyView(R.layout.empty_layout, recyclerView);
+                    }
                 }
             }
         }));
@@ -190,5 +197,13 @@ public class AllSupplierActiviy extends BaseActivity {
     @OnClick(R.id.heard_back)
     public void onClick() {
         this.finish();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (!isFrist) {
+            getData();
+        }
     }
 }

@@ -11,7 +11,9 @@ import android.widget.TextView;
 import com.gyf.barlibrary.ImmersionBar;
 import com.snh.snhseller.BaseFragment;
 import com.snh.snhseller.R;
+import com.snh.snhseller.ui.salesmanManagement.home.declaration.Declaration1Activity;
 import com.snh.snhseller.ui.salesmanManagement.home.declaration.DeclarationActivity;
+import com.snh.snhseller.ui.salesmanManagement.home.declaration.DeclarationListActivity;
 import com.snh.snhseller.utils.IsBang;
 import com.snh.snhseller.utils.JumpUtils;
 
@@ -45,6 +47,8 @@ public class HomeFragment extends BaseFragment {
     @BindView(R.id.ll_03)
     LinearLayout ll03;
     Unbinder unbinder;
+    @BindView(R.id.ll_04)
+    LinearLayout ll04;
 
     @Override
     public int initContentView() {
@@ -55,8 +59,8 @@ public class HomeFragment extends BaseFragment {
     public void setUpViews(View view) {
         heardTitle.setText("我的");
         heardBack.setVisibility(View.GONE);
-        IsBang.setImmerHeard(getContext(),rlHead,"");
-        ImmersionBar.setTitleBar(getActivity(),rlHead);
+        IsBang.setImmerHeard(getContext(), rlHead, "");
+        ImmersionBar.setTitleBar(getActivity(), rlHead);
     }
 
     @Override
@@ -78,16 +82,19 @@ public class HomeFragment extends BaseFragment {
         unbinder.unbind();
     }
 
-    @OnClick({R.id.ll_01, R.id.ll_02, R.id.ll_03})
+    @OnClick({R.id.ll_01, R.id.ll_02, R.id.ll_03,R.id.ll_04})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.ll_01:
                 break;
             case R.id.ll_02:
-                JumpUtils.simpJump(getActivity(),DeclarationActivity.class,false);
+                JumpUtils.simpJump(getActivity(), Declaration1Activity.class, false);
                 break;
             case R.id.ll_03:
-                JumpUtils.simpJump(getActivity(),SetActivity.class,false);
+                JumpUtils.simpJump(getActivity(), SetActivity.class, false);
+                break;
+            case R.id.ll_04:
+                JumpUtils.simpJump(getActivity(), DeclarationListActivity.class, false);
                 break;
         }
     }

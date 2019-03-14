@@ -38,6 +38,7 @@ public class CustomAdapter extends BaseQuickAdapter<String,BaseViewHolder> {
         helper.getView(R.id.ll_item).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                setOnItemClick(helper.getView(R.id.ll_item),helper.getPosition());
                 helper.getView(R.id.ll_item).setBackgroundColor(Color.parseColor("#CACACA"));
             }
         });

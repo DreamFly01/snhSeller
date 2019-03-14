@@ -8,6 +8,8 @@ package com.snh.snhseller.utils;
  * <p>version：1<p>
  */
 public class Contans {
+
+    public static final String HOST = "http://shop.snihen.com/api/";
     public static final String USER_INFO = "snh_seller_sp";
     public static final String LIST_BANNER_DATA = "bannerData";
     public static final String IM_ACCOUNT = "imAccount";
@@ -18,4 +20,9 @@ public class Contans {
 
     public static final String LATITUDE="latitude";
     public static final String LONGITUDE="longitude";
+
+    public static final String PRODUCT_IS_FRESH = "product";
+    public static final String ORDER_IS_FRESH = "order";
+
+    public static final String IS_HDFK = "IsHdfk";
 }

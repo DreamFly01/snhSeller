@@ -2,19 +2,20 @@
 <resources>
     <color name="colorPrimary">#008577</color>
     <color name="colorPrimaryDark">#00574B</color>
-    <color name="colorAccent">#D81B60</color>
-    <color name="app_red">#fc1a4e</color>
+    <color name="colorAccent">#F81131</color>
+    <color name="app_red">#F81131</color>
     <color name="white">#ffffff</color>
     <color name="txt_dark">#1e1e1e</color>
     <color name="txt_white">#ffffff</color>
     <color name="bg_gay">#CACACA</color>
     <color name="transparent">#00000000</color>
-    <color name="txt_blue">#34a9f9</color>
-    <color name="txt_blue1">#53b7fb</color>
+    <color name="txt_blue">#A2B6F5</color>
+    <color name="txt_blue1">#A2B6F5</color>
     <color name="color_app_bg">#f3f3f7</color>
     <color name="txt_gay">#666464</color>
     <color name="gray_1">#6E6E6E</color>
     <color name="blue">#2E8AFF</color>
     <color name="green">#03D722</color>
     <color name="orange">#F99B41</color>
+    <color name="pink">#F8AC97</color>
 </resources>

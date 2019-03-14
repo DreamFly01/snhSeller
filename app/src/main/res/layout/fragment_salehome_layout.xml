@@ -49,7 +49,33 @@
             android:layout_weight="1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="费用申报"
+            android:text="费用申请"
+            android:textSize="30pt"
+            android:textColor="@color/txt_dark"
+            />
+        <ImageView
+            android:layout_width="15pt"
+            android:layout_height="25pt"
+            android:background="@drawable/img_aray_right"/>
+    </LinearLayout>
+    <LinearLayout
+        android:id="@+id/ll_04"
+        android:gravity="center"
+        android:layout_marginTop="20pt"
+        android:background="@color/white"
+        android:padding="30pt"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <ImageView
+            android:layout_width="30pt"
+            android:layout_height="30pt"
+            android:background="@drawable/sale_home_4_bg"/>
+        <TextView
+            android:layout_marginLeft="20pt"
+            android:layout_weight="1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="申请记录"
             android:textSize="30pt"
             android:textColor="@color/txt_dark"
             />

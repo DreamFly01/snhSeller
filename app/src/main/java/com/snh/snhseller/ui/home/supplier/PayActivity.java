@@ -118,7 +118,9 @@ public class PayActivity extends BaseActivity {
                 default:
                     break;
             }
-        };
+        }
+
+        ;
     };
 
     @Override
@@ -160,35 +162,90 @@ public class PayActivity extends BaseActivity {
                 this.finish();
                 break;
             case R.id.ll_02:
-                if (isClick2) {
-                    iv02.setBackgroundResource(R.drawable.pay_normall);
-                    isClick2 = false;
-                } else {
-                    iv02.setBackgroundResource(R.drawable.pay_selete);
+                if ((blance >= totalMoney) && (isClick3 | isClick4)) {
                     isClick2 = true;
+                    isClick3 = false;
+                    isClick4 = false;
+                    iv03.setBackgroundResource(R.drawable.pay_normall);
+                    iv04.setBackgroundResource(R.drawable.pay_normall);
+                    iv02.setBackgroundResource(R.drawable.pay_selete);
+                } else {
+                    if (isClick2) {
+                        iv02.setBackgroundResource(R.drawable.pay_normall);
+                        isClick2 = false;
+                    } else {
+                        iv02.setBackgroundResource(R.drawable.pay_selete);
+                        isClick2 = true;
+                    }
                 }
+
                 break;
             case R.id.ll_03:
-                if (isClick3) {
-                    iv03.setBackgroundResource(R.drawable.pay_normall);
-                    isClick3 = false;
+                if ((blance >= totalMoney) && isClick2) {
+                    dialogUtils.twoBtnDialog("余额充足，是否选择微信支付？", new DialogUtils.ChoseClickLisener() {
+                        @Override
+                        public void onConfirmClick(View v) {
+                            isClick2 = false;
+                            isClick4 = false;
+                            isClick3 = true;
+                            iv02.setBackgroundResource(R.drawable.pay_normall);
+                            iv04.setBackgroundResource(R.drawable.pay_normall);
+                            iv03.setBackgroundResource(R.drawable.pay_selete);
+                            dialogUtils.dismissDialog();
+                        }
+
+                        @Override
+                        public void onCancelClick(View v) {
+                            dialogUtils.dismissDialog();
+                        }
+                    },false);
+
                 } else {
-                    iv03.setBackgroundResource(R.drawable.pay_selete);
-                    isClick3 = true;
-                    iv04.setBackgroundResource(R.drawable.pay_normall);
-                    isClick4 = false;
+
+                    if (isClick3) {
+                        iv03.setBackgroundResource(R.drawable.pay_normall);
+                        isClick3 = false;
+                    } else {
+                        iv03.setBackgroundResource(R.drawable.pay_selete);
+                        isClick3 = true;
+                        iv04.setBackgroundResource(R.drawable.pay_normall);
+                        isClick4 = false;
+                    }
                 }
+
                 break;
             case R.id.ll_04:
-                if (isClick4) {
-                    iv04.setBackgroundResource(R.drawable.pay_normall);
-                    isClick4 = false;
+                if ((blance >= totalMoney) && isClick2) {
+                    dialogUtils.twoBtnDialog("余额充足，是否选择支付宝支付？", new DialogUtils.ChoseClickLisener() {
+                        @Override
+                        public void onConfirmClick(View v) {
+                            isClick2 = false;
+                            isClick4 = true;
+                            isClick3 = false;
+                            iv02.setBackgroundResource(R.drawable.pay_normall);
+                            iv03.setBackgroundResource(R.drawable.pay_normall);
+                            iv04.setBackgroundResource(R.drawable.pay_selete);
+                            dialogUtils.dismissDialog();
+                        }
+
+                        @Override
+                        public void onCancelClick(View v) {
+                            dialogUtils.dismissDialog();
+                        }
+                    },false);
+
                 } else {
-                    iv04.setBackgroundResource(R.drawable.pay_selete);
-                    iv03.setBackgroundResource(R.drawable.pay_normall);
-                    isClick3 = false;
-                    isClick4 = true;
+                    if (isClick4) {
+                        iv04.setBackgroundResource(R.drawable.pay_normall);
+                        isClick4 = false;
+                    } else {
+                        iv04.setBackgroundResource(R.drawable.pay_selete);
+                        iv03.setBackgroundResource(R.drawable.pay_normall);
+                        isClick3 = false;
+                        isClick4 = true;
+                    }
                 }
+
                 break;
             case R.id.tv_commit:
                 if (setPayData()) {
@@ -267,8 +324,8 @@ public class PayActivity extends BaseActivity {
             dialogUtils.noBtnDialog("请选择支付方式");
             return false;
         }
-        if(syspaytype==2|syspaytype==3){
-            if(blance>totalMoney){
+        if (syspaytype == 2 | syspaytype == 3) {
+            if (blance > totalMoney) {
                 dialogUtils.noBtnDialog("账户资金足够，请勿混合支付");
                 return false;
             }
@@ -293,14 +350,15 @@ public class PayActivity extends BaseActivity {
         api.sendReq(req);//将订单信息对象发送给微信服务器，即发送支付请求
 
     }
+
     //发起支付宝支付
-    private void payAli(final String orderInfo){
+    private void payAli(final String orderInfo) {
         Runnable authRunnable = new Runnable() {
 
             @Override
             public void run() {
                 PayTask alipay = new PayTask(PayActivity.this);
-                Map <String,String> result = alipay.payV2(orderInfo,true);
+                Map<String, String> result = alipay.payV2(orderInfo, true);
 
                 Message msg = new Message();
                 msg.what = SDK_PAY_FLAG;
@@ -313,6 +371,7 @@ public class PayActivity extends BaseActivity {
         Thread authThread = new Thread(authRunnable);
         authThread.start();
     }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

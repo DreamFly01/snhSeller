@@ -31,7 +31,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/tab_sale1"
-            android:textSize="20pt"/>
+            android:textSize="24pt"/>
 
         <RadioButton
             android:id="@+id/radio_order"
@@ -39,7 +39,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/tab_sale2"
-            android:textSize="20pt"/>
+            android:textSize="24pt"/>
 
         <RadioButton
             android:id="@+id/radio_store"
@@ -47,13 +47,13 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/tab_sale3"
-            android:textSize="20pt"/>
+            android:textSize="24pt"/>
         <RadioButton
             android:id="@+id/radio_home"
             style="@style/RadioGroupButtonStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/tab_sale4"
-            android:textSize="20pt"/>
+            android:textSize="24pt"/>
     </RadioGroup>
 </LinearLayout>

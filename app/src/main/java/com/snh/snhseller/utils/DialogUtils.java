@@ -248,7 +248,7 @@ public class DialogUtils {
         builder = new AlertDialog.Builder(mContext);
         inflater = LayoutInflater.from(mContext);
         if (null == DBManager.getInstance(mContext).getSaleInfo()) {
-            v = inflater.inflate(R.layout.dialog_two_btn_layout, null);
+            v = inflater.inflate(R.layout.dialog_edit_layout, null);
         } else {
             v = inflater.inflate(R.layout.dialog_edit1_layout, null);
         }
