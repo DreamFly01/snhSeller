@@ -59,7 +59,7 @@ public class StrUtils {
     public static String moenyToDH(String str) {
 
         Double dou = Double.parseDouble(str);
-        return new DecimalFormat("###,##0.00").format(dou);
+        return new DecimalFormat("#####0.00").format(dou);
 
     }
 

@@ -10,7 +10,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.bigkoo.pickerview.builder.OptionsPickerBuilder;
@@ -25,11 +27,9 @@ import com.snh.snhseller.bean.supplierbean.ProductBean;
 import com.snh.snhseller.bean.supplierbean.SkuBean;
 import com.snh.snhseller.requestApi.NetSubscriber;
 import com.snh.snhseller.requestApi.RequestClient;
-import com.snh.snhseller.ui.home.salesManagement.EditSalesActivity;
-import com.snh.snhseller.utils.Contans;
 import com.snh.snhseller.utils.GlideImageLoader;
+import com.snh.snhseller.utils.IsBang;
 import com.snh.snhseller.utils.JumpUtils;
-import com.snh.snhseller.utils.SPUtils;
 import com.snh.snhseller.utils.StrUtils;
 import com.snh.snhseller.wediget.RecycleViewDivider;
 import com.youth.banner.Banner;
@@ -40,7 +40,6 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import retrofit2.http.QueryMap;
 
 /**
  * <p>desc：商品详情<p>
@@ -54,10 +53,21 @@ public class ProductActivity extends BaseActivity {
     RecyclerView recyclerView;
     @BindView(R.id.refreshLayout)
     SmartRefreshLayout refreshLayout;
-    @BindView(R.id.ll_back)
-    LinearLayout llBack;
+
     @BindView(R.id.btn_commit)
     Button btnCommit;
+    @BindView(R.id.heard_back)
+    LinearLayout heardBack;
+    @BindView(R.id.heard_title)
+    TextView heardTitle;
+    @BindView(R.id.heard_menu)
+    ImageView heardMenu;
+    @BindView(R.id.heard_tv_menu)
+    TextView heardTvMenu;
+    @BindView(R.id.rl_menu)
+    RelativeLayout rlMenu;
+    @BindView(R.id.rl_head)
+    LinearLayout rlHead;
 
 
     private TextView tvPrice;
@@ -69,6 +79,7 @@ public class ProductActivity extends BaseActivity {
     private TextView tvYunfei;
 
     private TextView tvInventory;
+    private TextView hdfk;
 
     private Banner banner;
 
@@ -81,7 +92,6 @@ public class ProductActivity extends BaseActivity {
     private Bundle bundle;
     private List<String> bannerUrls = new ArrayList<>();
     private int shopId;
-
     @Override
     protected void initContentView(Bundle savedInstanceState) {
         setContentView(R.layout.activity_product_layout);
@@ -96,6 +106,8 @@ public class ProductActivity extends BaseActivity {
 
     @Override
     public void setUpViews() {
+        IsBang.setImmerHeard(this,rlHead);
+        heardTitle.setText("产品详情");
         options1Items.clear();
         options1Items.add("货到付款");
         options1Items.add("在线支付");
@@ -106,6 +118,7 @@ public class ProductActivity extends BaseActivity {
         tvName = (TextView) heard.findViewById(R.id.tv_name);
         tvInventory = (TextView) heard.findViewById(R.id.tv_inventory);
         tvYunfei = (TextView) heard.findViewById(R.id.tv_yunfei);
+        hdfk = (TextView) heard.findViewById(R.id.tv_hdfk);
         setRecyclerView();
         getData();
     }
@@ -127,10 +140,16 @@ public class ProductActivity extends BaseActivity {
     private void fillView(ProductBean bean) {
         tvName.setText(bean.ShopGoodsName);
         tvInventory.setText("总库存：" + bean.SumInventory);
-        tvPrice.setText("批发价：￥" + bean.Price);
-        tvPrice1.setText("零售价：￥" + bean.RetailPrice);
+//        tvPrice.setText("二批价：￥" + StrUtils.moenyToDH(bean.Price+""));
+//        tvPrice1.setText("终端价：￥" + StrUtils.moenyToDH(bean.RetailPrice+""));
+        tvPrice.setText("终端价：￥" + StrUtils.moenyToDH(bean.RetailPrice+""));
         tvPrice1.getPaint().setFlags(Paint.STRIKE_THRU_TEXT_FLAG);
         tvYunfei.setText("运费：送货上门");
+        if (bean.IsHdfk) {
+            hdfk.setText("支持货到付款");
+        } else {
+            hdfk.setText("正品保证");
+        }
         banner.setImageLoader(new GlideImageLoader());
         for (int i = 0; i < bean.CarouselImgUrl.length; i++) {
             bannerUrls.add(bean.CarouselImgUrl[i]);
@@ -151,7 +170,7 @@ public class ProductActivity extends BaseActivity {
     private ProductBean bean;
 
     private void getData() {
-        addSubscription(RequestClient.GetGoodsDetail(id, this, new NetSubscriber<BaseResultBean<ProductBean>>(this, isShow) {
+        addSubscription(RequestClient.GetGoodsDetail(id, shopId,this, new NetSubscriber<BaseResultBean<ProductBean>>(this, isShow) {
             @Override
             public void onResultNext(BaseResultBean<ProductBean> model) {
                 fillView(model.data);
@@ -167,15 +186,15 @@ public class ProductActivity extends BaseActivity {
     }
 
 
-    @OnClick({R.id.ll_back, R.id.btn_commit})
+    @OnClick({R.id.heard_back, R.id.btn_commit})
     public void onClick(View view) {
         switch (view.getId()) {
-            case R.id.ll_back:
+            case R.id.heard_back:
                 this.finish();
                 break;
             case R.id.btn_commit:
                 skudatas.clear();
-                if (SPUtils.getInstance(this).getBoolean(Contans.IS_HDFK)) {
+                if (bean.IsHdfk) {
                     showPickView();
                 } else {
                     next("");
@@ -187,7 +206,7 @@ public class ProductActivity extends BaseActivity {
 
     private List<String> options1Items = new ArrayList<>();
 
-    private void next(String payMethod){
+    private void next(String payMethod) {
         for (SkuBean bean : skuBeans) {
             if (bean.total > 0) {
                 skudatas.add(bean);
@@ -201,12 +220,13 @@ public class ProductActivity extends BaseActivity {
             bundle.putInt("shopId", shopId);
             bundle.putInt("goodsId", bean.ShopGoodsId);
             bundle.putInt("shopId", shopId);
-            bundle.putString("payMethod",payMethod);
+            bundle.putString("payMethod", payMethod);
             JumpUtils.dataJump(this, CommitOrderActivity.class, bundle, false);
         } else {
             showShortToast("请选择商品规格！");
         }
     }
+
     private void showPickView() {
 
         OptionsPickerView pvOptions = new OptionsPickerBuilder(ProductActivity.this, new OnOptionsSelectListener() {
@@ -215,9 +235,9 @@ public class ProductActivity extends BaseActivity {
                 //返回的分别是三个级别的选中位置
                 String tx = options1Items.get(options1);
 //                tvSex.setText(tx);
-                if("货到付款".equals(tx)){
-                    next(6+"");
-                }else {
+                if ("货到付款".equals(tx)) {
+                    next(6 + "");
+                } else {
                     next("");
                 }
             }

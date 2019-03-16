@@ -144,6 +144,7 @@ public class CommitOrderActivity extends BaseActivity {
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.heard_back:
+                this.finish();
                 break;
             case R.id.tv_commit:
                 postOrder();

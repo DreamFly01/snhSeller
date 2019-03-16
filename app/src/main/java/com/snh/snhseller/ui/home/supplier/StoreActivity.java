@@ -11,6 +11,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
+import com.netease.nim.uikit.api.NimUIKit;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnLoadMoreListener;
@@ -69,6 +70,8 @@ public class StoreActivity extends BaseActivity {
     SmartRefreshLayout refreshLayout;
     @BindView(R.id.tv_add)
     TextView tvAdd;
+    @BindView(R.id.tv_chat)
+    TextView tvChat;
 
     private int index = 1;
     private int id;
@@ -85,6 +88,7 @@ public class StoreActivity extends BaseActivity {
     private boolean isApply;
 
     private DialogUtils dialogUtils;
+
     @Override
     protected void initContentView(Bundle savedInstanceState) {
         setContentView(R.layout.activity_store_layout);
@@ -104,7 +108,7 @@ public class StoreActivity extends BaseActivity {
 
     @Override
     public void setUpViews() {
-        IsBang.setImmerHeard(this,rlHead);
+        IsBang.setImmerHeard(this, rlHead);
         heardTitle.setText("");
         tvName.setText(name);
         tvPhone.setText(phone);
@@ -112,7 +116,7 @@ public class StoreActivity extends BaseActivity {
         setRecyclerView();
         getData();
         if (type == 0) {
-            if(isApply){
+            if (isApply) {
                 tvAdd.setText("等待验证");
                 tvAdd.setEnabled(false);
             }
@@ -144,11 +148,13 @@ public class StoreActivity extends BaseActivity {
             @Override
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
 
-                if (from != 2&&type == 1) {
-                    bundle = new Bundle();
-                    bundle.putInt("id", datas.get(position).CommodityId);
-                    bundle.putInt("shopId", id);
-                    JumpUtils.dataJump(StoreActivity.this, ProductActivity.class, bundle, false);
+                if (from != 2 && type == 1) {
+                    if (datas.get(position).Repertory > 0) {
+                        bundle = new Bundle();
+                        bundle.putInt("id", datas.get(position).CommodityId);
+                        bundle.putInt("shopId", id);
+                        JumpUtils.dataJump(StoreActivity.this, ProductActivity.class, bundle, false);
+                    }
                 }
             }
         });
@@ -157,7 +163,7 @@ public class StoreActivity extends BaseActivity {
 
     private void setRecyclerView() {
         adapter = new GoodsAdapter(R.layout.item_goods_layout, null);
-        adapter.setFrom(from,type);
+        adapter.setFrom(from, type);
         recyclerView.addItemDecoration(new RecycleViewDivider(this, LinearLayout.VERTICAL, R.drawable.line));
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(adapter);
@@ -170,7 +176,7 @@ public class StoreActivity extends BaseActivity {
         ButterKnife.bind(this);
     }
 
-    @OnClick({R.id.heard_back, R.id.tv_add})
+    @OnClick({R.id.heard_back, R.id.tv_add,R.id.tv_chat})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.heard_back:
@@ -178,6 +184,9 @@ public class StoreActivity extends BaseActivity {
                 break;
             case R.id.tv_add:
                 apply();
+                break;
+            case R.id.tv_chat:
+                NimUIKit.startP2PSession(this, "supp_" + id);
                 break;
         }
     }
@@ -198,9 +207,9 @@ public class StoreActivity extends BaseActivity {
                         adapter.setNewData(datas);
                     }
                 } else {
-                    if(index == 1){
-                     adapter.setNewData(null);
-                    adapter.setEmptyView(R.layout.empty_layout, recyclerView);
+                    if (index == 1) {
+                        adapter.setNewData(null);
+                        adapter.setEmptyView(R.layout.empty_layout, recyclerView);
                     }
                 }
             }

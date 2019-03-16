@@ -84,7 +84,7 @@ public class BusinessProductFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         type = getArguments().getInt("type");
         if (view == null) {
-            view = View.inflate(getActivity(), R.layout.fragment_business_layout, null);
+                view = View.inflate(getActivity(), R.layout.fragment_business_layout, null);
             isInit = true;
             setParam();
         }

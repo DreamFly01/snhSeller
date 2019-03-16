@@ -225,12 +225,12 @@ public class ShopInfoActivity extends BaseActivity implements TakePhoto.TakeResu
         ImageUtils.loadUrlImage(this, result.getImage().getOriginalPath(), ivLogo);
         dialogUtils.dismissDialog();
         File file = new File(result.getImage().getOriginalPath());
-//        if (file.length() > 2 * 1024 * 1024) {
-//            File file1 = new File(result.getImage().getCompressPath());
-//            pathList.add(result.getImage().getCompressPath());
-//        } else {
-        pathList.add(result.getImage().getOriginalPath());
-//        }
+        if (file.length() > 2 * 1024 * 1024) {
+            File file1 = new File(result.getImage().getCompressPath());
+            pathList.add(result.getImage().getCompressPath());
+        } else {
+            pathList.add(result.getImage().getOriginalPath());
+        }
         upLoadImg(pathList);
     }
 

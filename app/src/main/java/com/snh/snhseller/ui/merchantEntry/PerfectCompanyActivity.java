@@ -95,7 +95,7 @@ public class PerfectCompanyActivity extends BaseActivity implements TakePhoto.Ta
     private List<String> pathList = new ArrayList<>();
     private Map<Object, Object> pathMap1 = new TreeMap<>();
     private Map<Object, Object> pathMap2 = new TreeMap<>();
-    private Map<Object,Object> allMap = new TreeMap<>();
+    private Map<Object, Object> allMap = new TreeMap<>();
     private String ShopCategoryType;
 
     @Override
@@ -128,10 +128,6 @@ public class PerfectCompanyActivity extends BaseActivity implements TakePhoto.Ta
             dialogUtils.noBtnDialog("请填写真实姓名");
             return false;
         }
-        if (StrUtils.isEmpty(etEmail.getText().toString())) {
-            dialogUtils.noBtnDialog("请填写邮箱");
-            return false;
-        }
         if (StrUtils.isEmpty(etSfzNum.getText().toString())) {
             dialogUtils.noBtnDialog("请输入身份证号");
             return false;
@@ -144,9 +140,11 @@ public class PerfectCompanyActivity extends BaseActivity implements TakePhoto.Ta
             dialogUtils.noBtnDialog("请输入正确的身份证号码");
             return false;
         }
-        if (!StrUtils.isEmail(etEmail.getText().toString().trim())) {
-            dialogUtils.noBtnDialog("请输入正确的邮箱");
-            return false;
+        if (!StrUtils.isEmpty(etEmail.getText().toString().trim())) {
+            if (!StrUtils.isEmail(etEmail.getText().toString().trim())) {
+                dialogUtils.noBtnDialog("请输入正确的邮箱");
+                return false;
+            }
         }
         if (mapList.size() != 2) {
             dialogUtils.noBtnDialog("请完善身份证照片信息");
@@ -250,7 +248,7 @@ public class PerfectCompanyActivity extends BaseActivity implements TakePhoto.Ta
     private void upLoadImg(List<String> datas) {
         dialogUtils.dismissDialog();
 
-        addSubscription(RequestClient.UpLoadFile(datas, this, new NetSubscriber<BaseResultBean>(this,true) {
+        addSubscription(RequestClient.UpLoadFile(datas, this, new NetSubscriber<BaseResultBean>(this, true) {
             @Override
             public void onResultNext(BaseResultBean model) {
                 StringBuffer str = new StringBuffer(model.filepath);
@@ -260,12 +258,12 @@ public class PerfectCompanyActivity extends BaseActivity implements TakePhoto.Ta
                     case 1:
                         pathMap1.put("ImgType", 1);
                         pathMap1.put("ImgSaveUrl", model.filepath);
-                        allMap.put(1,pathMap1);
+                        allMap.put(1, pathMap1);
                         break;
                     case 2:
                         pathMap2.put("ImgType", 2);
                         pathMap2.put("ImgSaveUrl", model.filepath);
-                        allMap.put(2,pathMap2);
+                        allMap.put(2, pathMap2);
                         break;
                 }
             }
@@ -302,9 +300,9 @@ public class PerfectCompanyActivity extends BaseActivity implements TakePhoto.Ta
                 if (check()) {
                     Bundle bundle = new Bundle();
                     bundle.putSerializable("data", (Serializable) dataMap);
-                    bundle.putString("ShopCategoryType",ShopCategoryType);
+                    bundle.putString("ShopCategoryType", ShopCategoryType);
                     bundle.putInt("flag", 2);
-                    bundle.putInt("flag1",flag);
+                    bundle.putInt("flag1", flag);
                     JumpUtils.dataJump(this, PerfectPersonTwoActivity.class, bundle, false);
                 }
                 break;
@@ -329,9 +327,11 @@ public class PerfectCompanyActivity extends BaseActivity implements TakePhoto.Ta
         dataMap.put("PhoneNumber", phone);
         dataMap.put("CardNo", etSfzNum.getText().toString().trim());
         dataMap.put("CardEndTime", tvLimit.getText().toString().trim());
-        dataMap.put("Email", etEmail.getText().toString().trim());
+        if (!StrUtils.isEmpty(etEmail.getText().toString().trim())) {
+            dataMap.put("Email", etEmail.getText().toString().trim());
+        }
         for (int i = 0; i < allMap.size(); i++) {
-            mapList.add((Map<Object, Object>) allMap.get(i+1));
+            mapList.add((Map<Object, Object>) allMap.get(i + 1));
         }
         dataMap.put("ImgUrlList", mapList);
     }

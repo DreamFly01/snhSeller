@@ -4,23 +4,19 @@
     android:layout_height="match_parent"
     android:background="@color/color_app_bg"
     android:orientation="vertical">
-
-
-
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="375pt"
         android:background="@drawable/store_bg">
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:orientation="vertical">
         <LinearLayout
             android:id="@+id/rl_head"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal">
-
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -28,19 +24,16 @@
                 android:paddingLeft="20pt"
                 android:paddingBottom="20pt"
                 >
-
                 <LinearLayout
                     android:id="@+id/heard_back"
                     android:layout_width="50pt"
                     android:layout_height="50pt"
                     android:gravity="center">
-
                     <ImageView
                         android:layout_width="20pt"
                         android:layout_height="31pt"
                         android:src="@drawable/left_black" />
                 </LinearLayout>
-
                 <TextView
                     android:id="@+id/heard_title"
                     android:layout_width="wrap_content"
@@ -49,31 +42,26 @@
                     android:text="title"
                     android:textColor="@color/white"
                     android:textSize="36pt" />
-
                 <RelativeLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
                     android:layout_marginRight="30pt"
                     android:visibility="visible"
-                    android:id="@+id/rl_menu"
-                    >
+                    android:id="@+id/rl_menu">
                     <ImageView
                         android:id="@+id/heard_menu"
                         android:layout_width="42pt"
                         android:layout_height="40pt"
-                        android:visibility="visible"
-                        />
+                        android:visibility="visible" />
                     <TextView
                         android:layout_toRightOf="@+id/heard_menu"
                         android:id="@+id/heard_tv_menu"
                         android:layout_width="wrap_content"
                         android:layout_height="50pt"
-                        android:textSize="30pt"
-                        />
+                        android:textSize="30pt" />
                 </RelativeLayout>
             </RelativeLayout>
-
         </LinearLayout>
 
 
@@ -86,6 +74,7 @@
             android:paddingRight="30pt"
             android:paddingBottom="60pt">
             <ImageView
+                android:scaleType="fitXY"
                 android:id="@+id/iv_logo"
                 android:layout_width="120pt"
                 android:layout_height="120pt" />
@@ -117,19 +106,38 @@
                     android:textColor="@color/white"
                     android:textSize="@dimen/txtSize_30" />
             </LinearLayout>
-            <TextView
-                android:id="@+id/tv_add"
+
+            <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="@dimen/txtSize_26"
-                android:text="添加"
-                android:textColor="@color/white"
-                android:paddingLeft="20pt"
-                android:paddingRight="20pt"
-                android:paddingTop="5pt"
-                android:paddingBottom="5pt"
-                android:background="@drawable/shape_solie_orange_40_bg"
-                />
+                android:orientation="vertical"
+                android:gravity="center">
+                <TextView
+                    android:gravity="center"
+                    android:id="@+id/tv_add"
+                    android:layout_width="180pt"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/txtSize_30"
+                    android:text="添     加"
+                    android:textColor="@color/white"
+                    android:paddingTop="5pt"
+                    android:paddingBottom="5pt"
+                    android:background="@drawable/shape_solie_orange_40_bg" />
+                <TextView
+                    android:layout_marginTop="20pt"
+                    android:gravity="center"
+                    android:id="@+id/tv_chat"
+                    android:layout_width="180pt"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/txtSize_30"
+                    android:text="咨     询"
+                    android:textColor="@color/white"
+                    android:paddingTop="5pt"
+                    android:paddingBottom="5pt"
+                    android:background="@drawable/shape_solie_orange_40_bg" />
+
+            </LinearLayout>
+
         </LinearLayout>
         </LinearLayout>
 

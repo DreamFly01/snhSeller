@@ -14,5 +14,5 @@ public class SalesRecodeBean {
     public String Icon;
     public String Remark;
     public boolean States;
-    public String CreateTime;
+    public String CreatTime;
 }

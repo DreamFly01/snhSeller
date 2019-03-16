@@ -24,6 +24,7 @@ import com.snh.snhseller.bean.BaseResultBean;
 import com.snh.snhseller.bean.salesBean.SalesRecodeBean;
 import com.snh.snhseller.requestApi.NetSubscriber;
 import com.snh.snhseller.requestApi.RequestClient;
+import com.snh.snhseller.utils.IsBang;
 import com.snh.snhseller.utils.TimeUtils;
 import com.snh.snhseller.wediget.RecycleViewDivider;
 
@@ -91,6 +92,7 @@ public class SalesRecodeActivity extends BaseActivity implements CalendarView.On
     public void setUpViews() {
         heardTitle.setText("今天");
         tvName.setText(name+"拜访记录");
+        IsBang.setImmerHeard(this,rlHead);
         heardMenu.setBackgroundResource(R.drawable.clander_bg);
         time = TimeUtils.getDateString(System.currentTimeMillis());
         calendarView.setOnCalendarSelectListener(this);

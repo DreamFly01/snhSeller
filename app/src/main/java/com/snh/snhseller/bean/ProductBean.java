@@ -23,6 +23,7 @@ public class ProductBean implements Parcelable {
     public long SalesVolume;
     public int state;
     public String UnitsTitle;
+    public double MarketPrice;
 
     protected ProductBean(Parcel in) {
         CommTenantId = in.readInt();
@@ -37,6 +38,7 @@ public class ProductBean implements Parcelable {
         SalesVolume = in.readLong();
         state = in.readInt();
         UnitsTitle = in.readString();
+        MarketPrice = in.readDouble();
     }
 
     public static final Creator<ProductBean> CREATOR = new Creator<ProductBean>() {
@@ -70,5 +72,6 @@ public class ProductBean implements Parcelable {
         dest.writeLong(SalesVolume);
         dest.writeInt(state);
         dest.writeString(UnitsTitle);
+        dest.writeDouble(MarketPrice);
     }
 }

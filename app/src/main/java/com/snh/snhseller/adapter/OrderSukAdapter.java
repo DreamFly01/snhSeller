@@ -6,6 +6,7 @@ import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.snh.snhseller.R;
 import com.snh.snhseller.bean.supplierbean.SkuBean;
+import com.snh.snhseller.utils.StrUtils;
 
 import java.util.List;
 
@@ -25,7 +26,7 @@ public class OrderSukAdapter extends BaseQuickAdapter<SkuBean,BaseViewHolder> {
     protected void convert(BaseViewHolder helper, SkuBean item) {
         helper.setText(R.id.tv_01,item.NormName+"  "+item.NormValue+"("+item.Unit+")");
         helper.setText(R.id.tv_02,"x"+item.total);
-        helper.setText(R.id.tv_03,"价格 "+item.Price);
-        helper.setText(R.id.tv_04,"小计："+item.Price*item.total);
+        helper.setText(R.id.tv_03,"价格 "+StrUtils.moenyToDH(item.Price+""));
+        helper.setText(R.id.tv_04,"小计："+StrUtils.moenyToDH(item.Price*item.total+""));
     }
 }

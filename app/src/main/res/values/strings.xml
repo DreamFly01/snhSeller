@@ -19,4 +19,6 @@
         \n2、规格值：空格填写正整数，例如：填入数字“10”则表示：10=1*10，单位为“/件”。</string>
     <string name="sales_tip" tools:ignore="MissingTranslation">*电话号码必须是算你狠平台的注册用户才能添加成为业务员
     \n*电话号码作为业务员的登录账号</string>
+    <string name="sku_tip1" tools:ignore="MissingTranslation">*规格名称命名：例如 苹果1*6/件,草莓味1*12/件,红色S码,红色M码,以此类推。</string>
+
 </resources>

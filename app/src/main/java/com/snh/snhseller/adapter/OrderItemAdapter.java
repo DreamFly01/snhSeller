@@ -36,7 +36,7 @@ public class OrderItemAdapter extends BaseQuickAdapter<OrderGoodsBean, BaseViewH
     @Override
     protected void convert(BaseViewHolder helper, final OrderGoodsBean item) {
         helper.setText(R.id.tv_GoodsName, item.OrderGoodsName);
-        helper.setText(R.id.tv_price, "￥" + item.Price);
+        helper.setText(R.id.tv_price, "￥" + StrUtils.moenyToDH(item.Price+""));
         if (StrUtils.isEmpty(item.NormName)) {
             helper.getView(R.id.tv_sku).setVisibility(View.GONE);
         } else {

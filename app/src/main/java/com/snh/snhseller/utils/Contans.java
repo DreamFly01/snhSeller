@@ -23,6 +23,7 @@ public class Contans {
 
     public static final String PRODUCT_IS_FRESH = "product";
     public static final String ORDER_IS_FRESH = "order";
+    public static final String FRESH = "frsh";
 
     public static final String IS_HDFK = "IsHdfk";
 }

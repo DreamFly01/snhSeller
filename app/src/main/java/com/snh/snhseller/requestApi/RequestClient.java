@@ -107,6 +107,24 @@ public class RequestClient {
     }
 
     /**
+     *
+     * @param PhoneNumber
+     * @param type
+     * @param context
+     * @param observer
+     * @return
+     */
+    public static Subscription SmsCode(String PhoneNumber, Context context, NetSubscriber<BaseResultBean> observer) {
+        Map<String, Object> map = new TreeMap<>();
+        map.put("PhoneNumber", PhoneNumber);
+        map.put("Type", 1);
+        return doRequest(RetrofitProxy.
+                        getApiService(context, "").
+                        SmsCode(map),
+                context, observer);
+    }
+
+    /**
      * 商家入驻登录
      *
      * @param PhoneNumber
@@ -959,9 +977,9 @@ public class RequestClient {
      * @param observer
      * @return
      */
-    public static Subscription GetGoodsDetail(int id, Context context, NetSubscriber<BaseResultBean<com.snh.snhseller.bean.supplierbean.ProductBean>> observer) {
+    public static Subscription GetGoodsDetail(int id,int supplierid, Context context, NetSubscriber<BaseResultBean<com.snh.snhseller.bean.supplierbean.ProductBean>> observer) {
         Map<String, Object> map = new TreeMap<>();
-        map.put("supplierId", DBManager.getInstance(context).getUseId());
+        map.put("supplierId", supplierid);
         map.put("shopgoodsId", id);
 
         return doRequest(RetrofitProxy.

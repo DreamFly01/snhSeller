@@ -25,6 +25,7 @@ import com.snh.snhseller.bean.BaseResultBean;
 import com.snh.snhseller.bean.salesBean.SalesCountBean;
 import com.snh.snhseller.requestApi.NetSubscriber;
 import com.snh.snhseller.requestApi.RequestClient;
+import com.snh.snhseller.utils.IsBang;
 import com.snh.snhseller.utils.JumpUtils;
 import com.snh.snhseller.utils.TimeUtils;
 import com.snh.snhseller.wediget.RecycleViewDivider;
@@ -82,6 +83,7 @@ public class SalesCountActivity extends BaseActivity implements CalendarView.OnC
 
     @Override
     public void setUpViews() {
+        IsBang.setImmerHeard(this, rlHead);
         heardTitle.setText("今天");
         tvName.setVisibility(View.GONE);
         heardMenu.setBackgroundResource(R.drawable.clander_bg);

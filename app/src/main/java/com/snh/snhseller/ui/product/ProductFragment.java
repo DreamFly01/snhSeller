@@ -14,6 +14,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -26,6 +27,7 @@ import com.snh.snhseller.utils.DBManager;
 import com.snh.snhseller.utils.DialogUtils;
 import com.snh.snhseller.utils.IsBang;
 import com.snh.snhseller.utils.JumpUtils;
+import com.snh.snhseller.utils.StrUtils;
 import com.snh.snhseller.utils.UpdateAppHttpUtil;
 import com.vector.update_app.UpdateAppBean;
 import com.vector.update_app.UpdateAppManager;
@@ -55,7 +57,7 @@ public class ProductFragment extends BaseFragment {
     @BindView(R.id.heard_title)
     TextView heardTitle;
     @BindView(R.id.heard_menu)
-    ImageView heardMenu;
+    RelativeLayout heardMenu;
     @BindView(R.id.rl_head1)
     LinearLayout rlHead;
     @BindView(R.id.tab_order)
@@ -75,6 +77,7 @@ public class ProductFragment extends BaseFragment {
     private List<String> data1 = new ArrayList<>();
     private List<Integer> data2 = new ArrayList<>();
     private int[] viewLocation = new int[2];
+
     @Override
     public int initContentView() {
         return R.layout.fragment_product_layout;
@@ -149,19 +152,22 @@ public class ProductFragment extends BaseFragment {
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.fab:
-                if (DBManager.getInstance(getContext()).getUserInfo().suppType.equals("商超士多")) {
-                    bundle = new Bundle();
-                    bundle.putInt("type", 1);
-                    JumpUtils.dataJump(getActivity(), EditProductActivity.class, bundle, false);
-                }else {
-                    Toast.makeText(getContext(),"请前往电脑端添加",Toast.LENGTH_SHORT).show();
+                if (!StrUtils.isEmpty(DBManager.getInstance(getContext()).getUserInfo().suppType)) {
+                    if (DBManager.getInstance(getContext()).getUserInfo().suppType.equals("商超士多")) {
+                        bundle = new Bundle();
+                        bundle.putInt("type", 1);
+                        JumpUtils.dataJump(getActivity(), EditProductActivity.class, bundle, false);
+                    }
+                } else {
+                    Toast.makeText(getContext(), "请前往电脑端添加", Toast.LENGTH_SHORT).show();
                 }
+
                 break;
             case R.id.heard_menu:
                 heardMenu.getLocationInWindow(viewLocation);
                 data1.clear();
                 data2.clear();
-                data1.add("商家商品");
+                data1.add("批发商品");
 
                 data2.add(R.drawable.product2_bg);
 
@@ -169,9 +175,9 @@ public class ProductFragment extends BaseFragment {
                     @Override
                     public void onItemClick(View v, int position) {
                         dialogUtils.dismissDialog();
-                        JumpUtils.simpJump(getActivity(),BusinessProductActivity.class,false);
+                        JumpUtils.simpJump(getActivity(), BusinessProduct1Activity.class, false);
                     }
-                },viewLocation[1] + heardMenu.getMeasuredHeight() / 2, viewLocation[0], heardMenu.getWidth(), data1,data2);
+                }, viewLocation[1] + heardMenu.getMeasuredHeight() / 2, viewLocation[0], heardMenu.getWidth(), data1, data2);
                 break;
         }
     }
@@ -202,6 +208,7 @@ public class ProductFragment extends BaseFragment {
             mTv_Title.setTextColor(tabOrder.getTabTextColors());//
             return v;
         }
+
         @Override
         public int getItemPosition(@NonNull Object object) {
             return PagerAdapter.POSITION_NONE;
@@ -209,7 +216,7 @@ public class ProductFragment extends BaseFragment {
 
         @Override
         public Object instantiateItem(ViewGroup container, int position) {
-            ProductListFragment fragment = (ProductListFragment) super.instantiateItem(container,position);
+            ProductListFragment fragment = (ProductListFragment) super.instantiateItem(container, position);
             switch (position) {
                 case 0:
                     fragment.updateArguments(1);
@@ -242,7 +249,7 @@ public class ProductFragment extends BaseFragment {
 //                .setTopPic(R.drawable.top_3)
 //                .setThemeColor(R.color.app_red)
                 .build()
-                .checkNewApp(new UpdateCallback(){
+                .checkNewApp(new UpdateCallback() {
                     /**
                      * 解析json,自定义协议
                      *
@@ -252,12 +259,12 @@ public class ProductFragment extends BaseFragment {
                     @Override
                     protected UpdateAppBean parseJson(String json) {
                         UpdateAppBean updateAppBean = new UpdateAppBean();
-                        String isUpdata="No";
+                        String isUpdata = "No";
                         try {
                             JSONObject jsonObject = JSONObject.parseObject(json);
                             JSONObject data = jsonObject.getJSONObject("data");
 
-                            if(AppUpdateUtils.getVersionCode(getContext())<Integer.parseInt(data.getString("VersionCode"))){
+                            if (AppUpdateUtils.getVersionCode(getContext()) < Integer.parseInt(data.getString("VersionCode"))) {
                                 isUpdata = "Yes";
                             }
                             updateAppBean

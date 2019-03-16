@@ -20,5 +20,6 @@ public class ProductBean {
     public double RetailPrice;
     public String ShopGoodsName;
     public int SumInventory;
+    public boolean IsHdfk;
     public List<SkuBean> ShopNormsList;
 }

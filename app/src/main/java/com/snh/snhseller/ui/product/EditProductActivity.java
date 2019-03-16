@@ -7,12 +7,17 @@ import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.bigkoo.pickerview.builder.OptionsPickerBuilder;
+import com.bigkoo.pickerview.listener.OnOptionsSelectListener;
+import com.bigkoo.pickerview.view.OptionsPickerView;
 import com.jph.takephoto.app.TakePhoto;
 import com.jph.takephoto.app.TakePhotoImpl;
 import com.jph.takephoto.compress.CompressConfig;
@@ -28,10 +33,13 @@ import com.snh.snhseller.bean.BaseResultBean;
 import com.snh.snhseller.bean.ProductBean;
 import com.snh.snhseller.requestApi.NetSubscriber;
 import com.snh.snhseller.requestApi.RequestClient;
+import com.snh.snhseller.ui.home.salesManagement.EditSalesActivity;
+import com.snh.snhseller.utils.Contans;
 import com.snh.snhseller.utils.DBManager;
 import com.snh.snhseller.utils.DialogUtils;
 import com.snh.snhseller.utils.ImageUtils;
 import com.snh.snhseller.utils.IsBang;
+import com.snh.snhseller.utils.SPUtils;
 import com.snh.snhseller.utils.StrUtils;
 
 import java.io.File;
@@ -78,6 +86,10 @@ public class EditProductActivity extends BaseActivity implements TakePhoto.TakeR
     EditText et05;
     @BindView(R.id.btn_commit)
     Button btnCommit;
+    @BindView(R.id.rl_menu)
+    RelativeLayout rlMenu;
+    @BindView(R.id.et_06)
+    EditText et06;
 
     private int type;
     private Bundle bundle;
@@ -93,7 +105,7 @@ public class EditProductActivity extends BaseActivity implements TakePhoto.TakeR
     protected void initContentView(Bundle savedInstanceState) {
         setContentView(R.layout.activity_editproduct_layout);
         bundle = getIntent().getExtras();
-        if(null != bundle){
+        if (null != bundle) {
             type = bundle.getInt("type");
             bean = bundle.getParcelable("data");
         }
@@ -104,16 +116,16 @@ public class EditProductActivity extends BaseActivity implements TakePhoto.TakeR
 
     @Override
     public void setUpViews() {
-        IsBang.setImmerHeard(this,rlHead);
+        IsBang.setImmerHeard(this, rlHead);
         btnCommit.setText("立即发布");
-        if(type == 1){
+        if (type == 1) {
             heardTitle.setText("添加商品");
-        }else {
+        } else {
             heardTitle.setText("编辑商品");
         }
-        if(null!=bean){
+        if (null != bean) {
             path = bean.CommTenantIcon;
-            ImageUtils.loadUrlImage(this,bean.CommTenantIcon,ivLogo);
+            ImageUtils.loadUrlImage(this, bean.CommTenantIcon, ivLogo);
             et01.setText(bean.CommTenantName);
             et01.setSelection(bean.CommTenantName.length());
             et01.setFocusable(false);
@@ -122,12 +134,13 @@ public class EditProductActivity extends BaseActivity implements TakePhoto.TakeR
             et02.setSelection(bean.CategoryName.length());
             et02.setFocusable(false);
             et02.setFocusableInTouchMode(false);
-            et03.setText(bean.Price+"");
-            et03.setSelection((bean.Price+"").length());
+            et03.setText(bean.Price + "");
+            et03.setSelection((bean.Price + "").length());
             et04.setText(bean.UnitsTitle);
             et04.setSelection(bean.UnitsTitle.length());
-            et05.setText(bean.Inventory+"");
-            et05.setSelection((bean.Inventory+"").length());
+            et05.setText(bean.Inventory + "");
+            et05.setSelection((bean.Inventory + "").length());
+            et06.setText(bean.MarketPrice + "");
         }
     }
 
@@ -143,7 +156,7 @@ public class EditProductActivity extends BaseActivity implements TakePhoto.TakeR
         ButterKnife.bind(this);
     }
 
-    @OnClick({R.id.heard_back, R.id.ll_01,R.id.btn_commit})
+    @OnClick({R.id.heard_back, R.id.ll_01, R.id.btn_commit,R.id.et_02})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.heard_back:
@@ -167,6 +180,7 @@ public class EditProductActivity extends BaseActivity implements TakePhoto.TakeR
                         takePhoto.onEnableCompress(compressConfig, true);
                         takePhoto.onPickFromCapture(uri);
                     }
+
                     @Override
                     public void onAlumClick(View v) {
                         takePhoto.onEnableCompress(compressConfig, true);
@@ -176,14 +190,17 @@ public class EditProductActivity extends BaseActivity implements TakePhoto.TakeR
                 }, true);
                 break;
             case R.id.btn_commit:
-                if(check()){
+                if (check()) {
                     setData();
-                    if(type == 1){
+                    if (type == 1) {
                         addProduct();
-                    }else {
+                    } else {
                         editProduct();
                     }
                 }
+                break;
+            case R.id.et_02:
+//                showPickView();
                 break;
         }
     }
@@ -254,33 +271,33 @@ public class EditProductActivity extends BaseActivity implements TakePhoto.TakeR
         addSubscription(RequestClient.UpLoadFile(datas, this, new NetSubscriber<BaseResultBean>(this, true) {
             @Override
             public void onResultNext(BaseResultBean model) {
-                    path = model.filepath;
+                path = model.filepath;
             }
         }));
     }
 
-    private boolean check(){
-        if(StrUtils.isEmpty(path)){
+    private boolean check() {
+        if (StrUtils.isEmpty(path)) {
             dialogUtils.noBtnDialog("请添加图片");
             return false;
         }
-        if(StrUtils.isEmpty(et01.getText().toString().trim())){
+        if (StrUtils.isEmpty(et01.getText().toString().trim())) {
             dialogUtils.noBtnDialog("请输入商品标题");
             return false;
         }
-        if(StrUtils.isEmpty(et02.getText().toString().trim())){
+        if (StrUtils.isEmpty(et02.getText().toString().trim())) {
             dialogUtils.noBtnDialog("请输入所属类目");
             return false;
         }
-        if(StrUtils.isEmpty(et03.getText().toString().trim())){
-            dialogUtils.noBtnDialog("请输入零售价格");
+        if (StrUtils.isEmpty(et03.getText().toString().trim())) {
+            dialogUtils.noBtnDialog("请输入终端价格");
             return false;
         }
-        if(StrUtils.isEmpty(et04.getText().toString().trim())){
+        if (StrUtils.isEmpty(et04.getText().toString().trim())) {
             dialogUtils.noBtnDialog("请输入商品单位");
             return false;
         }
-        if(StrUtils.isEmpty(et05.getText().toString().trim())){
+        if (StrUtils.isEmpty(et05.getText().toString().trim())) {
             dialogUtils.noBtnDialog("请输入详细库存");
             return false;
         }
@@ -288,42 +305,63 @@ public class EditProductActivity extends BaseActivity implements TakePhoto.TakeR
 
         return true;
     }
-    private void setData(){
-        map.put("SupplierId",DBManager.getInstance(this).getUseId());
-        map.put("CommTenantIcon",path);
-        map.put("CommTenantTitle",et01.getText().toString().trim());
-        map.put("Category",et02.getText().toString().trim());
-        map.put("Price",et03.getText().toString().trim());
-        map.put("UnitsTitle",et04.getText().toString().trim());
-        map.put("Inventory",et05.getText().toString().trim());
-        if(null != bean){
-            map.put("GoodId",bean.CommTenantId);
+
+    private void setData() {
+        map.put("SupplierId", DBManager.getInstance(this).getUseId());
+        map.put("CommTenantIcon", path);
+        map.put("CommTenantTitle", et01.getText().toString().trim());
+        map.put("Category", et02.getText().toString().trim());
+        map.put("Price", et03.getText().toString().trim());
+        map.put("UnitsTitle", et04.getText().toString().trim());
+        map.put("Inventory", et05.getText().toString().trim());
+        map.put("MarketPrice", et06.getText().toString().trim());
+        if (null != bean) {
+            map.put("GoodId", bean.CommTenantId);
         }
     }
-    private void addProduct(){
-        addSubscription(RequestClient.AddProduct(map, this, new NetSubscriber<BaseResultBean>(this,true) {
+
+    private void addProduct() {
+        addSubscription(RequestClient.AddProduct(map, this, new NetSubscriber<BaseResultBean>(this, true) {
             @Override
             public void onResultNext(BaseResultBean model) {
-                    dialogUtils.simpleDialog("新增商品成功", new DialogUtils.ConfirmClickLisener() {
-                        @Override
-                        public void onConfirmClick(View v) {
-                            EditProductActivity.this.finish();
-                        }
-                    },false);
+                dialogUtils.simpleDialog("新增商品成功", new DialogUtils.ConfirmClickLisener() {
+                    @Override
+                    public void onConfirmClick(View v) {
+                        SPUtils.getInstance(EditProductActivity.this).savaBoolean(Contans.FRESH, true).commit();
+                        EditProductActivity.this.finish();
+                    }
+                }, false);
             }
         }));
     }
-    private void editProduct(){
-        addSubscription(RequestClient.EditProduct(map, this, new NetSubscriber<BaseResultBean>(this,true) {
+
+    private void editProduct() {
+        addSubscription(RequestClient.EditProduct(map, this, new NetSubscriber<BaseResultBean>(this, true) {
             @Override
             public void onResultNext(BaseResultBean model) {
                 dialogUtils.simpleDialog("编辑商品成功", new DialogUtils.ConfirmClickLisener() {
                     @Override
                     public void onConfirmClick(View v) {
+                        SPUtils.getInstance(EditProductActivity.this).savaBoolean(Contans.FRESH, true).commit();
                         EditProductActivity.this.finish();
                     }
-                },false);
+                }, false);
             }
         }));
     }
+//    private List<String> options1Items = new ArrayList<>();
+//    private void showPickView() {
+//
+//        OptionsPickerView pvOptions = new OptionsPickerBuilder(EditProductActivity.this, new OnOptionsSelectListener() {
+//            @Override
+//            public void onOptionsSelect(int options1, int option2, int options3, View v) {
+//                //返回的分别是三个级别的选中位置
+//                String tx = options1Items.get(options1);
+//                et02.setText(tx);
+//            }
+//        }).setDecorView((ViewGroup) getWindow().getDecorView().findViewById(android.R.id.content)).build();
+//        pvOptions.setPicker(options1Items);
+//        pvOptions.show();
+//    }
+
 }

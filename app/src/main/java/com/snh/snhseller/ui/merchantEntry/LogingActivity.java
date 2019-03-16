@@ -116,7 +116,7 @@ public class LogingActivity extends BaseActivity {
     }
 
     private void getCode(){
-        addSubscription(RequestClient.PostSms(etPhone.getText().toString().trim(), 2,this, new NetSubscriber<BaseResultBean>(LogingActivity.this,true) {
+        addSubscription(RequestClient.SmsCode(etPhone.getText().toString().trim(), this, new NetSubscriber<BaseResultBean>(LogingActivity.this,true) {
             @Override
             public void onResultNext(BaseResultBean model) {
                 showShortToast("短信发送成功，请注意查收！");

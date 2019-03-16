@@ -27,6 +27,7 @@ import com.snh.snhseller.bean.salesBean.SalesmanBean;
 import com.snh.snhseller.requestApi.NetSubscriber;
 import com.snh.snhseller.requestApi.RequestClient;
 import com.snh.snhseller.utils.DialogUtils;
+import com.snh.snhseller.utils.IsBang;
 import com.snh.snhseller.utils.Md5Utils;
 import com.snh.snhseller.utils.StrUtils;
 import com.snh.snhseller.wediget.RecycleViewDivider;
@@ -109,6 +110,7 @@ public class EditSalesActivity extends BaseActivity {
 
     @Override
     public void setUpViews() {
+        IsBang.setImmerHeard(this, rlHead);
         heardTitle.setText("业务员详情");
         options1Items.clear();
         options1Items.add("男");

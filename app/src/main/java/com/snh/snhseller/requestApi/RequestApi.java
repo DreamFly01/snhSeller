@@ -58,13 +58,14 @@ public interface RequestApi {
     @POST("api/ApiSource")
     Observable<BaseResultBean> UpLoadFile(@Part List<MultipartBody.Part> parts);
     /**
-     * 商家入驻获取验证码
+     * 获取验证码
      * @param params
      * @return
      */
     @FormUrlEncoded
     @POST("SupplierAuto/SmsSend")
     Observable<BaseResultBean> PostSms(@FieldMap Map<String,Object> params);
+
 
     /**
      * 商家入驻登录
@@ -91,6 +92,15 @@ public interface RequestApi {
     @POST("SupplierAuto/ForgetPwd")
     Observable<BaseResultBean> ForgetPwd(@Body Map<String,Object> params);
 
+
+    /**
+     * 商家入驻获取短信验证码
+     * @param params
+     * @return
+     */
+    @FormUrlEncoded
+    @POST("SupplierEnter/SmsCode")
+    Observable<BaseResultBean> SmsCode(@FieldMap Map<String,Object> params);
 
     /**
      * 商家入驻登录

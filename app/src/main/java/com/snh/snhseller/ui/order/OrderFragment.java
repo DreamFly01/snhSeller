@@ -5,7 +5,6 @@ import android.support.annotation.NonNull;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
@@ -14,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.gyf.barlibrary.ImmersionBar;
@@ -39,6 +39,8 @@ import butterknife.Unbinder;
  */
 public class OrderFragment extends BaseFragment {
 
+
+    Unbinder unbinder;
     @BindView(R.id.heard_back)
     LinearLayout heardBack;
     @BindView(R.id.heard_title)
@@ -47,13 +49,14 @@ public class OrderFragment extends BaseFragment {
     ImageView heardMenu;
     @BindView(R.id.heard_tv_menu)
     TextView heardTvMenu;
+    @BindView(R.id.rl_menu)
+    RelativeLayout rlMenu;
     @BindView(R.id.rl_head)
     LinearLayout rlHead;
     @BindView(R.id.tab_order)
     TabLayout tabOrder;
     @BindView(R.id.tab_vp)
     ViewPager tabVp;
-    Unbinder unbinder;
     private String[] titles;
     private List<Fragment> list = new ArrayList<>();
     private Bundle bundle;
@@ -65,6 +68,7 @@ public class OrderFragment extends BaseFragment {
 
     private List<String> data1 = new ArrayList<>();
     private List<Integer> data2 = new ArrayList<>();
+
     @Override
     public int initContentView() {
         return R.layout.fragment_order_fragment;
@@ -104,7 +108,7 @@ public class OrderFragment extends BaseFragment {
         unbinder.unbind();
     }
 
-    @OnClick(R.id.heard_menu)
+    @OnClick(R.id.rl_menu)
     public void onClick() {
         heardMenu.getLocationInWindow(viewLocation);
         data1.clear();
@@ -121,7 +125,7 @@ public class OrderFragment extends BaseFragment {
                 setType(position);
                 dialogUtils.dismissDialog();
             }
-        },viewLocation[1] + heardMenu.getMeasuredHeight() / 2, viewLocation[0], heardMenu.getWidth(), data1,data2);
+        }, viewLocation[1] + heardMenu.getMeasuredHeight() / 2, viewLocation[0], heardMenu.getWidth(), data1, data2);
     }
 
 
@@ -165,7 +169,7 @@ public class OrderFragment extends BaseFragment {
         switch (orderType) {
             case 0:
                 heardTitle.setText("用户订单");
-                titles = new String[]{"全部", "待支付", "待发货", "退款中", "已发货", "已完成"};
+                titles = new String[]{"全部", "待支付", "待发货", "退款中", "待收货", "已完成"};
                 for (int i = 0; i < titles.length; i++) {
                     OrderListFragment fragment = new OrderListFragment();
                     bundle = new Bundle();
@@ -197,7 +201,7 @@ public class OrderFragment extends BaseFragment {
                 break;
             case 1:
                 heardTitle.setText("出库订单");
-                titles = new String[]{"全部", "待支付", "待发货", "已发货", "已完成"};
+                titles = new String[]{"全部", "待支付", "待发货", "待收货", "已完成"};
                 for (int i = 0; i < titles.length; i++) {
                     OrderListFragment fragment = new OrderListFragment();
                     bundle = new Bundle();
@@ -209,7 +213,7 @@ public class OrderFragment extends BaseFragment {
                 break;
             case 2:
                 heardTitle.setText("进货订单");
-                titles = new String[]{"全部", "待支付", "待发货", "已发货", "已完成"};
+                titles = new String[]{"全部", "待支付", "待发货", "待收货", "已完成"};
                 for (int i = 0; i < titles.length; i++) {
                     OrderListFragment fragment = new OrderListFragment();
                     bundle = new Bundle();

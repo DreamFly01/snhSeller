@@ -25,6 +25,7 @@ import com.snh.snhseller.ui.home.supplier.PayActivity;
 import com.snh.snhseller.utils.DBManager;
 import com.snh.snhseller.utils.DialogUtils;
 import com.snh.snhseller.utils.ImageUtils;
+import com.snh.snhseller.utils.IsBang;
 import com.snh.snhseller.utils.JumpUtils;
 import com.snh.snhseller.utils.StrUtils;
 import com.snh.snhseller.utils.TimeUtils;
@@ -129,6 +130,7 @@ public class OrderDetailsActivity extends BaseActivity {
     @Override
     public void setUpViews() {
         heardTitle.setText("订单详情");
+        IsBang.setImmerHeard(this,rlHead);
         setRecyclerView();
         getData();
     }
@@ -273,9 +275,7 @@ public class OrderDetailsActivity extends BaseActivity {
                     break;
                 case 2:
                     llBtn.setVisibility(View.VISIBLE);
-
                     tvPayTime.setVisibility(View.VISIBLE);
-                    llTime.setVisibility(View.VISIBLE);
                     tvState1.setVisibility(View.VISIBLE);
                     tvState1.setText("提醒发货");
                     tvState1.setOnClickListener(new View.OnClickListener() {
@@ -287,7 +287,6 @@ public class OrderDetailsActivity extends BaseActivity {
                     break;
                 case 3:
                     llBtn.setVisibility(View.VISIBLE);
-
                     tvState1.setVisibility(View.VISIBLE);
                     tvState1.setText("确认收货");
                     tvState1.setOnClickListener(new View.OnClickListener() {

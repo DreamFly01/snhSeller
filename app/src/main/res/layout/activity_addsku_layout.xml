@@ -15,18 +15,24 @@
         android:paddingLeft="30pt"
         android:paddingRight="30pt"
         android:paddingTop="10pt"
-        android:paddingBottom="30pt"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:gravity="center"
+        android:paddingBottom="30pt"
         >
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/app_red"
+            android:textSize="@dimen/txtSize_30"
+            android:text="*"/>
         <TextView
             android:textColor="@color/txt_dark"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="@dimen/txtSize_30"
-            android:text="规格名称："
+            android:text="产品规格："
             />
         <EditText
             android:id="@+id/et_01"
@@ -37,21 +43,39 @@
             android:layout_gravity="center"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:hint="请输入规格名称"
+            android:hint="请输入规格规格"
             android:textSize="@dimen/txtSize_30"
             android:textColor="@color/txt_dark"/>
     </LinearLayout>
+    <TextView
+        android:paddingBottom="30pt"
+
+        android:background="@color/white"
+        android:paddingLeft="30pt"
+        android:paddingRight="30pt"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/sku_tip1"
+        android:textSize="@dimen/txtSize_24"
+        android:textColor="@color/app_red"
+        />
     <LinearLayout
+        android:paddingBottom="30pt"
         android:background="@color/white"
         android:paddingLeft="30pt"
         android:paddingRight="30pt"
         android:paddingTop="10pt"
-        android:paddingBottom="30pt"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:gravity="center"
         >
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/app_red"
+            android:textSize="@dimen/txtSize_30"
+            android:text="*"/>
         <TextView
             android:textColor="@color/txt_dark"
             android:layout_width="wrap_content"
@@ -73,6 +97,17 @@
             android:textSize="@dimen/txtSize_30"
             android:textColor="@color/txt_dark"/>
     </LinearLayout>
+    <TextView
+        android:paddingBottom="30pt"
+        android:background="@color/white"
+        android:paddingLeft="30pt"
+        android:paddingRight="30pt"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="*规格值：填入数字“10”则表示：10件/组"
+        android:textSize="@dimen/txtSize_24"
+        android:textColor="@color/app_red"
+        />
     <LinearLayout
         android:background="@color/white"
         android:paddingLeft="30pt"
@@ -85,23 +120,29 @@
         android:gravity="center"
         >
         <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/app_red"
+            android:textSize="@dimen/txtSize_30"
+            android:text="*"/>
+        <TextView
             android:textColor="@color/txt_dark"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="@dimen/txtSize_30"
-            android:text="批&#160;&#160;发&#160;&#160;价："
+            android:text="二&#160;&#160;批&#160;&#160;价："
             />
         <EditText
             android:id="@+id/et_03"
             android:layout_marginLeft="20pt"
-            android:inputType="number"
+            android:inputType="numberDecimal"
             android:padding="5pt"
             android:background="@drawable/shape_range_gray_20_bg"
             android:layout_weight="1"
             android:layout_gravity="center"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:hint="请输入批发价"
+            android:hint="请输入二批价"
             android:textSize="@dimen/txtSize_30"
             android:textColor="@color/txt_dark"/>
     </LinearLayout>
@@ -117,14 +158,20 @@
         android:gravity="center"
         >
         <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/app_red"
+            android:textSize="@dimen/txtSize_30"
+            android:text="*"/>
+        <TextView
             android:textColor="@color/txt_dark"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="@dimen/txtSize_30"
-            android:text="零&#160;&#160;售&#160;&#160;价："
+            android:text="终&#160;&#160;端&#160;&#160;价："
             />
         <EditText
-            android:inputType="number"
+            android:inputType="numberDecimal"
             android:id="@+id/et_04"
             android:layout_marginLeft="20pt"
             android:padding="5pt"
@@ -133,9 +180,16 @@
             android:layout_gravity="center"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:hint="请输入零售价"
+            android:hint="请输入终端价"
             android:textSize="@dimen/txtSize_30"
             android:textColor="@color/txt_dark"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="（单位/件）"
+            android:textSize="@dimen/txtSize_30"
+            android:textColor="@color/txt_dark"
+            />
     </LinearLayout>
     <LinearLayout
         android:background="@color/white"
@@ -148,6 +202,12 @@
         android:orientation="horizontal"
         android:gravity="center"
         >
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/app_red"
+            android:textSize="@dimen/txtSize_30"
+            android:text="*"/>
         <TextView
             android:textColor="@color/txt_dark"
             android:layout_width="wrap_content"
@@ -180,15 +240,16 @@
         android:orientation="horizontal"
         android:gravity="center"
         >
+
         <TextView
             android:textColor="@color/txt_dark"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="@dimen/txtSize_30"
-            android:text="重&#160;&#160;&#160;&#8201;&#160;&#160;&#160;&#8201;量："
+            android:text="重&#160;&#160;&#160;&#8201;&#160;&#160;&#160;&#160;&#160;&#8201;量："
             />
         <EditText
-            android:inputType="number"
+            android:inputType="numberDecimal"
             android:id="@+id/et_06"
             android:layout_marginLeft="20pt"
             android:padding="5pt"
@@ -207,18 +268,6 @@
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:padding="30pt">
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textColor="@color/txt_dark"
-            android:textSize="@dimen/txtSize_30"
-            android:text="注意："/>
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/sku_tip"
-            android:textSize="@dimen/txtSize_30"
-            android:textColor="@color/txt_dark"
-            />
+
     </LinearLayout>
 </LinearLayout>

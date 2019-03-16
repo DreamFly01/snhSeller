@@ -62,6 +62,7 @@ public class AddSkuActivity extends BaseActivity {
     private int ShopGoodsId;
     private Bundle bundle;
     private DialogUtils dialogUtils;
+
     @Override
     protected void initContentView(Bundle savedInstanceState) {
         setContentView(R.layout.activity_addsku_layout);
@@ -74,7 +75,7 @@ public class AddSkuActivity extends BaseActivity {
 
     @Override
     public void setUpViews() {
-        IsBang.setImmerHeard(this,rlHead);
+        IsBang.setImmerHeard(this, rlHead);
         heardTitle.setText("添加规格");
         heardTvMenu.setText("保存");
     }
@@ -101,16 +102,28 @@ public class AddSkuActivity extends BaseActivity {
             return false;
         }
         if (StrUtils.isEmpty(et03.getText().toString().trim())) {
-            showLongToast("请填写批发价");
+            showLongToast("请填写二批价");
             return false;
         }
         if (StrUtils.isEmpty(et04.getText().toString().trim())) {
-            showLongToast("请填写零售价");
+            showLongToast("请填写终端价");
             return false;
         }
-        if (StrUtils.isEmpty(et05.getText().toString().trim())) {
+        if(StrUtils.isEmpty(et05.getText().toString().trim())){
             showLongToast("请填写库存");
             return false;
+        }
+        if (!StrUtils.isEmpty(et05.getText().toString().trim())) {
+            if (Integer.parseInt(et05.getText().toString().trim()) <= 0) {
+                showLongToast("库存数量必须大于零");
+                return false;
+            }
+        }
+        if (!StrUtils.isEmpty(et06.getText().toString().trim())) {
+            if (Integer.parseInt(et06.getText().toString().trim()) <= 0) {
+                showLongToast("运费必须大于零");
+                return false;
+            }
         }
         return true;
     }
@@ -145,19 +158,36 @@ public class AddSkuActivity extends BaseActivity {
         addSubscription(RequestClient.AddNorm(map, this, new NetSubscriber<BaseResultBean>(this, true) {
             @Override
             public void onResultNext(BaseResultBean model) {
-                dialogUtils.simpleDialog("添加成功", new DialogUtils.ConfirmClickLisener() {
+                dialogUtils.twoBtnDialog("添加成功，是否继续添加", new DialogUtils.ChoseClickLisener() {
                     @Override
                     public void onConfirmClick(View v) {
                         clean();
                         dialogUtils.dismissDialog();
                     }
+
+                    @Override
+                    public void onCancelClick(View v) {
+                        dialogUtils.dismissDialog();
+                        AddSkuActivity.this.finish();
+                    }
                 },false);
+//                dialogUtils.simpleDialog("添加成功", new DialogUtils.ConfirmClickLisener() {
+//                    @Override
+//                    public void onConfirmClick(View v) {
+//                        clean();
+//                        dialogUtils.dismissDialog();
+//                    }
+//                }, false);
             }
         }));
     }
-    private void clean(){
-        et01.setText("");
+
+    private void clean() {
+//        et01.setText("");
         et02.setText("");
+        et02.setFocusable(true);
+        et02.setFocusableInTouchMode(true);
+        et02.requestFocus();
         et03.setText("");
         et04.setText("");
         et05.setText("");

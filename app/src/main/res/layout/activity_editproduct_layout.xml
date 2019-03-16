@@ -51,7 +51,7 @@
             android:layout_height="wrap_content"
             android:textColor="@color/txt_dark"
             android:textSize="@dimen/txtSize_30"
-            android:text="商品标题"/>
+            android:text="商品名称"/>
         <EditText
 
             android:id="@+id/et_01"
@@ -89,7 +89,8 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:textSize="@dimen/txtSize_30"
-            android:hint="请输入所属类目"/>
+            android:textColor="@color/txt_dark"
+            android:hint="请选择所属类目"/>
     </LinearLayout>
     <LinearLayout
         android:background="@color/white"
@@ -104,7 +105,7 @@
             android:layout_height="wrap_content"
             android:textColor="@color/txt_dark"
             android:textSize="@dimen/txtSize_30"
-            android:text="零售价格"/>
+            android:text="终端价格"/>
         <EditText
             android:id="@+id/et_03"
             android:maxLines="1"
@@ -116,7 +117,35 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:textSize="@dimen/txtSize_30"
-            android:hint="请输入零售价格"/>
+            android:hint="请输入终端价格"/>
+
+    </LinearLayout>
+    <LinearLayout
+        android:background="@color/white"
+        android:layout_marginTop="2pt"
+        android:gravity="center"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        <TextView
+            android:padding="30pt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/txt_dark"
+            android:textSize="@dimen/txtSize_30"
+            android:text="商场价格"/>
+        <EditText
+            android:id="@+id/et_06"
+            android:maxLines="1"
+            android:inputType="number"
+            android:gravity="center_vertical|right"
+            android:paddingRight="30pt"
+            android:background="@null"
+            android:layout_weight="1"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:textSize="@dimen/txtSize_30"
+            android:hint="请输入市场价格"/>
 
     </LinearLayout>
     <LinearLayout

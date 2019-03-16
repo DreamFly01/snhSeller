@@ -10,7 +10,7 @@ package com.snh.snhseller.bean.supplierbean;
 public class SupplierBean {
     public int SupplierId;
     public String SupplierName;
-    public String SupplierIconurl;
+    public String SupplierIconUrl;
     public int SumRepertory;
     public String SupplierSynopsis;
     public String SupplierPhone;

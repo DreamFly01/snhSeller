@@ -308,6 +308,10 @@ public class PerfectCompanyThreeActivity extends BaseActivity implements TakePho
             dialogUtils.noBtnDialog("请输入公司名称");
             return false;
         }
+        if(etAddress.getText().toString().trim().equals("请选择经营地址")){
+            dialogUtils.noBtnDialog("请选择经营地址");
+            return false;
+        }
         if (et18code.getText().toString().trim().length() != 18) {
             dialogUtils.noBtnDialog("请输入正确的社会信用代码");
             return false;
@@ -722,8 +726,10 @@ public class PerfectCompanyThreeActivity extends BaseActivity implements TakePho
         //设置 间隔扫描的时间  也就是 位置时隔多长时间更新
 //        option.setScanSpan(5000);
         //设置 是否需要地址 （需要联网取得 百度提供的位置信息）
+        option.setOpenGps(true);
+        option.setLocationMode(LocationClientOption.LocationMode.Hight_Accuracy);
+        option.setCoorType("bd09ll");
         option.setIsNeedAddress(true);
-
         // 实例化 LocationClient  传入的context 应该是全局的
         mLocationListener = new LocationClient(getApplicationContext());
         //将选项设置进去

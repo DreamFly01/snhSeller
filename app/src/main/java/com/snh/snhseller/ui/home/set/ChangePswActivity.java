@@ -125,6 +125,10 @@ public class ChangePswActivity extends BaseActivity {
             dialogUtils.noBtnDialog("两次输入新密码不一致");
             return false;
         }
+        if(StrUtils.isPsw(etNew.getText().toString().trim())){
+            dialogUtils.noBtnDialog("请输入6-20位数字密码组合的密码");
+            return false;
+        }
         return true;
     }
 

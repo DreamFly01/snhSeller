@@ -23,6 +23,7 @@ import com.snh.snhseller.bean.ProductBean;
 import com.snh.snhseller.requestApi.NetSubscriber;
 import com.snh.snhseller.requestApi.RequestClient;
 import com.snh.snhseller.utils.DialogUtils;
+import com.snh.snhseller.utils.IsBang;
 import com.snh.snhseller.utils.JumpUtils;
 import com.snh.snhseller.wediget.LoadingDialog;
 import com.snh.snhseller.wediget.RecycleViewDivider;
@@ -75,7 +76,6 @@ public class CostApplyFragment extends BaseFragment {
 
     @Override
     public void setUpViews(View view) {
-
     }
 
     @Override

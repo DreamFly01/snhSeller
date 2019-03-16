@@ -24,6 +24,15 @@
                 android:padding="20pt"
                 android:orientation="horizontal">
                 <TextView
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="*"
+                    android:textSize="30pt"
+                    android:textColor="@color/app_red"
+                    />
+                <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textSize="@dimen/txtSize_28"
@@ -50,6 +59,15 @@
                 android:padding="20pt"
                 android:orientation="horizontal">
                 <TextView
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="*"
+                    android:textSize="30pt"
+                    android:textColor="@color/app_red"
+                    />
+                <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textSize="@dimen/txtSize_28"
@@ -75,6 +93,15 @@
                 android:layout_height="wrap_content"
                 android:padding="20pt"
                 android:orientation="horizontal">
+                <TextView
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="*"
+                    android:textSize="30pt"
+                    android:textColor="@color/app_red"
+                    />
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -126,6 +153,15 @@
                 android:padding="20pt"
                 android:orientation="horizontal">
                 <TextView
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="*"
+                    android:textSize="30pt"
+                    android:textColor="@color/app_red"
+                    />
+                <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textSize="@dimen/txtSize_28"
@@ -143,6 +179,7 @@
                     android:textColor="@color/black"/>
             </LinearLayout>
             <LinearLayout
+                android:visibility="gone"
                 android:background="@drawable/shape_white_5"
                 android:layout_marginTop="20pt"
                 android:layout_marginLeft="20pt"
@@ -176,6 +213,15 @@
                 android:padding="20pt"
                 android:orientation="horizontal">
                 <TextView
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="*"
+                    android:textSize="30pt"
+                    android:textColor="@color/app_red"
+                    />
+                <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textSize="@dimen/txtSize_28"
@@ -204,6 +250,19 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+                    <TextView
+                        android:layout_gravity="center"
+                        android:gravity="center"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="*"
+                        android:textSize="30pt"
+                        android:textColor="@color/app_red"
+                        />
                 <TextView
                     android:layout_marginTop="10pt"
                     android:layout_width="wrap_content"
@@ -211,6 +270,7 @@
                     android:textSize="@dimen/txtSize_28"
                     android:text="上传身份证头像面照"
                     android:textColor="@color/black"/>
+                </LinearLayout>
                 <LinearLayout
                     android:layout_marginTop="20pt"
                     android:layout_width="match_parent"
@@ -250,6 +310,20 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_gravity="center"
+                        android:gravity="center"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="*"
+                        android:textSize="30pt"
+                        android:textColor="@color/app_red"
+                        />
                 <TextView
                     android:layout_marginTop="10pt"
                     android:layout_width="wrap_content"
@@ -257,6 +331,8 @@
                     android:textSize="@dimen/txtSize_28"
                     android:text="上传身份证国徽面照"
                     android:textColor="@color/black"/>
+                </LinearLayout>
+
                 <LinearLayout
                     android:layout_marginTop="20pt"
                     android:layout_width="match_parent"
@@ -296,6 +372,21 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+
+                    <TextView
+                        android:layout_gravity="center"
+                        android:gravity="center"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="*"
+                        android:textSize="30pt"
+                        android:textColor="@color/app_red"
+                        />
                 <TextView
                     android:layout_marginTop="10pt"
                     android:layout_width="wrap_content"
@@ -303,6 +394,8 @@
                     android:textSize="@dimen/txtSize_28"
                     android:text="上传手持身份证半身照"
                     android:textColor="@color/black"/>
+                </LinearLayout>
+
                 <LinearLayout
                     android:layout_marginTop="20pt"
                     android:layout_width="match_parent"

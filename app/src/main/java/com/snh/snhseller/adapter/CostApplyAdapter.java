@@ -8,6 +8,7 @@ import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.snh.snhseller.R;
 import com.snh.snhseller.bean.CostApplyBean;
+import com.snh.snhseller.utils.StrUtils;
 import com.snh.snhseller.utils.TimeUtils;
 
 import java.util.List;
@@ -28,7 +29,7 @@ public class CostApplyAdapter extends BaseQuickAdapter<CostApplyBean,BaseViewHol
     protected void convert(BaseViewHolder helper, CostApplyBean item) {
         helper.setText(R.id.tv_sales_name,item.SalesmanName+"的费用");
         helper.setText(R.id.tv_name,"项目名称："+item.CostName);
-        helper.setText(R.id.tv_money,"费用预算："+item.Budget);
+        helper.setText(R.id.tv_money,"费用预算："+StrUtils.moenyToDH(item.Budget+""));
         helper.setText(R.id.tv_time,TimeUtils.stringToTime(item.CostCreateTime)+"前");
         TextView tvState = helper.getView(R.id.tv_state);
         switch (item.CostType)

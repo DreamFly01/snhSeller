@@ -43,6 +43,8 @@
             android:layout_marginRight="30pt"
             android:visibility="visible"
             android:id="@+id/rl_menu"
+            android:paddingLeft="20pt"
+            android:paddingRight="20pt"
             >
             <ImageView
                 android:layout_centerVertical="true"

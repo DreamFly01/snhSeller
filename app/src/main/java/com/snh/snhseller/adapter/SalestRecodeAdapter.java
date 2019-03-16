@@ -26,8 +26,8 @@ public class SalestRecodeAdapter extends BaseQuickAdapter<SalesRecodeBean, BaseV
 
     @Override
     protected void convert(BaseViewHolder helper, SalesRecodeBean item) {
-        helper.setText(R.id.tv_time,item.CreateTime);
-        helper.setText(R.id.tv_01, item.SalesmanName);
+        helper.setText(R.id.tv_time,item.CreatTime);
+        helper.setText(R.id.tv_01, item.CommTenantName);
         helper.setText(R.id.tv_02,item.Remark);
         ImageUtils.loadUrlImage(mContext,item.Icon, (ImageView) helper.getView(R.id.iv_shop_logo));
 

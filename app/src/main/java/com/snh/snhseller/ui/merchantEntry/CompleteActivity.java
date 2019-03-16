@@ -5,11 +5,13 @@ import android.view.KeyEvent;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.snh.snhseller.BaseActivity;
 import com.snh.snhseller.MainActivity;
 import com.snh.snhseller.utils.IsBang;
 import com.snh.snhseller.R;
+import com.snh.snhseller.utils.JumpUtils;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -76,11 +78,27 @@ public class CompleteActivity extends BaseActivity {
 
     @OnClick(R.id.heard_back)
     public void onClick() {
-        jumpActivity(MainActivity.class);
+        JumpUtils.simpJump(this,LogingActivity.class,true);
     }
-
+    private long mExitTime = 0;
+    public static final int EXIT_TIME = 2000;
+    private Toast toast;
     @Override
-    public void onBackPressed() {
-        jumpActivity(MainActivity.class);
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
+            if ((System.currentTimeMillis() - mExitTime) > EXIT_TIME) {
+                toast = Toast.makeText(this, "再次点击退出应用", Toast.LENGTH_SHORT);
+                toast.show();
+                mExitTime = System.currentTimeMillis();
+            } else {
+                if (null != toast) {
+                    toast.cancel();
+                }
+                finishAffinity();
+                System.exit(0);
+            }
+            return true;
+        }
+        return super.onKeyDown(keyCode, event);
     }
 }

@@ -1,6 +1,7 @@
 package com.snh.snhseller.adapter;
 
 import android.app.Activity;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
@@ -21,6 +22,7 @@ import com.snh.snhseller.ui.order.SendActivity;
 import com.snh.snhseller.utils.DBManager;
 import com.snh.snhseller.utils.ImageUtils;
 import com.snh.snhseller.utils.JumpUtils;
+import com.snh.snhseller.utils.StrUtils;
 
 import java.util.List;
 import java.util.Map;
@@ -52,9 +54,9 @@ public class OrderAdapter extends BaseQuickAdapter<OrderBean, BaseViewHolder> {
                 for (int i = 0; i < item.OrderGoodsList.size(); i++) {
                     totalMoney = totalMoney + item.OrderGoodsList.get(i).Price;
                 }
-                helper.setText(R.id.tv_TotalMoney1, "￥" + totalMoney);
+                helper.setText(R.id.tv_TotalMoney1, "￥" + StrUtils.moenyToDH(totalMoney+""));
                 if (item.Freight > 0) {
-                    helper.setText(R.id.tv_youfei, "（含运费：￥" + item.Freight + "）");
+                    helper.setText(R.id.tv_youfei, "（含运费：￥" + StrUtils.moenyToDH(item.Freight+"") + "）");
                 } else {
                     helper.setText(R.id.tv_youfei, "（包邮）");
                 }
@@ -72,7 +74,7 @@ public class OrderAdapter extends BaseQuickAdapter<OrderBean, BaseViewHolder> {
                         helper.setText(R.id.tv_state1, "发货");
                         break;
                     case 3:
-                        helper.setText(R.id.tv_state, "已发货");
+                        helper.setText(R.id.tv_state, "待收货");
                         helper.getView(R.id.tv_state1).setVisibility(View.GONE);
                         break;
                     case 4:
@@ -144,7 +146,7 @@ public class OrderAdapter extends BaseQuickAdapter<OrderBean, BaseViewHolder> {
                         });
                         break;
                     case 3:
-                        helper.setText(R.id.tv_state,"已发货");
+                        helper.setText(R.id.tv_state,"待收货");
                         break;
                     case 4:
                         helper.setText(R.id.tv_state,"已完成");
@@ -155,7 +157,7 @@ public class OrderAdapter extends BaseQuickAdapter<OrderBean, BaseViewHolder> {
                 }
                 helper.setText(R.id.tv_youfei,"");
                 helper.setText(R.id.tv_all_num, "共" + item.SumCommodity + "件商品 合计：");
-                helper.setText(R.id.tv_TotalMoney1,"￥" +item.OrderPrice);
+                helper.setText(R.id.tv_TotalMoney1,"￥" +StrUtils.moenyToDH(item.OrderPrice+""));
                 ImageUtils.loadUrlImage(mContext,item.CommodityIconUrl, (ImageView) helper.getView(R.id.iv_product_logo));
                 helper.setText(R.id.tv_product_Name,item.CommodityName);
                 break;
@@ -218,7 +220,7 @@ public class OrderAdapter extends BaseQuickAdapter<OrderBean, BaseViewHolder> {
                 }
                 helper.setText(R.id.tv_youfei,"");
                 helper.setText(R.id.tv_all_num, "共" + item.SumCommodity + "件商品 合计：");
-                helper.setText(R.id.tv_TotalMoney1,"￥" +item.OrderPrice);
+                helper.setText(R.id.tv_TotalMoney1,"￥" +StrUtils.moenyToDH(item.OrderPrice+""));
                 ImageUtils.loadUrlImage(mContext,item.CommodityIconUrl, (ImageView) helper.getView(R.id.iv_product_logo));
                 helper.setText(R.id.tv_product_Name,item.CommodityName);
 

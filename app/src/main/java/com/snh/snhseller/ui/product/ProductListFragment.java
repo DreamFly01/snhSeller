@@ -287,14 +287,14 @@ public class ProductListFragment extends BaseFragment {
             }
         }));
     }
-    private boolean isFrist = true;
     @Override
     public void onResume() {
         super.onResume();
-        if (!isFrist && mIsDataInited) {
-            index = 1;
-            getData();
-        }
+//        if (SPUtils.getInstance(getContext()).getBoolean(Contans.FRESH)) {
+//            index = 1;
+//            setView();
+//            getData();
+//        }
     }
 
     //更新数据

@@ -30,7 +30,7 @@ public class SupplierAdapter extends BaseQuickAdapter<SupplierBean, BaseViewHold
 
     @Override
     protected void convert(BaseViewHolder helper, SupplierBean item) {
-        ImageUtils.loadUrlImage(mContext, item.SupplierIconurl, (ImageView) helper.getView(R.id.iv_logo));
+        ImageUtils.loadUrlImage(mContext, item.SupplierIconUrl, (ImageView) helper.getView(R.id.iv_logo));
         helper.setText(R.id.tv_name, item.SupplierName);
         if (!StrUtils.isEmpty(item.SupplierPhone)) {
             helper.setText(R.id.tv_phone, item.SupplierPhone);
@@ -39,5 +39,6 @@ public class SupplierAdapter extends BaseQuickAdapter<SupplierBean, BaseViewHold
             helper.getView(R.id.tv_phone).setVisibility(View.GONE);
             helper.setText(R.id.tv_introduce, item.SupplierSynopsis);
         }
+
     }
 }

@@ -91,6 +91,7 @@ public class NoManagerActivity extends BaseActivity {
         addSubscription(RequestClient.NoManagerCommtenantLis(this, new NetSubscriber<BaseResultBean<List<NoManagerBean>>>(this, isShow) {
             @Override
             public void onResultNext(BaseResultBean<List<NoManagerBean>> model) {
+                refreshLayout.finishRefresh();
                 if(model.data.size()>0){
                     adapter.setNewData(model.data);
                 }else {

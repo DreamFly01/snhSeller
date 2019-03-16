@@ -68,8 +68,7 @@ public class CostApplyActivity extends BaseActivity {
 
     @Override
     public void setUpViews() {
-        ImmersionBar.setTitleBar(this, rlHead);
-
+        IsBang.setImmerHeard(this,rlHead);
         heardTitle.setText("费用审批");
         titles = new String[]{"待审批", "已通过", "已驳回"};
         for (int i = 0; i < titles.length; i++) {
@@ -109,6 +108,7 @@ public class CostApplyActivity extends BaseActivity {
 
     @OnClick(R.id.heard_back)
     public void onClick() {
+        this.finish();
     }
 
     public class MyAdapter extends FragmentStatePagerAdapter {

@@ -25,6 +25,7 @@ import com.snh.snhseller.requestApi.RequestClient;
 import com.snh.snhseller.utils.DialogUtils;
 import com.snh.snhseller.utils.IsBang;
 import com.snh.snhseller.utils.JumpUtils;
+import com.snh.snhseller.utils.StrUtils;
 import com.tencent.mm.opensdk.modelpay.PayReq;
 import com.tencent.mm.opensdk.openapi.IWXAPI;
 import com.tencent.mm.opensdk.openapi.WXAPIFactory;
@@ -141,7 +142,7 @@ public class PayActivity extends BaseActivity {
         title.setText("支付");
 
         tvOrderNo.setText(orderid);
-        tvMoney.setText("￥" + totalMoney);
+        tvMoney.setText("￥" + StrUtils.moenyToDH(totalMoney+""));
 
     }
 
@@ -263,7 +264,7 @@ public class PayActivity extends BaseActivity {
             @Override
             public void onResultNext(BaseResultBean<String> model) {
                 blance = Double.parseDouble(model.data);
-                tvBalance.setText("账户余额(￥ " + model.data + ")");
+                tvBalance.setText("账户余额(￥ " + StrUtils.moenyToDH(model.data+"") + ")");
             }
         }));
     }

@@ -17,6 +17,7 @@ import com.snh.snhseller.requestApi.NetSubscriber;
 import com.snh.snhseller.requestApi.RequestClient;
 import com.snh.snhseller.utils.DialogUtils;
 import com.snh.snhseller.utils.ImageUtils;
+import com.snh.snhseller.utils.IsBang;
 import com.snh.snhseller.utils.StrUtils;
 
 import org.apache.commons.lang3.StringUtils;
@@ -107,6 +108,7 @@ public class CostApplyDetailsActivity extends BaseActivity {
     @Override
     public void setUpViews() {
         heardTitle.setText("申请详情");
+        IsBang.setImmerHeard(this,rlHead);
         ImageUtils.loadUrlImage(this, bean.SupplierIconUrl, ivLogo);
         switch (bean.CostStates) {
             case 1:

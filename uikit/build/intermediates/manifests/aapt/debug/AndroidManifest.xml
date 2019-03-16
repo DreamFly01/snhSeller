@@ -23,7 +23,7 @@
             android:configChanges="keyboardHidden|orientation"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar"
-            android:windowSoftInputMode="stateHidden|adjustResize" />
+            android:windowSoftInputMode="adjustPan|stateHidden" />
         <activity
             android:name="com.netease.nim.uikit.business.session.activity.TeamMessageActivity"
             android:configChanges="keyboardHidden|orientation"

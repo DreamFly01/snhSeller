@@ -5,6 +5,7 @@ import android.widget.TextView;
 
 import com.snh.snhseller.R;
 import com.snh.snhseller.bean.TypePriceBean;
+import com.snh.snhseller.utils.StrUtils;
 import com.zhy.adapter.recyclerview.CommonAdapter;
 import com.zhy.adapter.recyclerview.base.ViewHolder;
 
@@ -29,8 +30,8 @@ public class TypePriceAdapter extends CommonAdapter<TypePriceBean> {
         TextView price2 = holder.getView(R.id.tv_price2);
 
         name.setText(typePriceBean.name);
-        price1.setText(typePriceBean.price1);
-        price2.setText(typePriceBean.price2);
+        price1.setText(StrUtils.moenyToDH(typePriceBean.price1+""));
+        price2.setText(StrUtils.moenyToDH(typePriceBean.price2+""));
 
 
     }

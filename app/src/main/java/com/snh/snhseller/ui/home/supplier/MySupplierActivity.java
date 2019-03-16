@@ -153,7 +153,7 @@ public class MySupplierActivity extends BaseActivity {
                 bundle = new Bundle();
                 bundle.putInt("id", datas.get(position).SupplierId);
                 bundle.putString("name", datas.get(position).SupplierName);
-                bundle.putString("url", datas.get(position).SupplierIconurl);
+                bundle.putString("url", datas.get(position).SupplierIconUrl);
                 bundle.putString("phone", datas.get(position).SupplierPhone);
                 bundle.putInt("type", 1);//证明关系的type 0 没关系，1 有关系
                 bundle.putInt("from", type);//从那个入口进来的type 1 供应商入口 2商户入口

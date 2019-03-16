@@ -72,6 +72,7 @@ public class P2PMessageActivity extends BaseMessageActivity {
         llTop =(LinearLayout)findView(R.id.ll_top);
         title = (TextView)findView(R.id.heard_title);
         title.setText(UserInfoHelper.getUserTitleName(sessionId, SessionTypeEnum.P2P));
+        IsBang.setImmerHeard(this,llTop);
         ImmersionBar.with(this).titleBar(llTop).statusBarColor(R.color.app_red).init();
         back.setOnClickListener(new View.OnClickListener() {
             @Override

@@ -5,6 +5,7 @@ import android.support.annotation.NonNull;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -56,12 +57,15 @@ public class SkuListActivity extends BaseActivity {
     RelativeLayout rlMenu;
     @BindView(R.id.rl_head)
     LinearLayout rlHead;
+    @BindView(R.id.btn_commit)
+    Button btnCommit;
 
     private boolean isShow = true;
     private Bundle bundle;
     private int goodsId;
     private SkuListAdapter adapter;
-private List<SkuBean> datas = new ArrayList<>();
+    private List<SkuBean> datas = new ArrayList<>();
+
     @Override
     protected void initContentView(Bundle savedInstanceState) {
         setContentView(R.layout.activity_skulist_layout);
@@ -75,7 +79,6 @@ private List<SkuBean> datas = new ArrayList<>();
     public void setUpViews() {
         IsBang.setImmerHeard(this, rlHead);
         heardTitle.setText("");
-        heardTvMenu.setText("添加");
         setRecyclerView();
         getData();
     }
@@ -92,13 +95,12 @@ private List<SkuBean> datas = new ArrayList<>();
         adapter.setOnItemChildClickListener(new BaseQuickAdapter.OnItemChildClickListener() {
             @Override
             public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
-                switch (view.getId())
-                {
+                switch (view.getId()) {
                     case R.id.ll_delete:
                         del(datas.get(position).NormId);
                         datas.remove(position);
                         adapter.setNewData(datas);
-                        if(datas.size()<=0){
+                        if (datas.size() <= 0) {
                             SkuListActivity.this.finish();
                         }
                         break;
@@ -125,6 +127,7 @@ private List<SkuBean> datas = new ArrayList<>();
         addSubscription(RequestClient.GetNormList(goodsId, this, new NetSubscriber<BaseResultBean<List<SkuBean>>>(this, isShow) {
             @Override
             public void onResultNext(BaseResultBean<List<SkuBean>> model) {
+                refreshLayout.finishRefresh();
                 if (model.data.size() > 0) {
                     datas = model.data;
                     adapter.setNewData(model.data);
@@ -133,26 +136,32 @@ private List<SkuBean> datas = new ArrayList<>();
         }));
     }
 
-    @OnClick({R.id.heard_back, R.id.heard_tv_menu})
+    @OnClick({R.id.heard_back, R.id.btn_commit})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.heard_back:
                 this.finish();
                 break;
-            case R.id.heard_tv_menu:
+            case R.id.btn_commit:
                 bundle = new Bundle();
-                bundle.putInt("goodsId",goodsId);
-                JumpUtils.dataJump(SkuListActivity.this,AddSkuActivity.class,bundle,false);
+                bundle.putInt("goodsId", goodsId);
+                JumpUtils.dataJump(SkuListActivity.this, AddSkuActivity.class, bundle, false);
                 break;
         }
     }
 
-    private void del(int normId){
-        addSubscription(RequestClient.DelNorm(normId, this, new NetSubscriber<BaseResultBean>(this,true) {
+    private void del(int normId) {
+        addSubscription(RequestClient.DelNorm(normId, this, new NetSubscriber<BaseResultBean>(this, true) {
             @Override
             public void onResultNext(BaseResultBean model) {
                 showShortToast("删除成功");
             }
         }));
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        getData();
     }
 }

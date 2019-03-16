@@ -69,7 +69,7 @@ public class BusinessProductActivity extends BaseActivity {
     @Override
     public void setUpViews() {
         IsBang.setImmerHeard(this, rlHead);
-        heardTitle.setText("商家商品");
+        heardTitle.setText("批发商品");
 
 //        for (int i = 0; i < titles.length; i++) {
 ////            ProductListFragment fragment = new ProductListFragment();

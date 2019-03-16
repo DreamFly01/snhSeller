@@ -11,6 +11,7 @@
         android:layout_height="575pt">
     </com.youth.banner.Banner>
     <LinearLayout
+        android:layout_marginTop="20pt"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
@@ -20,14 +21,15 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textColor="@color/app_red"
-            android:textSize="@dimen/txtSize_30"
+            android:textSize="@dimen/txtSize_24"
             android:text="----"
             />
         <TextView
             android:id="@+id/tv_price1"
+            android:visibility="gone"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="@dimen/txtSize_26"
+            android:textSize="@dimen/txtSize_24"
             android:layout_marginLeft="10pt"
             android:text="---"
             />
@@ -83,6 +85,7 @@
                 android:layout_height="20pt"
                 android:background="@drawable/right_icon"/>
             <TextView
+                android:id="@+id/tv_hdfk"
                 android:layout_marginLeft="4pt"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

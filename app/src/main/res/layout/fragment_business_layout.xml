@@ -5,7 +5,9 @@
     android:orientation="vertical"
     android:background="@color/color_app_bg"
     >
+    <include layout="@layout/heard_layout"></include>
     <com.scwang.smartrefresh.layout.SmartRefreshLayout
+        android:layout_weight="1"
         android:id="@+id/refreshLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
@@ -15,4 +17,15 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"></android.support.v7.widget.RecyclerView>
     </com.scwang.smartrefresh.layout.SmartRefreshLayout>
+    <Button
+        android:layout_marginBottom="10pt"
+        android:id="@+id/btn_commit"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:layout_width="690pt"
+        android:layout_height="80pt"
+        android:text="添加"
+        android:textColor="@color/txt_white"
+        android:textSize="30pt"
+        android:background="@drawable/commit_color_selector"/>
 </LinearLayout>

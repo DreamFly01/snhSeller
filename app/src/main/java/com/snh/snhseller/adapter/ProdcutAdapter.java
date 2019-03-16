@@ -14,6 +14,7 @@ import com.snh.snhseller.requestApi.NetSubscriber;
 import com.snh.snhseller.requestApi.RequestClient;
 import com.snh.snhseller.utils.DialogUtils;
 import com.snh.snhseller.utils.ImageUtils;
+import com.snh.snhseller.utils.StrUtils;
 
 import java.util.List;
 
@@ -47,7 +48,7 @@ public class ProdcutAdapter extends BaseQuickAdapter<ProductBean,BaseViewHolder>
         }
         helper.setText(R.id.tv_reason,item.Reason);
         helper.setText(R.id.tv_GoodsName,item.CommTenantName);
-        helper.setText(R.id.tv_price,"￥"+item.Price);
+        helper.setText(R.id.tv_price,"￥"+StrUtils.moenyToDH(item.Price+""));
         helper.setText(R.id.tv_kc,"库存："+item.Inventory);
         helper.setText(R.id.tv_xl,"销量："+item.SalesVolume);
         ImageUtils.loadUrlImage(mContext,item.CommTenantIcon, (ImageView) helper.getView(R.id.iv_product_logo1));

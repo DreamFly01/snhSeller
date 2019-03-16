@@ -65,14 +65,13 @@ public class ChangePswActivity extends BaseActivity {
 
     @Override
     public void setUpViews() {
-        IsBang.setImmerHeard(this,rlHead,"");
         btnCommit.setText("提交");
         heardTitle.setText("修改密码");
+        IsBang.setImmerHeard(this,rlHead,"");
     }
 
     @Override
     public void setUpLisener() {
-        IsBang.setImmerHeard(this, rlHead);
     }
 
 
@@ -124,6 +123,10 @@ public class ChangePswActivity extends BaseActivity {
         }
         if (!etNew.getText().toString().trim().equals(etNew1.getText().toString().trim())) {
             dialogUtils.noBtnDialog("两次输入新密码不一致");
+            return false;
+        }
+        if (StrUtils.isPsw(etNew.getText().toString().trim())) {
+            dialogUtils.noBtnDialog("请输入6-20位数字密码组合的密码");
             return false;
         }
         return true;
