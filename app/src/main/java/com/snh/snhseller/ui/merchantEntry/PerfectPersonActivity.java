@@ -24,6 +24,7 @@ import com.snh.snhseller.bean.BaseResultBean;
 import com.snh.snhseller.bean.ImgDelagateBean;
 import com.snh.snhseller.requestApi.NetSubscriber;
 import com.snh.snhseller.requestApi.RequestClient;
+import com.snh.snhseller.utils.Contans;
 import com.snh.snhseller.utils.DialogUtils;
 import com.snh.snhseller.utils.ImageUtils;
 import com.snh.snhseller.utils.IsBang;
@@ -106,7 +107,6 @@ public class PerfectPersonActivity extends BaseActivity implements TakePhoto.Tak
     private Bundle bundle;
     private List<Map<Object, Object>> mapList = new ArrayList<>();
     private Map<Object, Object> allMap = new HashMap<>();
-
     @Override
     protected void initContentView(Bundle savedInstanceState) {
         setContentView(R.layout.activity_perfectperson_layout);
@@ -121,11 +121,17 @@ public class PerfectPersonActivity extends BaseActivity implements TakePhoto.Tak
         }
     }
 
+
     @Override
     public void setUpViews() {
         heardTitle.setText("填写个人资料");
         IsBang.setImmerHeard(this, rlHead);
         tvPhone.setText(phone);
+        if(Contans.debug){
+            etName.setText("ssss");
+            etEmail.setText("290206959@qq.com");
+            etSfzNum.setText("430602199108196030");
+        }
     }
 
     @Override
@@ -168,7 +174,8 @@ public class PerfectPersonActivity extends BaseActivity implements TakePhoto.Tak
                     Bundle bundle = new Bundle();
                     bundle.putSerializable("data", (Serializable) dataMap);
                     bundle.putInt("flag", 1);
-                    bundle.putString("phone", phone);
+                    bundle.putString("phone",phone);
+                    bundle.putString("shopType","3");
                     JumpUtils.dataJump(this, PerfectPersonTwoActivity.class, bundle, false);
                 }
                 break;
@@ -183,7 +190,7 @@ public class PerfectPersonActivity extends BaseActivity implements TakePhoto.Tak
         dataMap.put("CardEndTime", tvLimit.getText().toString().trim());
         dataMap.put("Email", etEmail.getText().toString().trim());
         for (int i = 0; i < allMap.size(); i++) {
-            mapList.add((Map<Object, Object>) allMap.get(i + 1));
+            mapList.add((Map<Object, Object>) allMap.get(i+1));
         }
         dataMap.put("ImgUrlList", mapList);
     }
@@ -193,9 +200,11 @@ public class PerfectPersonActivity extends BaseActivity implements TakePhoto.Tak
             dialogUtils.noBtnDialog("请填写真实姓名");
             return false;
         }
-        if (StrUtils.isEmpty(etEmail.getText().toString())) {
-            dialogUtils.noBtnDialog("请填写邮箱");
-            return false;
+        if (!StrUtils.isEmpty(etEmail.getText().toString())) {
+            if (!StrUtils.isEmail(etEmail.getText().toString().trim())) {
+                dialogUtils.noBtnDialog("请输入正确的邮箱");
+                return false;
+            }
         }
         if (StrUtils.isEmpty(etSfzNum.getText().toString())) {
             dialogUtils.noBtnDialog("请输入身份证号");
@@ -205,16 +214,11 @@ public class PerfectPersonActivity extends BaseActivity implements TakePhoto.Tak
             dialogUtils.noBtnDialog("请选择有效期");
             return false;
         }
-        if (!StrUtils.isEmpty(etSfzNum.getText().toString().trim())) {
-            if (!StrUtils.isSfz(etSfzNum.getText().toString().trim())) {
-                dialogUtils.noBtnDialog("请输入正确的身份证号码");
-                return false;
-            }
-        }
-        if (!StrUtils.isEmail(etEmail.getText().toString().trim())) {
-            dialogUtils.noBtnDialog("请输入正确的邮箱");
+        if (!StrUtils.isSfz(etSfzNum.getText().toString().trim())) {
+            dialogUtils.noBtnDialog("请输入正确的身份证号码");
             return false;
         }
+
         if (mapList.size() != 3) {
             dialogUtils.noBtnDialog("请完善身份证照片信息");
             return false;
@@ -246,7 +250,7 @@ public class PerfectPersonActivity extends BaseActivity implements TakePhoto.Tak
         imgDelagateBean.isDelet = false;
         imgDelagateBean.url = result.getImage().getOriginalPath();
 
-        File file = new File(result.getImage().getCompressPath());
+        File file = new File(result.getImage().getOriginalPath());
         if (file.length() > 2 * 1024 * 1024) {
             pathList.add(result.getImage().getCompressPath());
         } else {
@@ -344,7 +348,7 @@ public class PerfectPersonActivity extends BaseActivity implements TakePhoto.Tak
     private void upLoadImg(List<String> datas) {
         dialogUtils.dismissDialog();
 
-        addSubscription(RequestClient.UpLoadFile(datas, this, new NetSubscriber<BaseResultBean>(this, true) {
+        addSubscription(RequestClient.UpLoadFile(datas, this, new NetSubscriber<BaseResultBean>(this,true) {
             @Override
             public void onResultNext(BaseResultBean model) {
                 StringBuffer str = new StringBuffer(model.filepath);
@@ -354,17 +358,17 @@ public class PerfectPersonActivity extends BaseActivity implements TakePhoto.Tak
                     case 1:
                         pathMap1.put("ImgType", 1);
                         pathMap1.put("ImgSaveUrl", model.filepath);
-                        allMap.put(1, pathMap1);
+                        allMap.put(1,pathMap1);
                         break;
                     case 2:
                         pathMap2.put("ImgType", 1);
                         pathMap2.put("ImgSaveUrl", model.filepath);
-                        allMap.put(2, pathMap2);
+                        allMap.put(2,pathMap2);
                         break;
                     case 3:
                         pathMap3.put("ImgType", 1);
                         pathMap3.put("ImgSaveUrl", model.filepath);
-                        allMap.put(3, pathMap3);
+                        allMap.put(3,pathMap3);
                         break;
                 }
             }

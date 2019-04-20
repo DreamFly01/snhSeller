@@ -159,7 +159,7 @@ public class RecordFragment extends BaseFragment implements CalendarView.OnCalen
     public void onCalendarSelect(Calendar calendar, boolean isClick) {
         isShow = true;
         time = calendar.getYear() + "-" + (calendar.getMonth() < 10 ? "0" + calendar.getMonth() : calendar.getMonth()) + "-" + (calendar.getDay() < 10 ? "0" + calendar.getDay() : calendar.getDay());
-
+        index = 1;
         getData(time);
         tvTime.setText(calendar.getYear() + "年" + (calendar.getMonth() < 10 ? "0" + calendar.getMonth() : calendar.getMonth()) + "月" + (calendar.getDay() < 10 ? "0" + calendar.getDay() : calendar.getDay()));
     }

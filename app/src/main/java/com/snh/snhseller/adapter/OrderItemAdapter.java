@@ -43,9 +43,10 @@ public class OrderItemAdapter extends BaseQuickAdapter<OrderGoodsBean, BaseViewH
             helper.setText(R.id.tv_sku, "规格："+item.NormName);
         }
         helper.setText(R.id.tv_Number1, "x" + item.Number);
+
         switch (type) {
             case 0:
-                helper.getView(R.id.tv_state).setVisibility(View.VISIBLE);
+                helper.getView(R.id.tv_state).setVisibility(View.GONE);
                 helper.setText(R.id.tv_state, "改价");
                 break;
             case 2:

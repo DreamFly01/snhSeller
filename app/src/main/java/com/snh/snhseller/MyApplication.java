@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.app.ActivityManager;
 import android.app.Application;
 import android.content.Context;
-import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -26,6 +25,7 @@ import com.netease.nimlib.sdk.Observer;
 import com.netease.nimlib.sdk.SDKOptions;
 import com.netease.nimlib.sdk.StatusBarNotificationConfig;
 import com.netease.nimlib.sdk.StatusCode;
+import com.netease.nimlib.sdk.auth.AuthService;
 import com.netease.nimlib.sdk.auth.AuthServiceObserver;
 import com.netease.nimlib.sdk.auth.LoginInfo;
 import com.netease.nimlib.sdk.msg.constant.SessionTypeEnum;
@@ -40,15 +40,21 @@ import com.scwang.smartrefresh.layout.api.RefreshHeader;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.footer.ClassicsFooter;
 import com.scwang.smartrefresh.layout.header.ClassicsHeader;
+import com.snh.snhseller.jpush.TagAliasOperatorHelper;
 import com.snh.snhseller.ui.loging.LogingActivity;
 import com.snh.snhseller.utils.ActivityManagerUtils;
 import com.snh.snhseller.utils.Contans;
-import com.snh.snhseller.utils.DBManager;
+import com.snh.snhseller.db.DBManager;
 import com.snh.snhseller.utils.JumpUtils;
-import com.snh.snhseller.utils.SPUtils;
 import com.snh.snhseller.utils.StrUtils;
+import com.tencent.bugly.crashreport.CrashReport;
 import com.tencent.mm.opensdk.openapi.IWXAPI;
 import com.tencent.mm.opensdk.openapi.WXAPIFactory;
+
+import cn.jpush.android.api.JPushInterface;
+
+import static com.snh.snhseller.jpush.TagAliasOperatorHelper.ACTION_DELETE;
+import static com.snh.snhseller.jpush.TagAliasOperatorHelper.sequence;
 
 /**
  * <p>desc：<p>
@@ -59,23 +65,28 @@ import com.tencent.mm.opensdk.openapi.WXAPIFactory;
  */
 public class MyApplication extends Application {
     private static MyApplication instance = null;
-    public static MyApplication getInstance () {
+
+    public static MyApplication getInstance() {
         return instance;
     }
 
     @Override
     protected void attachBaseContext(Context base) {
         super.attachBaseContext(base);
+        System.out.println("application-attachBaseContext-->" + System.currentTimeMillis());
         MultiDex.install(this);
-        new RudenessScreenHelper(this, 750).activate();
+
     }
 
     @Override
     public void onCreate() {
+        System.out.println("application---onCreate：" + System.currentTimeMillis());
         super.onCreate();
         instance = this;
         registerToWX();
         MobSDK.init(this);
+        new RudenessScreenHelper(this, 750).activate();
+
         registerActivityLifecycleCallbacks(new ActivityLifecycleCallbacks() {
             @Override
             public void onActivityCreated(Activity activity, Bundle savedInstanceState) {
@@ -136,20 +147,22 @@ public class MyApplication extends Application {
 
         if (inMainProcess(this)) {
             initUiKit();
+            JPushInterface.setDebugMode(true);
+            JPushInterface.init(this);
+//            CrashReport.initCrashReport(getApplicationContext(), Contans.BUGLY_ID, true);
         }
-
     }
 
     private void initUiKit() {
 
         // 初始化
         NimUIKit.init(this);
-    NimUIKit.setMsgForwardFilter(new MsgForwardFilter() {
-      @Override
-      public boolean shouldIgnore(IMMessage message) {
-        return false;
-      }
-    });
+        NimUIKit.setMsgForwardFilter(new MsgForwardFilter() {
+            @Override
+            public boolean shouldIgnore(IMMessage message) {
+                return false;
+            }
+        });
         NimUIKit.setMsgRevokeFilter(new MsgRevokeFilter() {
             @Override
             public boolean shouldIgnore(IMMessage message) {
@@ -176,24 +189,43 @@ public class MyApplication extends Application {
 
         //监听登陆状态
         NIMClient.getService(AuthServiceObserver.class).observeOnlineStatus(
-                new Observer<StatusCode> () {
+                new Observer<StatusCode>() {
                     public void onEvent(StatusCode status) {
-                        if (status == StatusCode.KICKOUT|status == StatusCode.KICK_BY_OTHER_CLIENT) {
+                        if (status == StatusCode.KICKOUT | status == StatusCode.KICK_BY_OTHER_CLIENT) {
                             // 被踢出、账号被禁用、密码错误等情况，自动登录失败，需要返回到登录界面进行重新登录操作
-                            DBManager.getInstance(getApplicationContext()).cleanUser();
-                            Toast.makeText(getApplicationContext(),"被踢下线，请重新登陆",Toast.LENGTH_SHORT).show();
-                            JumpUtils.simpJump(ActivityManagerUtils.getInstance().getCurrentActivity(),LogingActivity.class,true);
+                            String phone = DBManager.getInstance(ActivityManagerUtils.getInstance().getCurrentActivity()).getUserInfo().ContactsTel;
+                            DBManager.getInstance(ActivityManagerUtils.getInstance().getCurrentActivity()).cleanUser();
+                            NIMClient.getService(AuthService.class).logout();
+                            Bundle bundle =new Bundle();
+                            bundle.putString("phone",phone);
+                            boolean isAliasAction = true;
+                            int action = ACTION_DELETE;
+                            TagAliasOperatorHelper.TagAliasBean tagAliasBean = new TagAliasOperatorHelper.TagAliasBean();
+                            tagAliasBean.action = action;
+                            sequence++;
+                            if(isAliasAction){
+                                tagAliasBean.alias = DBManager.getInstance(ActivityManagerUtils.getInstance().getCurrentActivity()).getUseId()+"";
+                            }else{
+//            tagAliasBean.tags = 1;
+                            }
+                            tagAliasBean.isAliasAction = isAliasAction;
+                            TagAliasOperatorHelper.getInstance().handleAction(MyApplication.getInstance(),sequence,tagAliasBean);
+                            JumpUtils.dataJump(ActivityManagerUtils.getInstance().getCurrentActivity(), LogingActivity.class, bundle,true);
+                            Toast.makeText(getApplicationContext(), "被踢下线，请重新登陆", Toast.LENGTH_SHORT).show();
                         }
                     }
                 }, true);
     }
+
     public static IWXAPI mWxApi;
+
     private void registerToWX() {
         //第二个参数是指你应用在微信开放平台上的AppID
         mWxApi = WXAPIFactory.createWXAPI(this, Contans.WEIXIN_APP_ID, false);
         // 将该app注册到微信
         mWxApi.registerApp(Contans.WEIXIN_APP_ID);
     }
+
     public static boolean inMainProcess(Context context) {
         String packageName = context.getPackageName();
         String processName = getProcessName(context);

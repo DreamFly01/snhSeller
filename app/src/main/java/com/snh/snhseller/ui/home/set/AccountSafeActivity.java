@@ -9,7 +9,7 @@ import android.widget.TextView;
 
 import com.snh.snhseller.BaseActivity;
 import com.snh.snhseller.R;
-import com.snh.snhseller.utils.DBManager;
+import com.snh.snhseller.db.DBManager;
 import com.snh.snhseller.utils.IsBang;
 import com.snh.snhseller.utils.StrUtils;
 

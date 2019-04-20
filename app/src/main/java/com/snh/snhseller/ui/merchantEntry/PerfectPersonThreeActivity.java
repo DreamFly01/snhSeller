@@ -11,9 +11,12 @@ import android.widget.TextView;
 import com.snh.snhseller.BaseActivity;
 import com.snh.snhseller.adapter.TypePriceAdapter;
 import com.snh.snhseller.bean.BaseResultBean;
+import com.snh.snhseller.bean.StoreClassficationBean;
 import com.snh.snhseller.bean.TypePriceBean;
 import com.snh.snhseller.requestApi.NetSubscriber;
 import com.snh.snhseller.requestApi.RequestClient;
+import com.snh.snhseller.ui.loging.LogingActivity;
+import com.snh.snhseller.utils.IsBang;
 import com.snh.snhseller.utils.JumpUtils;
 import com.snh.snhseller.R;
 
@@ -61,6 +64,8 @@ public class PerfectPersonThreeActivity extends BaseActivity {
     private String psw;
     private String phone;
     private String name;
+    private String shopType;
+    private String money;
     @Override
     protected void initContentView(Bundle savedInstanceState) {
         setContentView(R.layout.activity_perfectperson3_layout);
@@ -71,13 +76,18 @@ public class PerfectPersonThreeActivity extends BaseActivity {
             psw = bundle.getString("psw");
             phone = bundle.getString("phone");
             name = bundle.getString("name");
+            shopType = bundle.getString("shopType");
+            money = bundle.getString("money");
         }
     }
 
     @Override
     public void setUpViews() {
         heardTitle.setText("缴纳保证金");
+        IsBang.setImmerHeard(this,rlHead);
         tvName.setText(name);
+        tvPrice.setText(money);
+        getShopType();
         setDatas();
         setAdapter();
     }
@@ -91,7 +101,7 @@ public class PerfectPersonThreeActivity extends BaseActivity {
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.heard_back:
-                this.finish();
+                JumpUtils.simpJump(this,LogingActivity.class,true);
                 break;
             case R.id.tv_commit:
                 commitData();
@@ -100,47 +110,13 @@ public class PerfectPersonThreeActivity extends BaseActivity {
     }
 
     private void setDatas() {
-        bean = new TypePriceBean();
-        bean.name = "类目";
-        bean.price1 = "非海淘企业店铺";
-        bean.price2 = "海淘企业店铺";
-//@"类目",@"水果生鲜",@"美容个护",@"家具生活",@"母婴玩具",@"食品保健",@"虚拟商品",@"运动户外",@"数码电器",@"家纺家具"
-        for (int i = 0; i < 8; i++) {
-            bean = new TypePriceBean();
-            switch (i) {
-                case 0:
-                    bean.name = "生鲜水果";
-                    break;
-                case 1:
-                    bean.name = "美容个护";
-                    break;
-                case 2:
-                    bean.name = "家具生活";
-                    break;
-                case 3:
-                    bean.name = "母婴玩具";
-                    break;
-                case 4:
-                    bean.name = "虚拟商品";
-                    break;
-                case 5:
-                    bean.name = "运动户外";
-                    break;
-                case 6:
-                    bean.name = "数码电器";
-                    break;
-                case 7:
-                    bean.name = "家纺家具";
-                    break;
-            }
-            bean.price1 = "2000";
-            bean.price2 = "2000";
-            datas.add(bean);
-        }
+
+
     }
 
+
     private void setAdapter() {
-        adapter = new TypePriceAdapter(this, R.layout.item_type_price_layout, datas);
+        adapter = new TypePriceAdapter( R.layout.item_type_price_layout, null);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setNestedScrollingEnabled(false);
         recyclerView.setAdapter(adapter);
@@ -177,5 +153,40 @@ public class PerfectPersonThreeActivity extends BaseActivity {
 
     }
 
+    List<StoreClassficationBean> typeData;
 
+    private String type;
+
+    private void getShopType() {
+        if (shopType.equals("3")) {
+            type = "2";
+        } else {
+            type = shopType;
+        }
+        addSubscription(RequestClient.GetShopType(type, this, new NetSubscriber<BaseResultBean<List<StoreClassficationBean>>>(this, true) {
+            @Override
+            public void onResultNext(BaseResultBean<List<StoreClassficationBean>> model) {
+                typeData = model.data;
+                bean = new TypePriceBean();
+                bean.name = "类  目";
+                bean.price1 = "非海淘";
+                bean.price2 = "海淘";
+                datas.add(bean);
+                for (StoreClassficationBean bean1 : typeData) {
+                    bean = new TypePriceBean();
+                    bean.name = bean1.Name;
+                    if (shopType.equals("3")) {
+                        bean.price1 = bean1.PNoHaiTao;
+                        bean.price2 = bean1.PHaiTao;
+                    }
+                    if (shopType.equals("2")) {
+                        bean.price1 = bean1.ENoHaiTao;
+                        bean.price2 = bean1.ENoHaiTao;
+                    }
+                    datas.add(bean);
+                }
+                adapter.setNewData(datas);
+            }
+        }));
+    }
 }

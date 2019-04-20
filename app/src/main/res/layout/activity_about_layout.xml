@@ -19,13 +19,14 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textSize="30pt"
+        android:textColor="@color/gray_1"
         android:text="算你狠 Android 1.1"/>
     <LinearLayout
         android:id="@+id/ll_01"
         android:gravity="center"
         android:layout_marginTop="20pt"
         android:background="@color/white"
-        android:padding="30pt"
+        android:padding="20pt"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
         <TextView
@@ -34,6 +35,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="软件许可使用协议"
+            android:textColor="@color/gray_1"
             android:textSize="30pt"
             />
         <ImageView
@@ -47,7 +49,7 @@
         android:gravity="center"
         android:layout_marginTop="4pt"
         android:background="@color/white"
-        android:padding="30pt"
+        android:padding="20pt"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
         <TextView
@@ -56,6 +58,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="算你狠平台服务协议"
+            android:textColor="@color/gray_1"
             android:textSize="30pt"
             />
         <ImageView
@@ -69,7 +72,7 @@
         android:gravity="center"
         android:layout_marginTop="4pt"
         android:background="@color/white"
-        android:padding="30pt"
+        android:padding="20pt"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
         <TextView
@@ -78,6 +81,117 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="法律申明和隐私权政策"
+            android:textColor="@color/gray_1"
+            android:textSize="30pt"
+            />
+        <ImageView
+            android:layout_width="20pt"
+            android:layout_height="35pt"
+            android:background="@drawable/img_aray_right"/>
+    </LinearLayout>
+    <LinearLayout
+        android:id="@+id/ll_04"
+        android:gravity="center"
+        android:layout_marginTop="4pt"
+        android:background="@color/white"
+        android:padding="20pt"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <TextView
+            android:layout_marginLeft="20pt"
+            android:layout_weight="1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="算你狠平台合作协议"
+            android:textColor="@color/gray_1"
+            android:textSize="30pt"
+            />
+        <ImageView
+            android:layout_width="20pt"
+            android:layout_height="35pt"
+            android:background="@drawable/img_aray_right"/>
+    </LinearLayout>
+    <LinearLayout
+        android:id="@+id/ll_05"
+        android:gravity="center"
+        android:layout_marginTop="4pt"
+        android:background="@color/white"
+        android:padding="20pt"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <TextView
+            android:layout_marginLeft="20pt"
+            android:layout_weight="1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="算你狠平台商户信用星级奖励规则"
+            android:textColor="@color/gray_1"
+            android:textSize="30pt"
+            />
+        <ImageView
+            android:layout_width="20pt"
+            android:layout_height="35pt"
+            android:background="@drawable/img_aray_right"/>
+    </LinearLayout>
+    <LinearLayout
+        android:id="@+id/ll_06"
+        android:gravity="center"
+        android:layout_marginTop="4pt"
+        android:background="@color/white"
+        android:padding="20pt"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <TextView
+            android:layout_marginLeft="20pt"
+            android:layout_weight="1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="算你狠平台发货规则"
+            android:textColor="@color/gray_1"
+            android:textSize="30pt"
+            />
+        <ImageView
+            android:layout_width="20pt"
+            android:layout_height="35pt"
+            android:background="@drawable/img_aray_right"/>
+    </LinearLayout>
+    <LinearLayout
+        android:id="@+id/ll_07"
+        android:gravity="center"
+        android:layout_marginTop="4pt"
+        android:background="@color/white"
+        android:padding="20pt"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <TextView
+            android:layout_marginLeft="20pt"
+            android:layout_weight="1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="算你狠商品品牌管理规范"
+            android:textColor="@color/gray_1"
+            android:textSize="30pt"
+            />
+        <ImageView
+            android:layout_width="20pt"
+            android:layout_height="35pt"
+            android:background="@drawable/img_aray_right"/>
+    </LinearLayout>
+    <LinearLayout
+        android:id="@+id/ll_08"
+        android:gravity="center"
+        android:layout_marginTop="4pt"
+        android:background="@color/white"
+        android:padding="20pt"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <TextView
+            android:layout_marginLeft="20pt"
+            android:layout_weight="1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="算你狠营销推广在线计费规则"
+            android:textColor="@color/gray_1"
             android:textSize="30pt"
             />
         <ImageView

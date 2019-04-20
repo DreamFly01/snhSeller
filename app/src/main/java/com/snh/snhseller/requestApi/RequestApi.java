@@ -1,17 +1,29 @@
 package com.snh.snhseller.requestApi;
 
 import com.snh.snhseller.bean.AgreementBean;
+import com.snh.snhseller.bean.AllUserBean;
+import com.snh.snhseller.bean.BanksBean;
 import com.snh.snhseller.bean.BaseResultBean;
 import com.snh.snhseller.bean.BusinessBean;
 import com.snh.snhseller.bean.CostApplyBean;
 import com.snh.snhseller.bean.DataBean;
+import com.snh.snhseller.bean.InSwitchBean;
+import com.snh.snhseller.bean.MoneyBean;
+import com.snh.snhseller.bean.MyBankBean;
 import com.snh.snhseller.bean.MyMsgBean;
+import com.snh.snhseller.bean.NoticeBean;
+import com.snh.snhseller.bean.NoticeNumBean;
 import com.snh.snhseller.bean.OrderBean;
 import com.snh.snhseller.bean.OrderDetailBean;
+import com.snh.snhseller.bean.OrderDetailsBean;
 import com.snh.snhseller.bean.PayWxBean;
 import com.snh.snhseller.bean.ProductBean;
+import com.snh.snhseller.bean.ShopGoodsTypeBean;
 import com.snh.snhseller.bean.SkuBean;
+import com.snh.snhseller.bean.StoreClassficationBean;
 import com.snh.snhseller.bean.UserBean;
+import com.snh.snhseller.bean.WithdrawBean;
+import com.snh.snhseller.bean.WithdrawDetailsBean;
 import com.snh.snhseller.bean.salebean.ApplyBean;
 import com.snh.snhseller.bean.salebean.CostDetialsBean;
 import com.snh.snhseller.bean.salebean.OperationBean;
@@ -26,6 +38,7 @@ import com.snh.snhseller.bean.supplierbean.AllSupplierBean;
 import com.snh.snhseller.bean.supplierbean.GoodsBean;
 import com.snh.snhseller.bean.supplierbean.SupplierBean;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -72,9 +85,9 @@ public interface RequestApi {
      * @param params
      * @return
      */
-    @FormUrlEncoded
+
     @POST("SupplierAuto/SupplierLogin")
-    Observable<BaseResultBean<UserBean>> LoginPhone(@FieldMap Map<String,Object> params);
+    Observable<BaseResultBean<UserBean>> LoginPhone(@Body Map<String,Object> params);
 
     /**
      * 验证手机号码
@@ -102,6 +115,28 @@ public interface RequestApi {
     @POST("SupplierEnter/SmsCode")
     Observable<BaseResultBean> SmsCode(@FieldMap Map<String,Object> params);
 
+    /**
+     * 获取商家入驻开关值
+     * @param params
+     * @return
+     */
+    @GET("webapi/SupplierEnter/GetInSwitch")
+    Observable<BaseResultBean<InSwitchBean>> GetInSwitch(@QueryMap Map<String,Object> params);
+    /**
+     * 获取主营类目
+     * @param params
+     * @return
+     */
+    @GET("Shop/GetShopType")
+    Observable<BaseResultBean<List<StoreClassficationBean>>> GetShopType(@QueryMap Map<String,Object> params);
+
+    /**
+     * 获取商品类型
+     * @param params
+     * @return
+     */
+    @GET("Shop/GetShopGoodsType")
+    Observable<BaseResultBean<List<ShopGoodsTypeBean>>> GetShopGoodsType(@QueryMap Map<String,Object> params);
     /**
      * 商家入驻登录
      * @param params
@@ -278,9 +313,8 @@ public interface RequestApi {
      * @param params
      * @return
      */
-    @FormUrlEncoded
     @POST("SalesmanUser/Login")
-    Observable<BaseResultBean<SaleUserBean>> LoginSale(@FieldMap Map<String,Object> params);
+    Observable<BaseResultBean<SaleUserBean>> LoginSale(@Body Map<String,Object> params);
 
     /**
      * 获取验证码
@@ -540,6 +574,15 @@ public interface RequestApi {
     @GET("webapi/Distribution/OrderDetail")
     Observable<BaseResultBean<OrderDetailBean>> GetOrderDetail(@QueryMap Map<String,Object> params);
 
+
+    /**
+     * 获取用户订单详情
+     * @param params
+     * @return
+     */
+    @GET("webapi/ShopOrder/GetOrderDetail")
+    Observable<BaseResultBean<OrderDetailsBean>> GetMyOrderDetail(@QueryMap Map<String,Object> params);
+
     /**
      * 获取商家商品列表
      * @param params
@@ -563,6 +606,14 @@ public interface RequestApi {
      */
     @POST("Distribution/DelNorm")
     Observable<BaseResultBean> DelNorm(@Body Map<String,Object> params);
+
+    /**
+     * 编辑规格
+     * @param params
+     * @return
+     */
+    @POST("webapi/Distribution/EditNorm")
+    Observable<BaseResultBean> EditeNorm(@Body Map<String,Object> params);
 
     /**
      * 新增规格
@@ -694,4 +745,93 @@ public interface RequestApi {
      */
     @POST("SupplierUser/SetPayMethod")
     Observable<BaseResultBean> SetPayMethod(@Body Map<String,Object> params);
+    /**------------------------------账号资金----------------------------------------------**/
+
+    /**
+     * 获取账号资金信息
+     * @param params
+     * @return
+     */
+    @GET("SupplierMoney/GetAccountMoney")
+    Observable<BaseResultBean<MoneyBean>> GetAccountMoney(@QueryMap Map<String,Object> params);
+
+    /**
+     * 获取银行卡信息
+     * @param params
+     * @return
+     */
+    @GET("SupplierMoney/GetSupplierBankCards")
+    Observable<BaseResultBean<List<MyBankBean>>> GetSupplierBankCards(@QueryMap Map<String,Object> params);
+
+    /**
+     * 删除银行卡
+     * @param params
+     * @return
+     */
+    @POST("SupplierMoney/DeleteSupplierBankCard")
+    Observable<BaseResultBean> DeleteSupplierBankCard(@Body Map<String,Object> params);
+
+    /**
+     * 获取银行接口
+     * @param params
+     * @return
+     */
+    @GET("SupplierMoney/GetBanks")
+    Observable<BaseResultBean<List<BanksBean>>> GetBanks(@QueryMap Map<String,Object> params);
+
+    /**
+     * 商家新增银行卡
+     * @param params
+     * @return
+     */
+    @POST("SupplierMoney/AddSupplierBankCard")
+    Observable<BaseResultBean> AddSupplierBankCard(@Body Map<String,Object> params);
+
+    /**
+     * 提现
+     * @param params
+     * @return
+     */
+    @POST("SupplierMoney/Withdrawal")
+    Observable<BaseResultBean> Withdrawal(@Body Map<String,Object> params);
+
+    /**
+     * 获取资金明细
+     * @param params
+     * @return
+     */
+    @GET("SupplierMoney/GetSupplierMoneyLog")
+    Observable<BaseResultBean<WithdrawBean>> GetSupplierMoneyLog(@QueryMap Map<String,Object> params);
+
+    /**
+     * 获取资金明细
+     * @param params
+     * @return
+     */
+    @GET("SupplierMoney/GetSupplierMoneyLogDetail")
+    Observable<BaseResultBean<WithdrawDetailsBean>> GetSupplierMoneyDetails(@QueryMap Map<String,Object> params);
+
+    /**
+     * 登陆
+     * @param params
+     * @return
+     */
+    @POST("SupplierAuto/SupplierSalesmanLogin")
+    Observable<BaseResultBean<AllUserBean>> Login(@Body Map<String,Object> params);
+
+    /**
+     * 获取通知
+     * @param params
+     * @return
+     */
+    @GET("webapi/Message/GetSupplierNotice")
+    Observable<BaseResultBean<List<NoticeBean>>> GetSupplierNotice(@QueryMap Map<String ,Object> params);
+
+    /**
+     * 获取未读信息条数
+     * @param params
+     * @return
+     */
+    @GET("webapi/Message/GetSupplierNoticeUnreadCount")
+        Observable<BaseResultBean<NoticeNumBean>> GetSupplierNoticeUnreadCount(@QueryMap Map<String,Object> params);
 }

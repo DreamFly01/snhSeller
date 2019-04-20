@@ -23,6 +23,7 @@ public class SalesmanBean implements Parcelable {
     public String CreateTime;
     public String UpdateTime;
     public boolean States;
+    public String SalesmanLogo;
     public List<SalesSupplierBean> ManagerSuppList;
 
     protected SalesmanBean(Parcel in) {
@@ -36,6 +37,7 @@ public class SalesmanBean implements Parcelable {
         CreateTime = in.readString();
         UpdateTime = in.readString();
         States = in.readByte() != 0;
+        SalesmanLogo = in.readString();
         ManagerSuppList = in.createTypedArrayList(SalesSupplierBean.CREATOR);
     }
 
@@ -68,6 +70,7 @@ public class SalesmanBean implements Parcelable {
         dest.writeString(CreateTime);
         dest.writeString(UpdateTime);
         dest.writeByte((byte) (States ? 1 : 0));
+        dest.writeString(SalesmanLogo);
         dest.writeTypedList(ManagerSuppList);
     }
 }

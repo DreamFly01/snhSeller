@@ -10,6 +10,7 @@ import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.LinearLayout;
 
 import java.lang.reflect.Field;
@@ -41,6 +42,7 @@ public abstract class BaseFragment extends Fragment implements View.OnClickListe
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+
         return inflater.inflate(initContentView(), container, false);
     }
 
@@ -142,5 +144,16 @@ public abstract class BaseFragment extends Fragment implements View.OnClickListe
             child.setLayoutParams(params);
             child.invalidate();
         }
+    }
+
+    private static final int MIN_DELAY_TIME = 1000;  // 两次点击间隔不能少于1000ms
+    public boolean isFastClick() {
+        boolean flag = true;
+        long currentClickTime = System.currentTimeMillis();
+        if ((currentClickTime - lastClickTime) >= MIN_DELAY_TIME) {
+            flag = false;
+        }
+        lastClickTime = currentClickTime;
+        return flag;
     }
 }

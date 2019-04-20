@@ -47,7 +47,8 @@
                     android:layout_height="wrap_content"
                     android:textSize="@dimen/txtSize_28"
                     android:hint="请填写真实姓名"
-                    android:textColor="@color/black"/>
+                    android:textColor="@color/black"
+                    android:textColorHint="@color/gray_1"/>
             </LinearLayout>
             <LinearLayout
                 android:background="@drawable/shape_white_5"
@@ -109,7 +110,8 @@
                     android:layout_height="wrap_content"
                     android:textSize="@dimen/txtSize_28"
                     android:hint="请填写常用邮箱"
-                    android:textColor="@color/black"/>
+                    android:textColor="@color/black"
+                    android:textColorHint="@color/gray_1"/>
             </LinearLayout>
             <LinearLayout
                 android:background="@drawable/shape_white_5"
@@ -177,7 +179,8 @@
                     android:layout_height="wrap_content"
                     android:textSize="@dimen/txtSize_28"
                     android:hint="请填写身份证号"
-                    android:textColor="@color/black"/>
+                    android:textColor="@color/black"
+                    android:textColorHint="@color/gray_1"/>
             </LinearLayout>
             <LinearLayout
                 android:visibility="gone"

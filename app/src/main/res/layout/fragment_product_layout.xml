@@ -16,57 +16,53 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/app_red"
+        android:padding="10pt"
         android:orientation="horizontal">
-        <RelativeLayout
-            android:layout_width="match_parent"
+        <LinearLayout
+            android:id="@+id/ll_01"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:paddingRight="20pt"
-            android:paddingLeft="20pt"
-            android:paddingBottom="20pt"
-            android:background="@color/app_red">
-
-            <LinearLayout
-                android:id="@+id/heard_back"
-                android:layout_width="50pt"
-                android:layout_height="50pt"
-                android:gravity="center">
-
-                <ImageView
-                    android:layout_width="20pt"
-                    android:layout_height="31pt"
-                    android:src="@drawable/left_black" />
-            </LinearLayout>
-
+            android:orientation="vertical">
             <TextView
-                android:id="@+id/heard_title"
+                android:id="@+id/tv_01"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_centerHorizontal="true"
-                android:text="title"
+                android:textSize="@dimen/txtSize_28"
+                android:text="零售商品"
                 android:textColor="@color/white"
-                android:textSize="36pt" />
-
-            <RelativeLayout
-                android:id="@+id/heard_menu"
-                android:paddingLeft="20pt"
-                android:paddingRight="20pt"
+                />
+            <ImageView
+                android:id="@+id/iv_01"
                 android:layout_marginTop="10pt"
+                android:layout_width="60pt"
+                android:layout_height="2pt"
+                android:background="@color/white"/>
+        </LinearLayout>
+        <LinearLayout
+            android:id="@+id/ll_02"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+            <TextView
+                android:id="@+id/tv_02"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:layout_marginRight="30pt"
-                android:visibility="visible"
-
-                >
-                <ImageView
-                    android:layout_centerInParent="true"
-
-                    android:layout_width="42pt"
-                    android:layout_height="40pt"
-                    android:src="@drawable/menu_bg"
-                    android:visibility="visible" />
-            </RelativeLayout>
-        </RelativeLayout>
+                android:textSize="@dimen/txtSize_28"
+                android:text="批发商品"
+                android:textColor="@color/white"
+                />
+            <ImageView
+                android:id="@+id/iv_02"
+                android:visibility="invisible"
+                android:layout_marginTop="10pt"
+                android:layout_width="60pt"
+                android:layout_height="4pt"
+                android:background="@color/white"/>
+        </LinearLayout>
     </LinearLayout>
     <android.support.design.widget.TabLayout
         app:tabTextAppearance="@android:style/TextAppearance.Holo.Small"

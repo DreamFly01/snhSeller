@@ -38,7 +38,8 @@
             android:layout_height="wrap_content"
             android:textSize="@dimen/txtSize_28"
             android:hint="店铺名称不可修改"
-            android:textColor="@color/black"/>
+            android:textColor="@color/black"
+            android:textColorHint="@color/gray_1"/>
     </LinearLayout>
     <LinearLayout
         android:background="@drawable/shape_white_5"
@@ -143,7 +144,8 @@
             android:layout_height="wrap_content"
             android:textSize="@dimen/txtSize_28"
             android:hint="请输入商家后台登录密码"
-            android:textColor="@color/black"/>
+            android:textColor="@color/black"
+            android:textColorHint="@color/gray_1"/>
     </LinearLayout>
     <LinearLayout
         android:background="@drawable/shape_white_5"
@@ -179,7 +181,8 @@
             android:layout_height="wrap_content"
             android:textSize="@dimen/txtSize_28"
             android:hint="再次输入密码"
-            android:textColor="@color/black"/>
+            android:textColor="@color/black"
+            android:textColorHint="@color/gray_1"/>
     </LinearLayout>
     <LinearLayout
         android:layout_weight="1"

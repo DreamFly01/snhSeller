@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:gravity="center"
-    android:orientation="vertical">
+    android:orientation="horizontal">
 
     <ImageView
         android:id="@+id/mImg"
@@ -15,4 +15,16 @@
         android:id="@+id/mTv_Title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
+    <TextView
+        android:visibility="gone"
+        android:id="@+id/tv_num"
+        android:gravity="center"
+        android:layout_width="30pt"
+        android:layout_height="30pt"
+        android:text="99+"
+        android:textSize="15pt"
+        android:textColor="@color/white"
+        android:background="@drawable/shape_soild_red_40_bg"
+        />
+
 </LinearLayout>

@@ -21,12 +21,16 @@ import com.snh.snhseller.R;
 import com.snh.snhseller.adapter.GoodsAdapter;
 import com.snh.snhseller.bean.BaseResultBean;
 import com.snh.snhseller.bean.supplierbean.GoodsBean;
+import com.snh.snhseller.db.DBManager;
+import com.snh.snhseller.requestApi.APIException;
 import com.snh.snhseller.requestApi.NetSubscriber;
 import com.snh.snhseller.requestApi.RequestClient;
+import com.snh.snhseller.ui.msg.SupplyNoticeActivity;
 import com.snh.snhseller.utils.DialogUtils;
 import com.snh.snhseller.utils.ImageUtils;
 import com.snh.snhseller.utils.IsBang;
 import com.snh.snhseller.utils.JumpUtils;
+import com.snh.snhseller.utils.StrUtils;
 import com.snh.snhseller.wediget.RecycleViewDivider;
 
 import java.util.ArrayList;
@@ -176,7 +180,7 @@ public class StoreActivity extends BaseActivity {
         ButterKnife.bind(this);
     }
 
-    @OnClick({R.id.heard_back, R.id.tv_add,R.id.tv_chat})
+    @OnClick({R.id.heard_back, R.id.tv_add, R.id.tv_chat})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.heard_back:
@@ -186,7 +190,11 @@ public class StoreActivity extends BaseActivity {
                 apply();
                 break;
             case R.id.tv_chat:
-                NimUIKit.startP2PSession(this, "supp_" + id);
+                if (StrUtils.isEmpty(DBManager.getInstance(this).getUserInfo().Accid)) {
+                    showShortToast("通讯异常，请重新登录");
+                } else {
+                    NimUIKit.startP2PSession(this, "supp_" + id);
+                }
                 break;
         }
     }
@@ -225,6 +233,7 @@ public class StoreActivity extends BaseActivity {
                 tvAdd.setEnabled(false);
 
             }
+
         }));
     }
 }

@@ -108,8 +108,8 @@ public class CostApplyDetailsActivity extends BaseActivity {
     @Override
     public void setUpViews() {
         heardTitle.setText("申请详情");
-        IsBang.setImmerHeard(this,rlHead);
-        ImageUtils.loadUrlImage(this, bean.SupplierIconUrl, ivLogo);
+        IsBang.setImmerHeard(this, rlHead);
+        ImageUtils.loadUrlImage(this, bean.SalesmanLogo, ivLogo);
         switch (bean.CostStates) {
             case 1:
                 tvState.setText("审批中");
@@ -121,7 +121,7 @@ public class CostApplyDetailsActivity extends BaseActivity {
                 break;
             case 2:
                 tvState.setText("已同意");
-                if (bean.SuppRemark.length <= 0) {
+                if (null==bean.SuppRemark||bean.SuppRemark.length <= 0) {
                     llEdit.setVisibility(View.VISIBLE);
                 }
                 tvState.setBackgroundResource(R.drawable.shape_state_green_bg);
@@ -133,9 +133,9 @@ public class CostApplyDetailsActivity extends BaseActivity {
                 break;
             case 3:
                 tvState.setText("已驳回");
-                if (bean.SuppRemark.length <= 0) {
-                    llEdit.setVisibility(View.VISIBLE);
-                }
+                    if (null == bean.SuppRemark||bean.SuppRemark.length <= 0) {
+                        llEdit.setVisibility(View.VISIBLE);
+                    }
                 tvState.setBackgroundResource(R.drawable.shape_state_red_bg);
                 tvState.setTextColor(Color.parseColor("#fc1a4e"));
                 tvState1.setText(bean.SupplierName + ".已驳回");
@@ -170,10 +170,14 @@ public class CostApplyDetailsActivity extends BaseActivity {
         tvName.setText(bean.CostName);
         tvMoney.setText(bean.Budget + "元");
         tvTime.setText(bean.OccurDate);
-        tvDesc.setText(bean.ReMark[0]);
-        if (bean.SuppRemark.length > 0) {
-            tvSupplierMark.setText("备注：" + bean.SuppRemark[0]);
-            llEdit.setVisibility(View.GONE);
+        if (null != bean.ReMark) {
+            tvDesc.setText(bean.ReMark[0]);
+        }
+        if (null != bean.SuppRemark) {
+            if (bean.SuppRemark.length > 0) {
+                tvSupplierMark.setText("备注：" + bean.SuppRemark[0]);
+                llEdit.setVisibility(View.GONE);
+            }
         }
         tvName1.setText(bean.SalesmanName);
         ImageUtils.loadUrlImage(this, bean.SupplierIconUrl, ivLogo1);
@@ -233,17 +237,17 @@ public class CostApplyDetailsActivity extends BaseActivity {
                 rejectOrAgree(2, "已驳回该申请");
                 break;
             case R.id.ll_02:
-                rejectOrAgree(1, "已驳回该申请");
+                rejectOrAgree(1, "已同意该申请");
                 break;
         }
     }
 
-    private void rejectOrAgree(final int type, String content) {
+    private void rejectOrAgree(final int type, final String content) {
         addSubscription(RequestClient.ConsentCostApply(bean.CostId, bean.SalesmanId, type, this, new NetSubscriber<BaseResultBean>(this, true) {
             @Override
             public void onResultNext(BaseResultBean model) {
 
-                dialogUtils.simpleDialog("已同意该申请", new DialogUtils.ConfirmClickLisener() {
+                dialogUtils.simpleDialog(content, new DialogUtils.ConfirmClickLisener() {
                     @Override
                     public void onConfirmClick(View v) {
                         CostApplyDetailsActivity.this.finish();

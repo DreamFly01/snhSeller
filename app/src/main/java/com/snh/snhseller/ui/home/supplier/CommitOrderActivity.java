@@ -18,9 +18,10 @@ import com.snh.snhseller.bean.NormsBean;
 import com.snh.snhseller.bean.supplierbean.SkuBean;
 import com.snh.snhseller.requestApi.NetSubscriber;
 import com.snh.snhseller.requestApi.RequestClient;
-import com.snh.snhseller.utils.DBManager;
+import com.snh.snhseller.db.DBManager;
 import com.snh.snhseller.utils.DialogUtils;
 import com.snh.snhseller.utils.ImageUtils;
+import com.snh.snhseller.utils.IsBang;
 import com.snh.snhseller.utils.JumpUtils;
 import com.snh.snhseller.utils.StrUtils;
 import com.snh.snhseller.wediget.RecycleViewDivider;
@@ -78,7 +79,7 @@ public class CommitOrderActivity extends BaseActivity {
     EditText etMsg;
 
     private String url;
-    private String productName;
+    private String productName,SupplierName,SupplierIconUrl;
     private int goodsId;
     private int shopId;
     private Bundle bundle;
@@ -100,6 +101,8 @@ public class CommitOrderActivity extends BaseActivity {
             productName = bundle.getString("name");
             skudatas = bundle.getParcelableArrayList("data");
             payMethod = bundle.getString("payMethod");
+            SupplierName = bundle.getString("SupplierName");
+            SupplierIconUrl = bundle.getString("SupplierIconUrl");
         }
         dialogUtils = new DialogUtils(this);
     }
@@ -107,17 +110,18 @@ public class CommitOrderActivity extends BaseActivity {
     @Override
     public void setUpViews() {
         heardTitle.setText("确认订单");
+        IsBang.setImmerHeard(this,rlHead);
         tvNamePhone.setText(DBManager.getInstance(this).getUserInfo().Contacts + "   " + DBManager.getInstance(this).getUserInfo().ContactsTel);
         tvAddress.setText(DBManager.getInstance(this).getUserInfo().Address);
-        ImageUtils.loadUrlImage(this, DBManager.getInstance(this).getUserInfo().Logo, ivShopLogo);
+        ImageUtils.loadUrlImage(this, SupplierIconUrl, ivShopLogo);
         ImageUtils.loadUrlImage(this, url, ivProductLogo);
         tvProductName.setText(productName);
-        tvShopName.setText(DBManager.getInstance(this).getUserInfo().ShopName);
+        tvShopName.setText(SupplierName);
         setRecyclerView();
         for (SkuBean bean : skudatas) {
             totalMoney += bean.total * bean.Price;
         }
-        tvTotalMoney.setText(totalMoney + "");
+        tvTotalMoney.setText(StrUtils.moenyToDH(totalMoney + ""));
     }
 
     @Override
@@ -142,6 +146,9 @@ public class CommitOrderActivity extends BaseActivity {
 
     @OnClick({R.id.heard_back, R.id.tv_commit})
     public void onClick(View view) {
+        if(isFastClick()){
+            return;
+        }
         switch (view.getId()) {
             case R.id.heard_back:
                 this.finish();

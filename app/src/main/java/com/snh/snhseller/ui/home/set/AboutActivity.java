@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.snh.snhseller.BaseActivity;
@@ -42,6 +43,20 @@ public class AboutActivity extends BaseActivity {
     LinearLayout ll02;
     @BindView(R.id.ll_03)
     LinearLayout ll03;
+    @BindView(R.id.heard_tv_menu)
+    TextView heardTvMenu;
+    @BindView(R.id.rl_menu)
+    RelativeLayout rlMenu;
+    @BindView(R.id.ll_04)
+    LinearLayout ll04;
+    @BindView(R.id.ll_05)
+    LinearLayout ll05;
+    @BindView(R.id.ll_06)
+    LinearLayout ll06;
+    @BindView(R.id.ll_07)
+    LinearLayout ll07;
+    @BindView(R.id.ll_08)
+    LinearLayout ll08;
 
     @Override
     protected void initContentView(Bundle savedInstanceState) {
@@ -50,10 +65,10 @@ public class AboutActivity extends BaseActivity {
 
     @Override
     public void setUpViews() {
-        IsBang.setImmerHeard(this,rlHead);
+        IsBang.setImmerHeard(this, rlHead);
 
         heardTitle.setText("关于我们");
-        tvVersion.setText("算你狠 Android "+getLocalVersion(this));
+        tvVersion.setText("算你狠 Android " + getLocalVersion(this));
     }
 
     @Override
@@ -63,7 +78,8 @@ public class AboutActivity extends BaseActivity {
 
 
     private Bundle bundle;
-    @OnClick({R.id.ll_01, R.id.ll_02, R.id.ll_03,R.id.heard_back})
+
+    @OnClick({R.id.ll_01, R.id.ll_02, R.id.ll_03, R.id.heard_back,R.id.ll_04, R.id.ll_05, R.id.ll_06, R.id.ll_07, R.id.ll_08})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.heard_back:
@@ -71,18 +87,43 @@ public class AboutActivity extends BaseActivity {
                 break;
             case R.id.ll_01:
                 bundle = new Bundle();
-                bundle.putInt("flag",1);
-                JumpUtils.dataJump(this,ProtocolActivity.class,bundle,false);
+                bundle.putInt("flag", 1);
+                JumpUtils.dataJump(this, ProtocolActivity.class, bundle, false);
                 break;
             case R.id.ll_02:
                 bundle = new Bundle();
-                bundle.putInt("flag",2);
-                JumpUtils.dataJump(this,ProtocolActivity.class,bundle,false);
+                bundle.putInt("flag", 2);
+                JumpUtils.dataJump(this, ProtocolActivity.class, bundle, false);
                 break;
             case R.id.ll_03:
                 bundle = new Bundle();
-                bundle.putInt("flag",3);
-                JumpUtils.dataJump(this,ProtocolActivity.class,bundle,false);
+                bundle.putInt("flag", 3);
+                JumpUtils.dataJump(this, ProtocolActivity.class, bundle, false);
+                break;
+            case R.id.ll_04:
+                bundle = new Bundle();
+                bundle.putInt("flag", 4);
+                JumpUtils.dataJump(this, ProtocolActivity.class, bundle, false);
+                break;
+            case R.id.ll_05:
+                bundle = new Bundle();
+                bundle.putInt("flag", 5);
+                JumpUtils.dataJump(this, ProtocolActivity.class, bundle, false);
+                break;
+            case R.id.ll_06:
+                bundle = new Bundle();
+                bundle.putInt("flag", 7);
+                JumpUtils.dataJump(this, ProtocolActivity.class, bundle, false);
+                break;
+            case R.id.ll_07:
+                bundle = new Bundle();
+                bundle.putInt("flag",8);
+                JumpUtils.dataJump(this, ProtocolActivity.class, bundle, false);
+                break;
+            case R.id.ll_08:
+                bundle = new Bundle();
+                bundle.putInt("flag",9);
+                JumpUtils.dataJump(this, ProtocolActivity.class, bundle, false);
                 break;
         }
     }
@@ -99,4 +140,12 @@ public class AboutActivity extends BaseActivity {
         }
         return localVersion;
     }
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        // TODO: add setContentView(...) invocation
+        ButterKnife.bind(this);
+    }
+
 }

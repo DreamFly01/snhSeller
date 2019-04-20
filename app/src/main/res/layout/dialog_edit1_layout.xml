@@ -23,6 +23,7 @@
         android:layout_height="200pt"
         android:hint="门店问题反馈"
         android:textColor="@color/txt_dark"
+        android:textColorHint="@color/gray_1"
         android:textSize="@dimen/txtSize_30"
         />
     <LinearLayout

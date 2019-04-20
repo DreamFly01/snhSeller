@@ -5,7 +5,6 @@
     android:orientation="vertical"
     android:background="@color/color_app_bg"
     >
-    <include layout="@layout/heard_layout"></include>
     <com.scwang.smartrefresh.layout.SmartRefreshLayout
         android:layout_weight="1"
         android:id="@+id/refreshLayout"

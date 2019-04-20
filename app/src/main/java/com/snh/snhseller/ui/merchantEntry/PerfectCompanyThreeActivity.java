@@ -1,15 +1,11 @@
 package com.snh.snhseller.ui.merchantEntry;
 
 import android.Manifest;
-import android.annotation.SuppressLint;
 import android.content.ContentValues;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
@@ -20,6 +16,7 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.baidu.location.BDAbstractLocationListener;
@@ -32,24 +29,7 @@ import com.baidu.mapapi.map.MapStatusUpdateFactory;
 import com.baidu.mapapi.map.MapView;
 import com.baidu.mapapi.map.MyLocationData;
 import com.baidu.mapapi.model.LatLng;
-import com.bigkoo.pickerview.builder.OptionsPickerBuilder;
-import com.bigkoo.pickerview.listener.OnOptionsSelectListener;
-import com.bigkoo.pickerview.view.OptionsPickerView;
-import com.snh.snhseller.BaseActivity;
-import com.snh.snhseller.adapter.AddImgAdapter;
-import com.snh.snhseller.adapter.FootItemDelagateAdapter;
-import com.snh.snhseller.adapter.MyMultiItemAdapter;
-import com.snh.snhseller.bean.BaseResultBean;
-import com.snh.snhseller.bean.ImgDelagateBean;
-import com.snh.snhseller.bean.JsonBean;
-import com.snh.snhseller.requestApi.NetSubscriber;
-import com.snh.snhseller.requestApi.RequestClient;
-import com.snh.snhseller.utils.DialogUtils;
-import com.snh.snhseller.utils.GetJsonDataUtil;
-import com.snh.snhseller.utils.ImageUtils;
-import com.snh.snhseller.utils.JumpUtils;
-import com.snh.snhseller.utils.StrUtils;
-import com.google.gson.Gson;
+import com.bumptech.glide.Glide;
 import com.jph.takephoto.app.TakePhoto;
 import com.jph.takephoto.app.TakePhotoImpl;
 import com.jph.takephoto.compress.CompressConfig;
@@ -59,9 +39,28 @@ import com.jph.takephoto.model.TResult;
 import com.jph.takephoto.permission.InvokeListener;
 import com.jph.takephoto.permission.PermissionManager;
 import com.jph.takephoto.permission.TakePhotoInvocationHandler;
+import com.snh.snhseller.BaseActivity;
 import com.snh.snhseller.R;
-
-import org.json.JSONArray;
+import com.snh.snhseller.adapter.AddImgAdapter;
+import com.snh.snhseller.adapter.FootItemDelagateAdapter;
+import com.snh.snhseller.adapter.MyMultiItemAdapter;
+import com.snh.snhseller.bean.AreasBean;
+import com.snh.snhseller.bean.BaseResultBean;
+import com.snh.snhseller.bean.ImgDelagateBean;
+import com.snh.snhseller.bean.StoreClassficationBean;
+import com.snh.snhseller.bean.beanDao.AearBean;
+import com.snh.snhseller.greendao.AearBeanDao;
+import com.snh.snhseller.greendao.DaoMaster;
+import com.snh.snhseller.greendao.DaoSession;
+import com.snh.snhseller.requestApi.NetSubscriber;
+import com.snh.snhseller.requestApi.RequestClient;
+import com.snh.snhseller.db.DBManager;
+import com.snh.snhseller.utils.DialogUtils;
+import com.snh.snhseller.utils.ImageUtils;
+import com.snh.snhseller.utils.IsBang;
+import com.snh.snhseller.utils.JumpUtils;
+import com.snh.snhseller.utils.StrUtils;
+import com.snh.snhseller.utils.WaterImgUtils;
 
 import java.io.File;
 import java.io.Serializable;
@@ -114,6 +113,12 @@ public class PerfectCompanyThreeActivity extends BaseActivity implements TakePho
     ImageView ivChose2;
     @BindView(R.id.recyclerView)
     RecyclerView recyclerView;
+    @BindView(R.id.rl_menu)
+    RelativeLayout rlMenu;
+    @BindView(R.id.tv_refresh_map)
+    ImageView tvRefreshMap;
+    @BindView(R.id.tv_commit)
+    TextView tvCommit;
     private LocationClient mLocationListener;
     private double Latitude;
     private double Longitude;
@@ -145,6 +150,10 @@ public class PerfectCompanyThreeActivity extends BaseActivity implements TakePho
     private AddImgAdapter addAdapter;
     private int flag;
     private String psw;
+    private String shopType;
+    private String money;
+    private String name;
+    private StoreClassficationBean typeBean;
 
     @Override
     protected void initContentView(Bundle savedInstanceState) {
@@ -152,24 +161,37 @@ public class PerfectCompanyThreeActivity extends BaseActivity implements TakePho
         bundle = getIntent().getExtras();
         dialogUtils = new DialogUtils(this);
         takePhoto = getTakePhoto();
-        compressConfig = new CompressConfig.Builder().setMaxPixel(800).setMaxSize(2 * 1024).create();
+        compressConfig = new CompressConfig.Builder().setMaxPixel(800).setMaxSize(2 * 1024*1024).create();
         if (null != bundle) {
             ShopCategoryType = bundle.getString("ShopCategoryType");
             flag = bundle.getInt("flag");
             dataMap = (Map<String, Object>) bundle.getSerializable("data");
             psw = bundle.getString("psw");
             phone = bundle.getString("phone");
+            shopType = bundle.getString("shopType");
+            money = bundle.getString("money");
+            name = bundle.getString("name");
+            typeBean = bundle.getParcelable("typeBean");
         }
-        mHandler.sendEmptyMessage(MSG_LOAD_DATA);
     }
 
     @Override
     public void setUpViews() {
-        heardTitle.setText("入驻企业信息完善");
+        if (shopType.equals("3")) {
+            heardTitle.setText("入驻本地信息完善");
+        }
+        if (shopType.equals("2")) {
+            heardTitle.setText("入驻企业信息完善");
+        }
+        if (shopType.equals("1")) {
+            heardTitle.setText("入驻个人信息完善");
+        }
+        IsBang.setImmerHeard(this, rlHead);
         checkPermission();
         setMap();
         initReclyView();
         mapList1 = (List<Map<Object, Object>>) dataMap.get("ImgUrlList");
+        dialogUtils.initJson();
     }
 
     @Override
@@ -186,13 +208,16 @@ public class PerfectCompanyThreeActivity extends BaseActivity implements TakePho
 
     private void setMap() {
 
+        mapView.showZoomControls(false);
         baiduMap = mapView.getMap();
         baiduMap.setMyLocationEnabled(true);
+
         //定位初始化
         mLocationClient = new LocationClient(this);
 
 //通过LocationClientOption设置LocationClient相关参数
         LocationClientOption option = new LocationClientOption();
+        option.setIsNeedAddress(true);
         option.setOpenGps(true); // 打开gps
         option.setCoorType("bd09ll"); // 设置坐标类型
 //        option.setScanSpan(1000);
@@ -222,7 +247,7 @@ public class PerfectCompanyThreeActivity extends BaseActivity implements TakePho
                             return;
                         }
                     }
-                    getLoction();
+                    setMap();
                 } else {
                     showLongToast("发生未知错误");
                     finish();
@@ -232,7 +257,7 @@ public class PerfectCompanyThreeActivity extends BaseActivity implements TakePho
     }
 
 
-    @OnClick({R.id.heard_back, R.id.tv_address, R.id.iv_chose1, R.id.iv_chose2, R.id.tv_commit})
+    @OnClick({R.id.heard_back, R.id.tv_address, R.id.iv_chose1, R.id.iv_chose2, R.id.tv_commit, R.id.tv_refresh_map})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.heard_back:
@@ -257,25 +282,75 @@ public class PerfectCompanyThreeActivity extends BaseActivity implements TakePho
                     type = 3;
                     upLoadImg(paths);
                 } else {
-                    setData();
                     if (check()) {
-                        bundle = new Bundle();
-                        bundle.putSerializable("data", (Serializable) dataMap);
-                        bundle.putInt("flag", 2);
-                        bundle.putString("psw", psw);
-                        if (flag == 3) {
-                            commitData();
+                        if (shopType.equals("2")) {
+                            dialogUtils.twoBtnDialog("是否是海淘店", new DialogUtils.ChoseClickLisener() {
+                                @Override
+                                public void onConfirmClick(View v) {
+                                    bundle = new Bundle();
+                                    IsOverseas = "1";
+                                    bundle.putString("money", typeBean.EHaiTao);
+                                    setData();
+                                    dialogUtils.dismissDialog();
+                                    checkJump();
+
+                                }
+
+                                @Override
+                                public void onCancelClick(View v) {
+                                    bundle = new Bundle();
+                                    IsOverseas = "0";
+                                    bundle.putString("money", typeBean.ENoHaiTao);
+                                    setData();
+                                    dialogUtils.dismissDialog();
+                                    checkJump();
+                                }
+                            }, true);
                         } else {
-                            JumpUtils.dataJump(this, PerfectPersonThreeActivity.class, bundle, false);
+                            setData();
                         }
                     }
+
                 }
 
                 break;
+            case R.id.tv_refresh_map:
+                setMap();
+                break;
         }
     }
+
+    private void checkJump() {
+        bundle.putSerializable("data", (Serializable) dataMap);
+        bundle.putInt("flag", 2);
+        bundle.putString("psw", psw);
+        bundle.putString("shopType", shopType);
+        bundle.putString("name", name);
+        if (flag == 3) {
+            commitData();
+        } else {
+            JumpUtils.dataJump(this, PerfectPersonThreeActivity.class, bundle, false);
+        }
+    }
+
     private List<Map<Object, Object>> mapList1 = new ArrayList<>();
+    private String IsOverseas;
+
     private void setData() {
+        if (StrUtils.isEmpty(Province) || StrUtils.isEmpty(City) || StrUtils.isEmpty(Area)) {
+            try {
+                AearBean aearBean = aearBeanDao.queryBuilder().where(AearBeanDao.Properties.AddressName.eq(province)).unique();
+                Province = aearBean.id;
+                AearBean aearBean1 = aearBeanDao.queryBuilder().where(AearBeanDao.Properties.ParentID.eq(aearBean.id), AearBeanDao.Properties.AddressName.eq(city)).unique();
+                City = aearBean1.id;
+                AearBean aearBean2 = aearBeanDao.queryBuilder().where(AearBeanDao.Properties.ParentID.eq(aearBean1.id), AearBeanDao.Properties.AddressName.eq(district)).unique();
+                Area = aearBean2.id;
+            } catch (Exception e) {
+                dialogUtils.noBtnDialog("当前定位未在平台覆盖区域，请手动选择！");
+                return;
+            }
+
+        }
         mapList.clear();
         paths.clear();
         dataMap.put("ShopCategoryType", ShopCategoryType);
@@ -288,18 +363,18 @@ public class PerfectCompanyThreeActivity extends BaseActivity implements TakePho
         dataMap.put("City", City);
         dataMap.put("Area", Area);
         for (int i = 0; i < allMap.size(); i++) {
-            mapList.add((Map<Object, Object>) allMap.get(i+1));
+            mapList.add((Map<Object, Object>) allMap.get(i + 1));
+        }
+        if (shopType.equals("2")) {
+            dataMap.put("IsOverseas", IsOverseas);
         }
         mapList1.addAll(mapList);
         dataMap.put("ImgUrlList", mapList1);
+        checkJump();
     }
 
     private boolean check() {
 
-        if (StrUtils.isEmpty(et18code.getText().toString().trim())) {
-            dialogUtils.noBtnDialog("请输入社会信用代码");
-            return false;
-        }
         if (StrUtils.isEmpty(etAddress.getText().toString().trim())) {
             dialogUtils.noBtnDialog("请输入详细地址");
             return false;
@@ -308,20 +383,26 @@ public class PerfectCompanyThreeActivity extends BaseActivity implements TakePho
             dialogUtils.noBtnDialog("请输入公司名称");
             return false;
         }
-        if(etAddress.getText().toString().trim().equals("请选择经营地址")){
-            dialogUtils.noBtnDialog("请选择经营地址");
-            return false;
-        }
         if (et18code.getText().toString().trim().length() != 18) {
             dialogUtils.noBtnDialog("请输入正确的社会信用代码");
             return false;
         }
-        if (!(allMap.size() > 0)) {
-            dialogUtils.noBtnDialog("请完善相关资质信息");
+
+        if (StrUtils.isEmpty(et18code.getText().toString().trim())) {
+            dialogUtils.noBtnDialog("请输入社会信用代码");
+            return false;
+        }
+        if (pathMap1.size() <= 0) {
+            dialogUtils.noBtnDialog("请上传营业执照");
             return false;
         }
         return true;
     }
+
+    private String province;
+    private String city;
+    private String district;
+    private String street;
 
     public class MyLocationListener extends BDAbstractLocationListener {
         @Override
@@ -342,6 +423,17 @@ public class PerfectCompanyThreeActivity extends BaseActivity implements TakePho
             MapStatus.Builder builder = new MapStatus.Builder();
             builder.target(ll).zoom(18.0f);
             baiduMap.animateMapStatus(MapStatusUpdateFactory.newMapStatus(builder.build()));
+            province = location.getAddress().province;
+            city = location.getAddress().city;
+            district = location.getAddress().district;
+            street = location.getAddress().street;
+            Latitude = location.getLatitude();
+            Longitude = location.getLongitude();
+            tvJd.setText("纬度：" + Latitude);
+            tvWd.setText("经度：" + Longitude);
+            tvAddress.setText(province + " " + city + " " + district);
+            etAddress.setText(street);
+            etAddress.setSelection(street.length());
         }
     }
 
@@ -410,13 +502,16 @@ public class PerfectCompanyThreeActivity extends BaseActivity implements TakePho
                 imgDelagateBean.isItem = true;
                 imgDelagateBean.isDelet = false;
 
-                File file = new File(result.getImage().getCompressPath());
-                if (file.length() > 2 * 1024 * 1024) {
-                    imgDelagateBean.url = result.getImage().getOriginalPath();
-                } else {
-                    imgDelagateBean.url = result.getImage().getOriginalPath();
-                }
+                File file = new File(result.getImage().getOriginalPath());
 
+                String path;
+                if (file.length() > 2 * 1024 * 1024) {
+                    path = result.getImage().getCompressPath();
+                } else {
+                    path = result.getImage().getOriginalPath();
+                }
+                String path1 = WaterImgUtils.saveBitmap(this, WaterImgUtils.createWaterMaskCenter(path, this));
+                imgDelagateBean.url = path1;
                 data.add(0, imgDelagateBean);
                 dataCopy.add(imgDelagateBean);
                 addAdapter.setData(data, dataCopy);
@@ -427,19 +522,26 @@ public class PerfectCompanyThreeActivity extends BaseActivity implements TakePho
         } else {
 
             pathList.clear();
-            File file = new File(result.getImage().getCompressPath());
+            File file = new File(result.getImage().getOriginalPath());
             if (file.length() > 2 * 1024 * 1024) {
                 pathList.add(result.getImage().getCompressPath());
             } else {
                 pathList.add(result.getImage().getOriginalPath());
             }
+            String path;
             switch (type) {
                 case 1:
-                    ImageUtils.loadUrlImage(PerfectCompanyThreeActivity.this, pathList.get(0), ivChose1);
+                    Glide.with(this).load(WaterImgUtils.createWaterMaskCenter(pathList.get(0), this)).into(ivChose1);
+                    path = WaterImgUtils.saveBitmap(this, WaterImgUtils.createWaterMaskCenter(pathList.get(0), this));
+                    pathList.clear();
+                    pathList.add(path);
 //                    allMap.put(1, pathMap1);
                     break;
                 case 2:
-                    ImageUtils.loadUrlImage(PerfectCompanyThreeActivity.this, pathList.get(0), ivChose2);
+                    Glide.with(this).load(WaterImgUtils.createWaterMaskCenter(pathList.get(0), this)).into(ivChose2);
+                    path = WaterImgUtils.saveBitmap(this, WaterImgUtils.createWaterMaskCenter(pathList.get(0), this));
+                    pathList.clear();
+                    pathList.add(path);
 //                    allMap.put(2, pathMap2);
                     break;
             }
@@ -516,7 +618,7 @@ public class PerfectCompanyThreeActivity extends BaseActivity implements TakePho
     private void upLoadImg(List<String> datas) {
         dialogUtils.dismissDialog();
 
-        addSubscription(RequestClient.UpLoadFile(datas, this, new NetSubscriber<BaseResultBean>(this,true) {
+        addSubscription(RequestClient.UpLoadFile(datas, this, new NetSubscriber<BaseResultBean>(this, true) {
             @Override
             public void onResultNext(BaseResultBean model) {
                 StringBuffer str = new StringBuffer(model.filepath);
@@ -541,7 +643,7 @@ public class PerfectCompanyThreeActivity extends BaseActivity implements TakePho
                             bundle = new Bundle();
                             bundle.putSerializable("data", (Serializable) dataMap);
                             bundle.putInt("flag", 2);
-                            bundle.putString("psw",psw);
+                            bundle.putString("psw", psw);
                             if (flag == 3) {
                                 commitData();
                             } else {
@@ -558,145 +660,31 @@ public class PerfectCompanyThreeActivity extends BaseActivity implements TakePho
     private String Province;
     private String City;
     private String Area;
+    DaoMaster daoMaster = new DaoMaster(DBManager.getInstance(this).getWritableDatabase());
+    DaoSession daoSession = daoMaster.newSession();
+    AearBeanDao aearBeanDao = daoSession.getAearBeanDao();
 
     private void showPickerView() {//条件选择器初始化
 
-        OptionsPickerView pvOptions = new OptionsPickerBuilder(this, new OnOptionsSelectListener() {
+
+        dialogUtils.Address1Dialog(new DialogUtils.Address1Chose() {
             @Override
-            public void onOptionsSelect(int options1, int options2, int options3, View v) {
-                //返回的分别是三个级别的选中位置
-                String tx = options1Items.get(options1).getPickerViewText() + " " +
-                        options2Items.get(options1).get(options2) + " " +
-                        options3Items.get(options1).get(options2).get(options3);
-                Province = options1Items.get(options1).getPickerViewText();
-                City = options2Items.get(options1).get(options2);
-                Area = options3Items.get(options1).get(options2).get(options3);
-                tvAddress.setText(tx);
+            public void onAddressChose(AreasBean bean) {
+                AearBean aearBean = aearBeanDao.queryBuilder().where(AearBeanDao.Properties.Id.eq(bean.ParentID)).unique();
+                City = aearBean.id;
+                AearBean aearBean1 = aearBeanDao.queryBuilder().where(AearBeanDao.Properties.Id.eq(aearBean.ParentID)).unique();
+                Province = aearBean1.id;
+                Area = bean.id;
+                tvAddress.setText(aearBean1.AddressName + " " + aearBean.AddressName + " " + bean.AddressName);
             }
-        })
-
-                .setTitleText("城市选择")
-                .setCancelText("取消")
-                .setSubmitText("确定")
-                .setDividerColor(Color.BLACK)
-                .setTextColorCenter(Color.BLACK) //设置选中项文字颜色
-                .setContentTextSize(20)
-                .build();
-        pvOptions.setPicker(options1Items, options2Items, options3Items);//三级选择器
-        pvOptions.show();
+        });
     }
 
-    private void initJsonData() {//解析数据
-
-        /**
-         * 注意：assets 目录下的Json文件仅供参考，实际使用可自行替换文件
-         * 关键逻辑在于循环体
-         *
-         * */
-        String JsonData = new GetJsonDataUtil().getJson(this, "province.json");//获取assets目录下的json文件数据
-
-        ArrayList<JsonBean> jsonBean = parseData(JsonData);//用Gson 转成实体
-
-        /**
-         * 添加省份数据
-         *
-         * 注意：如果是添加的JavaBean实体，则实体类需要实现 IPickerViewData 接口，
-         * PickerView会通过getPickerViewText方法获取字符串显示出来。
-         */
-        options1Items = jsonBean;
-
-        for (int i = 0; i < jsonBean.size(); i++) {//遍历省份
-            ArrayList<String> CityList = new ArrayList<>();//该省的城市列表（第二级）
-            ArrayList<ArrayList<String>> Province_AreaList = new ArrayList<>();//该省的所有地区列表（第三极）
-
-            for (int c = 0; c < jsonBean.get(i).getCityList().size(); c++) {//遍历该省份的所有城市
-                String CityName = jsonBean.get(i).getCityList().get(c).getName();
-                CityList.add(CityName);//添加城市
-                ArrayList<String> City_AreaList = new ArrayList<>();//该城市的所有地区列表
-
-                //如果无地区数据，建议添加空字符串，防止数据为null 导致三个选项长度不匹配造成崩溃
-                if (jsonBean.get(i).getCityList().get(c).getArea() == null
-                        || jsonBean.get(i).getCityList().get(c).getArea().size() == 0) {
-                    City_AreaList.add("");
-                } else {
-                    City_AreaList.addAll(jsonBean.get(i).getCityList().get(c).getArea());
-                }
-                Province_AreaList.add(City_AreaList);//添加该省所有地区数据
-            }
-
-            /**
-             * 添加城市数据
-             */
-            options2Items.add(CityList);
-
-            /**
-             * 添加地区数据
-             */
-            options3Items.add(Province_AreaList);
-        }
-
-        mHandler.sendEmptyMessage(MSG_LOAD_SUCCESS);
-
-    }
-
-
-    public ArrayList<JsonBean> parseData(String result) {//Gson 解析
-        ArrayList<JsonBean> detail = new ArrayList<>();
-        try {
-            JSONArray data = new JSONArray(result);
-            Gson gson = new Gson();
-            for (int i = 0; i < data.length(); i++) {
-                JsonBean entity = gson.fromJson(data.optJSONObject(i).toString(), JsonBean.class);
-                detail.add(entity);
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-            mHandler.sendEmptyMessage(MSG_LOAD_FAILED);
-        }
-        return detail;
-    }
-
-    @SuppressLint("HandlerLeak")
-    private Handler mHandler = new Handler() {
-        public void handleMessage(Message msg) {
-            switch (msg.what) {
-                case MSG_LOAD_DATA:
-                    if (thread == null) {//如果已创建就不再重新创建子线程了
-
-//                        Toast.makeText(JsonDataActivity.this, "Begin Parse Data", Toast.LENGTH_SHORT).show();
-                        thread = new Thread(new Runnable() {
-                            @Override
-                            public void run() {
-                                // 子线程中解析省市区数据
-                                initJsonData();
-                            }
-                        });
-                        thread.start();
-                    }
-                    break;
-
-                case MSG_LOAD_SUCCESS:
-//                    Toast.makeText(JsonDataActivity.this, "Parse Succeed", Toast.LENGTH_SHORT).show();
-                    isLoaded = true;
-                    break;
-
-                case MSG_LOAD_FAILED:
-//                    Toast.makeText(JsonDataActivity.this, "Parse Failed", Toast.LENGTH_SHORT).show();
-                    break;
-            }
-        }
-    };
-
-    private ArrayList<JsonBean> options1Items = new ArrayList<>();
-    private ArrayList<ArrayList<String>> options2Items = new ArrayList<>();
-    private ArrayList<ArrayList<ArrayList<String>>> options3Items = new ArrayList<>();
-    private Thread thread;
     private static final int MSG_LOAD_DATA = 0x0001;
     private static final int MSG_LOAD_SUCCESS = 0x0002;
     private static final int MSG_LOAD_FAILED = 0x0003;
 
     private boolean isLoaded = false;
-
 
     private void checkPermission() {
         List<String> permissionlist = new ArrayList<>();
@@ -709,56 +697,59 @@ public class PerfectCompanyThreeActivity extends BaseActivity implements TakePho
         if (ContextCompat.checkSelfPermission(PerfectCompanyThreeActivity.this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
             permissionlist.add(Manifest.permission.WRITE_EXTERNAL_STORAGE);
         }
+
         if (!permissionlist.isEmpty()) {
             String[] permissions = permissionlist.toArray(new String[permissionlist.size()]);
             ActivityCompat.requestPermissions(PerfectCompanyThreeActivity.this, permissions, 1);
         } else {
-            getLoction();
+//            getLoction();
+            setMap();
         }
 
     }
 
-    private void getLoction() {
-        //设置位置客户端选项
-        LocationClientOption option = new LocationClientOption();
-        //设置位置取得模式  （这里是指定为设备传感器也就是 GPS 定位）
-        option.setLocationMode(LocationClientOption.LocationMode.Device_Sensors);
-        //设置 间隔扫描的时间  也就是 位置时隔多长时间更新
-//        option.setScanSpan(5000);
-        //设置 是否需要地址 （需要联网取得 百度提供的位置信息）
-        option.setOpenGps(true);
-        option.setLocationMode(LocationClientOption.LocationMode.Hight_Accuracy);
-        option.setCoorType("bd09ll");
-        option.setIsNeedAddress(true);
-        // 实例化 LocationClient  传入的context 应该是全局的
-        mLocationListener = new LocationClient(getApplicationContext());
-        //将选项设置进去
-        mLocationListener.setLocOption(option);
-        //设置监听器 （这个方法有两个其中一个过时了，要使用 new BDAbstractLocationListener 的这个监听器）
-        mLocationListener.registerLocationListener(new BDAbstractLocationListener() {
-            @Override
-            public void onReceiveLocation(BDLocation bdLocation) {
-                StringBuilder currentPosition = new StringBuilder();
-                //获取经纬度
-                currentPosition.append("纬度：").append(bdLocation.getLatitude()).append("\n");
-                currentPosition.append("经线：").append(bdLocation.getLongitude()).append("\n");
-                Latitude = bdLocation.getLatitude();
-                Longitude = bdLocation.getLongitude();
-                tvJd.setText("纬度：" + Latitude);
-                tvWd.setText("经度：" + Longitude);
-
-                //获取定位方式
-
-                if (bdLocation.getLocType() == BDLocation.TypeGpsLocation) {
-                    currentPosition.append("GPS 定位");
-                } else if (bdLocation.getLocType() == BDLocation.TypeNetWorkLocation) {
-                    currentPosition.append("网络 定位");
-                }
-            }
-        });
-        //显示到Activity
-        mLocationListener.start();
-    }
+//    private void getLoction() {
+//        //设置位置客户端选项
+//        LocationClientOption option = new LocationClientOption();
+//        //设置位置取得模式  （这里是指定为设备传感器也就是 GPS 定位）
+//        option.setLocationMode(LocationClientOption.LocationMode.Device_Sensors);
+//        //设置 间隔扫描的时间  也就是 位置时隔多长时间更新
+////        option.setScanSpan(5000);
+//        //设置 是否需要地址 （需要联网取得 百度提供的位置信息）
+//        option.setOpenGps(true); // 打开gps
+//        option.setCoorType("bd09ll"); // 设置坐标类型
+//        option.setIsNeedAddress(true);
+//        option.setLocationMode(LocationClientOption.LocationMode.Hight_Accuracy);
+//        // 实例化 LocationClient  传入的context 应该是全局的
+//        mLocationListener = new LocationClient(getApplicationContext());
+//        //将选项设置进去
+//        mLocationListener.setLocOption(option);
+//        //设置监听器 （这个方法有两个其中一个过时了，要使用 new BDAbstractLocationListener 的这个监听器）
+//        mLocationListener.registerLocationListener(new BDAbstractLocationListener() {
+//            @Override
+//            public void onReceiveLocation(BDLocation bdLocation) {
+//                StringBuilder currentPosition = new StringBuilder();
+//                //获取经纬度
+//                currentPosition.append("纬度：").append(bdLocation.getLatitude()).append("\n");
+//                currentPosition.append("经线：").append(bdLocation.getLongitude()).append("\n");
+//                Latitude = bdLocation.getLatitude();
+//                Longitude = bdLocation.getLongitude();
+//                tvJd.setText("纬度：" + Latitude);
+//                tvWd.setText("经度：" + Longitude);
+//
+//                //获取定位方式
+//
+//                if (bdLocation.getLocType() == BDLocation.TypeGpsLocation) {
+//                    currentPosition.append("GPS 定位");
+//                } else if (bdLocation.getLocType() == BDLocation.TypeNetWorkLocation) {
+//                    currentPosition.append("网络 定位");
+//                }
+//            }
+//        });
+//        //显示到Activity
+//        mLocationListener.start();
+//        setMap();
+//    }
 
     @Override
     protected void onResume() {
@@ -776,7 +767,6 @@ public class PerfectCompanyThreeActivity extends BaseActivity implements TakePho
     protected void onDestroy() {
         mLocationClient.stop();
         baiduMap.setMyLocationEnabled(false);
-
         mapView.onDestroy();
         mapView = null;
         super.onDestroy();

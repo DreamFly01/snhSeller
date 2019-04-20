@@ -41,6 +41,9 @@ public class OrderBean implements Parcelable {
     public String LeaveWord;
 //    public String OrderCreateTime;
     public List<OrderGoodsBean> OrderGoodsList;
+    public String ShopType;
+    public boolean IsSupportCode;
+    public int IsChangePrice;
 
     protected OrderBean(Parcel in) {
         OrderId = in.readInt();
@@ -66,6 +69,9 @@ public class OrderBean implements Parcelable {
         PayMethod = in.readString();
         LeaveWord = in.readString();
         OrderGoodsList = in.createTypedArrayList(OrderGoodsBean.CREATOR);
+        ShopType = in.readString();
+        IsSupportCode = in.readByte() != 0;
+        IsChangePrice = in.readInt();
     }
 
     public static final Creator<OrderBean> CREATOR = new Creator<OrderBean>() {
@@ -110,5 +116,8 @@ public class OrderBean implements Parcelable {
         dest.writeString(PayMethod);
         dest.writeString(LeaveWord);
         dest.writeTypedList(OrderGoodsList);
+        dest.writeString(ShopType);
+        dest.writeByte((byte) (IsSupportCode ? 1 : 0));
+        dest.writeInt(IsChangePrice);
     }
 }

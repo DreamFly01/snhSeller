@@ -15,15 +15,13 @@ import com.snh.snhseller.bean.beanDao.UserEntity;
 import com.snh.snhseller.greendao.UserEntityDao;
 import com.snh.snhseller.requestApi.NetSubscriber;
 import com.snh.snhseller.requestApi.RequestClient;
-import com.snh.snhseller.ui.home.account.ModifInfoActivity;
-import com.snh.snhseller.utils.DBManager;
+import com.snh.snhseller.db.DBManager;
 import com.snh.snhseller.utils.DialogUtils;
 import com.snh.snhseller.utils.IsBang;
 import com.snh.snhseller.utils.StrUtils;
 import com.snh.snhseller.wediget.IdentifyCodeView;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 /**

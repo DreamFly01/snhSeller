@@ -109,8 +109,8 @@ public class ProductActivity extends BaseActivity {
         IsBang.setImmerHeard(this,rlHead);
         heardTitle.setText("产品详情");
         options1Items.clear();
-        options1Items.add("货到付款");
         options1Items.add("在线支付");
+        options1Items.add("货到付款");
         heard = (LinearLayout) inflater.inflate(R.layout.heard_banner_layout, null);
         banner = (Banner) heard.findViewById(R.id.banner);
         tvPrice = (TextView) heard.findViewById(R.id.tv_price);
@@ -120,7 +120,7 @@ public class ProductActivity extends BaseActivity {
         tvYunfei = (TextView) heard.findViewById(R.id.tv_yunfei);
         hdfk = (TextView) heard.findViewById(R.id.tv_hdfk);
         setRecyclerView();
-        getData();
+
     }
 
     @Override
@@ -140,8 +140,6 @@ public class ProductActivity extends BaseActivity {
     private void fillView(ProductBean bean) {
         tvName.setText(bean.ShopGoodsName);
         tvInventory.setText("总库存：" + bean.SumInventory);
-//        tvPrice.setText("二批价：￥" + StrUtils.moenyToDH(bean.Price+""));
-//        tvPrice1.setText("终端价：￥" + StrUtils.moenyToDH(bean.RetailPrice+""));
         tvPrice.setText("终端价：￥" + StrUtils.moenyToDH(bean.RetailPrice+""));
         tvPrice1.getPaint().setFlags(Paint.STRIKE_THRU_TEXT_FLAG);
         tvYunfei.setText("运费：送货上门");
@@ -220,6 +218,8 @@ public class ProductActivity extends BaseActivity {
             bundle.putInt("shopId", shopId);
             bundle.putInt("goodsId", bean.ShopGoodsId);
             bundle.putInt("shopId", shopId);
+            bundle.putString("SupplierName",bean.SupplierName);
+            bundle.putString("SupplierIconUrl",bean.SupplierIconUrl);
             bundle.putString("payMethod", payMethod);
             JumpUtils.dataJump(this, CommitOrderActivity.class, bundle, false);
         } else {
@@ -228,7 +228,6 @@ public class ProductActivity extends BaseActivity {
     }
 
     private void showPickView() {
-
         OptionsPickerView pvOptions = new OptionsPickerBuilder(ProductActivity.this, new OnOptionsSelectListener() {
             @Override
             public void onOptionsSelect(int options1, int option2, int options3, View v) {
@@ -246,5 +245,9 @@ public class ProductActivity extends BaseActivity {
         pvOptions.show();
     }
 
-
+    @Override
+    protected void onResume() {
+        super.onResume();
+        getData();
+    }
 }

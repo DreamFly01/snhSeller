@@ -1,11 +1,16 @@
 package com.snh.snhseller.requestApi;
 
 import android.app.Activity;
+import android.app.Application;
 import android.content.Context;
 import android.view.View;
+import android.widget.Toast;
 
+import com.snh.snhseller.MyApplication;
 import com.snh.snhseller.bean.BaseResultBean;
+import com.snh.snhseller.ui.msg.SupplyNoticeActivity;
 import com.snh.snhseller.utils.DialogUtils;
+import com.snh.snhseller.utils.JumpUtils;
 import com.snh.snhseller.utils.StrUtils;
 import com.snh.snhseller.wediget.CustomProgress;
 import com.snh.snhseller.wediget.LoadingDialog;
@@ -19,7 +24,7 @@ import rx.Subscriber;
  * <p>changeTime：2019/2/19<p>
  * <p>version：1<p>
  */
-public abstract class NetSubscriber <T> extends Subscriber<T> {
+public abstract class NetSubscriber<T> extends Subscriber<T> {
     private DialogUtils dialogUtils;
     private Context context;
     /***
@@ -34,7 +39,11 @@ public abstract class NetSubscriber <T> extends Subscriber<T> {
     private boolean mIsShowLoading = false;
 
     public NetSubscriber(Context context) {
-        this.context = context;
+        if (null != context) {
+            this.context = context;
+        } else {
+//            this.context = MyApplication.getInstance().getApplicationContext();
+        }
     }
 
     public NetSubscriber(Context context, boolean isShowLoading) {
@@ -55,21 +64,24 @@ public abstract class NetSubscriber <T> extends Subscriber<T> {
 
     @Override
     public void onError(Throwable e) {
+
+
         onResultErro(new APIException(e.getMessage()));
     }
 
     @Override
     public void onNext(T t) {
-        dialogUtils = new DialogUtils(context, (Activity) context);
+        dialogUtils = new DialogUtils(context);
+        dismissLoadingView();
         if (t instanceof BaseResultBean) {
             BaseResultBean bean = (BaseResultBean) t;
-            if(null!=bean.code){
-                if (bean.code.equals("01")|bean.code.equals("1")) {
+            if (null != bean.code) {
+                if (bean.code.equals("01") | bean.code.equals("1")) {
                     onResultNext(t);
                 } else {
-                    onResultErro(new APIException(bean.msg));
+                    onResultErro(new APIException(bean.msg, bean.code));
                 }
-            }else {
+            } else {
                 onResultNext(t);
             }
 
@@ -82,27 +94,42 @@ public abstract class NetSubscriber <T> extends Subscriber<T> {
     public abstract void onResultNext(T model);
 
     public void onResultErro(final APIException erro) {
-        dialogUtils = new DialogUtils(context, (Activity) context);
-        if (StrUtils.isEmpty(erro.msg)) {
-            erro.msg = "连接服务器失败";
-            dismissLoadingView();
-        }
-//        Log.d(HttpLogger.LOGKYE, "erro: " + erro.msg);
-        dialogUtils.simpleDialog(erro.msg, new DialogUtils.ConfirmClickLisener() {
-            @Override
-            public void onConfirmClick(View v) {
+        if (null != context) {
 
-                dialogUtils.dismissDialog();
-                dismissLoadingView();
+            dialogUtils = new DialogUtils(context);
+            if (StrUtils.isEmpty(erro.msg)) {
+                erro.msg = "网络连接失败,请检查网络";
             }
-        }, true);
+//        Log.d(HttpLogger.LOGKYE, "erro: " + erro.msg);
+
+            if ("100".equals(erro.code)) {
+                dialogUtils.simpleDialog(erro.msg, new DialogUtils.ConfirmClickLisener() {
+                    @Override
+                    public void onConfirmClick(View v) {
+
+                        dialogUtils.dismissDialog();
+                        JumpUtils.simpJump((Activity) context, SupplyNoticeActivity.class, false);
+                    }
+                }, true);
+
+            } else {
+                dialogUtils.simpleDialog(erro.msg, new DialogUtils.ConfirmClickLisener() {
+                    @Override
+                    public void onConfirmClick(View v) {
+
+                        dialogUtils.dismissDialog();
+                    }
+                }, true);
+            }
+
+        }
     }
 
     public void dismissLoadingView() {
 //        if (mIsShowLoading && null != mCustomProgress) {
 //            mCustomProgress.dismiss();
 //        }
-        if(mIsShowLoading && null !=loadingDialog){
+        if (mIsShowLoading && null != loadingDialog) {
             loadingDialog.dismiss();
         }
     }

@@ -25,11 +25,11 @@ import com.snh.snhseller.BaseActivity;
 import com.snh.snhseller.R;
 import com.snh.snhseller.bean.BaseResultBean;
 import com.snh.snhseller.bean.beanDao.UserEntity;
+import com.snh.snhseller.db.DBManager;
 import com.snh.snhseller.greendao.UserEntityDao;
 import com.snh.snhseller.requestApi.NetSubscriber;
 import com.snh.snhseller.requestApi.RequestClient;
 import com.snh.snhseller.utils.Contans;
-import com.snh.snhseller.utils.DBManager;
 import com.snh.snhseller.utils.DialogUtils;
 import com.snh.snhseller.utils.ImageUtils;
 import com.snh.snhseller.utils.IsBang;
@@ -98,6 +98,8 @@ public class ShopInfoActivity extends BaseActivity implements TakePhoto.TakeResu
     ImageView btnSelect;
     @BindView(R.id.ll_06)
     LinearLayout ll06;
+    @BindView(R.id.tv_shopType)
+    TextView tvShopType;
     private UserEntity useInfo;
 
     private Bundle bundle;
@@ -111,7 +113,7 @@ public class ShopInfoActivity extends BaseActivity implements TakePhoto.TakeResu
     protected void initContentView(Bundle savedInstanceState) {
         setContentView(R.layout.activity_shopinfo_layout);
         takePhoto = getTakePhoto();
-        compressConfig = new CompressConfig.Builder().setMaxPixel(800).setMaxSize(2 * 1024).create();
+        compressConfig = new CompressConfig.Builder().setMaxPixel(800).setMaxSize(2000 * 1024).create();
         dialogUtils = new DialogUtils(this, this);
     }
 
@@ -122,7 +124,20 @@ public class ShopInfoActivity extends BaseActivity implements TakePhoto.TakeResu
         useInfo = DBManager.getInstance(this).getUserInfo();
         ImageUtils.loadUrlImage(this, useInfo.Logo, ivLogo);
         tvShopName.setText(useInfo.ShopName);
-        tvLeimu.setText(useInfo.BusinessActivities);
+        tvShopType.setText(useInfo.shopTypeName);
+        switch (useInfo.BusinessActivities) {
+            case "1":
+                tvLeimu.setText("本地");
+                break;
+            case "2":
+                tvLeimu.setText("个人");
+                break;
+            case "3":
+                tvLeimu.setText("企业");
+                break;
+
+
+        }
         tvAddress.setText(useInfo.Address);
         tvUserName.setText(useInfo.Contacts);
         tvPhone.setText(useInfo.ContactsTel);
@@ -225,8 +240,7 @@ public class ShopInfoActivity extends BaseActivity implements TakePhoto.TakeResu
         ImageUtils.loadUrlImage(this, result.getImage().getOriginalPath(), ivLogo);
         dialogUtils.dismissDialog();
         File file = new File(result.getImage().getOriginalPath());
-        if (file.length() > 2 * 1024 * 1024) {
-            File file1 = new File(result.getImage().getCompressPath());
+        if (file.length() > 2000 * 1024) {
             pathList.add(result.getImage().getCompressPath());
         } else {
             pathList.add(result.getImage().getOriginalPath());
@@ -263,11 +277,9 @@ public class ShopInfoActivity extends BaseActivity implements TakePhoto.TakeResu
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-
         try {
-
-        getTakePhoto().onActivityResult(requestCode, resultCode, data);
-        }catch (Exception e){
+            getTakePhoto().onActivityResult(requestCode, resultCode, data);
+        } catch (Exception e) {
             showLongToast("请选择照片");
         }
 
@@ -313,12 +325,25 @@ public class ShopInfoActivity extends BaseActivity implements TakePhoto.TakeResu
         useInfo = DBManager.getInstance(this).getUserInfo();
         ImageUtils.loadUrlImage(this, useInfo.Logo, ivLogo);
         tvShopName.setText(useInfo.ShopName);
-        tvLeimu.setText(useInfo.BusinessActivities);
         tvAddress.setText(useInfo.Address);
         tvUserName.setText(useInfo.Contacts);
         tvPhone.setText(useInfo.ContactsTel);
         tvEmail.setText(useInfo.ContactsQQ);
         tv07.setText(useInfo.Introduction);
+
+        switch (useInfo.BusinessActivities) {
+            case "1":
+                tvLeimu.setText("本地");
+                break;
+            case "2":
+                tvLeimu.setText("个人");
+                break;
+            case "3":
+                tvLeimu.setText("企业");
+                break;
+
+
+        }
     }
 
     private void setPayMethod(int type) {

@@ -8,6 +8,7 @@ import android.widget.TextView;
 
 import com.snh.snhseller.BaseActivity;
 import com.snh.snhseller.R;
+import com.snh.snhseller.utils.FinishActivityManager;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;

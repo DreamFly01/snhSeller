@@ -10,6 +10,9 @@ import android.widget.TextView;
 import com.gyf.barlibrary.ImmersionBar;
 import com.snh.snhseller.R;
 import com.snh.snhseller.ui.home.supplier.PayActivity;
+import com.snh.snhseller.ui.order.OrderFragment;
+import com.snh.snhseller.utils.FinishActivityManager;
+import com.snh.snhseller.utils.IsBang;
 import com.snh.snhseller.utils.JumpUtils;
 import com.tencent.mm.opensdk.constants.ConstantsAPI;
 import com.tencent.mm.opensdk.modelbase.BaseReq;
@@ -51,6 +54,7 @@ public class WXPayEntryActivity extends Activity implements IWXAPIEventHandler {
         api.registerApp("wx223ecb204beddad4");
         api.handleIntent(getIntent(), this);
         ImmersionBar.with(this).titleBar(rlHead).statusBarColor(R.color.app_red).init();
+        IsBang.setImmerHeard(this,rlHead);
     }
 
     @Override
@@ -61,13 +65,16 @@ public class WXPayEntryActivity extends Activity implements IWXAPIEventHandler {
     @Override
     public void onResp(BaseResp baseResp) {
         heardTitle.setText("支付结果");
+        FinishActivityManager.getManager().finishActivity(PayActivity.class);
+
         if (baseResp.getType() == ConstantsAPI.COMMAND_PAY_BY_WX) {
             int errCord = baseResp.errCode;
             if (errCord == 0) {
                 tvPayResult.setText("支付成功");
-                Bundle bundle = new Bundle();
-                bundle.putInt("cord",errCord);
-                JumpUtils.dataJump(this, PayActivity.class,bundle,true);
+                OrderFragment.updataView(2,1);
+//                Bundle bundle = new Bundle();
+//                bundle.putInt("cord",errCord);
+//                JumpUtils.dataJump(this, PayActivity.class,bundle,true);
             } else if (errCord == -2) {
                 tvPayResult.setText("支付失败");
             } else {

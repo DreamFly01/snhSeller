@@ -13,5 +13,6 @@ public class SalesCountBean {
     public String SalesmanPhone;
     public String ClockinTime;
     public int Count;
+    public String SalesmanLogo;
 
 }

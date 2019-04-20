@@ -59,6 +59,7 @@ public class OperationAdapter extends BaseQuickAdapter<CommTenantBean, BaseViewH
                 });
             }
         } else {
+            helper.getView(R.id.btn_dk).setVisibility(View.GONE);
             helper.setText(R.id.tv_phone, "(" + item.ManagerSalesmanUser + ")管理该商户");
             TextView tv = helper.getView(R.id.tv_phone);
             tv.setTextColor(Color.parseColor("#fc1a4e"));
@@ -76,7 +77,7 @@ public class OperationAdapter extends BaseQuickAdapter<CommTenantBean, BaseViewH
 //                    , Double.parseDouble(item.Latitude), Double.parseDouble(item.Longitude));
             double distans = DistanceUtil.getDistance(latLng,latLng1);
             TextView distance = helper.getView(R.id.tv_distance);
-            distance.setText(DistanceUtils.distanceKMFormat(Double.parseDouble(DistanceUtils.distanceFormat(distans))));
+            distance.setText(DistanceUtils.getDistance(latLng,latLng1));
             if (distans < 150) {
                 helper.getView(R.id.btn_dk).setEnabled(true);
             }else {

@@ -25,11 +25,11 @@ public class SkuListAdapter extends BaseQuickAdapter<SkuBean,BaseViewHolder> {
     @Override
     protected void convert(BaseViewHolder helper, SkuBean item) {
         helper.setText(R.id.tv_sku_name,"规格名称："+item.NormName);
-        helper.setText(R.id.tv_sku_value,"规格值："+item.NormValue+"(单位/"+item.MeasureUnit+")");
+        helper.setText(R.id.tv_sku_value,"规格值："+item.NormValue+"(件/"+item.MeasureUnit+")");
         helper.setText(R.id.tv_sku_sprice,"二批价：￥"+StrUtils.moenyToDH(item.Price+""));
         helper.setText(R.id.tv_sku_mprice,"终端价：￥"+StrUtils.moenyToDH(item.RetailPrice+""));
         helper.setText(R.id.tv_sku_inventory,"库存："+item.Inventory);
 
-        helper.addOnClickListener(R.id.ll_delete);
+        helper.addOnClickListener(R.id.ll_delete,R.id.ll_item);
     }
 }

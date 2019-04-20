@@ -6,6 +6,7 @@
     android:orientation="vertical"
     android:background="@color/white">
     <LinearLayout
+        android:id="@+id/ll_state"
         android:background="@color/white"
         android:gravity="center"
         android:padding="30pt"
@@ -43,6 +44,7 @@
         android:padding="30pt">
 
         <ImageView
+            android:scaleType="centerCrop"
             android:id="@+id/iv_product_logo1"
             android:layout_width="120pt"
             android:layout_height="120pt" />

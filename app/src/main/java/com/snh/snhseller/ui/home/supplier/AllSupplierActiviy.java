@@ -94,7 +94,7 @@ public class AllSupplierActiviy extends BaseActivity {
             heardTitle.setText("添加商户");
         }
         setRecyclerView();
-        getData();
+
     }
 
     private void setRecyclerView() {
@@ -188,6 +188,8 @@ public class AllSupplierActiviy extends BaseActivity {
                     if (index == 1) {
                         adapter.setNewData(null);
                         adapter.setEmptyView(R.layout.empty_layout, recyclerView);
+                    }else {
+                        refreshLayout.setNoMoreData(true);
                     }
                 }
             }
@@ -202,8 +204,6 @@ public class AllSupplierActiviy extends BaseActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        if (!isFrist) {
             getData();
-        }
     }
 }

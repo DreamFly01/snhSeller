@@ -6,114 +6,22 @@
     android:background="@color/color_app_bg"
     >
     <include layout="@layout/heard_layout"></include>
-    <LinearLayout
-        android:layout_marginTop="20pt"
-        android:background="@color/white"
-        android:gravity="center"
-        android:padding="30pt"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
-        <ImageView
-            android:id="@+id/iv_shop_logo"
-            android:layout_width="30pt"
-            android:layout_height="30pt"
-            />
-        <TextView
-            android:id="@+id/tv_shopName"
-            android:layout_weight="1"
-            android:layout_marginLeft="20pt"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="@dimen/txtSize_28"
-            android:text="你的衣服"/>
-        <TextView
-            android:id="@+id/tv_state"
-            android:layout_marginLeft="20pt"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="@dimen/txtSize_28"
-            android:text="待支付"/>
-    </LinearLayout>
-    <ImageView
-        android:layout_width="match_parent"
-        android:layout_height="2pt"
-        android:background="@color/color_app_bg"
-        />
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/white"
-        android:orientation="horizontal"
-        android:padding="30pt">
 
-        <ImageView
-            android:id="@+id/iv_product_logo1"
-            android:layout_width="120pt"
-            android:layout_height="120pt" />
-
+    <android.support.v4.widget.NestedScrollView
+        android:layout_weight="1"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
+            android:layout_height="match_parent"
             android:orientation="vertical"
-            android:paddingLeft="20pt">
+            >
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
 
-                <TextView
-                    android:textColor="@color/txt_dark"
-                    android:id="@+id/tv_GoodsName"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:ellipsize="end"
-                    android:maxLines="2"
-                    android:text="hahahahhahahhhhhhhhhhhhh"
-                    android:textSize="@dimen/txtSize_28" />
-
-                <TextView
-                    android:textColor="@color/txt_dark"
-                    android:id="@+id/tv_price"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="0"
-                    android:text="80"
-                    android:textSize="@dimen/txtSize_28" />
-
-            </LinearLayout>
-
-            <TextView
-                android:textColor="@color/txt_dark"
-                android:id="@+id/tv_sku"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="[黑色，均码]"
-                android:textSize="@dimen/txtSize_28"
-                android:visibility="visible" />
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10pt"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:textColor="@color/txt_dark"
-                    android:id="@+id/tv_Number1"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="x1"
-                    android:textSize="@dimen/txtSize_28" />
-
-            </LinearLayout>
-        </LinearLayout>
-
-    </LinearLayout>
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/recyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"></android.support.v7.widget.RecyclerView>
 
     <LinearLayout
         android:layout_marginTop="20pt"
@@ -163,7 +71,7 @@
                 android:textSize="@dimen/txtSize_30"
                 android:textColor="@color/app_red"/>
             <EditText
-                android:inputType="number"
+                android:inputType="numberDecimal"
                 android:id="@+id/et_price"
                 android:background="@color/color_app_bg"
                 android:layout_marginLeft="20pt"
@@ -211,7 +119,7 @@
                 android:textSize="@dimen/txtSize_30"
                 android:textColor="@color/app_red"/>
             <EditText
-                android:inputType="number"
+                android:inputType="numberDecimal"
                 android:background="@color/color_app_bg"
                 android:id="@+id/et_yunfei"
                 android:layout_marginLeft="20pt"
@@ -246,15 +154,23 @@
             android:textColor="@color/txt_dark"
             />
     </LinearLayout>
+
+        </LinearLayout>
+    </android.support.v4.widget.NestedScrollView>
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:orientation="vertical"
         android:paddingBottom="10pt">
-        <ImageView
-            android:layout_weight="1"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" />
-        <include layout="@layout/commit_layout"></include>
+        <Button
+            android:id="@+id/btn_commit"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:layout_width="690pt"
+            android:layout_height="100pt"
+            android:text="登录"
+            android:textColor="@color/txt_white"
+            android:textSize="36pt"
+            android:background="@drawable/commit_color_selector"/>
     </LinearLayout>
 </LinearLayout>

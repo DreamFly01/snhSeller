@@ -24,6 +24,7 @@
             android:layout_height="wrap_content"
             android:text="账号安全"
             android:textSize="30pt"
+            android:textColor="@color/gray_1"
             />
         <ImageView
             android:layout_width="15pt"
@@ -44,6 +45,7 @@
             android:layout_height="30pt"
             android:background="@drawable/set_two_2_bg"/>
         <TextView
+            android:textColor="@color/gray_1"
             android:layout_marginLeft="20pt"
             android:layout_weight="1"
             android:layout_width="wrap_content"
@@ -69,6 +71,7 @@
             android:layout_height="30pt"
             android:background="@drawable/set_three_3_bg"/>
         <TextView
+            android:textColor="@color/gray_1"
             android:layout_marginLeft="20pt"
             android:layout_weight="1"
             android:layout_width="wrap_content"
@@ -100,6 +103,7 @@
             android:layout_height="wrap_content"
             android:text="意见反馈"
             android:textSize="30pt"
+            android:textColor="@color/gray_1"
             />
         <ImageView
             android:layout_width="15pt"
@@ -124,6 +128,7 @@
             android:layout_height="wrap_content"
             android:text="清除缓存"
             android:textSize="30pt"
+            android:textColor="@color/gray_1"
             />
         <TextView
             android:id="@+id/tv_cahe"
@@ -132,6 +137,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="30pt"
+            android:textColor="@color/gray_1"
             />
 
     </LinearLayout>

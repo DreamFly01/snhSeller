@@ -35,6 +35,7 @@
                             android:id="@+id/tv_name_phone"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:textColor="@color/gray_1"
                             android:textSize="@dimen/txtSize_30" />
 
                         <LinearLayout
@@ -51,6 +52,7 @@
                                 android:background="@drawable/address_logo" />
 
                             <TextView
+                                android:textColor="@color/gray_1"
                                 android:id="@+id/tv_address"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
@@ -85,6 +87,7 @@
                         android:scaleType="fitXY" />
 
                     <TextView
+                        android:textColor="@color/gray_1"
                         android:id="@+id/tv_shopName"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -104,14 +107,17 @@
                     <ImageView
                         android:id="@+id/iv_product_logo"
                         android:layout_width="100pt"
-                        android:layout_height="100pt" />
+                        android:layout_height="100pt"
+                        android:scaleType="centerCrop" />
 
                     <TextView
                         android:id="@+id/tv_product_Name"
+
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
                         android:layout_marginLeft="20pt"
+                        android:textColor="@color/gray_1"
                         android:textSize="@dimen/txtSize_26" />
                 </LinearLayout>
             </LinearLayout>
@@ -132,6 +138,7 @@
                     android:layout_height="wrap_content"
                     android:background="@color/white">
                     <TextView
+
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textColor="@color/txt_dark"
@@ -156,6 +163,7 @@
                     android:orientation="horizontal">
 
                     <TextView
+                        android:textColor="@color/gray_1"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
@@ -167,6 +175,7 @@
                         android:textSize="30pt" />
 
                     <TextView
+
                         android:id="@+id/tv_TotalMoney"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -175,6 +184,7 @@
                         android:textSize="30pt" />
 
                     <TextView
+
                         android:id="@+id/tv_commit"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"

@@ -47,7 +47,9 @@
                     android:layout_height="wrap_content"
                     android:textSize="@dimen/txtSize_28"
                     android:hint="请填写真实姓名"
-                    android:textColor="@color/black"/>
+                    android:textColor="@color/black"
+                    android:textColorHint="@color/gray_1"
+                    />
             </LinearLayout>
             <LinearLayout
                 android:background="@drawable/shape_white_5"
@@ -94,15 +96,6 @@
                 android:padding="20pt"
                 android:orientation="horizontal">
                 <TextView
-                    android:layout_gravity="center"
-                    android:gravity="center"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="*"
-                    android:textSize="30pt"
-                    android:textColor="@color/app_red"
-                    />
-                <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textSize="@dimen/txtSize_28"
@@ -117,7 +110,8 @@
                     android:layout_height="wrap_content"
                     android:textSize="@dimen/txtSize_28"
                     android:hint="请填写常用邮箱"
-                    android:textColor="@color/black"/>
+                    android:textColor="@color/black"
+                    android:textColorHint="@color/gray_1"/>
             </LinearLayout>
             <LinearLayout
                 android:background="@drawable/shape_white_5"
@@ -176,7 +170,9 @@
                     android:layout_height="wrap_content"
                     android:textSize="@dimen/txtSize_28"
                     android:hint="请填写身份证号"
-                    android:textColor="@color/black"/>
+                    android:textColor="@color/black"
+                    android:textColorHint="@color/gray_1"
+                    />
             </LinearLayout>
             <LinearLayout
                 android:visibility="gone"

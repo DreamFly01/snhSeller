@@ -20,6 +20,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textSize="28pt"
+            android:textColorHint="@color/gray_1"
+            android:textColor="@color/txt_dark"
             android:hint="请输入手机号码"/>
     </LinearLayout>
     <LinearLayout
@@ -38,6 +40,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textSize="28pt"
+            android:textColorHint="@color/gray_1"
+            android:textColor="@color/txt_dark"
             android:hint="请输入验证码"/>
         <com.snh.snhseller.wediget.IdentifyCodeView
             android:id="@+id/identify_code_view"

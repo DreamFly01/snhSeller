@@ -10,8 +10,9 @@ import com.netease.nimlib.sdk.NIMClient;
 import com.netease.nimlib.sdk.auth.AuthService;
 import com.snh.snhseller.BaseActivity;
 import com.snh.snhseller.R;
+import com.snh.snhseller.jpush.TagAliasOperatorHelper;
 import com.snh.snhseller.ui.loging.LogingActivity;
-import com.snh.snhseller.utils.DBManager;
+import com.snh.snhseller.db.DBManager;
 import com.snh.snhseller.utils.DialogUtils;
 import com.snh.snhseller.utils.GlideCacheUtil;
 import com.snh.snhseller.utils.IsBang;
@@ -20,6 +21,10 @@ import com.snh.snhseller.utils.JumpUtils;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+
+import static com.snh.snhseller.jpush.TagAliasOperatorHelper.ACTION_DELETE;
+import static com.snh.snhseller.jpush.TagAliasOperatorHelper.ACTION_SET;
+import static com.snh.snhseller.jpush.TagAliasOperatorHelper.sequence;
 
 /**
  * <p>desc：<p>
@@ -94,7 +99,7 @@ public class SetActivity extends BaseActivity {
                 jumpActivity(FeedActivity.class);
                 break;
             case R.id.ll_05:
-                dialogUtils.twoBtnDialog("确认清楚缓存么？", new DialogUtils.ChoseClickLisener() {
+                dialogUtils.twoBtnDialog("确认清除缓存么？", new DialogUtils.ChoseClickLisener() {
                     @Override
                     public void onConfirmClick(View v) {
                         GlideCacheUtil.getInstance().clearImageAllCache(SetActivity.this);
@@ -109,9 +114,24 @@ public class SetActivity extends BaseActivity {
                 }, true);
                 break;
             case R.id.tv_exit:
+                String phone = DBManager.getInstance(this).getUserInfo().ContactsTel;
                 DBManager.getInstance(this).cleanUser();
                 NIMClient.getService(AuthService.class).logout();
-                JumpUtils.simpJump(this, LogingActivity.class, true);
+                Bundle bundle =new Bundle();
+                bundle.putString("phone",phone);
+                boolean isAliasAction = true;
+                int action = ACTION_DELETE;
+                TagAliasOperatorHelper.TagAliasBean tagAliasBean = new TagAliasOperatorHelper.TagAliasBean();
+                tagAliasBean.action = action;
+                sequence++;
+                if(isAliasAction){
+                    tagAliasBean.alias = DBManager.getInstance(this).getUseId()+"";
+                }else{
+//            tagAliasBean.tags = 1;
+                }
+                tagAliasBean.isAliasAction = isAliasAction;
+                TagAliasOperatorHelper.getInstance().handleAction(this,sequence,tagAliasBean);
+                JumpUtils.dataJump(this, LogingActivity.class, bundle,true);
                 break;
         }
     }

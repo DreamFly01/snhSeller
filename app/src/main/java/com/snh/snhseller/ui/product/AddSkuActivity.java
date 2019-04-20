@@ -11,9 +11,10 @@ import android.widget.TextView;
 import com.snh.snhseller.BaseActivity;
 import com.snh.snhseller.R;
 import com.snh.snhseller.bean.BaseResultBean;
+import com.snh.snhseller.bean.SkuBean;
 import com.snh.snhseller.requestApi.NetSubscriber;
 import com.snh.snhseller.requestApi.RequestClient;
-import com.snh.snhseller.utils.DBManager;
+import com.snh.snhseller.db.DBManager;
 import com.snh.snhseller.utils.DialogUtils;
 import com.snh.snhseller.utils.IsBang;
 import com.snh.snhseller.utils.StrUtils;
@@ -62,6 +63,7 @@ public class AddSkuActivity extends BaseActivity {
     private int ShopGoodsId;
     private Bundle bundle;
     private DialogUtils dialogUtils;
+    private SkuBean bean;
 
     @Override
     protected void initContentView(Bundle savedInstanceState) {
@@ -69,6 +71,7 @@ public class AddSkuActivity extends BaseActivity {
         bundle = getIntent().getExtras();
         if (null != bundle) {
             ShopGoodsId = bundle.getInt("goodsId");
+            bean = bundle.getParcelable("data");
         }
         dialogUtils = new DialogUtils(this);
     }
@@ -78,6 +81,16 @@ public class AddSkuActivity extends BaseActivity {
         IsBang.setImmerHeard(this, rlHead);
         heardTitle.setText("添加规格");
         heardTvMenu.setText("保存");
+        if (null != bean) {
+            et01.setText(bean.NormName);
+            et02.setText(bean.NormValue.substring(0, bean.NormValue.indexOf("*")));
+            et03.setText(StrUtils.moenyToDH(bean.Price + ""));
+            et04.setText(StrUtils.moenyToDH(bean.RetailPrice + ""));
+            et05.setText(bean.Inventory + "");
+            if (!StrUtils.isEmpty(bean.Weight + "") && bean.Weight > 0) {
+                et06.setText(bean.Weight + "");
+            }
+        }
     }
 
     @Override
@@ -109,7 +122,7 @@ public class AddSkuActivity extends BaseActivity {
             showLongToast("请填写终端价");
             return false;
         }
-        if(StrUtils.isEmpty(et05.getText().toString().trim())){
+        if (StrUtils.isEmpty(et05.getText().toString().trim())) {
             showLongToast("请填写库存");
             return false;
         }
@@ -129,14 +142,22 @@ public class AddSkuActivity extends BaseActivity {
     }
 
     private void setData() {
-        map.put("SupplierId", DBManager.getInstance(this).getUseId());
+        if (null != bean) {
+            map.put("NormId", bean.NormId);
+            map.put("ShopGoodsId", ShopGoodsId);
+        } else {
+
+            map.put("SupplierId", DBManager.getInstance(this).getUseId());
+        }
         map.put("ShopGoodsId", ShopGoodsId);
         map.put("NormName", et01.getText().toString().trim());
         map.put("NormValue", et02.getText().toString().trim());
         map.put("Price", et03.getText().toString().trim());
         map.put("MarketPrice", et04.getText().toString().trim());
         map.put("Inventory", et05.getText().toString().trim());
-        map.put("Weight", et06.getText().toString().trim());
+        if (!StrUtils.isEmpty(et06.getText().toString().trim())) {
+            map.put("Weight", et06.getText().toString().trim());
+        }
     }
 
     @OnClick({R.id.heard_back, R.id.heard_tv_menu})
@@ -155,35 +176,39 @@ public class AddSkuActivity extends BaseActivity {
     }
 
     private void add() {
-        addSubscription(RequestClient.AddNorm(map, this, new NetSubscriber<BaseResultBean>(this, true) {
-            @Override
-            public void onResultNext(BaseResultBean model) {
-                dialogUtils.twoBtnDialog("添加成功，是否继续添加", new DialogUtils.ChoseClickLisener() {
-                    @Override
-                    public void onConfirmClick(View v) {
-                        clean();
-                        dialogUtils.dismissDialog();
-                    }
+        if (null != bean) {
+            addSubscription(RequestClient.EditeNorm(map, this, new NetSubscriber<BaseResultBean>(this, true) {
+                @Override
+                public void onResultNext(BaseResultBean model) {
+                    showShortToast("编辑成功！");
+                    AddSkuActivity.this.finish();
+                }
+            }));
+        } else {
 
-                    @Override
-                    public void onCancelClick(View v) {
-                        dialogUtils.dismissDialog();
-                        AddSkuActivity.this.finish();
-                    }
-                },false);
-//                dialogUtils.simpleDialog("添加成功", new DialogUtils.ConfirmClickLisener() {
-//                    @Override
-//                    public void onConfirmClick(View v) {
-//                        clean();
-//                        dialogUtils.dismissDialog();
-//                    }
-//                }, false);
-            }
-        }));
+            addSubscription(RequestClient.AddNorm(map, this, new NetSubscriber<BaseResultBean>(this, true) {
+                @Override
+                public void onResultNext(BaseResultBean model) {
+                    dialogUtils.twoBtnDialog("添加成功，是否继续添加", new DialogUtils.ChoseClickLisener() {
+                        @Override
+                        public void onConfirmClick(View v) {
+                            clean();
+                            dialogUtils.dismissDialog();
+                        }
+
+                        @Override
+                        public void onCancelClick(View v) {
+                            dialogUtils.dismissDialog();
+                            AddSkuActivity.this.finish();
+                        }
+                    }, false);
+                }
+            }));
+        }
     }
 
+
     private void clean() {
-//        et01.setText("");
         et02.setText("");
         et02.setFocusable(true);
         et02.setFocusableInTouchMode(true);

@@ -1,11 +1,13 @@
 package com.snh.snhseller.adapter;
 
+import android.graphics.Color;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
@@ -22,18 +24,25 @@ import java.util.List;
  * <p>changeTime：2019/3/8<p>
  * <p>version：1<p>
  */
-public class AllSupplierAdapter extends BaseQuickAdapter<AllSupplierBean,BaseViewHolder> {
+public class AllSupplierAdapter extends BaseQuickAdapter<AllSupplierBean, BaseViewHolder> {
     public AllSupplierAdapter(int layoutResId, @Nullable List<AllSupplierBean> data) {
         super(layoutResId, data);
     }
 
     @Override
     protected void convert(final BaseViewHolder helper, AllSupplierBean item) {
-        helper.setText(R.id.tv_shopName,item.SupplierName);
-        helper.setText(R.id.tv_inventory,"库存："+item.SumInventory);
-        ImageUtils.loadUrlImage(mContext,item.SupplierLogo, (ImageView) helper.getView(R.id.iv_logo));
+        helper.setText(R.id.tv_shopName, item.SupplierName);
+        TextView state = helper.getView(R.id.tv_inventory);
+        if (item.IsApply) {
+            state.setText("等待验证");
+            state.setTextColor(Color.parseColor("#c5c4c4"));
+        }else {
+            state.setText("去申请");
+            state.setTextColor(Color.parseColor("#F99B41"));
+        }
+        ImageUtils.loadUrlImage(mContext, item.SupplierLogo, (ImageView) helper.getView(R.id.iv_logo));
         RecyclerView recyclerView = helper.getView(R.id.recyclerView);
-        AllSupplierItemAdapter adapter = new AllSupplierItemAdapter(R.layout.item_allsupplier_item_layout,item.CommTenantList);
+        AllSupplierItemAdapter adapter = new AllSupplierItemAdapter(R.layout.item_allsupplier_item_layout, item.CommTenantList);
         LinearLayoutManager manager = new LinearLayoutManager(mContext);
         manager.setOrientation(LinearLayoutManager.HORIZONTAL);
         recyclerView.setLayoutManager(manager);
@@ -45,7 +54,7 @@ public class AllSupplierAdapter extends BaseQuickAdapter<AllSupplierBean,BaseVie
                 if (event.getAction() == MotionEvent.ACTION_UP) {
                     helper.getView(R.id.ll_item).performClick();
                 }
-                    return false;
+                return false;
             }
         });
     }

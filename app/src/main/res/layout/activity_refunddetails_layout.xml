@@ -55,6 +55,7 @@
                     android:layout_height="wrap_content"
                     android:text="退款状态"
                     android:textSize="30pt"
+                    android:textColor="@color/gray_1"
                     />
                 <LinearLayout
                     android:gravity="center"
@@ -85,6 +86,7 @@
                         android:layout_height="wrap_content"
                         android:textSize="24pt"
                         android:layout_weight="1"
+                        android:textColor="@color/gray_1"
                         android:text="返回原支付账户"/>
                     <TextView
                         android:id="@+id/tv_money"
@@ -105,6 +107,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textSize="30pt"
+                    android:textColor="@color/gray_1"
                     android:text="商品回寄地址信息"/>
                 <TextView
                     android:id="@+id/tv_address1"
@@ -112,6 +115,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textSize="24pt"
+                    android:textColor="@color/gray_1"
                     />
                 <TextView
                     android:id="@+id/tv_address2"
@@ -119,6 +123,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textSize="24pt"
+                    android:textColor="@color/gray_1"
                     />
                 <TextView
                     android:id="@+id/tv_address3"
@@ -126,6 +131,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textSize="24pt"
+                    android:textColor="@color/gray_1"
                     />
                 <TextView
                     android:id="@+id/tv_address4"
@@ -133,6 +139,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textSize="24pt"
+                    android:textColor="@color/gray_1"
                     />
             </LinearLayout>
             <LinearLayout
@@ -143,6 +150,7 @@
                 android:background="@color/white"
                 android:orientation="vertical">
                 <TextView
+                    android:textColor="@color/gray_1"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="售后进度"
@@ -160,11 +168,14 @@
                 android:background="@color/white"
                 android:orientation="vertical">
                 <TextView
+                    android:textColor="@color/gray_1"
+
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="问题描述"
                     android:textSize="30pt"/>
                 <TextView
+                    android:textColor="@color/gray_1"
                     android:id="@+id/tv_desc"
                     android:layout_marginTop="10pt"
                     android:layout_width="wrap_content"
@@ -172,6 +183,7 @@
                     android:textSize="24pt"
                     />
                 <TextView
+                    android:textColor="@color/gray_1"
                     android:id="@+id/tv_creat_time1"
                     android:layout_marginTop="10pt"
                     android:layout_width="wrap_content"
@@ -187,11 +199,13 @@
                 android:background="@color/white"
                 android:orientation="vertical">
                 <TextView
+                    android:textColor="@color/gray_1"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="服务单信息"
                     android:textSize="30pt"/>
                 <TextView
+                    android:textColor="@color/gray_1"
                     android:id="@+id/tv_order1"
                     android:layout_marginTop="10pt"
                     android:layout_width="wrap_content"
@@ -206,6 +220,7 @@
                     android:textSize="24pt"
                     />
                 <TextView
+                    android:textColor="@color/gray_1"
                     android:id="@+id/tv_order3"
                     android:layout_marginTop="10pt"
                     android:layout_width="wrap_content"
@@ -213,6 +228,7 @@
                     android:textSize="24pt"
                     />
                 <TextView
+                    android:textColor="@color/gray_1"
                     android:id="@+id/tv_order4"
                     android:layout_marginTop="10pt"
                     android:layout_width="wrap_content"

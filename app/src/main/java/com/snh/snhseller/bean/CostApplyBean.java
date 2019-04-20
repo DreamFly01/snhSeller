@@ -28,7 +28,7 @@ public class CostApplyBean implements Parcelable {
     public int SupplierId;
     public String SupplierName;
     public String SupplierIconUrl;
-
+    public String SalesmanLogo;
 
     protected CostApplyBean(Parcel in) {
         SalesmanId = in.readInt();
@@ -48,6 +48,7 @@ public class CostApplyBean implements Parcelable {
         SupplierId = in.readInt();
         SupplierName = in.readString();
         SupplierIconUrl = in.readString();
+        SalesmanLogo = in.readString();
     }
 
     public static final Creator<CostApplyBean> CREATOR = new Creator<CostApplyBean>() {
@@ -86,5 +87,6 @@ public class CostApplyBean implements Parcelable {
         dest.writeInt(SupplierId);
         dest.writeString(SupplierName);
         dest.writeString(SupplierIconUrl);
+        dest.writeString(SalesmanLogo);
     }
 }

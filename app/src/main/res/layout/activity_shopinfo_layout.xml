@@ -75,6 +75,7 @@
             android:layout_height="match_parent"
             android:textSize="@dimen/txtSize_30"
             android:text="名称"
+            android:textColor="@color/gray_1"
             />
     </LinearLayout>
     <LinearLayout
@@ -102,6 +103,35 @@
             android:layout_height="match_parent"
             android:textSize="@dimen/txtSize_30"
             android:text="本地"
+            android:textColor="@color/gray_1"
+            />
+    </LinearLayout>
+    <LinearLayout
+        android:background="@color/white"
+        android:layout_marginTop="2pt"
+        android:gravity="center"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        <TextView
+            android:padding="30pt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/txt_dark"
+            android:textSize="@dimen/txtSize_30"
+            android:text="主营类目"/>
+        <TextView
+            android:id="@+id/tv_shopType"
+            android:gravity="center_vertical|right"
+            android:maxLines="1"
+            android:paddingRight="30pt"
+            android:background="@null"
+            android:layout_weight="1"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:textSize="@dimen/txtSize_30"
+            android:text="本地"
+            android:textColor="@color/gray_1"
             />
     </LinearLayout>
     <LinearLayout
@@ -129,6 +159,7 @@
             android:layout_height="match_parent"
             android:textSize="@dimen/txtSize_30"
             android:text="芯城科技园"
+            android:textColor="@color/gray_1"
             />
     </LinearLayout>
 
@@ -158,6 +189,7 @@
             android:layout_height="match_parent"
             android:textSize="@dimen/txtSize_30"
             android:text="裴得兵"
+            android:textColor="@color/gray_1"
             />
         <ImageView
             android:layout_marginRight="30pt"
@@ -192,6 +224,7 @@
             android:layout_height="match_parent"
             android:textSize="@dimen/txtSize_30"
             android:text="1363730"
+            android:textColor="@color/gray_1"
             />
         <ImageView
             android:layout_marginRight="30pt"
@@ -227,6 +260,7 @@
             android:layout_height="match_parent"
             android:textSize="@dimen/txtSize_30"
             android:text="1363730"
+            android:textColor="@color/gray_1"
             />
         <ImageView
             android:layout_marginRight="30pt"
@@ -261,6 +295,7 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:textSize="@dimen/txtSize_30"
+            android:textColor="@color/gray_1"
             />
         <ImageView
             android:layout_marginRight="30pt"
@@ -295,6 +330,7 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:textSize="@dimen/txtSize_30"
+            android:textColor="@color/gray_1"
             />
         <ImageView
             android:id="@+id/btn_select"

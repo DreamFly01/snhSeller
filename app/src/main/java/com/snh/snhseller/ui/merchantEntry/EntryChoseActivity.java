@@ -13,7 +13,11 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.snh.snhseller.adapter.EntryCompanyAdapter;
+import com.snh.snhseller.bean.BaseResultBean;
 import com.snh.snhseller.bean.CompanyBean;
+import com.snh.snhseller.bean.InSwitchBean;
+import com.snh.snhseller.requestApi.NetSubscriber;
+import com.snh.snhseller.requestApi.RequestClient;
 import com.snh.snhseller.utils.DialogUtils;
 import com.snh.snhseller.utils.IsBang;
 import com.snh.snhseller.utils.JumpUtils;
@@ -90,6 +94,7 @@ public class EntryChoseActivity extends Activity {
     private Bundle bundle;
     private String phone;
     private String typeStr;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -98,7 +103,7 @@ public class EntryChoseActivity extends Activity {
         setUpViews();
         dialogUtils = new DialogUtils(this);
         bundle = getIntent().getExtras();
-        if(null!=bundle){
+        if (null != bundle) {
             phone = bundle.getString("phone");
         }
     }
@@ -108,8 +113,9 @@ public class EntryChoseActivity extends Activity {
         immersionBar.statusBarColor("#77a2f9");
         immersionBar.titleBar(rlHeard);
         immersionBar.init();
-        IsBang.setImmerHeard(this, rlHeard);
+        IsBang.setImmerHeard(this, rlHeard, "#77a2f9");
         heardTitle.setText("选择店铺类型");
+        getInSwich();
     }
 
     private void setDatas() {
@@ -117,12 +123,16 @@ public class EntryChoseActivity extends Activity {
         bean1 = new CompanyBean();
         bean2 = new CompanyBean();
         bean3 = new CompanyBean();
+        bean.id = "1";
         bean.name = "旗舰店";
         bean.introcude = "经营1个自有品牌或者1级授权品品牌旗舰店";
+        bean1.id = "2";
         bean1.name = "专卖店";
         bean1.introcude = "经营1个自有品牌或者授权销售专卖店（不超过2级）";
+        bean2.id = "3";
         bean2.name = "专营店";
         bean2.introcude = "经营1个或多个自有/他人品牌的专营店";
+        bean3.id = "4";
         bean3.name = "普通店";
         bean3.introcude = "普通企业店铺";
         dadtas.add(bean);
@@ -142,7 +152,7 @@ public class EntryChoseActivity extends Activity {
                 for (int i = 0; i < dadtas.size(); i++) {
                     if (i == position) {
                         dadtas.get(i).isChose = true;
-                        typeStr = dadtas.get(i).name;
+                        typeStr = dadtas.get(i).id;
                     } else {
                         dadtas.get(i).isChose = false;
                     }
@@ -201,18 +211,40 @@ public class EntryChoseActivity extends Activity {
                 break;
             case R.id.tv_commit:
                 bundle = new Bundle();
-                bundle.putString("phone",phone);
-                if (check()) {
-                    if(type == 1){
-                        JumpUtils.dataJump(this, PerfectPersonActivity.class, bundle,false);
-                    }else if(type == 2) {
-                        bundle.putString("ShopCategoryType",typeStr);
-                        JumpUtils.dataJump(this, PerfectCompanyActivity.class, bundle,false);
-                    }else if(type == 3){
-                        bundle.putInt("flag",type);
-                        JumpUtils.dataJump(this, PerfectCompanyActivity.class, bundle,false);
+                bundle.putString("phone", phone);
+                    if (check()) {
+                        if (type == 1) {
+                            if (null!=data&&"1".equals(data.inPersonal)) {
+                                bundle.putString("shopType", "3");
+                                JumpUtils.dataJump(this, PerfectPersonActivity.class, bundle, false);
+                            } else {
+                                dialogUtils.noBtnDialog("暂未开放此入驻");
+                            }
+
+
+                        } else if (type == 2) {
+                            if (null!=data&&"1".equals(data.inEnterprise)) {
+                                bundle.putString("ShopCategoryType", typeStr);
+                                bundle.putString("shopType", "2");
+                                JumpUtils.dataJump(this, PerfectCompanyActivity.class, bundle, false);
+                            } else {
+                                dialogUtils.noBtnDialog("暂未开放此入驻");
+                            }
+
+                        } else if (type == 3) {
+                            if (null!=data&&"1".equals(data.inLocal)) {
+                                bundle.putString("shopType", "1");
+                                bundle.putInt("flag", type);
+                                JumpUtils.dataJump(this, PerfectCompanyActivity.class, bundle, false);
+                            } else {
+                                dialogUtils.noBtnDialog("暂未开放此入驻");
+                            }
+
+
+                        }
                     }
-                }
+
+
                 break;
             case R.id.radio_button_1:
                 if (isClick) {
@@ -225,8 +257,8 @@ public class EntryChoseActivity extends Activity {
                 break;
             case R.id.tv_xieyi:
                 Bundle bundle = new Bundle();
-                bundle.putInt("flag",4);
-                JumpUtils.dataJump(this, ProtocolActivity.class, bundle,false);
+                bundle.putInt("flag", 4);
+                JumpUtils.simpJump(this, ProtocolActivity.class, false);
                 break;
             case R.id.tv_look:
                 JumpUtils.simpJump(this, ImageViewActivity.class, false);
@@ -251,6 +283,17 @@ public class EntryChoseActivity extends Activity {
             return false;
         }
         return true;
+    }
+
+    private InSwitchBean data;
+
+    private void getInSwich() {
+        RequestClient.GetInSwitch(this, new NetSubscriber<BaseResultBean<InSwitchBean>>(this, true) {
+            @Override
+            public void onResultNext(BaseResultBean<InSwitchBean> model) {
+                data = model.data;
+            }
+        });
     }
 
     @Override

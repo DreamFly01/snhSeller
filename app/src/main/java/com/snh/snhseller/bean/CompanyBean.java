@@ -8,6 +8,7 @@ package com.snh.snhseller.bean;
  * <p>version：1<p>
  */
 public class CompanyBean {
+    public String id;
     public String name;
     public String introcude;
     public boolean isChose;

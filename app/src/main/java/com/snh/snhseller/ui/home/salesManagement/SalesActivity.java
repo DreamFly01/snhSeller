@@ -196,6 +196,7 @@ public class SalesActivity extends BaseActivity {
                 this.finish();
                 break;
             case R.id.btn_commit:
+                isFrist = false;
                 bundle = new Bundle();
                 bundle.putInt("type",1);
                 JumpUtils.dataJump(this,EditSalesActivity.class,bundle,false);

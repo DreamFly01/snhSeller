@@ -24,10 +24,11 @@ public class OrderSkuAdapter extends BaseQuickAdapter<SkuBean,BaseViewHolder> {
 
     @Override
     protected void convert(BaseViewHolder helper, SkuBean item) {
-        helper.setText(R.id.tv_01, item.NormName + " " + item.NormValue + "(" + item.Unit + ")");
-        helper.setText(R.id.tv_02,  "价格 ￥" + StrUtils.moenyToDH(item.NormPrice+""));
+        helper.setText(R.id.tv_01, item.NormName + " ");
+        helper.setText(R.id.tv_03,  "价格 ￥" + StrUtils.moenyToDH(item.NormPrice+""));
 
-        helper.setText(R.id.tv_03,"x"+item.NormNumber);
+        helper.setText(R.id.tv_02,"x"+item.NormNumber);
         helper.setText(R.id.tv_04,"小计："+StrUtils.moenyToDH(item.NormSumPrice+""));
+        helper.setText(R.id.tv_sku, item.NormValue + "(" + item.Unit + "/组)");
     }
 }

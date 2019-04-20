@@ -4,12 +4,16 @@ import android.app.Activity;
 import android.content.Context;
 import android.graphics.Color;
 import android.os.Build;
+import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
 import android.widget.LinearLayout;
 
 import com.gyf.barlibrary.ImmersionBar;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.zip.Inflater;
 
 /**
  * <p>desc：<p>
@@ -130,13 +134,35 @@ public class IsBang {
         }
     }
 
+    public static void setImmerHeard(Context context,int heardid){
+        if(IsBang.getInt("isBang",(Activity) context)|IsBang.hasNotchAtHuawei(context)|IsBang.hasNotchAtOPPO(context)|IsBang.hasNotchAtVivo(context)){
+
+            LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            try {
+                View heard = inflater.inflate(heardid,null);
+                LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) heard.getLayoutParams();
+                params.height = LinearLayout.LayoutParams.WRAP_CONTENT;
+                heard.setLayoutParams(params);
+                heard.setPadding(0, ImmersionBar.getActionBarHeight((Activity) context) / 2 + 10, 0, 20);
+                heard.setBackgroundColor(Color.parseColor("#F81131"));
+            }catch (Exception e) {
+                Log.e("没有适配","noTch");
+            }
+
+        }
+    }
     public static void setImmerHeard(Context context,LinearLayout heard,String color){
         if(IsBang.getInt("isBang",(Activity) context)|IsBang.hasNotchAtHuawei(context)|IsBang.hasNotchAtOPPO(context)|IsBang.hasNotchAtVivo(context)){
             LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) heard.getLayoutParams();
             params.height = LinearLayout.LayoutParams.WRAP_CONTENT;
             heard.setLayoutParams(params);
             heard.setPadding(0, ImmersionBar.getActionBarHeight((Activity) context) / 2 + 10, 0, 20);
+            if(StrUtils.isEmpty(color)){
+
             heard.setBackgroundColor(Color.parseColor("#2E8AFF"));
+            }else {
+                heard.setBackgroundColor(Color.parseColor(color));
+            }
         }
     }
 }

@@ -2,7 +2,9 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content" android:orientation="vertical"
-    android:background="@color/white">
+    android:background="@color/white"
+    android:id="@+id/ll_item"
+    >
     <LinearLayout
         android:background="@color/white"
         android:gravity="center"
@@ -11,6 +13,7 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal">
         <ImageView
+            android:scaleType="fitXY"
             android:id="@+id/iv_shop_logo"
             android:layout_width="30pt"
             android:layout_height="30pt"
@@ -49,6 +52,7 @@
         android:orientation="horizontal"
         android:padding="@dimen/txtSize_30">
         <ImageView
+            android:scaleType="fitXY"
             android:id="@+id/iv_product_logo"
             android:layout_width="120pt"
             android:layout_height="120pt"

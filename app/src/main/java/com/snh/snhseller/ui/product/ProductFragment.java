@@ -2,11 +2,11 @@ package com.snh.snhseller.ui.product;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
@@ -14,7 +14,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -23,7 +22,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.gyf.barlibrary.ImmersionBar;
 import com.snh.snhseller.BaseFragment;
 import com.snh.snhseller.R;
-import com.snh.snhseller.utils.DBManager;
+import com.snh.snhseller.db.DBManager;
 import com.snh.snhseller.utils.DialogUtils;
 import com.snh.snhseller.utils.IsBang;
 import com.snh.snhseller.utils.JumpUtils;
@@ -52,14 +51,7 @@ import butterknife.Unbinder;
  */
 public class ProductFragment extends BaseFragment {
 
-    @BindView(R.id.heard_back)
-    LinearLayout heardBack;
-    @BindView(R.id.heard_title)
-    TextView heardTitle;
-    @BindView(R.id.heard_menu)
-    RelativeLayout heardMenu;
-    @BindView(R.id.rl_head1)
-    LinearLayout rlHead;
+
     @BindView(R.id.tab_order)
     TabLayout tabOrder;
     @BindView(R.id.tab_vp)
@@ -67,7 +59,21 @@ public class ProductFragment extends BaseFragment {
     Unbinder unbinder;
     @BindView(R.id.fab)
     ImageView fab;
-    private String[] titles = {"出售中", "审核中", "已下架"};
+    @BindView(R.id.tv_01)
+    TextView tv01;
+    @BindView(R.id.iv_01)
+    ImageView iv01;
+    @BindView(R.id.ll_01)
+    LinearLayout ll01;
+    @BindView(R.id.tv_02)
+    TextView tv02;
+    @BindView(R.id.iv_02)
+    ImageView iv02;
+    @BindView(R.id.ll_02)
+    LinearLayout ll02;
+    @BindView(R.id.rl_head1)
+    LinearLayout rlHead;
+    private String[] titles ;
     private List<Fragment> list = new ArrayList<>();
     private Bundle bundle;
     private MyAdapter adapter;
@@ -88,45 +94,10 @@ public class ProductFragment extends BaseFragment {
         IsBang.setImmerHeard(getContext(), rlHead);
         ImmersionBar.setTitleBar(getActivity(), rlHead);
         updataVersion();
-        heardTitle.setText("用户商品");
-        heardBack.setVisibility(View.GONE);
+
         dialogUtils = new DialogUtils(getContext());
-        for (int i = 0; i < titles.length; i++) {
-            ProductListFragment fragment = new ProductListFragment();
-            bundle = new Bundle();
-            switch (i) {
-                case 0:
-                    bundle.putInt("type", 1);
-                    break;
-                case 1:
-                    bundle.putInt("type", 3);
-                    break;
-                case 2:
-                    bundle.putInt("type", 2);
-                    break;
-            }
+        setType(0);
 
-            fragment.setArguments(bundle);
-            list.add(fragment);
-        }
-        adapter = new MyAdapter(getChildFragmentManager());
-        tabVp.setAdapter(adapter);
-        tabOrder.setupWithViewPager(tabVp);
-        for (int i = 0; i < tabOrder.getTabCount(); i++) {
-            TabLayout.Tab tab = tabOrder.getTabAt(i);
-            tab.setCustomView(adapter.getTabView(i));
-        }
-        for (int i = 0; i < listTab.size(); i++) {
-            tabOrder.addTab(tabOrder.newTab().setText(listTab.get(i)));
-        }
-
-        tabOrder.post(new Runnable() {
-            @Override
-            public void run() {
-                setIndicator(tabOrder, 20, 20);
-            }
-        });
-        tabVp.setOffscreenPageLimit(titles.length);
     }
 
     @Override
@@ -148,15 +119,20 @@ public class ProductFragment extends BaseFragment {
         unbinder.unbind();
     }
 
-    @OnClick({R.id.fab, R.id.heard_menu})
+    @OnClick({R.id.fab, R.id.ll_01,R.id.ll_02})
     public void onClick(View view) {
+        if(isFastClick()){
+            return;
+        }
         switch (view.getId()) {
             case R.id.fab:
                 if (!StrUtils.isEmpty(DBManager.getInstance(getContext()).getUserInfo().suppType)) {
-                    if (DBManager.getInstance(getContext()).getUserInfo().suppType.equals("商超士多")) {
+                    if (DBManager.getInstance(getContext()).getUserInfo().suppType.equals("6") && DBManager.getInstance(getContext()).getUserInfo().BusinessActivities.equals("1")) {
                         bundle = new Bundle();
                         bundle.putInt("type", 1);
                         JumpUtils.dataJump(getActivity(), EditProductActivity.class, bundle, false);
+                    } else {
+                        Toast.makeText(getContext(), "请前往电脑端添加", Toast.LENGTH_SHORT).show();
                     }
                 } else {
                     Toast.makeText(getContext(), "请前往电脑端添加", Toast.LENGTH_SHORT).show();
@@ -164,26 +140,35 @@ public class ProductFragment extends BaseFragment {
 
                 break;
             case R.id.heard_menu:
-                heardMenu.getLocationInWindow(viewLocation);
-                data1.clear();
-                data2.clear();
-                data1.add("批发商品");
-
-                data2.add(R.drawable.product2_bg);
-
-                dialogUtils.customDialog(new DialogUtils.OnItemClick() {
-                    @Override
-                    public void onItemClick(View v, int position) {
-                        dialogUtils.dismissDialog();
-                        JumpUtils.simpJump(getActivity(), BusinessProduct1Activity.class, false);
-                    }
-                }, viewLocation[1] + heardMenu.getMeasuredHeight() / 2, viewLocation[0], heardMenu.getWidth(), data1, data2);
+//                data1.clear();
+//                data2.clear();
+//                data1.add("批发商品");
+//
+//                data2.add(R.drawable.product2_bg);
+//
+//                dialogUtils.customDialog(new DialogUtils.OnItemClick() {
+//                    @Override
+//                    public void onItemClick(View v, int position) {
+//                        dialogUtils.dismissDialog();
+//                        JumpUtils.simpJump(getActivity(), BusinessProduct1Activity.class, false);
+//                    }
+//                }, viewLocation[1] + heardMenu.getMeasuredHeight() / 2, viewLocation[0], heardMenu.getWidth(), data1, data2);
+                break;
+            case R.id.ll_01:
+                setType(0);
+                iv01.setVisibility(View.VISIBLE);
+                iv02.setVisibility(View.INVISIBLE);
+                break;
+            case R.id.ll_02:
+                setType(1);
+                iv01.setVisibility(View.INVISIBLE);
+                iv02.setVisibility(View.VISIBLE);
                 break;
         }
     }
 
 
-    public class MyAdapter extends FragmentPagerAdapter {
+    public class MyAdapter extends FragmentStatePagerAdapter {
 
 
         public MyAdapter(FragmentManager fm) {
@@ -205,6 +190,8 @@ public class ProductFragment extends BaseFragment {
             TextView mTv_Title = (TextView) v.findViewById(R.id.mTv_Title);
             ImageView mImg = (ImageView) v.findViewById(R.id.mImg);
             mTv_Title.setText(titles[position]);
+//            mImg.setImageResource(images[position]);
+            //添加一行，设置颜色
             mTv_Title.setTextColor(tabOrder.getTabTextColors());//
             return v;
         }
@@ -213,26 +200,61 @@ public class ProductFragment extends BaseFragment {
         public int getItemPosition(@NonNull Object object) {
             return PagerAdapter.POSITION_NONE;
         }
-
-        @Override
-        public Object instantiateItem(ViewGroup container, int position) {
-            ProductListFragment fragment = (ProductListFragment) super.instantiateItem(container, position);
-            switch (position) {
-                case 0:
-                    fragment.updateArguments(1);
-                    break;
-                case 1:
-                    fragment.updateArguments(3);
-                    break;
-                case 2:
-                    fragment.updateArguments(2);
-                    break;
-            }
-
-            return fragment;
-        }
     }
 
+
+    private void setType(int orderType) {
+        list.clear();
+
+        switch (orderType) {
+            case 0:
+                titles = new String[]{"出售中", "审核中", "已下架"};
+                for (int i = 0; i < titles.length; i++) {
+                    ProductListFragment fragment = new ProductListFragment();
+                    bundle = new Bundle();
+                    switch (i) {
+                        case 0:
+                            bundle.putInt("type", 1);
+                            break;
+                        case 1:
+                            bundle.putInt("type", 3);
+                            break;
+                        case 2:
+                            bundle.putInt("type", 2);
+                            break;
+                    }
+
+                    fragment.setArguments(bundle);
+                    list.add(fragment);
+                }
+                break;
+            case 1:
+                titles = new String[]{"出售中", "仓库中"};
+                BusinessProduct2Fragment businessProductFragment  = new BusinessProduct2Fragment();
+                BusinessProduct1Fragment businessProduct1Fragment = new BusinessProduct1Fragment();
+                list.add(businessProductFragment);
+                list.add(businessProduct1Fragment);
+                break;
+        }
+        adapter = new MyAdapter(getChildFragmentManager());
+        tabVp.setAdapter(adapter);
+        tabOrder.setupWithViewPager(tabVp);
+        for (int i = 0; i < tabOrder.getTabCount(); i++) {
+            TabLayout.Tab tab = tabOrder.getTabAt(i);
+            tab.setCustomView(adapter.getTabView(i));
+        }
+        for (int i = 0; i < listTab.size(); i++) {
+            tabOrder.addTab(tabOrder.newTab().setText(listTab.get(i)));
+        }
+
+        tabOrder.post(new Runnable() {
+            @Override
+            public void run() {
+                setIndicator(tabOrder, 20, 20);
+            }
+        });
+        tabVp.setOffscreenPageLimit(titles.length);
+    }
     private void updataVersion() {
         new UpdateAppManager.Builder()
                 .setActivity(getActivity())

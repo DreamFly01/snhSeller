@@ -16,11 +16,12 @@ import com.snh.snhseller.bean.beanDao.UserEntity;
 import com.snh.snhseller.greendao.UserEntityDao;
 import com.snh.snhseller.requestApi.NetSubscriber;
 import com.snh.snhseller.requestApi.RequestClient;
-import com.snh.snhseller.utils.DBManager;
+import com.snh.snhseller.db.DBManager;
 import com.snh.snhseller.utils.DialogUtils;
 import com.snh.snhseller.utils.IsBang;
 import com.snh.snhseller.utils.StrUtils;
 
+import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
@@ -208,7 +209,7 @@ public class ModifInfoActivity extends BaseActivity {
                                 break;
                         }
                         userEntityDao.insert(userEntity);
-
+                        List<UserEntity> list = userEntityDao.queryBuilder().list();
                         dialogUtils.dismissDialog();
                         ModifInfoActivity.this.finish();
                     }

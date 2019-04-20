@@ -1,6 +1,7 @@
 package com.snh.snhseller.requestApi;
 
 import android.content.Context;
+import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -73,6 +74,9 @@ public class RetrofitProxy {
                     .client(mOkHttpClient)
                     .addCallAdapterFactory(RxJavaCallAdapterFactory.create())// 使用RxJava作为回调适配器
                     .build();
+//            if (Contans.HOST.contains("test")) {
+//                Toast.makeText(context, "这是测试版本", Toast.LENGTH_SHORT).show();
+//            }
         } else {
             retrofit = new Retrofit.Builder()
                     .addConverterFactory(GsonConverterFactory.create())//使用String作为数据转换器

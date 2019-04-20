@@ -99,7 +99,19 @@ public class ProtocolActivity extends BaseActivity {
                         heardTitle.setText("法律申明和隐私权政策");
                         break;
                     case 4:
-                        heardTitle.setText("企业入驻协议");
+                        heardTitle.setText("算你狠平台合作协议");
+                        break;
+                    case 5:
+                        heardTitle.setText("算你狠平台商户信用星级奖励规则");
+                        break;
+                    case 7:
+                        heardTitle.setText("算你狠平台发货规则");
+                        break;
+                    case 8:
+                        heardTitle.setText("算你狠商品品牌管理规范");
+                        break;
+                    case 9:
+                        heardTitle.setText("算你狠营销推广在线计费规则");
                         break;
 
                 }

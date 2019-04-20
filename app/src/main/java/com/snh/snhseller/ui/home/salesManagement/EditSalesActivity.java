@@ -129,7 +129,12 @@ public class EditSalesActivity extends BaseActivity {
             etAge.setText(bean.Age + "");
             etName.setText(bean.SalesmanRealName);
             etPhone.setText(bean.PhoneNumber);
-            tvSex.setText(bean.Sex);
+            if (bean.Sex.equals("1")) {
+                tvSex.setText("男");
+            }
+            if (bean.Sex.equals("2")) {
+                tvSex.setText("女");
+            }
             etPsw.setHint("重置业务员密码");
             setIsEdit(isEdite);
             adapter.setNewData(bean.ManagerSuppList);
@@ -137,6 +142,7 @@ public class EditSalesActivity extends BaseActivity {
     }
 
     private String outStr = "";
+
     @Override
     public void setUpLisener() {
 
@@ -186,7 +192,7 @@ public class EditSalesActivity extends BaseActivity {
             case R.id.iv_eye:
                 if (isClose) {
                     ivEye.setBackgroundResource(R.drawable.eye_close_bg);
-                    etPsw.setInputType(InputType.TYPE_TEXT_VARIATION_PASSWORD);
+                    etPsw.setInputType(InputType.TYPE_TEXT_VARIATION_PASSWORD | InputType.TYPE_CLASS_TEXT);
                     isClose = false;
                 } else {
                     ivEye.setBackgroundResource(R.drawable.eye_open_bg);
@@ -212,37 +218,44 @@ public class EditSalesActivity extends BaseActivity {
     }
 
     private void setIsEdit(boolean isEdit) {
-        etAddress.setFocusable(isEdit);
-        etAddress.setFocusableInTouchMode(isEdit);
-        etAge.setFocusable(isEdit);
-        etAge.setFocusableInTouchMode(isEdit);
-        etName.setFocusable(isEdit);
-        etName.setFocusableInTouchMode(isEdit);
-        etPhone.setFocusable(isEdit);
-        etPhone.setFocusableInTouchMode(isEdit);
+        etAddress.setFocusable(false);
+        etAddress.setFocusableInTouchMode(false);
+        etAge.setFocusable(false);
+        etAge.setFocusableInTouchMode(false);
+        etName.setFocusable(false);
+        etName.setFocusableInTouchMode(false);
+        etPhone.setFocusable(false);
+        etPhone.setFocusableInTouchMode(false);
+        tvSex.setEnabled(false);
         etPsw.setFocusable(isEdit);
         etPsw.setFocusableInTouchMode(isEdit);
-
-        tvSex.setEnabled(isEdit);
     }
 
     private void clean() {
         etAddress.setText("");
         etAge.setText("");
         etName.setText("");
-        etPhone.setText("");
+//        etPhone.setText("");
         etPsw.setText("");
     }
 
     private void setData() {
         map.put("RealName", etName.getText().toString().trim());
-        map.put("Pwd", Md5Utils.md5(etPsw.getText().toString().trim()));
-        map.put("Sex", tvSex.getText().toString().trim());
+        if (tvSex.getText().toString().trim().equals("男")) {
+            map.put("Sex", 1);
+        }
+        if (tvSex.getText().toString().trim().equals("女")) {
+            map.put("Sex", 2);
+        }
         map.put("Age", etAge.getText().toString().trim());
         map.put("PhoneNumber", etPhone.getText().toString().trim());
-        map.put("Address", etAddress.getText().toString().trim());
+        map.put("Address", "~");
         if (type == 2) {
             map.put("SalesmanId", bean.SalesmanId);
+            map.put("NewPwd", Md5Utils.md5(etPsw.getText().toString().trim()));
+        } else {
+            map.put("Pwd", Md5Utils.md5(etPsw.getText().toString().trim()));
+
         }
     }
 
@@ -257,23 +270,23 @@ public class EditSalesActivity extends BaseActivity {
             dialogUtils.noBtnDialog("请输入年龄");
             return false;
         }
-        if(Integer.parseInt(etAge.getText().toString().trim())<16|Integer.parseInt(etAge.getText().toString().trim())>60){
+        if (Integer.parseInt(etAge.getText().toString().trim()) < 16 | Integer.parseInt(etAge.getText().toString().trim()) > 60) {
             dialogUtils.noBtnDialog("年龄必须大于16，小于60");
             return false;
         }
-        if (StrUtils.isEmpty(etPhone.getText().toString().trim())) {
-            dialogUtils.noBtnDialog("请输入手机号码");
-            return false;
-        }
-        if (StrUtils.isEmpty(etAddress.getText().toString().trim())) {
-            dialogUtils.noBtnDialog("请输入地址");
-            return false;
-        }
+//        if (StrUtils.isEmpty(etPhone.getText().toString().trim())) {
+//            dialogUtils.noBtnDialog("请输入手机号码");
+//            return false;
+//        }
+//        if (StrUtils.isEmpty(etAddress.getText().toString().trim())) {
+//            dialogUtils.noBtnDialog("请输入地址");
+//            return false;
+//        }
         if (StrUtils.equals(tvSex.getText().toString().trim(), "请选择业务员性别")) {
             dialogUtils.noBtnDialog("请选择业务员性别");
             return false;
         }
-        if (StrUtils.isEmpty(etPsw.getText().toString().trim()) && !StrUtils.isPsw(etPsw.getText().toString().trim())) {
+        if (!StrUtils.isPsw(etPsw.getText().toString().trim()) | StrUtils.isEmpty(etPsw.getText().toString().trim())) {
             dialogUtils.noBtnDialog("密码不能为空，且必须为6-20数字字母组合而成");
             return false;
         }

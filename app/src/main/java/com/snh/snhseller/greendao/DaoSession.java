@@ -8,9 +8,11 @@ import org.greenrobot.greendao.database.Database;
 import org.greenrobot.greendao.identityscope.IdentityScopeType;
 import org.greenrobot.greendao.internal.DaoConfig;
 
+import com.snh.snhseller.bean.beanDao.AearBean;
 import com.snh.snhseller.bean.beanDao.UserEntity;
 import com.snh.snhseller.bean.salebean.SaleUserBean;
 
+import com.snh.snhseller.greendao.AearBeanDao;
 import com.snh.snhseller.greendao.UserEntityDao;
 import com.snh.snhseller.greendao.SaleUserBeanDao;
 
@@ -23,9 +25,11 @@ import com.snh.snhseller.greendao.SaleUserBeanDao;
  */
 public class DaoSession extends AbstractDaoSession {
 
+    private final DaoConfig aearBeanDaoConfig;
     private final DaoConfig userEntityDaoConfig;
     private final DaoConfig saleUserBeanDaoConfig;
 
+    private final AearBeanDao aearBeanDao;
     private final UserEntityDao userEntityDao;
     private final SaleUserBeanDao saleUserBeanDao;
 
@@ -33,22 +37,32 @@ public class DaoSession extends AbstractDaoSession {
             daoConfigMap) {
         super(db);
 
+        aearBeanDaoConfig = daoConfigMap.get(AearBeanDao.class).clone();
+        aearBeanDaoConfig.initIdentityScope(type);
+
         userEntityDaoConfig = daoConfigMap.get(UserEntityDao.class).clone();
         userEntityDaoConfig.initIdentityScope(type);
 
         saleUserBeanDaoConfig = daoConfigMap.get(SaleUserBeanDao.class).clone();
         saleUserBeanDaoConfig.initIdentityScope(type);
 
+        aearBeanDao = new AearBeanDao(aearBeanDaoConfig, this);
         userEntityDao = new UserEntityDao(userEntityDaoConfig, this);
         saleUserBeanDao = new SaleUserBeanDao(saleUserBeanDaoConfig, this);
 
+        registerDao(AearBean.class, aearBeanDao);
         registerDao(UserEntity.class, userEntityDao);
         registerDao(SaleUserBean.class, saleUserBeanDao);
     }
     
     public void clear() {
+        aearBeanDaoConfig.clearIdentityScope();
         userEntityDaoConfig.clearIdentityScope();
         saleUserBeanDaoConfig.clearIdentityScope();
+    }
+
+    public AearBeanDao getAearBeanDao() {
+        return aearBeanDao;
     }
 
     public UserEntityDao getUserEntityDao() {

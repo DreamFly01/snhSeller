@@ -14,9 +14,10 @@ import com.bumptech.glide.Glide;
 import com.snh.snhseller.ui.loging.LogingActivity;
 import com.snh.snhseller.ui.salesmanManagement.SalesmanMainActivity;
 import com.snh.snhseller.utils.Contans;
-import com.snh.snhseller.utils.DBManager;
+import com.snh.snhseller.db.DBManager;
 import com.snh.snhseller.utils.JumpUtils;
 import com.snh.snhseller.utils.SPUtils;
+import com.tencent.bugly.crashreport.CrashReport;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -49,7 +50,14 @@ public class WelcomActivity extends BaseActivity {
     public static WelcomActivity instans;
 
     @Override
+    protected void onStart() {
+        super.onStart();
+        System.out.println("welcomOnStart-->"+System.currentTimeMillis());
+    }
+
+    @Override
     protected void initContentView(Bundle savedInstanceState) {
+        System.out.println("welcomOncreat-->"+System.currentTimeMillis());
         setImm(false);
         instans = this;
         setContentView(R.layout.activity_welcom_layout);
@@ -167,13 +175,14 @@ public class WelcomActivity extends BaseActivity {
 
     @AfterPermissionGranted(100)
     private void checkPerm() {
-        String[] params = {Manifest.permission.WRITE_EXTERNAL_STORAGE};
+        String[] params = {Manifest.permission.WRITE_EXTERNAL_STORAGE,Manifest.permission.ACCESS_FINE_LOCATION};
         if (EasyPermissions.hasPermissions(this, params)) {
             if (SPUtils.getInstance(this).getBoolean(Contans.LAUNCH_FRIST)) {
                 SPUtils.getInstance(this).savaBoolean(Contans.LAUNCH_FRIST, false);
             }
             Bundle bundle = new Bundle();
             if (null != DBManager.getInstance(this).getUserInfo()) {
+                CrashReport.setUserId(DBManager.getInstance(this).getUseId()+"");
                 JumpUtils.dataJump(WelcomActivity.this, MainActivity.class, bundle, true);
             } else if(null != DBManager.getInstance(this).getSaleInfo()){
                 JumpUtils.dataJump(WelcomActivity.this, SalesmanMainActivity.class, bundle, true);
@@ -181,7 +190,7 @@ public class WelcomActivity extends BaseActivity {
                 JumpUtils.dataJump(WelcomActivity.this, LogingActivity.class, bundle, true);
             }
         } else {
-            EasyPermissions.requestPermissions(this, "需要读写本地权限", 100, params);
+            EasyPermissions.requestPermissions(this, "需要相关权限", 100, params);
 
         }
     }
@@ -190,5 +199,17 @@ public class WelcomActivity extends BaseActivity {
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         EasyPermissions.onRequestPermissionsResult(requestCode, permissions, grantResults, this);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        timer.cancel();
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        timer.cancel();
     }
 }

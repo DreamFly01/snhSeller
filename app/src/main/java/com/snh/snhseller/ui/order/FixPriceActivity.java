@@ -1,6 +1,8 @@
 package com.snh.snhseller.ui.order;
 
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
@@ -8,17 +10,22 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.snh.snhseller.BaseActivity;
 import com.snh.snhseller.R;
+import com.snh.snhseller.adapter.FixPriceAdapter;
 import com.snh.snhseller.bean.BaseResultBean;
+import com.snh.snhseller.bean.OrderBean;
 import com.snh.snhseller.bean.OrderGoodsBean;
 import com.snh.snhseller.requestApi.NetSubscriber;
 import com.snh.snhseller.requestApi.RequestClient;
 import com.snh.snhseller.utils.ImageUtils;
 import com.snh.snhseller.utils.IsBang;
 import com.snh.snhseller.utils.StrUtils;
+
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -32,6 +39,8 @@ import butterknife.OnClick;
  * <p>version：1<p>
  */
 public class FixPriceActivity extends BaseActivity {
+
+
     @BindView(R.id.heard_back)
     LinearLayout heardBack;
     @BindView(R.id.heard_title)
@@ -40,44 +49,33 @@ public class FixPriceActivity extends BaseActivity {
     ImageView heardMenu;
     @BindView(R.id.heard_tv_menu)
     TextView heardTvMenu;
+    @BindView(R.id.rl_menu)
+    RelativeLayout rlMenu;
     @BindView(R.id.rl_head)
     LinearLayout rlHead;
-    @BindView(R.id.iv_shop_logo)
-    ImageView ivShopLogo;
-    @BindView(R.id.tv_shopName)
-    TextView tvShopName;
-    @BindView(R.id.tv_state)
-    TextView tvState;
-    @BindView(R.id.iv_product_logo1)
-    ImageView ivProductLogo1;
-    @BindView(R.id.tv_GoodsName)
-    TextView tvGoodsName;
-    @BindView(R.id.tv_price)
-    TextView tvPrice;
-    @BindView(R.id.tv_sku)
-    TextView tvSku;
-    @BindView(R.id.tv_Number1)
-    TextView tvNumber1;
+    @BindView(R.id.recyclerView)
+    RecyclerView recyclerView;
     @BindView(R.id.tv_price1)
     TextView tvPrice1;
+    @BindView(R.id.et_price)
+    EditText etPrice;
     @BindView(R.id.tv_yunfei)
     TextView tvYunfei;
+    @BindView(R.id.et_yunfei)
+    EditText etYunfei;
     @BindView(R.id.tv_yunfei1)
     TextView tvYunfei1;
     @BindView(R.id.tv_price2)
     TextView tvPrice2;
-    @BindView(R.id.et_price)
-    EditText etPrice;
-    @BindView(R.id.et_yunfei)
-    EditText etYunfei;
     @BindView(R.id.btn_commit)
     Button btnCommit;
-
     private Bundle bundle;
-    private OrderGoodsBean bean;
+    private OrderBean bean;
     private double total;
     private String yunfei;
     private String price;
+
+    private FixPriceAdapter adapter;
 
     @Override
     protected void initContentView(Bundle savedInstanceState) {
@@ -93,28 +91,24 @@ public class FixPriceActivity extends BaseActivity {
         heardTitle.setText("改价格");
         btnCommit.setText("提交");
         IsBang.setImmerHeard(this, rlHead);
-        ImageUtils.loadUrlImage(this, bean.shopLogo, ivShopLogo);
-        tvShopName.setText(bean.shopName);
-        tvState.setText(bean.state);
-        tvGoodsName.setText(bean.OrderGoodsName);
-        tvNumber1.setText("x" + bean.Number);
-        tvPrice.setText("￥" + bean.Price);
-        ImageUtils.loadUrlImage(this, bean.OrderGoodsIcon, ivProductLogo1);
-        tvPrice1.setText("实收：￥" + bean.Price);
+
+        tvPrice1.setText("实收：￥" + bean.OrderPrice);
         tvYunfei.setText("运费：￥" + bean.Freight);
-        etPrice.setText(bean.Price + "");
+        etPrice.setText(bean.OrderPrice + "");
         etYunfei.setText(bean.Freight + "");
-        yunfei = bean.Freight + "";
-        price = bean.Price + "";
         if (Double.parseDouble(etYunfei.getText().toString()) > 0) {
             tvYunfei1.setText("（含运费：￥" + etYunfei.getText().toString() + "）");
-
         } else {
             tvYunfei1.setText("（包邮）");
         }
+        yunfei = bean.Freight + "";
+        price = bean.OrderPrice + "";
         total = Double.parseDouble(etPrice.getText().toString()) + Double.parseDouble(etYunfei.getText().toString());
-
         tvPrice2.setText("改后总价：￥" + total);
+        adapter = new FixPriceAdapter(R.layout.item_fixprice_layout, bean.OrderGoodsList);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        recyclerView.setAdapter(adapter);
+        recyclerView.setNestedScrollingEnabled(false);
     }
 
     @Override
@@ -211,7 +205,7 @@ public class FixPriceActivity extends BaseActivity {
     }
 
     private void changePrice() {
-        addSubscription(RequestClient.ChangePrice(bean.OrderId, bean.OrderGoodsId, price, yunfei, this, new NetSubscriber<BaseResultBean>(this,true) {
+        addSubscription(RequestClient.ChangePrice(bean.OrderId, price, yunfei, this, new NetSubscriber<BaseResultBean>(this, true) {
             @Override
             public void onResultNext(BaseResultBean model) {
                 showShortToast("修改价格成功");

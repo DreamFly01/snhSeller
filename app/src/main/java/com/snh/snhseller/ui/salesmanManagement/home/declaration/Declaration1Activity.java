@@ -37,7 +37,7 @@ import com.snh.snhseller.bean.salebean.TypeBean;
 import com.snh.snhseller.requestApi.NetSubscriber;
 import com.snh.snhseller.requestApi.RequestClient;
 import com.snh.snhseller.ui.salesmanManagement.BaseActivity;
-import com.snh.snhseller.utils.DBManager;
+import com.snh.snhseller.db.DBManager;
 import com.snh.snhseller.utils.DialogUtils;
 import com.snh.snhseller.utils.ImageUtils;
 import com.snh.snhseller.utils.IsBang;
@@ -235,12 +235,10 @@ public class Declaration1Activity extends BaseActivity implements TakePhoto.Take
 
     @Override
     public void takeFail(TResult result, String msg) {
-
     }
 
     @Override
     public void takeCancel() {
-
     }
 
     @Override

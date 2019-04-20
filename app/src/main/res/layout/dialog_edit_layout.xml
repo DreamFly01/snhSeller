@@ -24,6 +24,7 @@
         android:hint="请输入备注"
         android:textColor="@color/txt_dark"
         android:textSize="@dimen/txtSize_30"
+        android:textColorHint="@color/gray_1"
         />
     <LinearLayout
         android:gravity="center"

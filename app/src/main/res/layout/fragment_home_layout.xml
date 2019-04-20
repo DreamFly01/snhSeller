@@ -61,7 +61,6 @@
                     android:layout_weight="1"
                     android:src="@drawable/arrow_white_bg" />
             </LinearLayout>
-
         </LinearLayout>
 
         <LinearLayout

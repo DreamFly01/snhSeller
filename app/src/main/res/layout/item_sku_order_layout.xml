@@ -3,7 +3,6 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@color/white"
-    android:gravity="center"
     android:orientation="vertical"
     android:paddingTop="10pt"
     android:paddingBottom="10pt"
@@ -36,6 +35,14 @@
             android:textColor="@color/txt_dark"
             android:textSize="@dimen/txtSize_28" />
     </LinearLayout>
+    <TextView
+        android:layout_weight="1"
+        android:id="@+id/tv_sku"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="-----------"
+        android:textColor="@color/txt_dark"
+        android:textSize="@dimen/txtSize_30" />
     <LinearLayout
         android:layout_marginTop="20pt"
         android:layout_width="match_parent"

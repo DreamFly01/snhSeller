@@ -2,6 +2,7 @@ package com.snh.snhseller.ui.order;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -13,12 +14,16 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.gyf.barlibrary.ImmersionBar;
 import com.snh.snhseller.BaseFragment;
+import com.snh.snhseller.MainActivity;
 import com.snh.snhseller.R;
+import com.snh.snhseller.bean.BaseResultBean;
+import com.snh.snhseller.bean.NoticeNumBean;
+import com.snh.snhseller.requestApi.NetSubscriber;
+import com.snh.snhseller.requestApi.RequestClient;
 import com.snh.snhseller.utils.DialogUtils;
 import com.snh.snhseller.utils.IsBang;
 
@@ -38,36 +43,44 @@ import butterknife.Unbinder;
  * <p>version：1<p>
  */
 public class OrderFragment extends BaseFragment {
-
-
     Unbinder unbinder;
-    @BindView(R.id.heard_back)
-    LinearLayout heardBack;
-    @BindView(R.id.heard_title)
-    TextView heardTitle;
-    @BindView(R.id.heard_menu)
-    ImageView heardMenu;
-    @BindView(R.id.heard_tv_menu)
-    TextView heardTvMenu;
-    @BindView(R.id.rl_menu)
-    RelativeLayout rlMenu;
+    @BindView(R.id.tv_01)
+    TextView tv01;
+    @BindView(R.id.ll_01)
+    LinearLayout ll01;
+    @BindView(R.id.tv_02)
+    TextView tv02;
+    @BindView(R.id.ll_02)
+    LinearLayout ll02;
+    @BindView(R.id.tv_03)
+    TextView tv03;
+    @BindView(R.id.ll_03)
+    LinearLayout ll03;
     @BindView(R.id.rl_head)
     LinearLayout rlHead;
-    @BindView(R.id.tab_order)
-    TabLayout tabOrder;
-    @BindView(R.id.tab_vp)
-    ViewPager tabVp;
-    private String[] titles;
-    private List<Fragment> list = new ArrayList<>();
-    private Bundle bundle;
-    private MyAdapter adapter;
-    private List<String> listTab = new ArrayList<>();
-
+    private static String[] titles;
+    private static List<Fragment> list = new ArrayList<>();
+    private static Bundle bundle;
+    private static MyAdapter adapter;
+    private static List<String> listTab = new ArrayList<>();
+    static TabLayout tabOrder;
+    static ViewPager tabVp;
+    static ImageView iv01;
+    static ImageView iv02;
+    static ImageView iv03;
     private int[] viewLocation = new int[2];
     private DialogUtils dialogUtils;
 
-    private List<String> data1 = new ArrayList<>();
-    private List<Integer> data2 = new ArrayList<>();
+    private static List<String> data1 = new ArrayList<>();
+    private static List<Integer> data2 = new ArrayList<>();
+
+    private int categories = 0;
+
+    @Override
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        categories = getArguments().getInt("categories");
+    }
 
     @Override
     public int initContentView() {
@@ -78,14 +91,13 @@ public class OrderFragment extends BaseFragment {
     public void setUpViews(View view) {
         IsBang.setImmerHeard(getContext(), rlHead);
         ImmersionBar.setTitleBar(getActivity(), rlHead);
-
-        heardBack.setVisibility(View.GONE);
-        heardMenu.setVisibility(View.VISIBLE);
-        heardMenu.setBackgroundResource(R.drawable.menu_bg);
-
         dialogUtils = new DialogUtils(getContext());
-        setType(0);
-
+        tabVp = view.findViewById(R.id.tab_vp);
+        tabOrder = view.findViewById(R.id.tab_order);
+        iv01 = view.findViewById(R.id.iv_01);
+        iv02 = view.findViewById(R.id.iv_02);
+        iv03 = view.findViewById(R.id.iv_03);
+        getCount();
     }
 
     @Override
@@ -107,30 +119,26 @@ public class OrderFragment extends BaseFragment {
         super.onDestroyView();
         unbinder.unbind();
     }
-
-    @OnClick(R.id.rl_menu)
-    public void onClick() {
-        heardMenu.getLocationInWindow(viewLocation);
-        data1.clear();
-        data2.clear();
-        data1.add("用户订单");
-        data1.add("出库订单");
-        data1.add("进货订单");
-        data2.add(R.drawable.order1_bg);
-        data2.add(R.drawable.order2_bg);
-        data2.add(R.drawable.order3_bg);
-        dialogUtils.customDialog(new DialogUtils.OnItemClick() {
-            @Override
-            public void onItemClick(View v, int position) {
-                setType(position);
-                dialogUtils.dismissDialog();
-            }
-        }, viewLocation[1] + heardMenu.getMeasuredHeight() / 2, viewLocation[0], heardMenu.getWidth(), data1, data2);
+ int type = 0;
+    @OnClick({R.id.ll_01, R.id.ll_02, R.id.ll_03})
+    public void onClick(View view) {
+        switch (view.getId()) {
+            case R.id.ll_01:
+                type = 0;
+                setType(0);
+                break;
+            case R.id.ll_02:
+                type = 1;
+                setType(1);
+                break;
+            case R.id.ll_03:
+                type = 2;
+                setType(2);
+                break;
+        }
     }
 
-
     public class MyAdapter extends FragmentStatePagerAdapter {
-
 
         public MyAdapter(FragmentManager fm) {
             super(fm);
@@ -150,10 +158,71 @@ public class OrderFragment extends BaseFragment {
             View v = LayoutInflater.from(getContext()).inflate(R.layout.tab_custom, null);
             TextView mTv_Title = (TextView) v.findViewById(R.id.mTv_Title);
             ImageView mImg = (ImageView) v.findViewById(R.id.mImg);
+            TextView tv_num = (TextView)v.findViewById(R.id.tv_num);
             mTv_Title.setText(titles[position]);
 //            mImg.setImageResource(images[position]);
             //添加一行，设置颜色
             mTv_Title.setTextColor(tabOrder.getTabTextColors());//
+
+            tv_num.setVisibility(View.GONE);
+            switch (type){
+                case 0:
+                    switch (position)
+                    {
+                        case 2:
+                            tv_num.setVisibility(View.VISIBLE);
+                            if(UserDFH>99){
+                                tv_num.setText("99+");
+                            }else if(UserDFH<=0){
+                                tv_num.setVisibility(View.GONE);
+                            }else {
+                                tv_num.setText(UserDFH+"");
+                            }
+                            break;
+                    }
+                    break;
+                case 1:
+                    switch (position)
+                    {
+                        case 2:
+                            tv_num.setVisibility(View.VISIBLE);
+                            if(CKDFH>99){
+                                tv_num.setText("99+");
+                            }else if(CKDFH<=0){
+                                tv_num.setVisibility(View.GONE);
+                            }else {
+                                tv_num.setText(CKDFH+"");
+                            }
+                            break;
+                    }
+                    break;
+                case 2:
+                    switch (position)
+                    {
+                        case 1:
+                            tv_num.setVisibility(View.VISIBLE);
+                            if(JHDZF>99){
+                                tv_num.setText("99+");
+                            }else if(JHDZF<=0){
+                                tv_num.setVisibility(View.GONE);
+                            }else {
+                                tv_num.setText(JHDZF+"");
+                            }
+                            break;
+                        case 3:
+                            tv_num.setVisibility(View.VISIBLE);
+                            if(JHDSH>99){
+                                tv_num.setText("99+");
+                            }else if(JHDSH<=0){
+                                tv_num.setVisibility(View.GONE);
+                            }else {
+                                tv_num.setText(JHDSH+"");
+                            }
+                            break;
+                    }
+                    break;
+            }
+
             return v;
         }
 
@@ -162,14 +231,21 @@ public class OrderFragment extends BaseFragment {
             return PagerAdapter.POSITION_NONE;
         }
     }
-
-    private void setType(int orderType) {
+    static int UserDFH;
+    static int CKDFH;
+    static int JHDZF;
+    static int JHDSH;
+    static int sunNum;
+    public static void setType(int orderType) {
         list.clear();
 
         switch (orderType) {
             case 0:
-                heardTitle.setText("用户订单");
+//                heardTitle.setText("用户订单");
                 titles = new String[]{"全部", "待支付", "待发货", "退款中", "待收货", "已完成"};
+                iv01.setVisibility(View.VISIBLE);
+                iv02.setVisibility(View.INVISIBLE);
+                iv03.setVisibility(View.INVISIBLE);
                 for (int i = 0; i < titles.length; i++) {
                     OrderListFragment fragment = new OrderListFragment();
                     bundle = new Bundle();
@@ -200,7 +276,10 @@ public class OrderFragment extends BaseFragment {
                 }
                 break;
             case 1:
-                heardTitle.setText("出库订单");
+//                heardTitle.setText("出库订单");
+                iv01.setVisibility(View.INVISIBLE);
+                iv02.setVisibility(View.VISIBLE);
+                iv03.setVisibility(View.INVISIBLE);
                 titles = new String[]{"全部", "待支付", "待发货", "待收货", "已完成"};
                 for (int i = 0; i < titles.length; i++) {
                     OrderListFragment fragment = new OrderListFragment();
@@ -212,7 +291,10 @@ public class OrderFragment extends BaseFragment {
                 }
                 break;
             case 2:
-                heardTitle.setText("进货订单");
+//                heardTitle.setText("进货订单");
+                iv01.setVisibility(View.INVISIBLE);
+                iv02.setVisibility(View.INVISIBLE);
+                iv03.setVisibility(View.VISIBLE);
                 titles = new String[]{"全部", "待支付", "待发货", "待收货", "已完成"};
                 for (int i = 0; i < titles.length; i++) {
                     OrderListFragment fragment = new OrderListFragment();
@@ -225,7 +307,6 @@ public class OrderFragment extends BaseFragment {
                 break;
         }
         tabOrder.setTabMode(TabLayout.MODE_SCROLLABLE);
-        adapter = new MyAdapter(getChildFragmentManager());
         tabVp.setAdapter(adapter);
         tabOrder.setupWithViewPager(tabVp);
         for (int i = 0; i < tabOrder.getTabCount(); i++) {
@@ -238,4 +319,100 @@ public class OrderFragment extends BaseFragment {
 
         tabVp.setOffscreenPageLimit(titles.length);
     }
+
+
+    private void getCount() {
+        RequestClient.GetSupplierNoticeUnreadCount(getContext(), new NetSubscriber<BaseResultBean<NoticeNumBean>>(getContext()) {
+            @Override
+            public void onResultNext(BaseResultBean<NoticeNumBean> model) {
+                UserDFH = model.data.UserDFH;
+                CKDFH = model.data.CKDFH;
+                JHDZF = model.data.JHDZF;
+                JHDSH = model.data.JHDSH;
+                adapter = new MyAdapter(getChildFragmentManager());
+                if (categories==101||categories==102) {
+                    setType(0);
+                }else if(categories==201||categories==203||categories==204){
+                    setType(1);
+                }else if(categories==202){
+                    setType(2);
+                } else {
+                    setType(0);
+                }
+
+            }
+        });
+    }
+
+    public static void updataView(int type, int position){
+        View v = tabOrder.getTabAt(position).getCustomView();
+        TextView tv_num = (TextView)v.findViewById(R.id.tv_num);
+
+        switch (type){
+            case 0:
+                switch (position)
+                {
+                    case 2:
+                        UserDFH = UserDFH-1;
+                        tv_num.setVisibility(View.VISIBLE);
+                        if(UserDFH>99){
+                            tv_num.setText("99+");
+                        }else if(UserDFH<=0){
+                            tv_num.setVisibility(View.GONE);
+                        }else {
+                            tv_num.setText(UserDFH+"");
+                        }
+                        break;
+                }
+                break;
+            case 1:
+                switch (position)
+                {
+                    case 2:
+                        CKDFH = CKDFH-1;
+                        tv_num.setVisibility(View.VISIBLE);
+                        if(CKDFH>99){
+                            tv_num.setText("99+");
+                        }else if(CKDFH<=0){
+                            tv_num.setVisibility(View.GONE);
+                        }else {
+                            tv_num.setText(CKDFH+"");
+                        }
+                        break;
+                }
+                break;
+            case 2:
+                switch (position)
+                {
+                    case 1:
+                        JHDZF = JHDZF-1;
+                        tv_num.setVisibility(View.VISIBLE);
+                        if(JHDZF>99){
+                            tv_num.setText("99+");
+                        }else if(JHDZF<=0){
+                            tv_num.setVisibility(View.GONE);
+                        }else {
+                            tv_num.setText(JHDZF+"");
+                        }
+                        break;
+                    case 3:
+                        JHDSH = JHDSH-1;
+                        tv_num.setVisibility(View.VISIBLE);
+                        if(JHDSH>99){
+                            tv_num.setText("99+");
+                        }else if(JHDSH<=0){
+                            tv_num.setVisibility(View.GONE);
+                        }else {
+                            tv_num.setText(JHDSH+"");
+                        }
+                        break;
+                }
+                break;
+        }
+
+
+        int sunNum1 = UserDFH+CKDFH+JHDSH+JHDZF;
+        MainActivity.tvNum2.setText(sunNum1+"");
+    }
+
 }

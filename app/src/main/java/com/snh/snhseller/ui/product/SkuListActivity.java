@@ -22,6 +22,7 @@ import com.snh.snhseller.bean.BaseResultBean;
 import com.snh.snhseller.bean.SkuBean;
 import com.snh.snhseller.requestApi.NetSubscriber;
 import com.snh.snhseller.requestApi.RequestClient;
+import com.snh.snhseller.utils.DialogUtils;
 import com.snh.snhseller.utils.IsBang;
 import com.snh.snhseller.utils.JumpUtils;
 import com.snh.snhseller.wediget.RecycleViewDivider;
@@ -66,6 +67,7 @@ public class SkuListActivity extends BaseActivity {
     private SkuListAdapter adapter;
     private List<SkuBean> datas = new ArrayList<>();
 
+    private DialogUtils dialogUtils;
     @Override
     protected void initContentView(Bundle savedInstanceState) {
         setContentView(R.layout.activity_skulist_layout);
@@ -77,6 +79,7 @@ public class SkuListActivity extends BaseActivity {
 
     @Override
     public void setUpViews() {
+        dialogUtils = new DialogUtils(this);
         IsBang.setImmerHeard(this, rlHead);
         heardTitle.setText("");
         setRecyclerView();
@@ -94,15 +97,29 @@ public class SkuListActivity extends BaseActivity {
         });
         adapter.setOnItemChildClickListener(new BaseQuickAdapter.OnItemChildClickListener() {
             @Override
-            public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
+            public void onItemChildClick(final BaseQuickAdapter adapter, View view, final int position) {
                 switch (view.getId()) {
                     case R.id.ll_delete:
-                        del(datas.get(position).NormId);
-                        datas.remove(position);
-                        adapter.setNewData(datas);
-                        if (datas.size() <= 0) {
-                            SkuListActivity.this.finish();
-                        }
+                        dialogUtils.simpleDialog("确认删除此规格？", new DialogUtils.ConfirmClickLisener() {
+                            @Override
+                            public void onConfirmClick(View v) {
+
+                                del(datas.get(position).NormId);
+                                datas.remove(position);
+                                adapter.setNewData(datas);
+                                dialogUtils.dismissDialog();
+                                if (datas.size() <= 0) {
+                                    SkuListActivity.this.finish();
+                                }
+                            }
+                        },true);
+
+                        break;
+                    case R.id.ll_item:
+                        bundle = new Bundle();
+                        bundle.putParcelable("data", datas.get(position));
+                        bundle.putInt("goodsId", goodsId);
+                       JumpUtils.dataJump(SkuListActivity.this,AddSkuActivity.class,bundle,false);
                         break;
                 }
             }

@@ -63,6 +63,8 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:textSize="@dimen/txtSize_30"
+            android:textColor="@color/txt_dark"
+            android:textColorHint="@color/gray_1"
             android:hint="请输入商品标题"/>
     </LinearLayout>
     <LinearLayout
@@ -79,7 +81,7 @@
             android:textColor="@color/txt_dark"
             android:textSize="@dimen/txtSize_30"
             android:text="所属类目"/>
-        <EditText
+        <TextView
             android:id="@+id/et_02"
             android:maxLines="1"
             android:gravity="center_vertical|right"
@@ -90,6 +92,7 @@
             android:layout_height="match_parent"
             android:textSize="@dimen/txtSize_30"
             android:textColor="@color/txt_dark"
+            android:textColorHint="@color/gray_1"
             android:hint="请选择所属类目"/>
     </LinearLayout>
     <LinearLayout
@@ -105,11 +108,11 @@
             android:layout_height="wrap_content"
             android:textColor="@color/txt_dark"
             android:textSize="@dimen/txtSize_30"
-            android:text="终端价格"/>
+            android:text="会员价格"/>
         <EditText
             android:id="@+id/et_03"
             android:maxLines="1"
-            android:inputType="number"
+            android:inputType="numberDecimal"
             android:gravity="center_vertical|right"
             android:paddingRight="30pt"
             android:background="@null"
@@ -117,6 +120,8 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:textSize="@dimen/txtSize_30"
+            android:textColor="@color/txt_dark"
+            android:textColorHint="@color/gray_1"
             android:hint="请输入终端价格"/>
 
     </LinearLayout>
@@ -133,11 +138,11 @@
             android:layout_height="wrap_content"
             android:textColor="@color/txt_dark"
             android:textSize="@dimen/txtSize_30"
-            android:text="商场价格"/>
+            android:text="市场价格"/>
         <EditText
             android:id="@+id/et_06"
             android:maxLines="1"
-            android:inputType="number"
+            android:inputType="numberDecimal"
             android:gravity="center_vertical|right"
             android:paddingRight="30pt"
             android:background="@null"
@@ -162,7 +167,7 @@
             android:textColor="@color/txt_dark"
             android:textSize="@dimen/txtSize_30"
             android:text="商品单位"/>
-        <EditText
+        <TextView
             android:id="@+id/et_04"
             android:maxLines="1"
             android:gravity="center_vertical|right"
@@ -172,7 +177,9 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:textSize="@dimen/txtSize_30"
-            android:hint="例：/个 /瓶 /袋"/>
+            android:textColor="@color/txt_dark"
+            android:textColorHint="@color/gray_1"
+            android:hint="请选择单位"/>
     </LinearLayout>
     <LinearLayout
         android:background="@color/white"
@@ -199,6 +206,8 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:textSize="@dimen/txtSize_30"
+            android:textColor="@color/txt_dark"
+            android:textColorHint="@color/gray_1"
             android:hint="请输入详细库存"/>
     </LinearLayout>
     <LinearLayout

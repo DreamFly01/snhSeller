@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/color_app_bg"
@@ -16,6 +17,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="28pt"
+            android:textColor="@color/gray_1"
             android:text="原密码"/>
         <EditText
             android:inputType="textPassword"
@@ -27,6 +29,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="28pt"
+            android:textColor="@color/txt_dark"
             android:hint="请输入原始密码"/>
     </LinearLayout>
     <LinearLayout
@@ -41,6 +44,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="28pt"
+            android:textColor="@color/gray_1"
             android:text="新密码"/>
         <EditText
             android:inputType="textPassword"
@@ -53,6 +57,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="28pt"
+            android:textColor="@color/txt_dark"
             android:hint="请输入新密码"/>
     </LinearLayout>
     <LinearLayout
@@ -67,6 +72,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="28pt"
+            android:textColor="@color/gray_1"
             android:text="确认密码"/>
         <EditText
             android:inputType="textPassword"
@@ -78,6 +84,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="28pt"
+            android:textColor="@color/txt_dark"
             android:hint="请再次输入密码"/>
     </LinearLayout>
 <include layout="@layout/commit_layout"></include>

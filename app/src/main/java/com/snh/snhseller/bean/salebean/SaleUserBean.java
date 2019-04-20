@@ -15,11 +15,16 @@ public class SaleUserBean {
     public int SalesmanId;
     public String PhoneNumber;
     public String NickName;
-    @Generated(hash = 997801547)
-    public SaleUserBean(int SalesmanId, String PhoneNumber, String NickName) {
+    public String RealName;
+    public String SalesmanLogo;
+    @Generated(hash = 1696948586)
+    public SaleUserBean(int SalesmanId, String PhoneNumber, String NickName,
+            String RealName, String SalesmanLogo) {
         this.SalesmanId = SalesmanId;
         this.PhoneNumber = PhoneNumber;
         this.NickName = NickName;
+        this.RealName = RealName;
+        this.SalesmanLogo = SalesmanLogo;
     }
     @Generated(hash = 1682475375)
     public SaleUserBean() {
@@ -41,5 +46,17 @@ public class SaleUserBean {
     }
     public void setNickName(String NickName) {
         this.NickName = NickName;
+    }
+    public String getRealName() {
+        return this.RealName;
+    }
+    public void setRealName(String RealName) {
+        this.RealName = RealName;
+    }
+    public String getSalesmanLogo() {
+        return this.SalesmanLogo;
+    }
+    public void setSalesmanLogo(String SalesmanLogo) {
+        this.SalesmanLogo = SalesmanLogo;
     }
 }

@@ -37,12 +37,15 @@ public class ProdcutAdapter extends BaseQuickAdapter<ProductBean,BaseViewHolder>
         switch (item.IsAuditing)
         {
             case 0:
+                helper.getView(R.id.ll_state).setVisibility(View.VISIBLE);
                 helper.setText(R.id.tv_state,"待审核");
                 break;
             case 1:
+                helper.getView(R.id.ll_state).setVisibility(View.GONE);
                 helper.setText(R.id.tv_state,"通过");
                 break;
             case 2:
+                helper.getView(R.id.ll_state).setVisibility(View.VISIBLE);
                 helper.setText(R.id.tv_state,"不通过");
                 break;
         }

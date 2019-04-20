@@ -1,17 +1,13 @@
 package com.snh.snhseller.ui.salesmanManagement.operation;
 
 import android.Manifest;
-import android.content.Context;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -33,15 +29,14 @@ import com.snh.snhseller.R;
 import com.snh.snhseller.bean.BaseResultBean;
 import com.snh.snhseller.bean.salebean.CommTenantBean;
 import com.snh.snhseller.bean.salebean.OperationBean;
+import com.snh.snhseller.db.DBManager;
 import com.snh.snhseller.requestApi.NetSubscriber;
 import com.snh.snhseller.requestApi.RequestClient;
 import com.snh.snhseller.ui.salesmanManagement.adapter.OperationAdapter;
 import com.snh.snhseller.utils.Contans;
-import com.snh.snhseller.utils.DBManager;
 import com.snh.snhseller.utils.DialogUtils;
 import com.snh.snhseller.utils.ImageUtils;
 import com.snh.snhseller.utils.IsBang;
-import com.snh.snhseller.utils.JumpUtils;
 import com.snh.snhseller.utils.SPUtils;
 import com.snh.snhseller.utils.StrUtils;
 import com.snh.snhseller.utils.UpdateAppHttpUtil;
@@ -92,6 +87,8 @@ public class OperationFragment extends BaseFragment {
     @BindView(R.id.refreshLayout)
     SmartRefreshLayout refreshLayout;
     Unbinder unbinder;
+    @BindView(R.id.tv_company)
+    TextView tvCompany;
 
     private int index = 1;
     private OperationAdapter adapter;
@@ -109,14 +106,13 @@ public class OperationFragment extends BaseFragment {
     @Override
     public void setUpViews(View view) {
         ImmersionBar.setTitleBar(getActivity(), rlHead);
-        IsBang.setImmerHeard(getContext(), rlHead,"");
+        IsBang.setImmerHeard(getContext(), rlHead, "");
         updataVersion();
         dialogUtils = new DialogUtils(getContext());
         heardTitle.setText("业务员管理");
         heardBack.setVisibility(View.GONE);
-        tvNick.setText(DBManager.getInstance(getContext()).getSaleInfo().NickName);
-        tvPhone.setText(DBManager.getInstance(getContext()).getSaleInfo().PhoneNumber);
-        ImageUtils.loadUrlCorners(getContext(), "http://cdn.duitang.com/uploads/item/201409/25/20140925003424_uzG3A.thumb.700_0.jpeg", ivLogo);
+        tvNick.setText("姓名："+DBManager.getInstance(getContext()).getSaleInfo().RealName);
+        ImageUtils.loadUrlImage(getContext(),DBManager.getInstance(getContext()).getSaleInfo().SalesmanLogo,ivLogo);
         setRecyclerView();
         checkPerm();
     }
@@ -218,13 +214,14 @@ public class OperationFragment extends BaseFragment {
                 refreshLayout.finishRefresh();
 
                 if (index == 1) {
-//                    adapter.setNewData(model.data.CommTenantList);
                     datas.clear();
+                    tvCompany.setText("公司："+model.data.SupplierName);
+                    tvPhone.setText("联系电话："+model.data.SupplierBuinourPhoneNumber);
                     if (model.data.MyCommTenantList.size() > 0) {
                         datas.addAll(model.data.MyCommTenantList);
                         adapter.loadMoreComplete();
                     } else {
-                        adapter.setEmptyView(R.layout.empty1_layout,recyclerView);
+                        adapter.setEmptyView(R.layout.empty1_layout, recyclerView);
                         adapter.loadMoreEnd();
                     }
                     adapter.setNewData(datas);
@@ -257,8 +254,8 @@ public class OperationFragment extends BaseFragment {
             public void onReceiveLocation(BDLocation bdLocation) {
                 if (null != bdLocation) {
                     float radius = bdLocation.getRadius();
-                   String latitude = bdLocation.getLatitude()+"";
-                   String longitude = bdLocation.getLongitude()+"";
+                    String latitude = bdLocation.getLatitude() + "";
+                    String longitude = bdLocation.getLongitude() + "";
                     SPUtils.getInstance(getContext()).saveData(Contans.LATITUDE, bdLocation.getLatitude() + "");
                     SPUtils.getInstance(getContext()).saveData(Contans.LONGITUDE, bdLocation.getLongitude() + "");
                     getNewData();
@@ -268,7 +265,6 @@ public class OperationFragment extends BaseFragment {
         //注册监听函数
 
 
-
     }
 
     private void checkPerm() {
@@ -276,7 +272,7 @@ public class OperationFragment extends BaseFragment {
         if (EasyPermissions.hasPermissions(getContext(), params)) {
             initLocation();
         } else {
-            EasyPermissions.requestPermissions(this, "需要定位权限,和相机权限", 100, params);
+            EasyPermissions.requestPermissions(this, "需要定位权限", 100, params);
         }
     }
 
@@ -316,6 +312,7 @@ public class OperationFragment extends BaseFragment {
         adapter.disableLoadMoreIfNotFullPage();
         getData();
     }
+
     private void updataVersion() {
         new UpdateAppManager.Builder()
                 .setActivity(getActivity())
@@ -328,11 +325,8 @@ public class OperationFragment extends BaseFragment {
                     }
                 })
                 .hideDialogOnDownloading()
-//                .setParams(params)设置自定义参数
-//                .setTopPic(R.drawable.top_3)
-//                .setThemeColor(R.color.app_red)
                 .build()
-                .checkNewApp(new UpdateCallback(){
+                .checkNewApp(new UpdateCallback() {
                     /**
                      * 解析json,自定义协议
                      *
@@ -342,12 +336,12 @@ public class OperationFragment extends BaseFragment {
                     @Override
                     protected UpdateAppBean parseJson(String json) {
                         UpdateAppBean updateAppBean = new UpdateAppBean();
-                        String isUpdata="No";
+                        String isUpdata = "No";
                         try {
                             JSONObject jsonObject = JSONObject.parseObject(json);
                             JSONObject data = jsonObject.getJSONObject("data");
 
-                            if(AppUpdateUtils.getVersionCode(getContext())<Integer.parseInt(data.getString("VersionCode"))){
+                            if (AppUpdateUtils.getVersionCode(getContext()) < Integer.parseInt(data.getString("VersionCode"))) {
                                 isUpdata = "Yes";
                             }
                             updateAppBean
@@ -377,7 +371,6 @@ public class OperationFragment extends BaseFragment {
                      */
                     @Override
                     public void hasNewApp(UpdateAppBean updateApp, UpdateAppManager updateAppManager) {
-//                        updateAppManager.showDialog();
                         updateAppManager.showDialogFragment();
                     }
 
@@ -386,7 +379,6 @@ public class OperationFragment extends BaseFragment {
                      */
                     @Override
                     public void onBefore() {
-//                        CProgressDialogUtils.showProgressDialog(MainActivity.this);
                     }
 
                     /**
@@ -394,7 +386,6 @@ public class OperationFragment extends BaseFragment {
                      */
                     @Override
                     public void onAfter() {
-//                        CProgressDialogUtils.cancelProgressDialog(MainActivity.this);
                     }
 
                     @Override

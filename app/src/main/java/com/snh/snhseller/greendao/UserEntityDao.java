@@ -32,12 +32,13 @@ public class UserEntityDao extends AbstractDao<UserEntity, Void> {
         public final static Property Introduction = new Property(5, String.class, "Introduction", false, "INTRODUCTION");
         public final static Property Contacts = new Property(6, String.class, "Contacts", false, "CONTACTS");
         public final static Property ContactsTel = new Property(7, String.class, "ContactsTel", false, "CONTACTS_TEL");
-        public final static Property Token = new Property(8, String.class, "Token", false, "TOKEN");
-        public final static Property Accid = new Property(9, String.class, "Accid", false, "ACCID");
-        public final static Property SuppFxUrl = new Property(10, String.class, "suppFxUrl", false, "SUPP_FX_URL");
-        public final static Property SuppType = new Property(11, String.class, "suppType", false, "SUPP_TYPE");
-        public final static Property ContactsQQ = new Property(12, String.class, "ContactsQQ", false, "CONTACTS_QQ");
-        public final static Property Address = new Property(13, String.class, "Address", false, "ADDRESS");
+        public final static Property ShopTypeName = new Property(8, String.class, "shopTypeName", false, "SHOP_TYPE_NAME");
+        public final static Property Token = new Property(9, String.class, "Token", false, "TOKEN");
+        public final static Property Accid = new Property(10, String.class, "Accid", false, "ACCID");
+        public final static Property SuppFxUrl = new Property(11, String.class, "suppFxUrl", false, "SUPP_FX_URL");
+        public final static Property SuppType = new Property(12, String.class, "suppType", false, "SUPP_TYPE");
+        public final static Property ContactsQQ = new Property(13, String.class, "ContactsQQ", false, "CONTACTS_QQ");
+        public final static Property Address = new Property(14, String.class, "Address", false, "ADDRESS");
     }
 
 
@@ -61,12 +62,13 @@ public class UserEntityDao extends AbstractDao<UserEntity, Void> {
                 "\"INTRODUCTION\" TEXT," + // 5: Introduction
                 "\"CONTACTS\" TEXT," + // 6: Contacts
                 "\"CONTACTS_TEL\" TEXT," + // 7: ContactsTel
-                "\"TOKEN\" TEXT," + // 8: Token
-                "\"ACCID\" TEXT," + // 9: Accid
-                "\"SUPP_FX_URL\" TEXT," + // 10: suppFxUrl
-                "\"SUPP_TYPE\" TEXT," + // 11: suppType
-                "\"CONTACTS_QQ\" TEXT," + // 12: ContactsQQ
-                "\"ADDRESS\" TEXT);"); // 13: Address
+                "\"SHOP_TYPE_NAME\" TEXT," + // 8: shopTypeName
+                "\"TOKEN\" TEXT," + // 9: Token
+                "\"ACCID\" TEXT," + // 10: Accid
+                "\"SUPP_FX_URL\" TEXT," + // 11: suppFxUrl
+                "\"SUPP_TYPE\" TEXT," + // 12: suppType
+                "\"CONTACTS_QQ\" TEXT," + // 13: ContactsQQ
+                "\"ADDRESS\" TEXT);"); // 14: Address
     }
 
     /** Drops the underlying database table. */
@@ -115,34 +117,39 @@ public class UserEntityDao extends AbstractDao<UserEntity, Void> {
             stmt.bindString(8, ContactsTel);
         }
  
+        String shopTypeName = entity.getShopTypeName();
+        if (shopTypeName != null) {
+            stmt.bindString(9, shopTypeName);
+        }
+ 
         String Token = entity.getToken();
         if (Token != null) {
-            stmt.bindString(9, Token);
+            stmt.bindString(10, Token);
         }
  
         String Accid = entity.getAccid();
         if (Accid != null) {
-            stmt.bindString(10, Accid);
+            stmt.bindString(11, Accid);
         }
  
         String suppFxUrl = entity.getSuppFxUrl();
         if (suppFxUrl != null) {
-            stmt.bindString(11, suppFxUrl);
+            stmt.bindString(12, suppFxUrl);
         }
  
         String suppType = entity.getSuppType();
         if (suppType != null) {
-            stmt.bindString(12, suppType);
+            stmt.bindString(13, suppType);
         }
  
         String ContactsQQ = entity.getContactsQQ();
         if (ContactsQQ != null) {
-            stmt.bindString(13, ContactsQQ);
+            stmt.bindString(14, ContactsQQ);
         }
  
         String Address = entity.getAddress();
         if (Address != null) {
-            stmt.bindString(14, Address);
+            stmt.bindString(15, Address);
         }
     }
 
@@ -186,34 +193,39 @@ public class UserEntityDao extends AbstractDao<UserEntity, Void> {
             stmt.bindString(8, ContactsTel);
         }
  
+        String shopTypeName = entity.getShopTypeName();
+        if (shopTypeName != null) {
+            stmt.bindString(9, shopTypeName);
+        }
+ 
         String Token = entity.getToken();
         if (Token != null) {
-            stmt.bindString(9, Token);
+            stmt.bindString(10, Token);
         }
  
         String Accid = entity.getAccid();
         if (Accid != null) {
-            stmt.bindString(10, Accid);
+            stmt.bindString(11, Accid);
         }
  
         String suppFxUrl = entity.getSuppFxUrl();
         if (suppFxUrl != null) {
-            stmt.bindString(11, suppFxUrl);
+            stmt.bindString(12, suppFxUrl);
         }
  
         String suppType = entity.getSuppType();
         if (suppType != null) {
-            stmt.bindString(12, suppType);
+            stmt.bindString(13, suppType);
         }
  
         String ContactsQQ = entity.getContactsQQ();
         if (ContactsQQ != null) {
-            stmt.bindString(13, ContactsQQ);
+            stmt.bindString(14, ContactsQQ);
         }
  
         String Address = entity.getAddress();
         if (Address != null) {
-            stmt.bindString(14, Address);
+            stmt.bindString(15, Address);
         }
     }
 
@@ -233,12 +245,13 @@ public class UserEntityDao extends AbstractDao<UserEntity, Void> {
             cursor.isNull(offset + 5) ? null : cursor.getString(offset + 5), // Introduction
             cursor.isNull(offset + 6) ? null : cursor.getString(offset + 6), // Contacts
             cursor.isNull(offset + 7) ? null : cursor.getString(offset + 7), // ContactsTel
-            cursor.isNull(offset + 8) ? null : cursor.getString(offset + 8), // Token
-            cursor.isNull(offset + 9) ? null : cursor.getString(offset + 9), // Accid
-            cursor.isNull(offset + 10) ? null : cursor.getString(offset + 10), // suppFxUrl
-            cursor.isNull(offset + 11) ? null : cursor.getString(offset + 11), // suppType
-            cursor.isNull(offset + 12) ? null : cursor.getString(offset + 12), // ContactsQQ
-            cursor.isNull(offset + 13) ? null : cursor.getString(offset + 13) // Address
+            cursor.isNull(offset + 8) ? null : cursor.getString(offset + 8), // shopTypeName
+            cursor.isNull(offset + 9) ? null : cursor.getString(offset + 9), // Token
+            cursor.isNull(offset + 10) ? null : cursor.getString(offset + 10), // Accid
+            cursor.isNull(offset + 11) ? null : cursor.getString(offset + 11), // suppFxUrl
+            cursor.isNull(offset + 12) ? null : cursor.getString(offset + 12), // suppType
+            cursor.isNull(offset + 13) ? null : cursor.getString(offset + 13), // ContactsQQ
+            cursor.isNull(offset + 14) ? null : cursor.getString(offset + 14) // Address
         );
         return entity;
     }
@@ -253,12 +266,13 @@ public class UserEntityDao extends AbstractDao<UserEntity, Void> {
         entity.setIntroduction(cursor.isNull(offset + 5) ? null : cursor.getString(offset + 5));
         entity.setContacts(cursor.isNull(offset + 6) ? null : cursor.getString(offset + 6));
         entity.setContactsTel(cursor.isNull(offset + 7) ? null : cursor.getString(offset + 7));
-        entity.setToken(cursor.isNull(offset + 8) ? null : cursor.getString(offset + 8));
-        entity.setAccid(cursor.isNull(offset + 9) ? null : cursor.getString(offset + 9));
-        entity.setSuppFxUrl(cursor.isNull(offset + 10) ? null : cursor.getString(offset + 10));
-        entity.setSuppType(cursor.isNull(offset + 11) ? null : cursor.getString(offset + 11));
-        entity.setContactsQQ(cursor.isNull(offset + 12) ? null : cursor.getString(offset + 12));
-        entity.setAddress(cursor.isNull(offset + 13) ? null : cursor.getString(offset + 13));
+        entity.setShopTypeName(cursor.isNull(offset + 8) ? null : cursor.getString(offset + 8));
+        entity.setToken(cursor.isNull(offset + 9) ? null : cursor.getString(offset + 9));
+        entity.setAccid(cursor.isNull(offset + 10) ? null : cursor.getString(offset + 10));
+        entity.setSuppFxUrl(cursor.isNull(offset + 11) ? null : cursor.getString(offset + 11));
+        entity.setSuppType(cursor.isNull(offset + 12) ? null : cursor.getString(offset + 12));
+        entity.setContactsQQ(cursor.isNull(offset + 13) ? null : cursor.getString(offset + 13));
+        entity.setAddress(cursor.isNull(offset + 14) ? null : cursor.getString(offset + 14));
      }
     
     @Override

@@ -8,8 +8,8 @@ package com.gyf.barlibrary;
 
 public final class R {
     public static final class id {
-        public static int immersion_navigation_bar_view = 0x7f0c009d;
-        public static int immersion_status_bar_view = 0x7f0c009e;
+        public static int immersion_navigation_bar_view = 0x7f0c009e;
+        public static int immersion_status_bar_view = 0x7f0c009f;
     }
     public static final class string {
         public static int app_name = 0x7f150020;

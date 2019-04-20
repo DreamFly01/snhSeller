@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/color_app_bg"
+    >
+    <include layout="@layout/heard_layout"></include>
+
+    <include layout="@layout/refresh_layout"></include>
+
+    <Button
+        android:layout_marginBottom="20pt"
+        android:id="@+id/btn_commit"
+        android:layout_width="690pt"
+        android:layout_height="80pt"
+        android:layout_gravity="center"
+        android:background="@drawable/commit_color_selector"
+        android:gravity="center"
+        android:text="提现"
+        android:textColor="@color/txt_white"
+        android:textSize="36pt" />
+</LinearLayout>

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
@@ -45,6 +46,7 @@
             android:layout_height="wrap_content"
             android:hint="请输入规格规格"
             android:textSize="@dimen/txtSize_30"
+            android:textColorHint="@color/gray_1"
             android:textColor="@color/txt_dark"/>
     </LinearLayout>
     <TextView
@@ -93,7 +95,8 @@
             android:layout_gravity="center"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:hint="请输入正整数（单位：件）"
+            android:hint="请输入正整数（单位：件/组）"
+            android:textColorHint="@color/gray_1"
             android:textSize="@dimen/txtSize_30"
             android:textColor="@color/txt_dark"/>
     </LinearLayout>
@@ -142,6 +145,7 @@
             android:layout_gravity="center"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:textColorHint="@color/gray_1"
             android:hint="请输入二批价"
             android:textSize="@dimen/txtSize_30"
             android:textColor="@color/txt_dark"/>
@@ -180,10 +184,12 @@
             android:layout_gravity="center"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:hint="请输入终端价"
+            android:hint="请输入终端价（单位：件/组）"
+            android:textColorHint="@color/gray_1"
             android:textSize="@dimen/txtSize_30"
             android:textColor="@color/txt_dark"/>
         <TextView
+            android:visibility="gone"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="（单位/件）"
@@ -226,6 +232,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:hint="请输入库存"
+            android:textColorHint="@color/gray_1"
             android:textSize="@dimen/txtSize_30"
             android:textColor="@color/txt_dark"/>
     </LinearLayout>
@@ -258,7 +265,8 @@
             android:layout_gravity="center"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:hint="请输入重量（单位：KG）"
+            android:hint="请输入重量"
+            android:textColorHint="@color/gray_1"
             android:textSize="@dimen/txtSize_30"
             android:textColor="@color/txt_dark"/>
     </LinearLayout>

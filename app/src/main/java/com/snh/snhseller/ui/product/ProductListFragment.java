@@ -26,7 +26,6 @@ import com.snh.snhseller.utils.Contans;
 import com.snh.snhseller.utils.DialogUtils;
 import com.snh.snhseller.utils.JumpUtils;
 import com.snh.snhseller.utils.SPUtils;
-import com.snh.snhseller.wediget.LoadingDialog;
 import com.snh.snhseller.wediget.RecycleViewDivider;
 
 import java.util.ArrayList;
@@ -50,8 +49,7 @@ public class ProductListFragment extends BaseFragment {
     SmartRefreshLayout refreshLayout;
     Unbinder unbinder;
     private boolean mIsDataInited;
-    private int type;
-    private LoadingDialog loadingDialog;
+    private int type = 1;
     private int index = 1;
     private ProdcutAdapter adapter;
     private DialogUtils dialogUtils;
@@ -87,14 +85,13 @@ public class ProductListFragment extends BaseFragment {
             @Override
             public void onRefresh(@NonNull RefreshLayout refreshLayout) {
                 index = 1;
+                isShow = true;
                 getData();
             }
         });
     }
 
     private void setView() {
-        loadingDialog = LoadingDialog.getInstance(getContext());
-        loadingDialog.show();
         setRecyclerView();
     }
 
@@ -110,6 +107,7 @@ public class ProductListFragment extends BaseFragment {
                     @Override
                     public void run() {
                         index += 1;
+                        isShow = false;
                         getData();
                     }
                 }, 1000);
@@ -204,10 +202,11 @@ public class ProductListFragment extends BaseFragment {
     }
 
     private void getData() {
-        addSubscription(RequestClient.GetSaleOfGoods(type, index, "", getContext(), new NetSubscriber<BaseResultBean<List<ProductBean>>>(getContext()) {
+        addSubscription(RequestClient.GetSaleOfGoods(type, index, "", getContext(), new NetSubscriber<BaseResultBean<List<ProductBean>>>(getContext(),isShow) {
             @Override
             public void onResultNext(BaseResultBean<List<ProductBean>> model) {
-                SPUtils.getInstance(getContext()).savaBoolean(Contans.PRODUCT_IS_FRESH,true).commit();
+//                SPUtils.getInstance(getContext()).savaBoolean(Contans.PRODUCT_IS_FRESH,false).commit();
+                SPUtils.getInstance(getContext()).savaBoolean(Contans.FRESH, false).commit();
                 for (int i = 0; i < model.data.size(); i++) {
                     model.data.get(i).state = type;
                 }
@@ -228,16 +227,17 @@ public class ProductListFragment extends BaseFragment {
                         adapter.loadMoreEnd();
                     }
                 }
-                loadingDialog.dismiss();
                 refreshLayout.finishRefresh();
             }
         }));
     }
 
+    private boolean myIsVisible;
     @Override
     public void setUserVisibleHint(boolean isVisibleToUser) {
         super.setUserVisibleHint(isVisibleToUser);
 //防止数据预加载, 只预加载View，不预加载数据
+        myIsVisible = isVisibleToUser;
         if (isVisibleToUser && isVisible() && !mIsDataInited) {
             setView();
             getData();
@@ -287,14 +287,16 @@ public class ProductListFragment extends BaseFragment {
             }
         }));
     }
+    private boolean isShow = true;
     @Override
     public void onResume() {
         super.onResume();
-//        if (SPUtils.getInstance(getContext()).getBoolean(Contans.FRESH)) {
-//            index = 1;
-//            setView();
-//            getData();
-//        }
+        if (myIsVisible&&SPUtils.getInstance(getContext()).getBoolean(Contans.FRESH)) {
+            index = 1;
+            setView();
+            isShow = true;
+            getData();
+        }
     }
 
     //更新数据

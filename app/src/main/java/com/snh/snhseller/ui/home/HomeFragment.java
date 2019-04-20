@@ -14,11 +14,13 @@ import com.snh.snhseller.R;
 import com.snh.snhseller.ui.home.account.ShopInfoActivity;
 import com.snh.snhseller.ui.home.accoutData.DataStatisticsActivity;
 import com.snh.snhseller.ui.home.costApply.CostApplyActivity;
+import com.snh.snhseller.ui.home.money.CapitalActivity;
 import com.snh.snhseller.ui.home.salesManagement.SalesManagementActivity;
 import com.snh.snhseller.ui.home.set.QRcodeActivity;
 import com.snh.snhseller.ui.home.set.SetActivity;
 import com.snh.snhseller.ui.home.supplier.MySupplierActivity;
-import com.snh.snhseller.utils.DBManager;
+import com.snh.snhseller.db.DBManager;
+import com.snh.snhseller.utils.DialogUtils;
 import com.snh.snhseller.utils.ImageUtils;
 import com.snh.snhseller.utils.IsBang;
 import com.snh.snhseller.utils.JumpUtils;
@@ -61,6 +63,7 @@ public class HomeFragment extends BaseFragment {
     LinearLayout ll08;
 
     private Bundle bundle;
+    private DialogUtils dialogUtils;
 
     @Override
     public int initContentView() {
@@ -69,6 +72,7 @@ public class HomeFragment extends BaseFragment {
 
     @Override
     public void setUpViews(View view) {
+        dialogUtils = new DialogUtils(getContext());
         ImmersionBar.setTitleBar(getActivity(), llHeard);
         IsBang.setImmerHeard(getContext(), llHeard);
         ImageUtils.loadUrlCorners(getContext(), DBManager.getInstance(getContext()).getUserInfo().Logo, ivHeard);
@@ -103,6 +107,7 @@ public class HomeFragment extends BaseFragment {
                 JumpUtils.dataJump(getActivity(), ShopInfoActivity.class, bundle, false);
                 break;
             case R.id.ll_01:
+                JumpUtils.simpJump(getActivity(), CapitalActivity.class, false);
                 break;
             case R.id.ll_02:
                 JumpUtils.simpJump(getActivity(), DataStatisticsActivity.class, false);

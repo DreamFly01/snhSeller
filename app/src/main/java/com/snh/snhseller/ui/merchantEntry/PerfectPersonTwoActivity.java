@@ -1,5 +1,7 @@
 package com.snh.snhseller.ui.merchantEntry;
 
+import android.content.Context;
+import android.location.LocationManager;
 import android.os.Bundle;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,6 +14,11 @@ import com.bigkoo.pickerview.builder.OptionsPickerBuilder;
 import com.bigkoo.pickerview.listener.OnOptionsSelectListener;
 import com.bigkoo.pickerview.view.OptionsPickerView;
 import com.snh.snhseller.BaseActivity;
+import com.snh.snhseller.bean.BaseResultBean;
+import com.snh.snhseller.bean.StoreClassficationBean;
+import com.snh.snhseller.requestApi.NetSubscriber;
+import com.snh.snhseller.requestApi.RequestClient;
+import com.snh.snhseller.utils.Contans;
 import com.snh.snhseller.utils.DialogUtils;
 import com.snh.snhseller.utils.IsBang;
 import com.snh.snhseller.utils.JumpUtils;
@@ -66,16 +73,21 @@ public class PerfectPersonTwoActivity extends BaseActivity {
     private DialogUtils dialogUtils;
     private String ShopCategoryType;
     private String phone;
+    private String shopType;
+
+    private LocationManager locationManager;
+
     @Override
     protected void initContentView(Bundle savedInstanceState) {
         setContentView(R.layout.activity_perfectperson2_layout);
         bundle = getIntent().getExtras();
         if (null != bundle) {
             flag = bundle.getInt("flag", -1);
-            flag1 = bundle.getInt("flag1",-1);
+            flag1 = bundle.getInt("flag1", -1);
             ShopCategoryType = bundle.getString("ShopCategoryType");
             personMap = (Map<String, Object>) bundle.getSerializable("data");
             phone = bundle.getString("phone");
+            shopType = bundle.getString("shopType");
         }
         dialogUtils = new DialogUtils(this);
     }
@@ -84,7 +96,14 @@ public class PerfectPersonTwoActivity extends BaseActivity {
     public void setUpViews() {
         heardTitle.setText("填写店铺信息");
         IsBang.setImmerHeard(this, rlHead);
-        tvPhone.setText((String)personMap.get("PhoneNumber"));
+        tvPhone.setText((String) personMap.get("PhoneNumber"));
+        getShopType();
+        if (Contans.debug) {
+            etName.setText("ssss");
+            etPsw1.setText("111111q");
+            etPsw2.setText("111111q");
+        }
+
     }
 
     @Override
@@ -111,58 +130,97 @@ public class PerfectPersonTwoActivity extends BaseActivity {
                 break;
             case R.id.tv_commit:
                 if (check()) {
-                    setData();
-                    if (flag == 1) {
-                        bundle = new Bundle();
-                        bundle.putSerializable("data", (Serializable) personMap);
-                        bundle.putInt("flag",1);
-                        bundle.putString("psw",etPsw1.getText().toString().trim());
-                        bundle.putString("name",tvType.getText().toString().trim());
-                        JumpUtils.dataJump(this, PerfectPersonThreeActivity.class, bundle, false);
+                    bundle = new Bundle();
+                    if (shopType.equals("3")) {
+                        dialogUtils.twoBtnDialog("是否是海淘店", new DialogUtils.ChoseClickLisener() {
+                            @Override
+                            public void onConfirmClick(View v) {
+                                IsOverseas = "1";
+                                if (shopType.equals("3")) {
+                                    bundle.putString("money", typeData.get(position).PHaiTao);
+                                } else {
+                                    bundle.putString("money", typeData.get(position).EHaiTao);
+                                }
+                                setData();
+                                checkJump();
+                                dialogUtils.dismissDialog();
+                            }
+
+                            @Override
+                            public void onCancelClick(View v) {
+                                IsOverseas = "0";
+                                if (shopType.equals("3")) {
+                                    bundle.putString("money", typeData.get(position).PNoHaiTao);
+                                } else {
+                                    bundle.putString("money", typeData.get(position).ENoHaiTao);
+                                }
+                                setData();
+                                checkJump();
+                                dialogUtils.dismissDialog();
+                            }
+                        }, true);
+                    } else {
+                        setData();
+                        checkJump();
                     }
-                    if (flag == 2) {
-                        bundle = new Bundle();
-                        bundle.putString("ShopCategoryType",ShopCategoryType);
-                        bundle.putSerializable("data", (Serializable) personMap);
-                        bundle.putInt("flag",flag1);
-                        bundle.putString("psw",etPsw1.getText().toString().trim());
-                        JumpUtils.dataJump(this, PerfectCompanyThreeActivity.class, bundle, false);
-                    }
+
                 }
 
                 break;
         }
     }
 
+    private void checkJump() {
+        if (flag == 1) {
+            bundle.putSerializable("data", (Serializable) personMap);
+            bundle.putInt("flag", 1);
+            bundle.putString("psw", etPsw1.getText().toString().trim());
+            bundle.putString("name", tvType.getText().toString().trim());
+            bundle.putString("shopType", shopType);
+            JumpUtils.dataJump(this, PerfectPersonThreeActivity.class, bundle, false);
+        }
+        if (flag == 2) {
+            bundle.putString("ShopCategoryType", ShopCategoryType);
+            bundle.putSerializable("data", (Serializable) personMap);
+            bundle.putInt("flag", flag1);
+            bundle.putString("psw", etPsw1.getText().toString().trim());
+            bundle.putString("name", tvType.getText().toString().trim());
+            bundle.putString("shopType", shopType);
+            bundle.putParcelable("typeBean", typeData.get(position));
+
+            locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
+            boolean gps = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
+            if (gps) {
+                JumpUtils.dataJump(this, PerfectCompanyThreeActivity.class, bundle, false);
+            }else {
+                dialogUtils.noBtnDialog("进入下一步，需要开启定位权限，请前往开启!");
+            }
+        }
+    }
+
     private void setData() {
+
         personMap.put("ShopName", etName.getText().toString().trim());
-        personMap.put("ShopType", tvType.getText().toString().trim());
+
+        personMap.put("ShopType", ShopTypeId);
         personMap.put("Pwd", Md5Utils.md5(etPsw1.getText().toString().trim()));
+        if (shopType.equals("3")) {
+            personMap.put("IsOverseas", IsOverseas);
+        }
 //        bean.setMap(personMap);
     }
 
     private List<String> options1Items = new ArrayList<>();
+    private String ShopTypeId;
+    private String IsOverseas;
+    private int position;
 
     private void showPickView() {
-        if(flag1 == 3){
-            options1Items.add("商超士多");
-            options1Items.add("家装建材");
-            options1Items.add("地方名产");
-            options1Items.add("酒店公寓");
-            options1Items.add("逛街吧");
-            options1Items.add("休闲娱乐");
-            options1Items.add("美食分享");
-        }else {
-            options1Items.add("水果生鲜");
-            options1Items.add("美容个护");
-            options1Items.add("家具生活");
-            options1Items.add("母婴玩具");
-            options1Items.add("食品保健");
-            options1Items.add("虚拟商品");
-            options1Items.add("户外运动");
-            options1Items.add("数码电器");
-            options1Items.add("家纺家具");
-            options1Items.add("海淘进口");
+        options1Items.clear();
+        if(null!=typeData&&typeData.size()>0){
+
+        for (StoreClassficationBean bean : typeData) {
+            options1Items.add(bean.Name);
         }
 
         OptionsPickerView pvOptions = new OptionsPickerBuilder(PerfectPersonTwoActivity.this, new OnOptionsSelectListener() {
@@ -170,11 +228,17 @@ public class PerfectPersonTwoActivity extends BaseActivity {
             public void onOptionsSelect(int options1, int option2, int options3, View v) {
                 //返回的分别是三个级别的选中位置
                 String tx = options1Items.get(options1);
+                ShopTypeId = typeData.get(options1).Id + "";
+                position = options1;
                 tvType.setText(tx);
             }
-        }).setDecorView((ViewGroup) getWindow().getDecorView().findViewById(android.R.id.content)).build();
+        }).build();
         pvOptions.setPicker(options1Items);
         pvOptions.show();
+        }else {
+            showLongToast("加载类目失败，请稍后再试");
+        }
+
     }
 
     private boolean check() {
@@ -194,10 +258,28 @@ public class PerfectPersonTwoActivity extends BaseActivity {
             dialogUtils.noBtnDialog("两次密码输入不一致");
             return false;
         }
-        if(!StrUtils.isPsw(etPsw1.getText().toString().trim())){
+        if (!StrUtils.isPsw(etPsw1.getText().toString().trim())) {
             dialogUtils.noBtnDialog("请设置6-20位数字字母组合密码");
             return false;
         }
         return true;
+    }
+
+    List<StoreClassficationBean> typeData;
+
+    private String type;
+
+    private void getShopType() {
+        if (shopType.equals("3")) {
+            type = "2";
+        } else {
+            type = shopType;
+        }
+        addSubscription(RequestClient.GetShopType(type, this, new NetSubscriber<BaseResultBean<List<StoreClassficationBean>>>(this, true) {
+            @Override
+            public void onResultNext(BaseResultBean<List<StoreClassficationBean>> model) {
+                typeData = model.data;
+            }
+        }));
     }
 }

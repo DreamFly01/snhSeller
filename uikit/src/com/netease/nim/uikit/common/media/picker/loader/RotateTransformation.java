@@ -17,7 +17,6 @@ class RotateTransformation extends BitmapTransformation {
     private String path;
 
     RotateTransformation(Context context, String path) {
-        super(context);
         this.path = path;
     }
 

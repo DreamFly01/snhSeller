@@ -22,7 +22,9 @@ import com.snh.snhseller.bean.BaseResultBean;
 import com.snh.snhseller.bean.PayWxBean;
 import com.snh.snhseller.requestApi.NetSubscriber;
 import com.snh.snhseller.requestApi.RequestClient;
+import com.snh.snhseller.ui.order.OrderFragment;
 import com.snh.snhseller.utils.DialogUtils;
+import com.snh.snhseller.utils.FinishActivityManager;
 import com.snh.snhseller.utils.IsBang;
 import com.snh.snhseller.utils.JumpUtils;
 import com.snh.snhseller.utils.StrUtils;
@@ -85,7 +87,6 @@ public class PayActivity extends BaseActivity {
     private DialogUtils dialogUtils;
     private double totalMoney;
     private double blance;
-
     private static final int SDK_PAY_FLAG = 1;
     private Handler mHandler = new Handler() {
         @SuppressWarnings("unused")
@@ -105,6 +106,7 @@ public class PayActivity extends BaseActivity {
 //                        showAlert(PayDemoActivity.this, getString(R.string.pay_success) + payResult);
                         bundle = new Bundle();
                         bundle.putString("result", "支付成功");
+                        OrderFragment.updataView(2,1);
                         JumpUtils.dataJump(PayActivity.this, PayResultActivity.class, bundle, true);
                     } else {
                         // 该笔订单真实的支付结果，需要依赖服务端的异步通知。
@@ -138,9 +140,9 @@ public class PayActivity extends BaseActivity {
     @Override
     public void setUpViews() {
         IsBang.setImmerHeard(this, rlHead);
+        FinishActivityManager.getManager().addActivity(this);
         TextView title = (TextView) findViewById(R.id.heard_title);
         title.setText("支付");
-
         tvOrderNo.setText(orderid);
         tvMoney.setText("￥" + StrUtils.moenyToDH(totalMoney+""));
 
@@ -158,6 +160,7 @@ public class PayActivity extends BaseActivity {
 
     @OnClick({R.id.heard_back, R.id.ll_02, R.id.ll_03, R.id.ll_04, R.id.tv_commit})
     public void onClick(View view) {
+
         switch (view.getId()) {
             case R.id.heard_back:
                 this.finish();
@@ -249,6 +252,9 @@ public class PayActivity extends BaseActivity {
 
                 break;
             case R.id.tv_commit:
+                if(isFastClick()){
+                    return;
+                }
                 if (setPayData()) {
                     pay();
                 }
@@ -297,6 +303,7 @@ public class PayActivity extends BaseActivity {
                 public void onResultNext(BaseResultBean model) {
                     bundle = new Bundle();
                     bundle.putString("result", "支付成功");
+                    OrderFragment.updataView(2,1);
                     JumpUtils.dataJump(PayActivity.this, PayResultActivity.class, bundle, true);
                 }
             }));

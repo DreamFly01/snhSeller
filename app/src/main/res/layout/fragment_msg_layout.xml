@@ -82,16 +82,37 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
                 android:gravity="center">
-                <ImageView
-                    android:layout_width="100pt"
-                    android:layout_height="100pt"
-                    android:background="@drawable/menu_1"/>
+                <RelativeLayout
+                    android:layout_gravity="center"
+                    android:layout_weight="1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+
+                    <ImageView
+                        android:layout_centerHorizontal="true"
+                        android:layout_width="100pt"
+                        android:layout_height="100pt"
+                        android:background="@drawable/menu_1"/>
+                    <TextView
+                        android:visibility="invisible"
+                        android:layout_marginLeft="80pt"
+                        android:id="@+id/tv_num1"
+                        android:gravity="center"
+                        android:layout_width="30pt"
+                        android:layout_height="30pt"
+                        android:text="99+"
+                        android:textSize="15pt"
+                        android:textColor="@color/white"
+                        android:background="@drawable/shape_soild_red_40_bg"
+                        />
+                </RelativeLayout>
+
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textColor="@color/txt_dark"
-                    android:textSize="@dimen/txtSize_34"
-                    android:text="订单"/>
+                    android:textSize="@dimen/txtSize_28"
+                    android:text="订单通知"/>
 
             </LinearLayout>
             <LinearLayout
@@ -101,16 +122,37 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
                 android:gravity="center">
-                <ImageView
-                    android:layout_width="100pt"
-                    android:layout_height="100pt"
-                    android:background="@drawable/menu_2"/>
+                <RelativeLayout
+                    android:layout_gravity="center"
+                    android:layout_weight="1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+
+                    <ImageView
+                        android:layout_centerHorizontal="true"
+                        android:layout_width="100pt"
+                        android:layout_height="100pt"
+                        android:background="@drawable/menu_2"/>
+                    <TextView
+                        android:visibility="invisible"
+                        android:layout_marginLeft="80pt"
+                        android:id="@+id/tv_num2"
+                        android:gravity="center"
+                        android:layout_width="30pt"
+                        android:layout_height="30pt"
+                        android:text="99+"
+                        android:textSize="15pt"
+                        android:textColor="@color/white"
+                        android:background="@drawable/shape_soild_red_40_bg"
+                        />
+                </RelativeLayout>
+
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textColor="@color/txt_dark"
-                    android:textSize="@dimen/txtSize_34"
-                    android:text="供销"/>
+                    android:textSize="@dimen/txtSize_28"
+                    android:text="申请通知"/>
 
             </LinearLayout>
             <LinearLayout
@@ -120,16 +162,36 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
                 android:gravity="center">
-                <ImageView
-                    android:layout_width="100pt"
-                    android:layout_height="100pt"
-                    android:background="@drawable/menu_3"/>
+                <RelativeLayout
+                    android:layout_gravity="center"
+                    android:layout_weight="1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+                    <ImageView
+                        android:layout_centerHorizontal="true"
+                        android:layout_width="100pt"
+                        android:layout_height="100pt"
+                        android:background="@drawable/menu_3"/>
+                    <TextView
+                        android:visibility="invisible"
+                        android:layout_marginLeft="80pt"
+                        android:id="@+id/tv_num3"
+                        android:gravity="center"
+                        android:layout_width="30pt"
+                        android:layout_height="30pt"
+                        android:text="99+"
+                        android:textSize="15pt"
+                        android:textColor="@color/white"
+                        android:background="@drawable/shape_soild_red_40_bg"
+                        />
+                </RelativeLayout>
+
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textColor="@color/txt_dark"
-                    android:textSize="@dimen/txtSize_34"
-                    android:text="资金"/>
+                    android:textSize="@dimen/txtSize_28"
+                    android:text="资金通知"/>
             </LinearLayout>
             <LinearLayout
                 android:id="@+id/ll_menu_4"
@@ -138,16 +200,36 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
                 android:gravity="center">
-                <ImageView
-                    android:layout_width="100pt"
-                    android:layout_height="100pt"
-                    android:background="@drawable/menu_4"/>
+                <RelativeLayout
+                    android:layout_gravity="center"
+                    android:layout_weight="1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+                    <ImageView
+                        android:layout_centerHorizontal="true"
+                        android:layout_width="100pt"
+                        android:layout_height="100pt"
+                        android:background="@drawable/menu_4"/>
+                    <TextView
+                        android:visibility="invisible"
+                        android:layout_marginLeft="80pt"
+                        android:id="@+id/tv_num4"
+                        android:gravity="center"
+                        android:layout_width="30pt"
+                        android:layout_height="30pt"
+                        android:text="99+"
+                        android:textSize="15pt"
+                        android:textColor="@color/white"
+                        android:background="@drawable/shape_soild_red_40_bg"
+                        />
+                </RelativeLayout>
+
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textColor="@color/txt_dark"
-                    android:textSize="@dimen/txtSize_34"
-                    android:text="系统"/>
+                    android:textSize="@dimen/txtSize_28"
+                    android:text="系统通知"/>
             </LinearLayout>
         </LinearLayout>
             <ImageView

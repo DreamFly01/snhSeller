@@ -31,11 +31,11 @@ import com.snh.snhseller.BaseActivity;
 import com.snh.snhseller.R;
 import com.snh.snhseller.bean.BaseResultBean;
 import com.snh.snhseller.bean.ProductBean;
+import com.snh.snhseller.bean.ShopGoodsTypeBean;
 import com.snh.snhseller.requestApi.NetSubscriber;
 import com.snh.snhseller.requestApi.RequestClient;
-import com.snh.snhseller.ui.home.salesManagement.EditSalesActivity;
 import com.snh.snhseller.utils.Contans;
-import com.snh.snhseller.utils.DBManager;
+import com.snh.snhseller.db.DBManager;
 import com.snh.snhseller.utils.DialogUtils;
 import com.snh.snhseller.utils.ImageUtils;
 import com.snh.snhseller.utils.IsBang;
@@ -77,11 +77,11 @@ public class EditProductActivity extends BaseActivity implements TakePhoto.TakeR
     @BindView(R.id.et_01)
     EditText et01;
     @BindView(R.id.et_02)
-    EditText et02;
+    TextView et02;
     @BindView(R.id.et_03)
     EditText et03;
     @BindView(R.id.et_04)
-    EditText et04;
+    TextView et04;
     @BindView(R.id.et_05)
     EditText et05;
     @BindView(R.id.btn_commit)
@@ -118,6 +118,7 @@ public class EditProductActivity extends BaseActivity implements TakePhoto.TakeR
     public void setUpViews() {
         IsBang.setImmerHeard(this, rlHead);
         btnCommit.setText("立即发布");
+        getTypeData();
         if (type == 1) {
             heardTitle.setText("添加商品");
         } else {
@@ -131,13 +132,10 @@ public class EditProductActivity extends BaseActivity implements TakePhoto.TakeR
             et01.setFocusable(false);
             et01.setFocusableInTouchMode(false);
             et02.setText(bean.CategoryName);
-            et02.setSelection(bean.CategoryName.length());
-            et02.setFocusable(false);
-            et02.setFocusableInTouchMode(false);
+            et02.setEnabled(false);
             et03.setText(bean.Price + "");
             et03.setSelection((bean.Price + "").length());
             et04.setText(bean.UnitsTitle);
-            et04.setSelection(bean.UnitsTitle.length());
             et05.setText(bean.Inventory + "");
             et05.setSelection((bean.Inventory + "").length());
             et06.setText(bean.MarketPrice + "");
@@ -156,8 +154,11 @@ public class EditProductActivity extends BaseActivity implements TakePhoto.TakeR
         ButterKnife.bind(this);
     }
 
-    @OnClick({R.id.heard_back, R.id.ll_01, R.id.btn_commit,R.id.et_02})
+    @OnClick({R.id.heard_back, R.id.ll_01, R.id.btn_commit, R.id.et_02, R.id.et_04})
     public void onClick(View view) {
+        if(isFastClick()){
+            return;
+        }
         switch (view.getId()) {
             case R.id.heard_back:
                 this.finish();
@@ -200,7 +201,10 @@ public class EditProductActivity extends BaseActivity implements TakePhoto.TakeR
                 }
                 break;
             case R.id.et_02:
-//                showPickView();
+                showPickView(1);
+                break;
+            case R.id.et_04:
+                showPickView(2);
                 break;
         }
     }
@@ -286,7 +290,7 @@ public class EditProductActivity extends BaseActivity implements TakePhoto.TakeR
             return false;
         }
         if (StrUtils.isEmpty(et02.getText().toString().trim())) {
-            dialogUtils.noBtnDialog("请输入所属类目");
+            dialogUtils.noBtnDialog("请选择所属类目");
             return false;
         }
         if (StrUtils.isEmpty(et03.getText().toString().trim())) {
@@ -294,7 +298,7 @@ public class EditProductActivity extends BaseActivity implements TakePhoto.TakeR
             return false;
         }
         if (StrUtils.isEmpty(et04.getText().toString().trim())) {
-            dialogUtils.noBtnDialog("请输入商品单位");
+            dialogUtils.noBtnDialog("请选择商品单位");
             return false;
         }
         if (StrUtils.isEmpty(et05.getText().toString().trim())) {
@@ -306,11 +310,12 @@ public class EditProductActivity extends BaseActivity implements TakePhoto.TakeR
         return true;
     }
 
+    private String typeId;
     private void setData() {
         map.put("SupplierId", DBManager.getInstance(this).getUseId());
         map.put("CommTenantIcon", path);
         map.put("CommTenantTitle", et01.getText().toString().trim());
-        map.put("Category", et02.getText().toString().trim());
+        map.put("Category", typeId);
         map.put("Price", et03.getText().toString().trim());
         map.put("UnitsTitle", et04.getText().toString().trim());
         map.put("Inventory", et05.getText().toString().trim());
@@ -349,19 +354,59 @@ public class EditProductActivity extends BaseActivity implements TakePhoto.TakeR
             }
         }));
     }
-//    private List<String> options1Items = new ArrayList<>();
-//    private void showPickView() {
-//
-//        OptionsPickerView pvOptions = new OptionsPickerBuilder(EditProductActivity.this, new OnOptionsSelectListener() {
-//            @Override
-//            public void onOptionsSelect(int options1, int option2, int options3, View v) {
-//                //返回的分别是三个级别的选中位置
-//                String tx = options1Items.get(options1);
-//                et02.setText(tx);
-//            }
-//        }).setDecorView((ViewGroup) getWindow().getDecorView().findViewById(android.R.id.content)).build();
-//        pvOptions.setPicker(options1Items);
-//        pvOptions.show();
-//    }
 
+    private List<String> options1Items = new ArrayList<>();
+
+    private void showPickView(final int type) {
+        options1Items.clear();
+        if (type == 2) {
+            options1Items.add("包");
+            options1Items.add("袋");
+            options1Items.add("瓶");
+            options1Items.add("件");
+            options1Items.add("支(只)");
+            options1Items.add("Kg");
+            options1Items.add("g");
+            options1Items.add("L");
+            options1Items.add("ml");
+            options1Items.add("个");
+            options1Items.add("桶");
+            options1Items.add("提");
+            options1Items.add("盒");
+            options1Items.add("本");
+            options1Items.add("套");
+            options1Items.add("双");
+            options1Items.add("条");
+        } else {
+            for (ShopGoodsTypeBean bean:typeBeans)
+            {
+                options1Items.add(bean.Name);
+            }
+        }
+        OptionsPickerView pvOptions = new OptionsPickerBuilder(EditProductActivity.this, new OnOptionsSelectListener() {
+            @Override
+            public void onOptionsSelect(int options1, int option2, int options3, View v) {
+                //返回的分别是三个级别的选中位置
+                String tx = options1Items.get(options1);
+                if (type == 1) {
+                    typeId = typeBeans.get(options1).Id;
+                    et02.setText(tx);
+                } else {
+                    et04.setText(tx);
+                }
+            }
+        }).setDecorView((ViewGroup) getWindow().getDecorView().findViewById(android.R.id.content)).build();
+        pvOptions.setPicker(options1Items);
+        pvOptions.show();
+    }
+
+    private List<ShopGoodsTypeBean> typeBeans ;
+    private void getTypeData(){
+        addSubscription(RequestClient.GetShopGoodsType(DBManager.getInstance(this).getUserInfo().suppType, this, new NetSubscriber<BaseResultBean<List<ShopGoodsTypeBean>>>(this,true) {
+            @Override
+            public void onResultNext(BaseResultBean<List<ShopGoodsTypeBean>> model) {
+                typeBeans = model.data;
+            }
+        }));
+    }
 }

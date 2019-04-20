@@ -2,15 +2,22 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
-    android:background="@color/color_app_bg"
-    >
+    android:background="@color/color_app_bg">
 <include layout="@layout/heard_layout"></include>
-    <TextView
-        android:gravity="center"
+    <android.support.design.widget.TabLayout
+        app:tabTextAppearance="@android:style/TextAppearance.Holo.Small"
+        android:id="@+id/tab_order"
+        android:background="@color/white"
+        app:tabSelectedTextColor="@color/app_red"
+        app:tabIndicatorColor="@color/app_red"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="暂无数据"
-        android:textSize="@dimen/txtSize_30"
-        android:textColor="@color/app_red"/>
+        android:layout_height="80pt">
+    </android.support.design.widget.TabLayout>
+    <android.support.v4.view.ViewPager
+        android:layout_marginTop="20pt"
+        android:id="@+id/tab_vp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"></android.support.v4.view.ViewPager>
 </LinearLayout>

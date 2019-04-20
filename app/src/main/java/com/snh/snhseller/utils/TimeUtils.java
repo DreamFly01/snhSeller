@@ -70,7 +70,19 @@ public class TimeUtils {
 
         return "";
     }
-
+    public static String secondToTime(long second){
+        long days = second / 86400;            //转换天数
+        second = second % 86400;            //剩余秒数
+        long hours = second / 3600;            //转换小时
+        second = second % 3600;                //剩余秒数
+        long minutes = second /60;            //转换分钟
+        second = second % 60;                //剩余秒数
+        if(days>0){
+            return days + "天" + hours + "小时" + minutes + "分" + second + "秒";
+        }else{
+            return hours + "小时" + minutes + "分" + second + "秒";
+        }
+    }
     public static String secToString(int sec){
         String content = "";
         if(sec/60<1){
@@ -84,5 +96,14 @@ public class TimeUtils {
             content =  "01小时00分后关闭";
         }
         return content;
+    }
+
+    public static String timeStamp2Date(String seconds,String format) {
+        if(seconds == null || seconds.isEmpty() || seconds.equals("null")){
+            return "";
+        }
+        if(format == null || format.isEmpty()) format = "yyyy-MM-dd HH:mm:ss";
+        SimpleDateFormat sdf = new SimpleDateFormat(format);
+        return sdf.format(new Date(Long.valueOf(seconds+"000")));
     }
 }

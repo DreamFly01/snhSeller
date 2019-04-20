@@ -20,6 +20,7 @@
             android:layout_weight="1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:textColor="@color/gray_1"
             android:text="订单编号"
             android:textSize="@dimen/txtSize_30"/>
         <TextView
@@ -27,6 +28,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="T20181222704264342"
+            android:textColor="@color/gray_1"
             android:textSize="@dimen/txtSize_30"/>
     </LinearLayout>
     <LinearLayout
@@ -41,6 +43,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="合计金额"
+            android:textColor="@color/gray_1"
             android:textSize="@dimen/txtSize_30"/>
         <TextView
             android:id="@+id/tv_money"
@@ -97,6 +100,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="账户余额"
+            android:textColor="@color/gray_1"
             android:textSize="@dimen/txtSize_30"/>
 
         <ImageView
@@ -117,6 +121,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="选择支付方式"
+            android:textColor="@color/gray_1"
             android:textSize="@dimen/txtSize_30"/>
         <LinearLayout
             android:id="@+id/ll_03"
@@ -138,6 +143,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="微信支付"
+                android:textColor="@color/gray_1"
                 android:textSize="@dimen/txtSize_30"/>
 
             <ImageView
@@ -167,6 +173,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="支付宝支付"
+                android:textColor="@color/gray_1"
                 android:textSize="@dimen/txtSize_30"/>
 
             <ImageView

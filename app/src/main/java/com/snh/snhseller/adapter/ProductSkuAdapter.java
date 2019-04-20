@@ -32,6 +32,7 @@ public class ProductSkuAdapter extends BaseQuickAdapter<SkuBean, BaseViewHolder>
         helper.setText(R.id.tv_03,item.NormValue.substring(item.NormValue.indexOf("*")+1,item.NormValue.length()) + "(" + item.Unit + "/组)");
         helper.setText(R.id.tv_02, "库存 " + item.Inventory + "   价格 ￥" + StrUtils.moenyToDH(item.Price+""));
         final EditText num = helper.getView(R.id.et_num);
+        num.setText(item.total+"");
         final int[] numStr = {0};
         helper.getView(R.id.tv_del).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -62,11 +63,9 @@ public class ProductSkuAdapter extends BaseQuickAdapter<SkuBean, BaseViewHolder>
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 if (!StrUtils.isEmpty(num.getText().toString().trim())) {
-
                     if (Integer.parseInt(num.getText().toString().trim()) > item.Inventory) {
                         num.setText(item.Inventory + "");
                         num.setSelection((item.Inventory + "").length());
-
                     }
                     if (Integer.parseInt(num.getText().toString().trim()) < 0) {
                         num.setText(0 + "");

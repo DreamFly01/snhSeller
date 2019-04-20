@@ -14,12 +14,15 @@ import android.widget.TextView;
 import com.bigkoo.pickerview.builder.TimePickerBuilder;
 import com.bigkoo.pickerview.listener.OnTimeSelectListener;
 import com.bigkoo.pickerview.view.TimePickerView;
+import com.bumptech.glide.Glide;
 import com.snh.snhseller.BaseActivity;
 import com.snh.snhseller.bean.BaseResultBean;
 import com.snh.snhseller.requestApi.NetSubscriber;
 import com.snh.snhseller.requestApi.RequestClient;
+import com.snh.snhseller.utils.Contans;
 import com.snh.snhseller.utils.DialogUtils;
 import com.snh.snhseller.utils.ImageUtils;
+import com.snh.snhseller.utils.IsBang;
 import com.snh.snhseller.utils.JumpUtils;
 import com.snh.snhseller.utils.StrUtils;
 import com.jph.takephoto.app.TakePhoto;
@@ -32,6 +35,7 @@ import com.jph.takephoto.permission.InvokeListener;
 import com.jph.takephoto.permission.PermissionManager;
 import com.jph.takephoto.permission.TakePhotoInvocationHandler;
 import com.snh.snhseller.R;
+import com.snh.snhseller.utils.WaterImgUtils;
 
 import java.io.File;
 import java.io.Serializable;
@@ -97,25 +101,33 @@ public class PerfectCompanyActivity extends BaseActivity implements TakePhoto.Ta
     private Map<Object, Object> pathMap2 = new TreeMap<>();
     private Map<Object, Object> allMap = new TreeMap<>();
     private String ShopCategoryType;
+    private String shopType;
 
     @Override
     protected void initContentView(Bundle savedInstanceState) {
         setContentView(R.layout.activity_perfectcompany_layout);
         dialogUtils = new DialogUtils(this);
         takePhoto = getTakePhoto();
-        compressConfig = new CompressConfig.Builder().setMaxPixel(800).setMaxSize(2 * 1024).create();
+        compressConfig = new CompressConfig.Builder().setMaxPixel(800).setMaxSize(2 * 1024*1024).create();
         bundle = getIntent().getExtras();
         if (null != bundle) {
             ShopCategoryType = bundle.getString("ShopCategoryType");
             phone = bundle.getString("phone");
             flag = bundle.getInt("flag");
+            shopType = bundle.getString("shopType");
         }
     }
 
     @Override
     public void setUpViews() {
         heardTitle.setText("身份信息填写");
+        IsBang.setImmerHeard(this, rlHead);
         tvPhone.setText(phone);
+        if (Contans.debug) {
+            etName.setText("sss");
+            etEmail.setText("290206959@qq.com");
+            etSfzNum.setText("430602199108196030");
+        }
     }
 
     @Override
@@ -126,6 +138,10 @@ public class PerfectCompanyActivity extends BaseActivity implements TakePhoto.Ta
     private boolean check() {
         if (StrUtils.isEmpty(etName.getText().toString())) {
             dialogUtils.noBtnDialog("请填写真实姓名");
+            return false;
+        }
+        if (StrUtils.isEmpty(etEmail.getText().toString())) {
+            dialogUtils.noBtnDialog("请填写邮箱");
             return false;
         }
         if (StrUtils.isEmpty(etSfzNum.getText().toString())) {
@@ -140,11 +156,9 @@ public class PerfectCompanyActivity extends BaseActivity implements TakePhoto.Ta
             dialogUtils.noBtnDialog("请输入正确的身份证号码");
             return false;
         }
-        if (!StrUtils.isEmpty(etEmail.getText().toString().trim())) {
-            if (!StrUtils.isEmail(etEmail.getText().toString().trim())) {
-                dialogUtils.noBtnDialog("请输入正确的邮箱");
-                return false;
-            }
+        if (!StrUtils.isEmail(etEmail.getText().toString().trim())) {
+            dialogUtils.noBtnDialog("请输入正确的邮箱");
+            return false;
         }
         if (mapList.size() != 2) {
             dialogUtils.noBtnDialog("请完善身份证照片信息");
@@ -156,20 +170,29 @@ public class PerfectCompanyActivity extends BaseActivity implements TakePhoto.Ta
     @Override
     public void takeSuccess(TResult result) {
         pathList.clear();
-        File file = new File(result.getImage().getCompressPath());
+        File file = new File(result.getImage().getOriginalPath());
+        System.out.println("file.length:" + file.length());
         if (file.length() > 2 * 1024 * 1024) {
             pathList.add(result.getImage().getCompressPath());
         } else {
             pathList.add(result.getImage().getOriginalPath());
         }
+        String path;
         switch (type) {
             case 1:
-                ImageUtils.loadUrlImage(PerfectCompanyActivity.this, pathList.get(0), ivChose1);
+                Glide.with(this).load(WaterImgUtils.createWaterMaskCenter(pathList.get(0), this)).into(ivChose1);
+                path = WaterImgUtils.saveBitmap(this, WaterImgUtils.createWaterMaskCenter(pathList.get(0), this));
+                pathList.clear();
+                pathList.add(path);
                 break;
             case 2:
-                ImageUtils.loadUrlImage(PerfectCompanyActivity.this, pathList.get(0), ivChose2);
+                Glide.with(this).load(WaterImgUtils.createWaterMaskCenter(pathList.get(0), this)).into(ivChose2);
+                path = WaterImgUtils.saveBitmap(this, WaterImgUtils.createWaterMaskCenter(pathList.get(0), this));
+                pathList.clear();
+                pathList.add(path);
                 break;
         }
+
         upLoadImg(pathList);
     }
 
@@ -303,6 +326,7 @@ public class PerfectCompanyActivity extends BaseActivity implements TakePhoto.Ta
                     bundle.putString("ShopCategoryType", ShopCategoryType);
                     bundle.putInt("flag", 2);
                     bundle.putInt("flag1", flag);
+                    bundle.putString("shopType", shopType);
                     JumpUtils.dataJump(this, PerfectPersonTwoActivity.class, bundle, false);
                 }
                 break;
@@ -327,9 +351,7 @@ public class PerfectCompanyActivity extends BaseActivity implements TakePhoto.Ta
         dataMap.put("PhoneNumber", phone);
         dataMap.put("CardNo", etSfzNum.getText().toString().trim());
         dataMap.put("CardEndTime", tvLimit.getText().toString().trim());
-        if (!StrUtils.isEmpty(etEmail.getText().toString().trim())) {
-            dataMap.put("Email", etEmail.getText().toString().trim());
-        }
+        dataMap.put("Email", etEmail.getText().toString().trim());
         for (int i = 0; i < allMap.size(); i++) {
             mapList.add((Map<Object, Object>) allMap.get(i + 1));
         }

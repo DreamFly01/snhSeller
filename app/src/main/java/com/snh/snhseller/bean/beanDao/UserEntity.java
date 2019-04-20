@@ -22,6 +22,7 @@ public class UserEntity {
     public String Introduction;
     public String Contacts;
     public String ContactsTel;
+    public String shopTypeName;
 
     public String Token;
     public String Accid;
@@ -29,11 +30,12 @@ public class UserEntity {
     public String suppType;
     public String ContactsQQ;
     public String Address;
-    @Generated(hash = 1523149838)
+    @Generated(hash = 1311986357)
     public UserEntity(int Id, String Username, String ShopName,
             String BusinessActivities, String Logo, String Introduction,
-            String Contacts, String ContactsTel, String Token, String Accid,
-            String suppFxUrl, String suppType, String ContactsQQ, String Address) {
+            String Contacts, String ContactsTel, String shopTypeName, String Token,
+            String Accid, String suppFxUrl, String suppType, String ContactsQQ,
+            String Address) {
         this.Id = Id;
         this.Username = Username;
         this.ShopName = ShopName;
@@ -42,6 +44,7 @@ public class UserEntity {
         this.Introduction = Introduction;
         this.Contacts = Contacts;
         this.ContactsTel = ContactsTel;
+        this.shopTypeName = shopTypeName;
         this.Token = Token;
         this.Accid = Accid;
         this.suppFxUrl = suppFxUrl;
@@ -100,6 +103,12 @@ public class UserEntity {
     public void setContactsTel(String ContactsTel) {
         this.ContactsTel = ContactsTel;
     }
+    public String getShopTypeName() {
+        return this.shopTypeName;
+    }
+    public void setShopTypeName(String shopTypeName) {
+        this.shopTypeName = shopTypeName;
+    }
     public String getToken() {
         return this.Token;
     }
@@ -136,5 +145,4 @@ public class UserEntity {
     public void setAddress(String Address) {
         this.Address = Address;
     }
-
 }

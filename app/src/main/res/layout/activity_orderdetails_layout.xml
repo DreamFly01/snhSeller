@@ -61,6 +61,7 @@
                             android:id="@+id/tv_name_phone"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:textColor="@color/gray_1"
                             android:textSize="@dimen/txtSize_30" />
 
                         <LinearLayout
@@ -83,6 +84,7 @@
                                 android:layout_marginLeft="10pt"
                                 android:ellipsize="end"
                                 android:lines="1"
+                                android:textColor="@color/gray_1"
                                 android:textSize="@dimen/txtSize_30" />
                         </LinearLayout>
                     </LinearLayout>
@@ -116,6 +118,7 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
                         android:layout_marginLeft="20pt"
+                        android:textColor="@color/gray_1"
                         android:textSize="@dimen/txtSize_26" />
                 </LinearLayout>
 
@@ -138,6 +141,7 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
                         android:layout_marginLeft="20pt"
+                        android:textColor="@color/gray_1"
                         android:textSize="@dimen/txtSize_26" />
                 </LinearLayout>
             </LinearLayout>
@@ -169,6 +173,7 @@
                     android:textSize="@dimen/txtSize_28"
                     android:textColor="@color/txt_dark"
                     android:text="交易方式"
+
                     />
                 <TextView
                     android:id="@+id/tv_pay_method"
@@ -277,6 +282,7 @@
                     android:textSize="@dimen/txtSize_28"
                     android:textColor="@color/txt_dark"
                     android:text="订单信息"
+
                     />
                 <TextView
                     android:id="@+id/tv_order_no"
@@ -286,6 +292,7 @@
                     android:layout_height="wrap_content"
                     android:textSize="@dimen/txtSize_28"
                     android:text="-----"
+                    android:textColor="@color/gray_1"
                     />
                 <TextView
                     android:id="@+id/tv_creat_time"
@@ -294,6 +301,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textSize="@dimen/txtSize_28"
+                    android:textColor="@color/gray_1"
                     android:text="----"
                     />
                 <TextView
@@ -304,6 +312,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textSize="@dimen/txtSize_28"
+                    android:textColor="@color/gray_1"
                     android:text="----"
                     />
                 <TextView
@@ -324,6 +333,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textSize="@dimen/txtSize_28"
+                    android:textColor="@color/gray_1"
                     android:text="----"
                     />
             </LinearLayout>

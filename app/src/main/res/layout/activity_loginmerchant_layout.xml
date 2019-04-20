@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/white"
@@ -43,6 +44,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textSize="@dimen/txtSize_28"
+            android:textColorHint="@color/gray_1"
+            android:textColor="@color/txt_dark"
             android:hint="请输入手机号码"/>
     </LinearLayout>
 
@@ -71,13 +74,41 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textSize="@dimen/txtSize_28"
+            android:textColorHint="@color/gray_1"
+            android:textColor="@color/txt_dark"
             android:hint="请输入短信验证码"/>
         <com.snh.snhseller.wediget.IdentifyCodeView
             android:id="@+id/identify_code_view"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"></com.snh.snhseller.wediget.IdentifyCodeView>
     </LinearLayout>
-
+    <LinearLayout
+        android:gravity="center"
+        android:layout_marginTop="40pt"
+        android:layout_marginLeft="30pt"
+        android:layout_marginRight="30pt"
+        android:padding="10pt"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/shape_gray_20"
+        >
+        <ImageView
+            android:layout_marginLeft="20pt"
+            android:layout_width="25pt"
+            android:layout_height="30pt"
+            android:background="@drawable/merchants_phone_icon"/>
+        <EditText
+            android:inputType="phone"
+            android:id="@+id/et_referee"
+            android:background="@null"
+            android:padding="20pt"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/txtSize_28"
+            android:textColorHint="@color/gray_1"
+            android:textColor="@color/txt_dark"
+            android:hint="推荐人号码（没有可不填）"/>
+    </LinearLayout>
     <TextView
         android:layout_marginLeft="30pt"
         android:layout_marginRight="30pt"
@@ -88,7 +119,7 @@
         android:layout_gravity="bottom"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="登录"
+        android:text="下一步"
         android:textSize="30pt"
         android:background="@drawable/shape_soild_red_5_bg"
         android:textColor="@color/white"

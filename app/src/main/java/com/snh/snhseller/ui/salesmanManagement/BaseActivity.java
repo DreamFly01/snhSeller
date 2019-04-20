@@ -2,9 +2,7 @@ package com.snh.snhseller.ui.salesmanManagement;
 
 import android.content.Context;
 import android.content.Intent;
-import android.content.res.Resources;
 import android.database.sqlite.SQLiteDatabase;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.view.MotionEvent;
@@ -20,7 +18,7 @@ import com.snh.snhseller.bean.beanDao.UserEntity;
 import com.snh.snhseller.greendao.DaoMaster;
 import com.snh.snhseller.greendao.DaoSession;
 import com.snh.snhseller.greendao.UserEntityDao;
-import com.snh.snhseller.utils.DBManager;
+import com.snh.snhseller.db.DBManager;
 
 import java.util.Calendar;
 import java.util.List;

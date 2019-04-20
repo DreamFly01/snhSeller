@@ -45,6 +45,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="微信好友"
+                android:textColor="@color/gray_1"
                 android:textSize="24pt"/>
         </LinearLayout>
 
@@ -64,6 +65,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="朋友圈"
+                android:textColor="@color/gray_1"
                 android:textSize="24pt"/>
         </LinearLayout>
     </LinearLayout>

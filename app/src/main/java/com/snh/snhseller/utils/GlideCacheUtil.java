@@ -69,7 +69,7 @@ public class GlideCacheUtil {
     public void clearImageAllCache(Context context) {
         clearImageDiskCache(context);
         clearImageMemoryCache(context);
-        String ImageExternalCatchDir=context.getExternalCacheDir()+ExternalCacheDiskCacheFactory.DEFAULT_DISK_CACHE_DIR;
+        String ImageExternalCatchDir=getStorageDirectory()+"/GlideDisk";
         deleteFolderFile(ImageExternalCatchDir, true);
     }
 
@@ -79,9 +79,8 @@ public class GlideCacheUtil {
      * @return CacheSize
      */
     public String getCacheSize(Context context) {
-        appRootPath = context.getCacheDir().getPath();
         try {
-            return getFormatSize(getFolderSize(new File(context.getCacheDir() + "/"+getStorageDirectory()+"/GlideDisk")));
+            return getFormatSize(getFolderSize(new File(getStorageDirectory()+"/GlideDisk")));
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -118,7 +117,7 @@ public class GlideCacheUtil {
      * @param deleteThisPath deleteThisPath
      */
     private void deleteFolderFile(String filePath, boolean deleteThisPath) {
-        if (!TextUtils.isEmpty(filePath)) {
+        if (!StrUtils.isEmpty(filePath)) {
             try {
                 File file = new File(filePath);
                 if (file.isDirectory()) {
@@ -176,7 +175,6 @@ public class GlideCacheUtil {
 
         return result4.setScale(2, BigDecimal.ROUND_HALF_UP).toPlainString() + "TB";
     }
-
     //外部路径
     private String sdRootPath = Environment.getExternalStorageDirectory().getPath();
     private String appRootPath = null;
@@ -186,3 +184,4 @@ public class GlideCacheUtil {
                 sdRootPath : appRootPath;
     }
 }
+

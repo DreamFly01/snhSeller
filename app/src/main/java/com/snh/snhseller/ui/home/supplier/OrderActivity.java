@@ -96,7 +96,7 @@ public class OrderActivity extends BaseActivity {
         switch (orderType) {
             case 2:
                 heardTitle.setText("出库订单");
-                titles = new String[]{"全部", "待支付", "待发货", "已发货", "已完成"};
+                titles = new String[]{"全部", "待支付", "待发货", "待收货", "已完成"};
                 for (int i = 0; i < titles.length; i++) {
                     OrderListFragment fragment = new OrderListFragment();
                     bundle = new Bundle();

@@ -218,7 +218,8 @@ public class SalesmanMainActivity extends UI {
                 if (null != toast) {
                     toast.cancel();
                 }
-                finish();
+                finishAffinity();
+                System.exit(0);
             }
             return true;
         }

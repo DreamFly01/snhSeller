@@ -1,6 +1,5 @@
 package com.snh.snhseller.ui.order;
 
-import android.app.Activity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -14,15 +13,11 @@ import android.widget.Toast;
 import com.snh.snhseller.BaseActivity;
 import com.snh.snhseller.R;
 import com.snh.snhseller.adapter.OrderSkuAdapter;
-import com.snh.snhseller.adapter.OrderSukAdapter;
-import com.snh.snhseller.adapter.ProductSkuAdapter;
 import com.snh.snhseller.bean.BaseResultBean;
-import com.snh.snhseller.bean.OrderBean;
 import com.snh.snhseller.bean.OrderDetailBean;
 import com.snh.snhseller.requestApi.NetSubscriber;
 import com.snh.snhseller.requestApi.RequestClient;
 import com.snh.snhseller.ui.home.supplier.PayActivity;
-import com.snh.snhseller.utils.DBManager;
 import com.snh.snhseller.utils.DialogUtils;
 import com.snh.snhseller.utils.ImageUtils;
 import com.snh.snhseller.utils.IsBang;
@@ -30,9 +25,6 @@ import com.snh.snhseller.utils.JumpUtils;
 import com.snh.snhseller.utils.StrUtils;
 import com.snh.snhseller.utils.TimeUtils;
 import com.snh.snhseller.wediget.RecycleViewDivider;
-
-import java.util.Map;
-import java.util.TreeMap;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -187,23 +179,30 @@ public class OrderDetailsActivity extends BaseActivity {
         ImageUtils.loadUrlImage(this, bean.CommodityIconUrl, ivProductLogo);
         tvProductName.setText(bean.CommodityName);
         tvOrderPrice.setText(bean.OrderSumPrice + "");
+        tvLiuyan.setText(bean.CommTenantLeave);
         switch (bean.PayMethod) {
             case 0:
                 tvPayMethod.setText("待支付");
                 break;
             case 1:
-                tvPayMethod.setText("微信支付");
+                tvPayMethod.setText("余额支付");
                 break;
             case 2:
-                tvPayMethod.setText("支付宝支付");
+                tvPayMethod.setText("混合支付（微信+余额）");
                 break;
             case 3:
-                tvPayMethod.setText("银联支付");
+                tvPayMethod.setText("混合支付（支付+余额）");
                 break;
             case 4:
-                tvPayMethod.setText("货到付款");
+                tvPayMethod.setText("微信");
                 break;
             case 5:
+                tvPayMethod.setText("支付宝");
+                break;
+            case 6:
+                tvPayMethod.setText("货到付款");
+                break;
+            case 7:
                 tvPayMethod.setText("其他");
                 break;
         }

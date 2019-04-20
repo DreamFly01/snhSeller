@@ -10,7 +10,7 @@ import android.widget.TextView;
 import com.snh.snhseller.R;
 import com.snh.snhseller.ui.loging.LogingActivity;
 import com.snh.snhseller.ui.salesmanManagement.BaseActivity;
-import com.snh.snhseller.utils.DBManager;
+import com.snh.snhseller.db.DBManager;
 import com.snh.snhseller.utils.DialogUtils;
 import com.snh.snhseller.utils.GlideCacheUtil;
 import com.snh.snhseller.utils.IsBang;
@@ -99,8 +99,11 @@ public class SetActivity extends BaseActivity {
                 }, true);
                 break;
             case R.id.btn_commit:
+                String phone = DBManager.getInstance(this).getSaleInfo().PhoneNumber;
                 DBManager.getInstance(this).cleanSale();
-                JumpUtils.simpJump(this, LogingActivity.class, true);
+                Bundle bundle = new Bundle();
+                bundle.putString("phone",phone);
+                JumpUtils.dataJump(this, LogingActivity.class, bundle,true);
                 break;
         }
     }

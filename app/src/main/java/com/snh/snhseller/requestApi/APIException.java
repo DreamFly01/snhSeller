@@ -9,7 +9,7 @@ package com.snh.snhseller.requestApi;
  */
 public class APIException extends RuntimeException {
 
-    public int code;
+    public String code;
     public String msg;
     public String url;
 
@@ -17,12 +17,12 @@ public class APIException extends RuntimeException {
         this.msg = erroMsg;
     }
 
-    public APIException(String erroMsg,int code,String url) {
+    public APIException(String erroMsg,String code,String url) {
         this.code =code;
         this.msg = erroMsg;
         this.url = url;
     }
-    public APIException(String erroMsg,int code) {
+    public APIException(String erroMsg,String code) {
         this.code =code;
         this.msg = erroMsg;
     }

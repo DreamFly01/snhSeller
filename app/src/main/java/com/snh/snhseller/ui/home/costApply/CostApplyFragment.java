@@ -127,6 +127,7 @@ public class CostApplyFragment extends BaseFragment {
             @Override
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
                 Bundle bundle = new Bundle();
+                isFrist= false;
                 bundle.putParcelable("data",datas.get(position));
                 JumpUtils.dataJump(getActivity(),CostApplyDetailsActivity.class,bundle,false);
             }

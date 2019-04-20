@@ -1,11 +1,9 @@
 package com.snh.snhseller.ui.salesmanManagement.operationList;
 
-import android.Manifest;
 import android.content.Context;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.KeyEvent;
@@ -19,10 +17,6 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.baidu.location.BDAbstractLocationListener;
-import com.baidu.location.BDLocation;
-import com.baidu.location.LocationClient;
-import com.baidu.location.LocationClientOption;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.gyf.barlibrary.ImmersionBar;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
@@ -36,12 +30,8 @@ import com.snh.snhseller.bean.salebean.OperationBean;
 import com.snh.snhseller.requestApi.NetSubscriber;
 import com.snh.snhseller.requestApi.RequestClient;
 import com.snh.snhseller.ui.salesmanManagement.adapter.OperationAdapter;
-import com.snh.snhseller.utils.Contans;
-import com.snh.snhseller.utils.DBManager;
 import com.snh.snhseller.utils.DialogUtils;
-import com.snh.snhseller.utils.ImageUtils;
 import com.snh.snhseller.utils.IsBang;
-import com.snh.snhseller.utils.SPUtils;
 import com.snh.snhseller.utils.StrUtils;
 import com.snh.snhseller.wediget.RecycleViewDivider;
 
@@ -51,7 +41,6 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
-import pub.devrel.easypermissions.EasyPermissions;
 
 import static com.netease.nim.uikit.common.util.sys.NetworkUtil.isNetworkConnected;
 

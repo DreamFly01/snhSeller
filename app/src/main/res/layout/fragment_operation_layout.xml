@@ -16,7 +16,8 @@
         <ImageView
             android:id="@+id/iv_logo"
             android:layout_width="100pt"
-            android:layout_height="100pt" />
+            android:layout_height="100pt"
+            />
         <LinearLayout
             android:layout_marginLeft="20pt"
             android:layout_width="wrap_content"
@@ -24,6 +25,13 @@
             android:orientation="vertical">
             <TextView
                 android:id="@+id/tv_nick"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/white"
+                android:text="账号"
+                android:textSize="@dimen/txtSize_30"/>
+            <TextView
+                android:id="@+id/tv_company"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="@color/white"

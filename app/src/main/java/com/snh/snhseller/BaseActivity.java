@@ -23,7 +23,8 @@ import com.snh.snhseller.bean.beanDao.UserEntity;
 import com.snh.snhseller.greendao.DaoMaster;
 import com.snh.snhseller.greendao.DaoSession;
 import com.snh.snhseller.greendao.UserEntityDao;
-import com.snh.snhseller.utils.DBManager;
+import com.snh.snhseller.db.DBManager;
+import com.snh.snhseller.utils.IsBang;
 
 import java.lang.reflect.Field;
 import java.util.Calendar;
@@ -54,7 +55,11 @@ public abstract class BaseActivity extends FragmentActivity implements View.OnCl
         setUpLisener();
         getDataOnCreate();
         immersionBar = ImmersionBar.with(this);
-        immersionBar.titleBar(R.id.rl_head);
+        if (ImmersionBar.hasNotchScreen(this)) {
+            IsBang.setImmerHeard(this, R.id.rl_head);
+        } else {
+            immersionBar.titleBar(R.id.rl_head);
+        }
         if (isImm) {
             immersionBar.statusBarColor(R.color.app_red);
         }
@@ -295,5 +300,16 @@ public abstract class BaseActivity extends FragmentActivity implements View.OnCl
         return (T) findViewById(id);
     }
 
+
+    private static final int MIN_DELAY_TIME = 1000;  // 两次点击间隔不能少于1000ms
+    public boolean isFastClick() {
+        boolean flag = true;
+        long currentClickTime = System.currentTimeMillis();
+        if ((currentClickTime - lastClickTime) >= MIN_DELAY_TIME) {
+            flag = false;
+        }
+        lastClickTime = currentClickTime;
+        return flag;
+    }
 
 }

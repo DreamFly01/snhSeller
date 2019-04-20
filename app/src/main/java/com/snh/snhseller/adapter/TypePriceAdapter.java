@@ -1,8 +1,11 @@
 package com.snh.snhseller.adapter;
 
 import android.content.Context;
+import android.support.annotation.Nullable;
 import android.widget.TextView;
 
+import com.chad.library.adapter.base.BaseQuickAdapter;
+import com.chad.library.adapter.base.BaseViewHolder;
 import com.snh.snhseller.R;
 import com.snh.snhseller.bean.TypePriceBean;
 import com.snh.snhseller.utils.StrUtils;
@@ -18,21 +21,21 @@ import java.util.List;
  * <p>changeTime：2019/2/20<p>
  * <p>version：1<p>
  */
-public class TypePriceAdapter extends CommonAdapter<TypePriceBean> {
-    public TypePriceAdapter(Context context, int layoutId, List<TypePriceBean> datas) {
-        super(context, layoutId, datas);
+public class TypePriceAdapter extends BaseQuickAdapter<TypePriceBean,BaseViewHolder> {
+
+
+    public TypePriceAdapter(int layoutResId, @Nullable List<TypePriceBean> data) {
+        super(layoutResId, data);
     }
 
     @Override
-    protected void convert(ViewHolder holder, TypePriceBean typePriceBean, int position) {
-        TextView name = holder.getView(R.id.tv_name);
-        TextView price1 = holder.getView(R.id.tv_price1);
-        TextView price2 = holder.getView(R.id.tv_price2);
+    protected void convert(BaseViewHolder helper, TypePriceBean item) {
+        TextView name = helper.getView(R.id.tv_name);
+        TextView price1 = helper.getView(R.id.tv_price1);
+        TextView price2 = helper.getView(R.id.tv_price2);
 
-        name.setText(typePriceBean.name);
-        price1.setText(StrUtils.moenyToDH(typePriceBean.price1+""));
-        price2.setText(StrUtils.moenyToDH(typePriceBean.price2+""));
-
-
+        name.setText(item.name);
+        price1.setText(item.price1);
+        price2.setText(item.price2);
     }
 }

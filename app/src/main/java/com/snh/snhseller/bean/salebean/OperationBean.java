@@ -10,6 +10,13 @@ import java.util.List;
  * <p>version：1<p>
  */
 public class OperationBean {
+    public int SupplierId;
+    public String SupplierName;
+    public String SupplierIconUrl;
+    public String SupplierBuinourName;
+    public String SupplierBuinourPhoneNumber;
+    public String SupplierAddress;
+
     public List<CommTenantBean> CommTenantList;
     public List<CommTenantBean> MyCommTenantList;
 }

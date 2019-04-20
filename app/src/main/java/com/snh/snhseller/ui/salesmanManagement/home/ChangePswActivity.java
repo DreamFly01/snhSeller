@@ -16,7 +16,7 @@ import com.snh.snhseller.requestApi.NetSubscriber;
 import com.snh.snhseller.requestApi.RequestClient;
 import com.snh.snhseller.ui.loging.LogingActivity;
 import com.snh.snhseller.ui.salesmanManagement.BaseActivity;
-import com.snh.snhseller.utils.DBManager;
+import com.snh.snhseller.db.DBManager;
 import com.snh.snhseller.utils.DialogUtils;
 import com.snh.snhseller.utils.IsBang;
 import com.snh.snhseller.utils.JumpUtils;
@@ -125,7 +125,7 @@ public class ChangePswActivity extends BaseActivity {
             dialogUtils.noBtnDialog("两次输入新密码不一致");
             return false;
         }
-        if (StrUtils.isPsw(etNew.getText().toString().trim())) {
+        if (!StrUtils.isPsw(etNew.getText().toString().trim())) {
             dialogUtils.noBtnDialog("请输入6-20位数字密码组合的密码");
             return false;
         }

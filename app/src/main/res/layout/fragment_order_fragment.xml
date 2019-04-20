@@ -11,7 +11,97 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-    <include layout="@layout/heard_layout"></include>
+        <LinearLayout
+            android:id="@+id/rl_head"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/app_red"
+            android:orientation="horizontal"
+            android:padding="10pt"
+            >
+
+
+                <LinearLayout
+                    android:id="@+id/ll_01"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+                    <TextView
+                        android:id="@+id/tv_01"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="@dimen/txtSize_28"
+                        android:text="客户订单"
+                        android:textColor="@color/white"
+                        />
+                    <ImageView
+                        android:id="@+id/iv_01"
+                        android:layout_marginTop="10pt"
+                        android:layout_width="110pt"
+                        android:layout_height="2pt"
+                        android:background="@color/white"/>
+                </LinearLayout>
+            <ImageView
+                android:layout_gravity="center"
+                android:layout_width="2pt"
+                android:layout_height="40pt"
+                android:background="@color/white"
+                />
+                <LinearLayout
+                    android:id="@+id/ll_02"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+                    <TextView
+                        android:id="@+id/tv_02"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="@dimen/txtSize_28"
+                        android:text="出库订单"
+                        android:textColor="@color/white"
+                        />
+                    <ImageView
+                        android:id="@+id/iv_02"
+                        android:visibility="invisible"
+                        android:layout_marginTop="10pt"
+                        android:layout_width="110pt"
+                        android:layout_height="4pt"
+                        android:background="@color/white"/>
+                </LinearLayout>
+            <ImageView
+                android:layout_gravity="center"
+                android:layout_width="2pt"
+                android:layout_height="40pt"
+                android:background="@color/white"
+                />
+            <LinearLayout
+                android:id="@+id/ll_03"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+                <TextView
+                    android:id="@+id/tv_03"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/txtSize_28"
+                    android:text="进货订单"
+                    android:textColor="@color/white"
+                    />
+                <ImageView
+                    android:id="@+id/iv_03"
+                    android:visibility="invisible"
+                    android:layout_marginTop="10pt"
+                    android:layout_width="110pt"
+                    android:layout_height="4pt"
+                    android:background="@color/white"/>
+            </LinearLayout>
+        </LinearLayout>
     <android.support.design.widget.TabLayout
         app:tabTextAppearance="@android:style/TextAppearance.Holo.Small"
         android:id="@+id/tab_order"

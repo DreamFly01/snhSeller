@@ -101,6 +101,7 @@
                     android:gravity="right"
                     android:hint="请输入公司名称"
                     android:textColor="@color/black"
+                    android:textColorHint="@color/gray_1"
                     android:textSize="@dimen/txtSize_28" />
             </LinearLayout>
 
@@ -180,14 +181,29 @@
                         android:gravity="right"
                         android:hint="请输入详细地址"
                         android:textColor="@color/black"
+                        android:textColorHint="@color/gray_1"
                         android:textSize="@dimen/txtSize_28" />
                 </LinearLayout>
 
-                <com.baidu.mapapi.map.MapView
-                    android:id="@+id/map_view"
+                <RelativeLayout
                     android:layout_width="match_parent"
-                    android:layout_height="375pt"
-                    android:clickable="true" />
+                    android:layout_height="wrap_content">
+                    <com.baidu.mapapi.map.MapView
+                        android:id="@+id/map_view"
+                        android:layout_width="match_parent"
+                        android:layout_height="375pt"
+                        android:clickable="true" />
+                    <ImageView
+                        android:layout_marginRight="20pt"
+                        android:layout_marginTop="315pt"
+                        android:layout_alignParentRight="true"
+                        android:padding="20pt"
+                        android:id="@+id/tv_refresh_map"
+                        android:layout_width="40pt"
+                        android:layout_height="40pt"
+                        android:background="@drawable/address_bg"
+                        android:textSize="@dimen/txtSize_28" />
+                </RelativeLayout>
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -259,6 +275,9 @@
                     android:gravity="right"
                     android:hint="请输入18位社会信用码"
                     android:textColor="@color/black"
+                    android:textColorHint="@color/gray_1"
+                    android:maxLength="18"
+                    android:digits="0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
                     android:textSize="@dimen/txtSize_28" />
             </LinearLayout>
 
@@ -321,10 +340,10 @@
                         android:textSize="@dimen/txtSize_28" />
 
                     <ImageView
-                        android:layout_width="260pt"
+                        android:layout_width="160pt"
                         android:layout_height="170pt"
                         android:layout_marginLeft="20pt"
-                        android:background="@drawable/mercantin_open_account" />
+                        android:background="@drawable/yyzz_bg" />
                 </LinearLayout>
             </LinearLayout>
 
@@ -345,15 +364,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal">
-                    <TextView
-                        android:layout_gravity="center"
-                        android:gravity="center"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="*"
-                        android:textSize="30pt"
-                        android:textColor="@color/app_red"
-                        />
+
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -389,7 +400,7 @@
                         android:layout_width="260pt"
                         android:layout_height="170pt"
                         android:layout_marginLeft="20pt"
-                        android:background="@drawable/mercantin_commpany_code" />
+                        android:background="@drawable/mercantin_open_account" />
 
                 </LinearLayout>
 
@@ -397,6 +408,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="50pt"
+                    android:textColor="@color/gray_1"
                     android:text="@string/tip_kaihu"
                     android:textSize="@dimen/txtSize_28" />
 

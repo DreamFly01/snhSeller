@@ -14,6 +14,7 @@
         <item name="android:windowAnimationStyle">@null</item>
         <item name="android:windowSoftInputMode">adjustPan|stateAlwaysHidden|stateUnspecified</item>
     </style>
+
     <style name="dialog" parent="@android:style/Theme.Dialog">
         <item name="android:windowFrame">@null</item><!--边框-->
         <item name="android:windowIsFloating">true</item><!--是否浮现在activity之上-->
@@ -22,6 +23,7 @@
         <item name="android:windowBackground">@color/transparent</item><!--背景透明-->
         <item name="android:backgroundDimEnabled">false</item><!--模糊-->
     </style>
+
     <style name="Dialog_FS">
         <item name="android:windowBackground">@android:color/transparent</item>
         <item name="android:windowFrame">@null</item>
@@ -49,13 +51,17 @@
         <item name="android:windowNoTitle">true</item>
     </style>
 
+    <style name="ApplicationThem" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="android:windowBackground">@color/transparent</item>
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+
     <style name="AppTheme.StartingWindowTheme" parent="AppTheme">
-        <!-- 可以设置成纯颜色（设置一个和Activity UI相似的背景） -->
-        <!--<item name="android:windowBackground">@color/startingwindow_bgcolor</item>-->
-        <!--也可以设置成一张图片 -->
         <item name="android:windowBackground">@drawable/launch_bg</item>
     </style>
-    <style name="RadioGroupButtonStyle" >
+
+    <style name="RadioGroupButtonStyle">
         <!-- 这个属性是去掉button 默认样式-->
         <item name="android:button">@null</item>
 

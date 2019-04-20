@@ -14,4 +14,25 @@ public class GoodsBean {
     public double Price;
     public double MarketPrice;
     public int CommodityId;
+
+    public int Id;
+    public int OrderId;
+    public int OrderNo;
+    public String Name;
+    public int SupplierId;
+    public int GoodsId;
+    public int Number;
+    public String GoodsImg;
+    public String NormsInfo;
+    public int NormsId;
+    public double SalesPrice;
+    public int BargainsId;
+    public int AccountUserID;
+    public String DetailUrl;
+    public int MarketNumber;
+    public String CoverImgId;
+    public String GoodsName;
+    public int GoodId;
+    public String NormalInfo;
+    public boolean isChose;
 }
