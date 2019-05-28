@@ -17,6 +17,7 @@ import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.snh.snhseller.R;
 import com.snh.snhseller.bean.BaseResultBean;
+import com.snh.snhseller.bean.NoticeNumBean;
 import com.snh.snhseller.bean.OrderBean;
 import com.snh.snhseller.requestApi.NetSubscriber;
 import com.snh.snhseller.requestApi.RequestClient;
@@ -27,8 +28,10 @@ import com.snh.snhseller.ui.order.OrderFragment;
 import com.snh.snhseller.ui.order.OrderListFragment;
 import com.snh.snhseller.ui.order.SendActivity;
 import com.snh.snhseller.db.DBManager;
+import com.snh.snhseller.utils.Contans;
 import com.snh.snhseller.utils.ImageUtils;
 import com.snh.snhseller.utils.JumpUtils;
+import com.snh.snhseller.utils.SPUtils;
 import com.snh.snhseller.utils.StrUtils;
 
 import java.util.ArrayList;
@@ -56,25 +59,29 @@ public class OrderAdapter extends BaseQuickAdapter<OrderBean, BaseViewHolder> {
         switch (type) {
             case 0:
                 helper.getView(R.id.ll_product).setVisibility(View.GONE);
-                helper.setText(R.id.tv_shopName, item.UserName);
+                helper.setText(R.id.tv_shopName, "订单号：" + item.OrderNo);
                 helper.setText(R.id.tv_all_num, "共" + item.OrderGoodsList.size() + "件商品 合计：");
                 TextView tvState = helper.getView(R.id.tv_state1);
 
-                helper.setText(R.id.tv_TotalMoney1, "￥" + item.OrderPrice);
+                helper.setText(R.id.tv_TotalMoney1, "¥" + item.OrderPrice);
                 if (item.Freight > 0) {
-                    helper.setText(R.id.tv_youfei, "（含运费：￥" + StrUtils.moenyToDH(item.Freight + "") + "）");
+                    helper.setText(R.id.tv_youfei, "（含运费：¥" + StrUtils.moenyToDH(item.Freight + "") + "）");
                 } else {
-                    helper.setText(R.id.tv_youfei, "（包邮）");
+                    if (item.ShopType.equals("6")) {
+                        helper.setText(R.id.tv_youfei, "（到店自取）");
+                    } else {
+                        helper.setText(R.id.tv_youfei, "（包邮）");
+                    }
                 }
                 switch (item.OrderStates) {
                     case 0:
                         if (item.PayStates == 0) {
                             helper.setText(R.id.tv_state, "待支付");
                             helper.getView(R.id.tv_state1).setVisibility(View.VISIBLE);
-                            if (item.IsChangePrice==0){
+                            if (item.IsChangePrice == 0) {
                                 tvState.setTextColor(Color.parseColor("#F81131"));
                                 tvState.setEnabled(true);
-                            }else {
+                            } else {
                                 tvState.setTextColor(Color.parseColor("#6E6E6E"));
                                 tvState.setEnabled(false);
                             }
@@ -150,7 +157,7 @@ public class OrderAdapter extends BaseQuickAdapter<OrderBean, BaseViewHolder> {
                 adapter.setOnItemClickListener(new OnItemClickListener() {
                     @Override
                     public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-                       Bundle bundle = new Bundle();
+                        Bundle bundle = new Bundle();
                         bundle.putString("orderid", item.OrderId + "");
                         JumpUtils.dataJump((Activity) mContext, MyOrderDetailsActivity.class, bundle, false);
                     }
@@ -176,7 +183,7 @@ public class OrderAdapter extends BaseQuickAdapter<OrderBean, BaseViewHolder> {
                         helper.getView(R.id.tv_state1).setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
-                                cOrDOrder(item.OrderId, helper.getPosition(), 1, "收货成功");
+                                cOrDOrder(item.OrderId, helper.getPosition(), 1, "发货成功");
                             }
                         });
                         break;
@@ -192,7 +199,7 @@ public class OrderAdapter extends BaseQuickAdapter<OrderBean, BaseViewHolder> {
                 }
                 helper.setText(R.id.tv_youfei, "");
                 helper.setText(R.id.tv_all_num, "共" + item.SumCommodity + "件商品 合计：");
-                helper.setText(R.id.tv_TotalMoney1, "￥" + StrUtils.moenyToDH(item.OrderPrice + ""));
+                helper.setText(R.id.tv_TotalMoney1, "¥" + StrUtils.moenyToDH(item.OrderPrice + ""));
                 ImageUtils.loadUrlImage(mContext, item.CommodityIconUrl, (ImageView) helper.getView(R.id.iv_product_logo));
                 helper.setText(R.id.tv_product_Name, item.CommodityName);
                 break;
@@ -254,7 +261,7 @@ public class OrderAdapter extends BaseQuickAdapter<OrderBean, BaseViewHolder> {
                 }
                 helper.setText(R.id.tv_youfei, "");
                 helper.setText(R.id.tv_all_num, "共" + item.SumCommodity + "件商品 合计：");
-                helper.setText(R.id.tv_TotalMoney1, "￥" + StrUtils.moenyToDH(item.OrderPrice + ""));
+                helper.setText(R.id.tv_TotalMoney1, "¥" + StrUtils.moenyToDH(item.OrderPrice + ""));
                 ImageUtils.loadUrlImage(mContext, item.CommodityIconUrl, (ImageView) helper.getView(R.id.iv_product_logo));
                 helper.setText(R.id.tv_product_Name, item.CommodityName);
 
@@ -281,10 +288,12 @@ public class OrderAdapter extends BaseQuickAdapter<OrderBean, BaseViewHolder> {
         RequestClient.ConfirmShipment(map, mContext, new NetSubscriber<BaseResultBean>(mContext, true) {
             @Override
             public void onResultNext(BaseResultBean model) {
+                SPUtils.getInstance(mContext).savaBoolean(Contans.ORDER_IS_FRESH, true).commit();
                 mData.remove(positon);
-                OrderFragment.updataView(0,2);
+
                 Toast.makeText(mContext, "发货成功", Toast.LENGTH_SHORT).show();
                 notifyDataSetChanged();
+                getCount(4);
             }
         });
     }
@@ -295,6 +304,7 @@ public class OrderAdapter extends BaseQuickAdapter<OrderBean, BaseViewHolder> {
             public void onResultNext(BaseResultBean model) {
                 mData.remove(position);
                 Toast.makeText(mContext, "取消成功", Toast.LENGTH_SHORT).show();
+                getCount(3);
                 notifyDataSetChanged();
             }
         });
@@ -315,13 +325,35 @@ public class OrderAdapter extends BaseQuickAdapter<OrderBean, BaseViewHolder> {
             @Override
             public void onResultNext(BaseResultBean model) {
                 mData.remove(position);
+                SPUtils.getInstance(mContext).savaBoolean(Contans.ORDER_IS_FRESH, true).commit();
                 Toast.makeText(mContext, content, Toast.LENGTH_SHORT).show();
                 notifyDataSetChanged();
-                if(type == 1){
-                OrderFragment.updataView(0,2);
+                getCount(type);
+            }
+        });
+    }
+
+    private void getCount(final int type) {
+        RequestClient.GetSupplierNoticeUnreadCount(mContext, new NetSubscriber<BaseResultBean<NoticeNumBean>>(mContext) {
+            @Override
+            public void onResultNext(BaseResultBean<NoticeNumBean> model) {
+                OrderFragment.UserDFH = model.data.UserDFH;
+                OrderFragment.UserDZF = model.data.UserDZF;
+                OrderFragment.CKDFH = model.data.CKDFH;
+                OrderFragment.CKDZF = model.data.CKDZF;
+                OrderFragment.JHDZF = model.data.JHDZF;
+                OrderFragment.JHDSH = model.data.JHDSH;
+                if (type == 1) {
+                    OrderFragment.updataView(1, 2);
                 }
-                if(type==2){
-                    OrderFragment.updataView(2,3);
+                if (type == 2) {
+                    OrderFragment.updataView(2, 3);
+                }
+                if(type ==3){
+                    OrderFragment.updataView(2,1);
+                }
+                if(type==4){
+                    OrderFragment.updataView(0,2);
                 }
             }
         });

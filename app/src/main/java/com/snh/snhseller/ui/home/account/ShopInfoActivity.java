@@ -1,11 +1,14 @@
 package com.snh.snhseller.ui.home.account;
 
+import android.Manifest;
 import android.content.ContentValues;
 import android.content.Intent;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
+import android.support.v4.app.ActivityCompat;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -43,6 +46,7 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import pub.devrel.easypermissions.EasyPermissions;
 
 /**
  * <p>desc：<p>
@@ -138,7 +142,7 @@ public class ShopInfoActivity extends BaseActivity implements TakePhoto.TakeResu
 
 
         }
-        tvAddress.setText(useInfo.Address);
+        tvAddress.setText(useInfo.Province+" "+useInfo.City+" "+useInfo.Area+"-"+useInfo.Address);
         tvUserName.setText(useInfo.Contacts);
         tvPhone.setText(useInfo.ContactsTel);
         tvEmail.setText(useInfo.ContactsQQ);
@@ -169,33 +173,7 @@ public class ShopInfoActivity extends BaseActivity implements TakePhoto.TakeResu
                 this.finish();
                 break;
             case R.id.ll_01:
-                dialogUtils.headImgDialog(new DialogUtils.HeadImgChoseLisener() {
-                    @Override
-                    public void onCancelClick(View v) {
-                        dialogUtils.dismissDialog();
-                    }
-
-                    @Override
-                    public void onPhotoClick(View v) {
-
-                        String name = "takePhoto" + System.currentTimeMillis();
-                        ContentValues contentValues = new ContentValues();
-                        contentValues.put(MediaStore.Images.Media.TITLE, name);
-                        contentValues.put(MediaStore.Images.Media.DISPLAY_NAME, name + ".jpeg");
-                        contentValues.put(MediaStore.Images.Media.MIME_TYPE, "image/jpeg");
-                        Uri uri = getContentResolver().insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, contentValues);
-                        takePhoto.onEnableCompress(compressConfig, true);
-                        takePhoto.onPickFromCapture(uri);
-
-                    }
-
-                    @Override
-                    public void onAlumClick(View v) {
-                        takePhoto.onEnableCompress(compressConfig, true);
-                        takePhoto.onPickFromGallery();
-
-                    }
-                }, true);
+                requestPermision();
                 break;
             case R.id.ll_02:
                 bundle = new Bundle();
@@ -272,6 +250,7 @@ public class ShopInfoActivity extends BaseActivity implements TakePhoto.TakeResu
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         PermissionManager.TPermissionType type = PermissionManager.onRequestPermissionsResult(requestCode, permissions, grantResults);
         PermissionManager.handlePermissionsResult(this, type, invokeParam, this);
+
     }
 
     @Override
@@ -360,5 +339,42 @@ public class ShopInfoActivity extends BaseActivity implements TakePhoto.TakeResu
                 }
             }
         }));
+    }
+
+    private void requestPermision() {
+
+        String[] params = {Manifest.permission.CAMERA,Manifest.permission.WRITE_EXTERNAL_STORAGE};
+        if (!EasyPermissions.hasPermissions(this, params)) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                ActivityCompat.requestPermissions(this, params, 10010);
+            }
+
+        } else {
+            dialogUtils.headImgDialog(new DialogUtils.HeadImgChoseLisener() {
+                @Override
+                public void onCancelClick(View v) {
+                    dialogUtils.dismissDialog();
+                }
+
+                @Override
+                public void onPhotoClick(View v) {
+                    String name = "takePhoto" + System.currentTimeMillis();
+                    ContentValues contentValues = new ContentValues();
+                    contentValues.put(MediaStore.Images.Media.TITLE, name);
+                    contentValues.put(MediaStore.Images.Media.DISPLAY_NAME, name + ".jpeg");
+                    contentValues.put(MediaStore.Images.Media.MIME_TYPE, "image/jpeg");
+                    Uri uri = getContentResolver().insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, contentValues);
+                    takePhoto.onEnableCompress(compressConfig, true);
+                    takePhoto.onPickFromCapture(uri);
+                }
+
+                @Override
+                public void onAlumClick(View v) {
+                    takePhoto.onEnableCompress(compressConfig, true);
+                    takePhoto.onPickFromGallery();
+
+                }
+            }, true);
+        }
     }
 }

@@ -71,7 +71,7 @@ public class WithdrawRecordActivity extends BaseActivity {
     private boolean isShow;
 
     private double rate,minMoney,maxMoney;
-    private int adMoney;
+    private double adMoney;
 
     @Override
     protected void initContentView(Bundle savedInstanceState) {
@@ -173,7 +173,7 @@ public class WithdrawRecordActivity extends BaseActivity {
                 bundle.putDouble("minMoney",minMoney);
                 bundle.putDouble("maxMoney",maxMoney);
                 bundle.putDouble("rate",rate);
-                bundle.putInt("adMoney",adMoney);
+                bundle.putDouble("adMoney",adMoney);
                 JumpUtils.dataJump(this,WithdrawActivity.class,bundle,false);
                 break;
 

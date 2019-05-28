@@ -87,7 +87,7 @@ public class OperationListFragment extends BaseFragment {
     public void setUpViews(View view) {
         dialogUtils = new DialogUtils(getContext());
         ImmersionBar.setTitleBar(getActivity(),rlHead);
-        IsBang.setImmerHeard(getContext(),rlHead,"");
+        IsBang.setImmerHeard(getContext(),rlHead,"#2E8AFF");
         setRecyclerView();
     }
 
@@ -236,7 +236,7 @@ public class OperationListFragment extends BaseFragment {
             @Override
             public void onResultNext(BaseResultBean model) {
                 dialogUtils.dismissDialog();
-                Toast.makeText(getContext(), "打卡成功", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), "拜访成功", Toast.LENGTH_SHORT).show();
             }
         }));
     }

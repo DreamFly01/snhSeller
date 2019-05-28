@@ -61,9 +61,9 @@ public abstract class BaseActivity extends FragmentActivity implements View.OnCl
             immersionBar.titleBar(R.id.rl_head);
         }
         if (isImm) {
-            immersionBar.statusBarColor(R.color.app_red);
+            immersionBar.statusBarColor(R.color.white);
+            immersionBar.statusBarDarkFont(true);
         }
-        immersionBar.statusBarDarkFont(false);
         immersionBar.init();
         db = DBManager.getInstance(this).getWritableDatabase();
         daoMaster = new DaoMaster(db);

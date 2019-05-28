@@ -4,7 +4,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:background="@color/color_app_bg">
-    <include layout="@layout/heard_layout"></include>
+    <include layout="@layout/heard_white_layout"></include>
     <LinearLayout
         android:background="@color/white"
         android:layout_marginTop="20pt"
@@ -122,7 +122,7 @@
             android:textSize="@dimen/txtSize_30"
             android:textColor="@color/txt_dark"
             android:textColorHint="@color/gray_1"
-            android:hint="请输入终端价格"/>
+            android:hint="请输入会员价格"/>
 
     </LinearLayout>
     <LinearLayout

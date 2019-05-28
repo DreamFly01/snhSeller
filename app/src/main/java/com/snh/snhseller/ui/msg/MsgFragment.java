@@ -1,7 +1,6 @@
 package com.snh.snhseller.ui.msg;
 
 import android.os.Bundle;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,7 +14,6 @@ import com.gyf.barlibrary.ImmersionBar;
 import com.netease.nim.uikit.business.recent.RecentContactsFragment;
 import com.netease.nim.uikit.common.activity.UI;
 import com.snh.snhseller.BaseFragment;
-import com.snh.snhseller.MainActivity;
 import com.snh.snhseller.R;
 import com.snh.snhseller.bean.BaseResultBean;
 import com.snh.snhseller.bean.NoticeNumBean;
@@ -28,8 +26,6 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
-import q.rorbin.badgeview.Badge;
-import q.rorbin.badgeview.QBadgeView;
 
 import static com.snh.snhseller.MainActivity.tvNum;
 
@@ -43,34 +39,37 @@ import static com.snh.snhseller.MainActivity.tvNum;
 public class MsgFragment extends BaseFragment {
 
     Unbinder unbinder;
+    @BindView(R.id.heard_back)
+    LinearLayout heardBack;
     @BindView(R.id.heard_title)
     TextView heardTitle;
     @BindView(R.id.heard_menu)
     ImageView heardMenu;
     @BindView(R.id.heard_tv_menu)
     TextView heardTvMenu;
+    @BindView(R.id.rl_menu)
+    RelativeLayout rlMenu;
     @BindView(R.id.rl_head)
     LinearLayout rlHead;
+    @BindView(R.id.tv_num1)
+    TextView tvNum1;
     @BindView(R.id.ll_menu_1)
     LinearLayout llMenu1;
+    @BindView(R.id.tv_num2)
+    TextView tvNum2;
     @BindView(R.id.ll_menu_2)
     LinearLayout llMenu2;
+    @BindView(R.id.tv_num3)
+    TextView tvNum3;
     @BindView(R.id.ll_menu_3)
     LinearLayout llMenu3;
+    @BindView(R.id.tv_num4)
+    TextView tvNum4;
     @BindView(R.id.ll_menu_4)
     LinearLayout llMenu4;
     @BindView(R.id.recent_contacts_fragment)
     FrameLayout recentContactsFragment;
-    @BindView(R.id.rl_menu)
-    RelativeLayout rlMenu;
-    @BindView(R.id.tv_num1)
-    TextView tvNum1;
-    @BindView(R.id.tv_num2)
-    TextView tvNum2;
-    @BindView(R.id.tv_num3)
-    TextView tvNum3;
-    @BindView(R.id.tv_num4)
-    TextView tvNum4;
+
     private RecentContactsFragment fragment;
 
     @Override
@@ -80,9 +79,11 @@ public class MsgFragment extends BaseFragment {
 
     @Override
     public void setUpViews(View view) {
-        ImmersionBar.setTitleBar(getActivity(), rlHead);
-        IsBang.setImmerHeard(getContext(), rlHead);
+//        IsBang.setImmerHeard(getContext(), rlHead);
+//        ImmersionBar.setTitleBar(getActivity(), rlHead);
+        ImmersionBar.with(getActivity()).statusBarColor(R.color.white).statusBarDarkFont(true).init();
         heardTitle.setText("消息");
+        heardBack.setVisibility(View.GONE);
         addRecentContactsFragment();
 //        imLoging();
     }
@@ -119,20 +120,21 @@ public class MsgFragment extends BaseFragment {
     }
 
     Bundle bundle;
+
     @OnClick({R.id.ll_menu_1, R.id.ll_menu_2, R.id.ll_menu_3, R.id.ll_menu_4})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.ll_menu_1:
                 bundle = new Bundle();
-                bundle.putInt("userNum",userOrderNum);
-                bundle.putInt("supplierNum",supplierOrderNum);
-                JumpUtils.dataJump(getActivity(), OrderNoticeActivity.class,bundle, false);
+                bundle.putInt("userNum", userOrderNum);
+                bundle.putInt("supplierNum", supplierOrderNum);
+                JumpUtils.dataJump(getActivity(), OrderNoticeActivity.class, bundle, false);
                 break;
             case R.id.ll_menu_2:
                 bundle = new Bundle();
-                bundle.putInt("applyNum",applyNum);
-                bundle.putInt("systemNum",systemNum);
-                JumpUtils.dataJump(getActivity(), SupplyNoticeActivity.class, bundle,false);
+                bundle.putInt("applyNum", applyNum);
+                bundle.putInt("systemNum", systemNum);
+                JumpUtils.dataJump(getActivity(), SupplyNoticeActivity.class, bundle, false);
                 break;
             case R.id.ll_menu_3:
                 JumpUtils.simpJump(getActivity(), CapitalNoticeActivity.class, false);
@@ -148,6 +150,7 @@ public class MsgFragment extends BaseFragment {
         super.onResume();
         getCount();
     }
+
     int sumNum1;
     int sumNum2;
     int sumNum3;
@@ -156,24 +159,25 @@ public class MsgFragment extends BaseFragment {
     int supplierOrderNum;
     int applyNum;
     int systemNum;
+
     private void getCount() {
         RequestClient.GetSupplierNoticeUnreadCount(getContext(), new NetSubscriber<BaseResultBean<NoticeNumBean>>(getContext()) {
             @Override
             public void onResultNext(BaseResultBean<NoticeNumBean> model) {
-                int sumNum =  model.data.ApplyNRC + model.data.MoneyNoticeNRC + model.data.SystemNiticeNRC + model.data.UserOrderNRC + model.data.SupplierOrderNRC;
+                int sumNum = model.data.ApplyNRC + model.data.MoneyNoticeNRC + model.data.SystemNiticeNRC + model.data.UserOrderNRC + model.data.SupplierOrderNRC;
 //                tvNum.setVisibility(View.GONE);
 //                Badge badge = new QBadgeView(getContext());
 //                badge.bindTarget(MainActivity.rl04);
 //                badge.setBadgeGravity(Gravity.END | Gravity.TOP);
-                userOrderNum =  model.data.UserOrderNRC;
+                userOrderNum = model.data.UserOrderNRC;
                 supplierOrderNum = model.data.SupplierOrderNRC;
                 applyNum = model.data.ApplyNRC;
                 systemNum = model.data.SystemNiticeNRC;
-                 sumNum1 = model.data.UserOrderNRC+model.data.SupplierOrderNRC;
-                 sumNum2 = model.data.ApplyNRC;
-                 sumNum3 = model.data.MoneyNoticeNRC;
-                 sumNum4 = model.data.SystemNiticeNRC;
-                 tvNum1.setVisibility(View.VISIBLE);
+                sumNum1 = model.data.UserOrderNRC + model.data.SupplierOrderNRC;
+                sumNum2 = model.data.ApplyNRC;
+                sumNum3 = model.data.MoneyNoticeNRC;
+                sumNum4 = model.data.SystemNiticeNRC;
+                tvNum1.setVisibility(View.VISIBLE);
                 tvNum2.setVisibility(View.VISIBLE);
                 tvNum3.setVisibility(View.VISIBLE);
                 tvNum4.setVisibility(View.VISIBLE);
@@ -186,34 +190,39 @@ public class MsgFragment extends BaseFragment {
                 } else {
                     tvNum.setText(sumNum + "");
                 }
-                if (sumNum1 > 99) {
-                    tvNum1.setText("99+");
-//                    badge.setBadgeNumber(sumNum);
-                } else if (sumNum1 <= 0) {
+//                if (sumNum1 > 99) {
+//                    tvNum1.setText("99+");
+////                    badge.setBadgeNumber(sumNum);
+//                } else
+                    if (sumNum1 <= 0) {
                     tvNum1.setVisibility(View.INVISIBLE);
                 } else {
-                    tvNum1.setText(sumNum1 + "");
+                    tvNum1.setText("");
                 }
-                if (sumNum2 > 99) {
-                    tvNum2.setText("99+");
-                } else if (sumNum2 <= 0) {
+//                if (sumNum2 > 99) {
+//                    tvNum2.setText("99+");
+//                } else
+
+                    if (sumNum2 <= 0) {
                     tvNum2.setVisibility(View.INVISIBLE);
                 } else {
-                    tvNum2.setText(sumNum2 + "");
+                    tvNum2.setText("");
                 }
-                if (sumNum3 > 99) {
-                    tvNum3.setText("99+");
-                } else if (sumNum3 <= 0) {
+//                if (sumNum3 > 99) {
+//                    tvNum3.setText("99+");
+//                } else
+                    if (sumNum3 <= 0) {
                     tvNum3.setVisibility(View.INVISIBLE);
                 } else {
-                    tvNum3.setText(sumNum3 + "");
+                    tvNum3.setText("");
                 }
-                if (sumNum4 > 99) {
-                    tvNum4.setText("99+");
-                } else if (sumNum4 <= 0) {
+//                if (sumNum4 > 99) {
+//                    tvNum4.setText("99+");
+//                } else
+                    if (sumNum4 <= 0) {
                     tvNum4.setVisibility(View.INVISIBLE);
                 } else {
-                    tvNum.setText(sumNum4 + "");
+                    tvNum4.setText("");
                 }
 //                badge.setOnDragStateChangedListener(new Badge.OnDragStateChangedListener() {
 //                    @Override
@@ -225,5 +234,13 @@ public class MsgFragment extends BaseFragment {
 //                });
             }
         });
+    }
+
+    @Override
+    public void onHiddenChanged(boolean hidden) {
+        super.onHiddenChanged(hidden);
+        if(!hidden){
+            ImmersionBar.with(getActivity()).statusBarColor(R.color.white).statusBarDarkFont(true).init();
+        }
     }
 }

@@ -64,7 +64,7 @@ public class WelcomActivity extends BaseActivity {
     }
 
     private Timer timer = new Timer();
-    private int num = 4;
+    private int num = 2;
     TimerTask task = new TimerTask() {
         @Override
         public void run() {
@@ -72,7 +72,7 @@ public class WelcomActivity extends BaseActivity {
                 @Override
                 public void run() {
                     num--;
-                    tvJump.setText("跳过(" + num + ")");
+//                    tvJump.setText("跳过(" + num + ")");
                     if (num < 1) {
                         timer.cancel();
                         checkPerm();
@@ -92,6 +92,15 @@ public class WelcomActivity extends BaseActivity {
             ivWelcomeBg.setVisibility(View.VISIBLE);
             activityWelcomePager.setVisibility(View.GONE);
             timer.schedule(task, 0, 1000);
+//            Bundle bundle = new Bundle();
+//            if (null != DBManager.getInstance(this).getUserInfo()) {
+//                CrashReport.setUserId(DBManager.getInstance(this).getUseId()+"");
+//                JumpUtils.dataJump(WelcomActivity.this, MainActivity.class, bundle, true);
+//            } else if(null != DBManager.getInstance(this).getSaleInfo()){
+//                JumpUtils.dataJump(WelcomActivity.this, SalesmanMainActivity.class, bundle, true);
+//            }else {
+//                JumpUtils.dataJump(WelcomActivity.this, LogingActivity.class, bundle, true);
+//            }
         }
     }
 
@@ -176,7 +185,6 @@ public class WelcomActivity extends BaseActivity {
     @AfterPermissionGranted(100)
     private void checkPerm() {
         String[] params = {Manifest.permission.WRITE_EXTERNAL_STORAGE,Manifest.permission.ACCESS_FINE_LOCATION};
-        if (EasyPermissions.hasPermissions(this, params)) {
             if (SPUtils.getInstance(this).getBoolean(Contans.LAUNCH_FRIST)) {
                 SPUtils.getInstance(this).savaBoolean(Contans.LAUNCH_FRIST, false);
             }
@@ -189,10 +197,6 @@ public class WelcomActivity extends BaseActivity {
             }else  {
                 JumpUtils.dataJump(WelcomActivity.this, LogingActivity.class, bundle, true);
             }
-        } else {
-            EasyPermissions.requestPermissions(this, "需要相关权限", 100, params);
-
-        }
     }
 
     @Override

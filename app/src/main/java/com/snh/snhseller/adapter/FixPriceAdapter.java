@@ -30,7 +30,7 @@ public class FixPriceAdapter extends BaseQuickAdapter<OrderGoodsBean,BaseViewHol
         helper.setText(R.id.tv_state,item.state);
         helper.setText(R.id.tv_GoodsName,item.OrderGoodsName);
         helper.setText(R.id.tv_Number1,"x" + item.Number);
-        helper.setText(R.id.tv_price,"￥" + item.Price);
+        helper.setText(R.id.tv_price,"¥" + item.Price);
         ImageUtils.loadUrlImage(mContext, item.OrderGoodsIcon,  (ImageView) helper.getView(R.id.iv_product_logo1));
     }
 }

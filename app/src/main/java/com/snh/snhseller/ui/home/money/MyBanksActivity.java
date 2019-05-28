@@ -65,7 +65,7 @@ public class MyBanksActivity extends BaseActivity {
     public void setUpViews() {
         heardTitle.setText("我的银行卡");
         dialogUtils = new DialogUtils(this);
-        IsBang.setImmerHeard(this,rlHead,"#ffffff");
+        IsBang.setImmerHeard(this,rlHead);
         adapter = new MyBanksAdapter(R.layout.item_mybanks_layout, null);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(adapter);

@@ -16,10 +16,10 @@ public class PayWxBean {
     public boolean IsError;
     public String appid;
 
-    public String mch_id;
-    public String nonce_str;
+    public String noncestr;
     public String sign;
-    public String prepay_id;
-    public String timespan;
+    public String prepayid;
+    public String timestamp;
     public String app_sign;
+    public String partnerid;
 }

@@ -27,9 +27,11 @@ import com.snh.snhseller.requestApi.NetSubscriber;
 import com.snh.snhseller.requestApi.RequestClient;
 import com.snh.snhseller.ui.loging.LogingActivity;
 import com.snh.snhseller.ui.salesmanManagement.SalesmanMainActivity;
+import com.snh.snhseller.utils.Contans;
 import com.snh.snhseller.utils.IsBang;
 import com.snh.snhseller.utils.JumpUtils;
 import com.snh.snhseller.utils.Md5Utils;
+import com.snh.snhseller.utils.SPUtils;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -65,11 +67,13 @@ public class CompleteActivity extends BaseActivity {
     RelativeLayout rlMenu;
     @BindView(R.id.ll_loging)
     LinearLayout llLoging;
+    @BindView(R.id.tv_url)
+    TextView tvUrl;
 
     private String phone;
     private String psw;
     private Bundle bundle;
-
+    private String pcUrl;
     @Override
     protected void initContentView(Bundle savedInstanceState) {
         setContentView(R.layout.activity_complete_layout);
@@ -77,6 +81,7 @@ public class CompleteActivity extends BaseActivity {
         if (null != bundle) {
             phone = bundle.getString("phone");
             psw = bundle.getString("psw");
+            pcUrl = bundle.getString("pcUrl");
         }
     }
 
@@ -86,6 +91,7 @@ public class CompleteActivity extends BaseActivity {
         heardTitle.setText("");
         tvPhone.setText("账户：" + phone);
         tvPsw.setText("密码：" + psw);
+        tvUrl.setText(pcUrl);
     }
 
     @Override
@@ -161,7 +167,9 @@ public class CompleteActivity extends BaseActivity {
             @Override
             public void onResultNext(BaseResultBean<AllUserBean> model) {
                 if (model.data.type == 1) {
-                    DBManager.getInstance(CompleteActivity.this).logingSuccess(model.data, CompleteActivity.this);
+                    SPUtils.getInstance(CompleteActivity.this).saveData(Contans.IS_FULL,model.data.isFull+"");
+                    SPUtils.getInstance(CompleteActivity.this).savaBoolean(Contans.IS_REGIST,true).commit();
+                    DBManager.getInstance(CompleteActivity.this).logingSuccess(model.data, CompleteActivity.this,psw,phone);
                 }
             }
         }));

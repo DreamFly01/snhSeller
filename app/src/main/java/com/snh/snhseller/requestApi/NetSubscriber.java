@@ -100,6 +100,10 @@ public abstract class NetSubscriber<T> extends Subscriber<T> {
             if (StrUtils.isEmpty(erro.msg)) {
                 erro.msg = "网络连接失败,请检查网络";
             }
+
+            if(!StrUtils.isEmpty(erro.msg)&&erro.msg.contains("未将对象引用设置到对象的实例")){
+                erro.msg = "操作失败，请稍后再试";
+            }
 //        Log.d(HttpLogger.LOGKYE, "erro: " + erro.msg);
 
             if ("100".equals(erro.code)) {

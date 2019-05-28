@@ -1,5 +1,6 @@
 package com.snh.snhseller.ui.order;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -9,11 +10,13 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.text.TextPaint;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.gyf.barlibrary.ImmersionBar;
@@ -26,6 +29,7 @@ import com.snh.snhseller.requestApi.NetSubscriber;
 import com.snh.snhseller.requestApi.RequestClient;
 import com.snh.snhseller.utils.DialogUtils;
 import com.snh.snhseller.utils.IsBang;
+import com.snh.snhseller.utils.JumpUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -44,20 +48,10 @@ import butterknife.Unbinder;
  */
 public class OrderFragment extends BaseFragment {
     Unbinder unbinder;
-    @BindView(R.id.tv_01)
-    TextView tv01;
-    @BindView(R.id.ll_01)
-    LinearLayout ll01;
-    @BindView(R.id.tv_02)
-    TextView tv02;
-    @BindView(R.id.ll_02)
-    LinearLayout ll02;
-    @BindView(R.id.tv_03)
-    TextView tv03;
-    @BindView(R.id.ll_03)
-    LinearLayout ll03;
+
     @BindView(R.id.rl_head)
     LinearLayout rlHead;
+
     private static String[] titles;
     private static List<Fragment> list = new ArrayList<>();
     private static Bundle bundle;
@@ -65,9 +59,14 @@ public class OrderFragment extends BaseFragment {
     private static List<String> listTab = new ArrayList<>();
     static TabLayout tabOrder;
     static ViewPager tabVp;
-    static ImageView iv01;
-    static ImageView iv02;
-    static ImageView iv03;
+    static RelativeLayout rlState;
+    static TextView tvState;
+    static TextView tv01;
+    static LinearLayout ll01;
+    static TextView tv02;
+    static LinearLayout ll02;
+
+    static RelativeLayout rlSearch;
     private int[] viewLocation = new int[2];
     private DialogUtils dialogUtils;
 
@@ -75,7 +74,7 @@ public class OrderFragment extends BaseFragment {
     private static List<Integer> data2 = new ArrayList<>();
 
     private int categories = 0;
-
+    static TextPaint paint1, paint2;
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
@@ -89,14 +88,23 @@ public class OrderFragment extends BaseFragment {
 
     @Override
     public void setUpViews(View view) {
-        IsBang.setImmerHeard(getContext(), rlHead);
-        ImmersionBar.setTitleBar(getActivity(), rlHead);
+//        IsBang.setImmerHeard(getContext(), rlHead);
+//        ImmersionBar.setTitleBar(getActivity(), rlHead);
+        ImmersionBar.with(getActivity()).statusBarColor(R.color.white).statusBarDarkFont(true).init();
         dialogUtils = new DialogUtils(getContext());
         tabVp = view.findViewById(R.id.tab_vp);
         tabOrder = view.findViewById(R.id.tab_order);
-        iv01 = view.findViewById(R.id.iv_01);
-        iv02 = view.findViewById(R.id.iv_02);
-        iv03 = view.findViewById(R.id.iv_03);
+        rlState = view.findViewById(R.id.rl_state);
+        tvState = view.findViewById(R.id.tv_state);
+        rlSearch = view.findViewById(R.id.rl_search);
+        tv01 = view.findViewById(R.id.tv_01);
+        tv02 = view.findViewById(R.id.tv_02);
+        ll01 = view.findViewById(R.id.ll_01);
+        ll02 = view.findViewById(R.id.ll_02);
+        paint1 = tv01.getPaint();
+        paint2 = tv02.getPaint();
+        paint1.setFakeBoldText(true);
+        paint2.setFakeBoldText(false);
         getCount();
     }
 
@@ -119,21 +127,42 @@ public class OrderFragment extends BaseFragment {
         super.onDestroyView();
         unbinder.unbind();
     }
- int type = 0;
-    @OnClick({R.id.ll_01, R.id.ll_02, R.id.ll_03})
+
+    static int type = 0;
+
+    @OnClick({R.id.ll_01, R.id.ll_02, R.id.rl_state,R.id.rl_search})
     public void onClick(View view) {
+        if (isFastClick()) {
+            return;
+        }
         switch (view.getId()) {
+
             case R.id.ll_01:
                 type = 0;
+
                 setType(0);
                 break;
             case R.id.ll_02:
+
                 type = 1;
                 setType(1);
                 break;
-            case R.id.ll_03:
-                type = 2;
-                setType(2);
+            case R.id.rl_state:
+                if (type == 1) {
+                    type = 2;
+                    setType(2);
+                } else {
+                    type = 1;
+                    setType(1);
+                }
+                break;
+            case R.id.rl_search:
+                    bundle= new Bundle();
+                if(type == 0){
+                    JumpUtils.simpJump(getActivity(),BToCOrderAllActivity.class,false);
+                }else {
+                    JumpUtils.simpJump(getActivity(),BToBOrderAllActivity.class,false);
+                }
                 break;
         }
     }
@@ -158,65 +187,82 @@ public class OrderFragment extends BaseFragment {
             View v = LayoutInflater.from(getContext()).inflate(R.layout.tab_custom, null);
             TextView mTv_Title = (TextView) v.findViewById(R.id.mTv_Title);
             ImageView mImg = (ImageView) v.findViewById(R.id.mImg);
-            TextView tv_num = (TextView)v.findViewById(R.id.tv_num);
+            TextView tv_num = (TextView) v.findViewById(R.id.tv_num);
             mTv_Title.setText(titles[position]);
 //            mImg.setImageResource(images[position]);
             //添加一行，设置颜色
             mTv_Title.setTextColor(tabOrder.getTabTextColors());//
 
             tv_num.setVisibility(View.GONE);
-            switch (type){
+            switch (type) {
                 case 0:
-                    switch (position)
-                    {
+                    switch (position) {
+                        case 1:
+                            tv_num.setVisibility(View.VISIBLE);
+                            if (UserDZF > 99) {
+                                tv_num.setText("99+");
+                            } else if (UserDZF <= 0) {
+                                tv_num.setVisibility(View.GONE);
+                            } else {
+                                tv_num.setText(UserDZF + "");
+                            }
+                            break;
                         case 2:
                             tv_num.setVisibility(View.VISIBLE);
-                            if(UserDFH>99){
+                            if (UserDFH > 99) {
                                 tv_num.setText("99+");
-                            }else if(UserDFH<=0){
+                            } else if (UserDFH <= 0) {
                                 tv_num.setVisibility(View.GONE);
-                            }else {
-                                tv_num.setText(UserDFH+"");
+                            } else {
+                                tv_num.setText(UserDFH + "");
                             }
                             break;
                     }
                     break;
                 case 1:
-                    switch (position)
-                    {
+                    switch (position) {
+                        case 1:
+                            tv_num.setVisibility(View.VISIBLE);
+                            if (CKDZF > 99) {
+                                tv_num.setText("99+");
+                            } else if (CKDZF <= 0) {
+                                tv_num.setVisibility(View.GONE);
+                            } else {
+                                tv_num.setText(CKDZF + "");
+                            }
+                            break;
                         case 2:
                             tv_num.setVisibility(View.VISIBLE);
-                            if(CKDFH>99){
+                            if (CKDFH > 99) {
                                 tv_num.setText("99+");
-                            }else if(CKDFH<=0){
+                            } else if (CKDFH <= 0) {
                                 tv_num.setVisibility(View.GONE);
-                            }else {
-                                tv_num.setText(CKDFH+"");
+                            } else {
+                                tv_num.setText(CKDFH + "");
                             }
                             break;
                     }
                     break;
                 case 2:
-                    switch (position)
-                    {
+                    switch (position) {
                         case 1:
                             tv_num.setVisibility(View.VISIBLE);
-                            if(JHDZF>99){
+                            if (JHDZF > 99) {
                                 tv_num.setText("99+");
-                            }else if(JHDZF<=0){
+                            } else if (JHDZF <= 0) {
                                 tv_num.setVisibility(View.GONE);
-                            }else {
-                                tv_num.setText(JHDZF+"");
+                            } else {
+                                tv_num.setText(JHDZF + "");
                             }
                             break;
                         case 3:
                             tv_num.setVisibility(View.VISIBLE);
-                            if(JHDSH>99){
+                            if (JHDSH > 99) {
                                 tv_num.setText("99+");
-                            }else if(JHDSH<=0){
+                            } else if (JHDSH <= 0) {
                                 tv_num.setVisibility(View.GONE);
-                            }else {
-                                tv_num.setText(JHDSH+"");
+                            } else {
+                                tv_num.setText(JHDSH + "");
                             }
                             break;
                     }
@@ -231,21 +277,36 @@ public class OrderFragment extends BaseFragment {
             return PagerAdapter.POSITION_NONE;
         }
     }
-    static int UserDFH;
-    static int CKDFH;
-    static int JHDZF;
-    static int JHDSH;
-    static int sunNum;
+
+    public static int UserDFH;
+    public static int UserDZF;
+    public static int CKDZF;
+    public static int CKDFH;
+    public static int JHDZF;
+    public static int JHDSH;
+    public static int sunNum;
+    public static int tabIndex = 0;
+
     public static void setType(int orderType) {
         list.clear();
 
         switch (orderType) {
             case 0:
+                type= 0;
+                paint1.setFakeBoldText(true);
+                paint2.setFakeBoldText(false);
+                rlSearch.setVisibility(View.VISIBLE);
+                ll01.setEnabled(false);
+                ll02.setEnabled(true);
+
+                tv02.setTextColor(Color.parseColor("#6E6E6E"));
+                tv01.setTextColor(Color.parseColor("#1e1e1e"));
 //                heardTitle.setText("用户订单");
-                titles = new String[]{"全部", "待支付", "待发货", "退款中", "待收货", "已完成"};
-                iv01.setVisibility(View.VISIBLE);
-                iv02.setVisibility(View.INVISIBLE);
-                iv03.setVisibility(View.INVISIBLE);
+                titles = new String[]{"全部", "待支付", "待发货", "退款中", "已发货", "已完成"};
+//                iv01.setVisibility(View.VISIBLE);
+//                iv02.setVisibility(View.INVISIBLE);
+//                iv03.setVisibility(View.INVISIBLE);
+                rlState.setVisibility(View.GONE);
                 for (int i = 0; i < titles.length; i++) {
                     OrderListFragment fragment = new OrderListFragment();
                     bundle = new Bundle();
@@ -277,9 +338,19 @@ public class OrderFragment extends BaseFragment {
                 break;
             case 1:
 //                heardTitle.setText("出库订单");
-                iv01.setVisibility(View.INVISIBLE);
-                iv02.setVisibility(View.VISIBLE);
-                iv03.setVisibility(View.INVISIBLE);
+//                iv01.setVisibility(View.INVISIBLE);
+//                iv02.setVisibility(View.VISIBLE);
+//                iv03.setVisibility(View.INVISIBLE);
+                type=1;
+                paint1.setFakeBoldText(false);
+                paint2.setFakeBoldText(true);
+                rlSearch.setVisibility(View.GONE);
+                ll01.setEnabled(true);
+                ll02.setEnabled(false);
+                tv01.setTextColor(Color.parseColor("#6E6E6E"));
+                tv02.setTextColor(Color.parseColor("#1e1e1e"));
+                rlState.setVisibility(View.VISIBLE);
+                tvState.setText("出库");
                 titles = new String[]{"全部", "待支付", "待发货", "待收货", "已完成"};
                 for (int i = 0; i < titles.length; i++) {
                     OrderListFragment fragment = new OrderListFragment();
@@ -291,10 +362,14 @@ public class OrderFragment extends BaseFragment {
                 }
                 break;
             case 2:
+                type=2;
+                rlSearch.setVisibility(View.GONE);
 //                heardTitle.setText("进货订单");
-                iv01.setVisibility(View.INVISIBLE);
-                iv02.setVisibility(View.INVISIBLE);
-                iv03.setVisibility(View.VISIBLE);
+//                iv01.setVisibility(View.INVISIBLE);
+//                iv02.setVisibility(View.INVISIBLE);
+//                iv03.setVisibility(View.VISIBLE);
+                rlState.setVisibility(View.VISIBLE);
+                tvState.setText("进货");
                 titles = new String[]{"全部", "待支付", "待发货", "待收货", "已完成"};
                 for (int i = 0; i < titles.length; i++) {
                     OrderListFragment fragment = new OrderListFragment();
@@ -318,6 +393,9 @@ public class OrderFragment extends BaseFragment {
         }
 
         tabVp.setOffscreenPageLimit(titles.length);
+        if (tabIndex != 0) {
+            tabOrder.getTabAt(tabIndex).select();
+        }
     }
 
 
@@ -326,15 +404,17 @@ public class OrderFragment extends BaseFragment {
             @Override
             public void onResultNext(BaseResultBean<NoticeNumBean> model) {
                 UserDFH = model.data.UserDFH;
+                UserDZF = model.data.UserDZF;
                 CKDFH = model.data.CKDFH;
+                CKDZF = model.data.CKDZF;
                 JHDZF = model.data.JHDZF;
                 JHDSH = model.data.JHDSH;
                 adapter = new MyAdapter(getChildFragmentManager());
-                if (categories==101||categories==102) {
+                if (categories == 101 || categories == 102) {
                     setType(0);
-                }else if(categories==201||categories==203||categories==204){
+                } else if (categories == 201 || categories == 203 || categories == 204) {
                     setType(1);
-                }else if(categories==202){
+                } else if (categories == 202) {
                     setType(2);
                 } else {
                     setType(0);
@@ -344,75 +424,122 @@ public class OrderFragment extends BaseFragment {
         });
     }
 
-    public static void updataView(int type, int position){
-        View v = tabOrder.getTabAt(position).getCustomView();
-        TextView tv_num = (TextView)v.findViewById(R.id.tv_num);
+    public static void updataView(int type, int position) {
+        try {
+            View v = tabOrder.getTabAt(position).getCustomView();
+            TextView tv_num = (TextView) v.findViewById(R.id.tv_num);
 
-        switch (type){
-            case 0:
-                switch (position)
-                {
-                    case 2:
-                        UserDFH = UserDFH-1;
-                        tv_num.setVisibility(View.VISIBLE);
-                        if(UserDFH>99){
-                            tv_num.setText("99+");
-                        }else if(UserDFH<=0){
-                            tv_num.setVisibility(View.GONE);
-                        }else {
-                            tv_num.setText(UserDFH+"");
-                        }
-                        break;
-                }
-                break;
-            case 1:
-                switch (position)
-                {
-                    case 2:
-                        CKDFH = CKDFH-1;
-                        tv_num.setVisibility(View.VISIBLE);
-                        if(CKDFH>99){
-                            tv_num.setText("99+");
-                        }else if(CKDFH<=0){
-                            tv_num.setVisibility(View.GONE);
-                        }else {
-                            tv_num.setText(CKDFH+"");
-                        }
-                        break;
-                }
-                break;
-            case 2:
-                switch (position)
-                {
-                    case 1:
-                        JHDZF = JHDZF-1;
-                        tv_num.setVisibility(View.VISIBLE);
-                        if(JHDZF>99){
-                            tv_num.setText("99+");
-                        }else if(JHDZF<=0){
-                            tv_num.setVisibility(View.GONE);
-                        }else {
-                            tv_num.setText(JHDZF+"");
-                        }
-                        break;
-                    case 3:
-                        JHDSH = JHDSH-1;
-                        tv_num.setVisibility(View.VISIBLE);
-                        if(JHDSH>99){
-                            tv_num.setText("99+");
-                        }else if(JHDSH<=0){
-                            tv_num.setVisibility(View.GONE);
-                        }else {
-                            tv_num.setText(JHDSH+"");
-                        }
-                        break;
-                }
-                break;
+            switch (type) {
+                case 0:
+                    switch (position) {
+                        case 1:
+                            tv_num.setVisibility(View.VISIBLE);
+                            if (UserDZF > 99) {
+                                tv_num.setText("99+");
+                            } else if (UserDZF <= 0) {
+                                tv_num.setVisibility(View.GONE);
+                            } else {
+                                tv_num.setText(UserDZF + "");
+                            }
+                            break;
+                        case 2:
+                            tv_num.setVisibility(View.VISIBLE);
+                            if (UserDFH > 99) {
+                                tv_num.setText("99+");
+                            } else if (UserDFH <= 0) {
+                                tv_num.setVisibility(View.GONE);
+                            } else {
+                                tv_num.setText(UserDFH + "");
+                            }
+                            break;
+                    }
+                    break;
+                case 1:
+                    switch (position) {
+                        case 1:
+                            tv_num.setVisibility(View.VISIBLE);
+                            if (CKDZF > 99) {
+                                tv_num.setText("99+");
+                            } else if (CKDZF <= 0) {
+                                tv_num.setVisibility(View.GONE);
+                            } else {
+                                tv_num.setText(CKDZF + "");
+                            }
+                            break;
+                        case 2:
+
+                            tv_num.setVisibility(View.VISIBLE);
+                            if (CKDFH > 99) {
+                                tv_num.setText("99+");
+                            } else if (CKDFH <= 0) {
+                                tv_num.setVisibility(View.GONE);
+                            } else {
+                                tv_num.setText(CKDFH + "");
+                            }
+                            break;
+                    }
+                    break;
+                case 2:
+                    switch (position) {
+                        case 1:
+
+                            tv_num.setVisibility(View.VISIBLE);
+                            if (JHDZF > 99) {
+                                tv_num.setText("99+");
+                            } else if (JHDZF <= 0) {
+                                tv_num.setVisibility(View.GONE);
+                            } else {
+                                tv_num.setText(JHDZF + "");
+                            }
+                            break;
+                        case 3:
+
+                            tv_num.setVisibility(View.VISIBLE);
+                            if (JHDSH > 99) {
+                                tv_num.setText("99+");
+                            } else if (JHDSH <= 0) {
+                                tv_num.setVisibility(View.GONE);
+                            } else {
+                                tv_num.setText(JHDSH + "");
+                            }
+                            break;
+                    }
+                    break;
+            }
+
+
+            int sunNum1 = UserDFH + CKDFH + JHDSH + JHDZF + UserDZF + CKDZF;
+            if (sunNum1 > 99) {
+                MainActivity.tvNum2.setText("99+");
+            } else if (sunNum1 <= 0) {
+                MainActivity.tvNum2.setVisibility(View.GONE);
+            } else {
+                MainActivity.tvNum2.setText(sunNum1 + "");
+            }
+        } catch (Exception e) {
+
         }
 
-
-        int sunNum1 = UserDFH+CKDFH+JHDSH+JHDZF;
-        MainActivity.tvNum2.setText(sunNum1+"");
     }
 
+    private long lastClickTime = 0;
+    private static final int MIN_DELAY_TIME = 500;  // 两次点击间隔不能少于1000ms
+
+    public boolean isFastClick() {
+        boolean flag = true;
+        long currentClickTime = System.currentTimeMillis();
+        if ((currentClickTime - lastClickTime) >= MIN_DELAY_TIME) {
+            flag = false;
+        }
+        lastClickTime = currentClickTime;
+        return flag;
+    }
+
+    @Override
+    public void onHiddenChanged(boolean hidden) {
+        super.onHiddenChanged(hidden);
+        if(!hidden){
+            ImmersionBar.with(getActivity()).statusBarColor(R.color.white).statusBarDarkFont(true).init();
+        }
+    }
 }

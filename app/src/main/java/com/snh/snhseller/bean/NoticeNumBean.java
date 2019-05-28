@@ -22,7 +22,11 @@ public class NoticeNumBean {
 
     public int UserDFH; //用户待发货数
 
+    public int UserDZF;//用户待支付数
+
     public int CKDFH;//出库待发货数
+
+    public int CKDZF;//出库待支付
 
     public int JHDZF;//进货待支付数
 

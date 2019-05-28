@@ -204,7 +204,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textColor="@color/gray_1"
-        android:text="http:test.hnyunshang.com/PC_Seller"
+        android:text="https://shop.snihen.com/PC_Seller"
         android:textSize="@dimen/txtSize_26"/>
 </LinearLayout>
 </LinearLayout>

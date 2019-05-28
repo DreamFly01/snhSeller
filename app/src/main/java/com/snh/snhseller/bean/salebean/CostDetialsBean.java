@@ -23,4 +23,5 @@ public class CostDetialsBean {
     public String SupplierIconUrl;
     public String OperationTime;
     public String SupplierName;
+    public String SalesmanLogo;
 }

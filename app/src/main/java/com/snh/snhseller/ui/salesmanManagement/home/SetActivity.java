@@ -56,7 +56,7 @@ public class SetActivity extends BaseActivity {
 
     @Override
     public void setUpViews() {
-        IsBang.setImmerHeard(this,rlHead,"");
+        IsBang.setImmerHeard(this,rlHead,"#2E8AFF");
         heardTitle.setText("设置");
         btnCommit.setText("退出登录");
         tvCahe.setText("(" + GlideCacheUtil.getInstance().getCacheSize(this) + ")");

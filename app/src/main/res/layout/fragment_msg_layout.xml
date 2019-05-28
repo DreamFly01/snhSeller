@@ -4,56 +4,14 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="@color/white">
-    <LinearLayout
-        android:id="@+id/rl_head"
+    android:background="@color/color_app_bg"
+    >
+    <include layout="@layout/heard_white_layout"></include>
+    <ImageView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/app_red"
-        android:orientation="horizontal">
-
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingRight="20pt"
-            android:paddingLeft="20pt"
-            android:paddingBottom="20pt"
-            android:background="@color/app_red"
-            >
-            <TextView
-                android:id="@+id/heard_title"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerHorizontal="true"
-                android:text="title"
-                android:textColor="@color/white"
-                android:textSize="36pt" />
-
-            <FrameLayout
-
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:layout_marginRight="30pt"
-                android:visibility="visible"
-
-                >
-                <ImageView
-                    android:id="@+id/heard_menu"
-                    android:layout_width="42pt"
-                    android:layout_height="40pt"
-                    android:src="@drawable/store_share"
-                    android:visibility="gone" />
-                <TextView
-                    android:id="@+id/heard_tv_menu"
-                    android:layout_width="wrap_content"
-                    android:layout_height="50pt"
-                    android:textSize="30pt"
-                    />
-            </FrameLayout>
-        </RelativeLayout>
-
-    </LinearLayout>
+        android:layout_height="2pt"
+        android:background="@color/color_app_bg"
+        />
     <RelativeLayout
         android:id="@+id/rl_menu"
         android:background="@color/white"
@@ -62,7 +20,7 @@
         <ImageView
             android:layout_width="match_parent"
             android:layout_height="200pt"
-            android:background="@color/app_red"/>
+            android:background="@color/white"/>
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -70,9 +28,10 @@
 
         <LinearLayout
             android:gravity="center"
-            android:layout_marginTop="20pt"
+            android:paddingTop="20pt"
+            android:paddingBottom="20pt"
             android:layout_width="match_parent"
-            android:layout_height="260pt"
+            android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:background="@color/white">
             <LinearLayout
@@ -95,11 +54,11 @@
                         android:background="@drawable/menu_1"/>
                     <TextView
                         android:visibility="invisible"
-                        android:layout_marginLeft="80pt"
+                        android:layout_marginLeft="100pt"
                         android:id="@+id/tv_num1"
                         android:gravity="center"
-                        android:layout_width="30pt"
-                        android:layout_height="30pt"
+                        android:layout_width="20pt"
+                        android:layout_height="20pt"
                         android:text="99+"
                         android:textSize="15pt"
                         android:textColor="@color/white"
@@ -135,11 +94,11 @@
                         android:background="@drawable/menu_2"/>
                     <TextView
                         android:visibility="invisible"
-                        android:layout_marginLeft="80pt"
+                        android:layout_marginLeft="100pt"
                         android:id="@+id/tv_num2"
                         android:gravity="center"
-                        android:layout_width="30pt"
-                        android:layout_height="30pt"
+                        android:layout_width="20pt"
+                        android:layout_height="20pt"
                         android:text="99+"
                         android:textSize="15pt"
                         android:textColor="@color/white"
@@ -174,11 +133,11 @@
                         android:background="@drawable/menu_3"/>
                     <TextView
                         android:visibility="invisible"
-                        android:layout_marginLeft="80pt"
+                        android:layout_marginLeft="100pt"
                         android:id="@+id/tv_num3"
                         android:gravity="center"
-                        android:layout_width="30pt"
-                        android:layout_height="30pt"
+                        android:layout_width="20pt"
+                        android:layout_height="20pt"
                         android:text="99+"
                         android:textSize="15pt"
                         android:textColor="@color/white"
@@ -212,11 +171,11 @@
                         android:background="@drawable/menu_4"/>
                     <TextView
                         android:visibility="invisible"
-                        android:layout_marginLeft="80pt"
+                        android:layout_marginLeft="100pt"
                         android:id="@+id/tv_num4"
                         android:gravity="center"
-                        android:layout_width="30pt"
-                        android:layout_height="30pt"
+                        android:layout_width="20pt"
+                        android:layout_height="20pt"
                         android:text="99+"
                         android:textSize="15pt"
                         android:textColor="@color/white"

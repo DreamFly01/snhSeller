@@ -103,7 +103,7 @@ public class DeclarationDetailsActivity extends BaseActivity {
 
     @Override
     public void setUpViews() {
-        IsBang.setImmerHeard(this,rlHead,"");
+        IsBang.setImmerHeard(this, rlHead, "#2E8AFF");
         heardTitle.setText("费用详情");
         getData();
         tvDesc.setFocusable(false);
@@ -155,7 +155,7 @@ public class DeclarationDetailsActivity extends BaseActivity {
     }
 
     private void fillView(CostDetialsBean bean) {
-        ImageUtils.loadUrlImage(this, bean.SupplierIconUrl, ivLogo);
+        ImageUtils.loadUrlImage(this, bean.SalesmanLogo, ivLogo);
         switch (bean.CostStates) {
             case 1:
                 tvState.setText("审批中");
@@ -218,16 +218,16 @@ public class DeclarationDetailsActivity extends BaseActivity {
             pathList = Arrays.asList(StringUtils.split(bean.ExpenseVoucher, ","));
             switch (pathList.size()) {
                 case 1:
-                    ImageUtils.loadUrlImage(this, pathList.get(0).replace("H", "h"), iv01);
+                    ImageUtils.loadUrlImage(this, pathList.get(0), iv01);
                     break;
                 case 2:
-                    ImageUtils.loadUrlImage(this, pathList.get(0).replace("H", "h"), iv01);
-                    ImageUtils.loadUrlImage(this, pathList.get(1).replace("H", "h"), iv02);
+                    ImageUtils.loadUrlImage(this, pathList.get(0), iv01);
+                    ImageUtils.loadUrlImage(this, pathList.get(1), iv02);
                     break;
                 case 3:
-                    ImageUtils.loadUrlImage(this, pathList.get(0).replace("H", "h"), iv01);
-                    ImageUtils.loadUrlImage(this, pathList.get(1).replace("H", "h"), iv02);
-                    ImageUtils.loadUrlImage(this, pathList.get(2).replace("H", "h"), iv03);
+                    ImageUtils.loadUrlImage(this, pathList.get(0), iv01);
+                    ImageUtils.loadUrlImage(this, pathList.get(1), iv02);
+                    ImageUtils.loadUrlImage(this, pathList.get(2), iv03);
                     break;
             }
         }
@@ -246,8 +246,12 @@ public class DeclarationDetailsActivity extends BaseActivity {
         addSubscription(RequestClient.RevocationApply(id, this, new NetSubscriber<BaseResultBean>(this, true) {
             @Override
             public void onResultNext(BaseResultBean model) {
-                dialogUtils.noBtnDialog("撤销成功");
-                DeclarationDetailsActivity.this.finish();
+                dialogUtils.simpleDialog("撤销成功", new DialogUtils.ConfirmClickLisener() {
+                    @Override
+                    public void onConfirmClick(View v) {
+                        DeclarationDetailsActivity.this.finish();
+                    }
+                }, false);
             }
         }));
     }

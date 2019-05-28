@@ -45,7 +45,7 @@ public class DeclarationActivity extends BaseActivity {
 
     @Override
     public void setUpViews() {
-        IsBang.setImmerHeard(this,rlHead,"");
+        IsBang.setImmerHeard(this,rlHead,"#2E8AFF");
         heardTitle.setText("费用申报");
     }
 

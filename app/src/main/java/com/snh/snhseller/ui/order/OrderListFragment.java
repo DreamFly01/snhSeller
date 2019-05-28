@@ -14,14 +14,23 @@ import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 import com.snh.snhseller.BaseFragment;
+import com.snh.snhseller.MainActivity;
 import com.snh.snhseller.R;
 import com.snh.snhseller.adapter.OrderAdapter;
 import com.snh.snhseller.bean.BaseResultBean;
+import com.snh.snhseller.bean.MessageEventBean;
+import com.snh.snhseller.bean.NoticeNumBean;
 import com.snh.snhseller.bean.OrderBean;
 import com.snh.snhseller.requestApi.NetSubscriber;
 import com.snh.snhseller.requestApi.RequestClient;
+import com.snh.snhseller.utils.Contans;
 import com.snh.snhseller.utils.JumpUtils;
+import com.snh.snhseller.utils.SPUtils;
 import com.snh.snhseller.wediget.RecycleViewDivider;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -51,6 +60,7 @@ public class OrderListFragment extends BaseFragment {
     private int orderType;//订单类型 0 :我的订单 1:出库订单 2：进货订单
     List<OrderBean> datas = new ArrayList<>();
     private Bundle bundle;
+
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
@@ -59,11 +69,12 @@ public class OrderListFragment extends BaseFragment {
         if (!mIsDataInited) {
             if (getUserVisibleHint()) {
                 setView();
-                getData();
+                getCount();
                 mIsDataInited = true;
             }
         }
     }
+
 
     @Override
     public int initContentView() {
@@ -104,10 +115,10 @@ public class OrderListFragment extends BaseFragment {
                 if (orderType != 0) {
                     bundle = new Bundle();
                     bundle.putInt("orderId", datas.get(position).OrderId);
-                    bundle.putInt("type",datas.get(position).OrderStates);
+                    bundle.putInt("type", datas.get(position).OrderStates);
                     bundle.putInt("orderType", orderType);
                     JumpUtils.dataJump(getActivity(), OrderDetailsActivity.class, bundle, false);
-                }else {
+                } else {
                     bundle = new Bundle();
                     bundle.putString("orderid", datas1.get(position).OrderId + "");
                     JumpUtils.dataJump(getActivity(), MyOrderDetailsActivity.class, bundle, false);
@@ -124,7 +135,7 @@ public class OrderListFragment extends BaseFragment {
             public void onRefresh(@NonNull RefreshLayout refreshLayout) {
                 index = 1;
                 isShow = true;
-                getData();
+                getCount();
             }
         });
 
@@ -144,13 +155,15 @@ public class OrderListFragment extends BaseFragment {
         unbinder.unbind();
     }
 
-    private List<OrderBean> datas1= new ArrayList<>();
+    private List<OrderBean> datas1 = new ArrayList<>();
+
     private void getData() {
 //        isFrist = false;
+        SPUtils.getInstance(getContext()).savaBoolean(Contans.ORDER_IS_FRESH, false).commit();
         switch (orderType) {
             case 0:
                 if (type == 0) {
-                    addSubscription(RequestClient.getOrderList("", type + "", index, getContext(), new NetSubscriber<BaseResultBean<List<OrderBean>>>(getContext(),isShow) {
+                    addSubscription(RequestClient.getOrderList("", "", type + "", index, getContext(), new NetSubscriber<BaseResultBean<List<OrderBean>>>(getContext(), isShow) {
                         @Override
                         public void onResultNext(BaseResultBean<List<OrderBean>> model) {
 
@@ -175,7 +188,7 @@ public class OrderListFragment extends BaseFragment {
                         }
                     }));
                 } else {
-                    addSubscription(RequestClient.getOrderList(type + "", "", index, getContext(), new NetSubscriber<BaseResultBean<List<OrderBean>>>(getContext(),isShow) {
+                    addSubscription(RequestClient.getOrderList("", type + "", "", index, getContext(), new NetSubscriber<BaseResultBean<List<OrderBean>>>(getContext(), isShow) {
                         @Override
                         public void onResultNext(BaseResultBean<List<OrderBean>> model) {
                             if (index == 1) {
@@ -184,7 +197,7 @@ public class OrderListFragment extends BaseFragment {
                                     adapter.setNewData(model.data);
                                 } else {
                                     adapter.setNewData(null);
-                                    adapter.setEmptyView(R.layout.empty_layout,recyclerView);
+                                    adapter.setEmptyView(R.layout.empty_layout, recyclerView);
                                 }
                             } else {
                                 if (model.data.size() > 0) {
@@ -201,7 +214,7 @@ public class OrderListFragment extends BaseFragment {
                 }
                 break;
             case 1:
-                addSubscription(RequestClient.MyShipmentOrderList(type, index, "", getContext(), new NetSubscriber<BaseResultBean<List<OrderBean>>>(getContext(),isShow) {
+                addSubscription(RequestClient.MyShipmentOrderList(type, index, "", getContext(), new NetSubscriber<BaseResultBean<List<OrderBean>>>(getContext(), isShow) {
                     @Override
                     public void onResultNext(BaseResultBean<List<OrderBean>> model) {
                         if (index == 1) {
@@ -210,7 +223,7 @@ public class OrderListFragment extends BaseFragment {
                                 adapter.setNewData(model.data);
                             } else {
                                 adapter.setNewData(null);
-                                adapter.setEmptyView(R.layout.empty_layout,recyclerView);
+                                adapter.setEmptyView(R.layout.empty_layout, recyclerView);
                             }
                         } else {
                             datas.addAll(model.data);
@@ -227,7 +240,7 @@ public class OrderListFragment extends BaseFragment {
                 break;
 
             case 2:
-                addSubscription(RequestClient.MyStockOrderList(type, index, "", getContext(), new NetSubscriber<BaseResultBean<List<OrderBean>>>(getContext(),isShow) {
+                addSubscription(RequestClient.MyStockOrderList(type, index, "", getContext(), new NetSubscriber<BaseResultBean<List<OrderBean>>>(getContext(), isShow) {
                     @Override
                     public void onResultNext(BaseResultBean<List<OrderBean>> model) {
                         if (index == 1) {
@@ -236,7 +249,7 @@ public class OrderListFragment extends BaseFragment {
                                 adapter.setNewData(model.data);
                             } else {
                                 adapter.setNewData(null);
-                                adapter.setEmptyView(R.layout.empty_layout,recyclerView);
+                                adapter.setEmptyView(R.layout.empty_layout, recyclerView);
                             }
                         } else {
                             datas.addAll(model.data);
@@ -255,42 +268,102 @@ public class OrderListFragment extends BaseFragment {
 
     }
 
-    private boolean isFrist = true;
+
+    private void getCount() {
+        RequestClient.GetSupplierNoticeUnreadCount(getContext(), new NetSubscriber<BaseResultBean<NoticeNumBean>>(getContext()) {
+            @Override
+            public void onResultNext(BaseResultBean<NoticeNumBean> model) {
+                int sumNum2 = model.data.UserDFH + model.data.CKDFH + model.data.JHDSH + model.data.JHDZF + model.data.UserDZF + model.data.CKDZF;
+                if (orderType == 0) {
+                    if (type == 0) {
+                        OrderFragment.UserDZF = model.data.UserDZF;
+                        OrderFragment.updataView(0, 1);
+                    }
+                    if (type == 2) {
+                        OrderFragment.UserDFH = model.data.UserDFH;
+                        OrderFragment.updataView(0, 2);
+                    }
+                }
+                if (orderType == 1) {
+                    if (type == 1) {
+
+                        OrderFragment.CKDZF = model.data.CKDZF;
+                        OrderFragment.updataView(1, 1);
+                    }
+                    if (type == 2) {
+                        OrderFragment.CKDFH = model.data.CKDFH;
+                        OrderFragment.updataView(1, 2);
+                    }
+                }
+                if (orderType == 2) {
+                    if (type == 1) {
+                        OrderFragment.JHDZF = model.data.JHDZF;
+                        OrderFragment.updataView(2, 1);
+                    }
+                    if (type == 3) {
+                        OrderFragment.JHDSH = model.data.JHDSH;
+                        OrderFragment.updataView(2, 3);
+                    }
+                }
+
+                MainActivity.tvNum2.setVisibility(View.VISIBLE);
+                if (sumNum2 > 99) {
+                    MainActivity.tvNum2.setText("99+");
+                } else if (sumNum2 <= 0) {
+                    MainActivity.tvNum2.setVisibility(View.GONE);
+                } else {
+                    MainActivity.tvNum2.setText(sumNum2 + "");
+                }
+                getData();
+            }
+        });
+    }
+
+    public static boolean isFrist = true;
 
     @Override
     public void setUserVisibleHint(boolean isVisibleToUser) {
         super.setUserVisibleHint(isVisibleToUser);
-//不预加载数据
+        //不预加载数据
         if (isVisibleToUser && isVisible() && !mIsDataInited) {
             setView();
-            getData();
+            getCount();
             mIsDataInited = true;
         }
+        if (isVisibleToUser && SPUtils.getInstance(getContext()).getBoolean(Contans.ORDER_IS_FRESH)) {
+            index = 1;
+            getCount();
+        }
     }
+
+    private boolean hidden;
 
     @Override
     public void onHiddenChanged(boolean hidden) {
         super.onHiddenChanged(hidden);
-        if(!hidden){
-            getData();
+        this.hidden = hidden;
+        if (!hidden) {
+            getCount();
         }
     }
 
     private boolean isShow = true;
-    @Override
+
+        @Override
     public void onResume() {
         super.onResume();
         if (!isFrist && mIsDataInited) {
             index = 1;
             isShow = true;
-            getData();
+            getCount();
         }
-        isFrist = false;
+        isFrist = true;
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
+
     }
 
 }

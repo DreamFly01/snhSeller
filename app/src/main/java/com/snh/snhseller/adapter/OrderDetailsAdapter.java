@@ -1,6 +1,7 @@
 package com.snh.snhseller.adapter;
 
 import android.content.Context;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -36,11 +37,12 @@ public class OrderDetailsAdapter extends CommonAdapter<GoodsBean> {
         ImageUtils.loadUrlImage(mContext, goodBean.GoodsImg, logo);
         name.setText(goodBean.Name);
         if (StrUtils.isEmpty(goodBean.NormsInfo)) {
-            suk.setText("无");
+//            suk.setText("无");
+            suk.setVisibility(View.GONE);
         } else {
             suk.setText("规格：" + goodBean.NormsInfo);
         }
-        price.setText("￥" + goodBean.SalesPrice);
+        price.setText("¥" + goodBean.SalesPrice);
         num.setText("x" + goodBean.Number);
     }
 }

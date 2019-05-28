@@ -9,7 +9,7 @@
     android:focusableInTouchMode="true"
     >
 
-    <include layout="@layout/heard_layout"></include>
+    <include layout="@layout/heard_white_layout"></include>
     <LinearLayout
         android:layout_marginTop="20pt"
         android:background="@color/white"
@@ -85,20 +85,21 @@
             android:textSize="@dimen/txtSize_30"
             android:text="规&#160;&#160;格&#160;&#160;值："
             />
+
         <EditText
             android:id="@+id/et_02"
-            android:layout_marginLeft="20pt"
-            android:inputType="number"
-            android:padding="5pt"
-            android:background="@drawable/shape_range_gray_20_bg"
-            android:layout_weight="1"
-            android:layout_gravity="center"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginLeft="20pt"
+            android:layout_weight="1"
+            android:background="@drawable/shape_range_gray_20_bg"
             android:hint="请输入正整数（单位：件/组）"
+            android:inputType="number"
+            android:padding="5pt"
+            android:textColor="@color/txt_dark"
             android:textColorHint="@color/gray_1"
-            android:textSize="@dimen/txtSize_30"
-            android:textColor="@color/txt_dark"/>
+            android:textSize="@dimen/txtSize_30" />
     </LinearLayout>
     <TextView
         android:paddingBottom="30pt"

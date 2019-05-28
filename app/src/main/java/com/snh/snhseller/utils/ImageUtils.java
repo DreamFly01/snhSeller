@@ -28,6 +28,11 @@ public class ImageUtils {
      * @param imageView
      */
     public static void loadUrlImage(Context context, String url, ImageView imageView) {
+        StringBuffer sbf = new StringBuffer(url);
+        if (sbf.toString().contains("Http://")) {
+            String url1 = sbf.replace(0, 1, "h").toString();
+            url = url1;
+        }
         RequestOptions options = new RequestOptions()
                 .diskCacheStrategy(DiskCacheStrategy.ALL)
                 .error(R.drawable.img_load_error)
@@ -40,7 +45,7 @@ public class ImageUtils {
                 .diskCacheStrategy(DiskCacheStrategy.ALL)
                 .error(R.drawable.img_load_error)
                 .placeholder(R.drawable.img_load_error)
-                .override(187,300);
+                .override(187, 300);
         GlideApp.with(context).load(url).apply(options).into(imageView);
     }
 
@@ -60,7 +65,7 @@ public class ImageUtils {
             Glide.with(context).load(url)
                     .apply(options)
                     .into(imageView);
-        }else {
+        } else {
             Glide.with(context).load(url)
                     .into(imageView);
         }
@@ -74,6 +79,11 @@ public class ImageUtils {
      * @param imageView
      */
     public static void loadUrlCircleImage(Context context, String url, ImageView imageView) {
+        StringBuffer sbf = new StringBuffer(url);
+        if (sbf.toString().contains("Http://")) {
+            String url1 = sbf.replace(0, 1, "h").toString();
+            url = url1;
+        }
         RequestOptions options = new RequestOptions()
                 .diskCacheStrategy(DiskCacheStrategy.ALL)
                 .circleCrop()
@@ -96,11 +106,17 @@ public class ImageUtils {
 
     /**
      * 加载圆角图片
+     *
      * @param context
      * @param url
      * @param imageView
      */
     public static void loadUrlCorners(Context context, String url, ImageView imageView) {
+        StringBuffer sbf = new StringBuffer(url);
+        if (sbf.toString().contains("Http://")) {
+            String url1 = sbf.replace(0, 1, "h").toString();
+            url = url1;
+        }
         //设置图片圆角角度
         RoundedCorners roundedCorners = new RoundedCorners(20);
         //通过RequestOptions扩展功能
@@ -118,7 +134,6 @@ public class ImageUtils {
 
     public static int[] getImageWidthHeight(String path) {
         BitmapFactory.Options options = new BitmapFactory.Options();
-
         /**
          * 最关键在此，把options.inJustDecodeBounds = true;
          * 这里再decodeFile()，返回的bitmap为空，但此时调用options.outHeight时，已经包含了图片的高了

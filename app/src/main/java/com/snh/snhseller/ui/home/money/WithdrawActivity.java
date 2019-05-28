@@ -78,8 +78,8 @@ public class WithdrawActivity extends BaseActivity {
     private List<MyBankBean> banks = new ArrayList<>();
 
     private Map<String, Object> map = new TreeMap<>();
-    private int id, adMoney;
-    private double rate, minMoney, maxMoney;
+    private int id;
+    private double adMoney,rate, minMoney, maxMoney;
 
     @Override
     protected void initContentView(Bundle savedInstanceState) {
@@ -91,7 +91,7 @@ public class WithdrawActivity extends BaseActivity {
             rate = bundle.getDouble("rate");
             minMoney = bundle.getDouble("minMoney");
             maxMoney = bundle.getDouble("maxMoney");
-            adMoney = bundle.getInt("adMoney");
+            adMoney = bundle.getDouble("adMoney");
         }
         dialogUtils = new DialogUtils(this);
 
@@ -101,7 +101,7 @@ public class WithdrawActivity extends BaseActivity {
     public void setUpViews() {
         heardTitle.setText("提现");
         btnCommit.setText("申请提现");
-
+        btnCommit.setEnabled(false);
         IsBang.setImmerHeard(this, rlHead);
         tvMoney.setText(money);
         getMyBank();

@@ -30,7 +30,7 @@ public class SalestCountAdapter extends BaseQuickAdapter<SalesCountBean, BaseVie
         helper.setText(R.id.tv_02,item.SalesmanPhone);
         ImageUtils.loadUrlImage(mContext,item.SalesmanLogo, (ImageView) helper.getView(R.id.iv_shop_logo));
         if (item.Count > 0) {
-            helper.setText(R.id.tv_03, "打卡次数：" + item.Count + "次");
+            helper.setText(R.id.tv_03, "拜访次数：" + item.Count + "次");
         } else {
             helper.setText(R.id.tv_03, "未拜访");
         }

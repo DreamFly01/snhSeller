@@ -43,6 +43,7 @@ import com.scwang.smartrefresh.layout.header.ClassicsHeader;
 import com.snh.snhseller.jpush.TagAliasOperatorHelper;
 import com.snh.snhseller.ui.loging.LogingActivity;
 import com.snh.snhseller.utils.ActivityManagerUtils;
+import com.snh.snhseller.utils.BadgeUtils;
 import com.snh.snhseller.utils.Contans;
 import com.snh.snhseller.db.DBManager;
 import com.snh.snhseller.utils.JumpUtils;
@@ -144,12 +145,13 @@ public class MyApplication extends Application {
         //包括BD09LL和GCJ02两种坐标，默认是BD09LL坐标。
         SDKInitializer.setCoordType(CoordType.BD09LL);
         NIMClient.init(this, loginInfo(), options());
-
         if (inMainProcess(this)) {
             initUiKit();
             JPushInterface.setDebugMode(true);
             JPushInterface.init(this);
-//            CrashReport.initCrashReport(getApplicationContext(), Contans.BUGLY_ID, true);
+            if (!Contans.debug) {
+                CrashReport.initCrashReport(getApplicationContext(), Contans.BUGLY_ID, true);
+            }
         }
     }
 
@@ -193,24 +195,21 @@ public class MyApplication extends Application {
                     public void onEvent(StatusCode status) {
                         if (status == StatusCode.KICKOUT | status == StatusCode.KICK_BY_OTHER_CLIENT) {
                             // 被踢出、账号被禁用、密码错误等情况，自动登录失败，需要返回到登录界面进行重新登录操作
-                            String phone = DBManager.getInstance(ActivityManagerUtils.getInstance().getCurrentActivity()).getUserInfo().ContactsTel;
                             DBManager.getInstance(ActivityManagerUtils.getInstance().getCurrentActivity()).cleanUser();
                             NIMClient.getService(AuthService.class).logout();
-                            Bundle bundle =new Bundle();
-                            bundle.putString("phone",phone);
                             boolean isAliasAction = true;
                             int action = ACTION_DELETE;
                             TagAliasOperatorHelper.TagAliasBean tagAliasBean = new TagAliasOperatorHelper.TagAliasBean();
                             tagAliasBean.action = action;
                             sequence++;
-                            if(isAliasAction){
-                                tagAliasBean.alias = DBManager.getInstance(ActivityManagerUtils.getInstance().getCurrentActivity()).getUseId()+"";
-                            }else{
+                            if (isAliasAction) {
+                                tagAliasBean.alias = DBManager.getInstance(ActivityManagerUtils.getInstance().getCurrentActivity()).getUseId() + "";
+                            } else {
 //            tagAliasBean.tags = 1;
                             }
                             tagAliasBean.isAliasAction = isAliasAction;
-                            TagAliasOperatorHelper.getInstance().handleAction(MyApplication.getInstance(),sequence,tagAliasBean);
-                            JumpUtils.dataJump(ActivityManagerUtils.getInstance().getCurrentActivity(), LogingActivity.class, bundle,true);
+                            TagAliasOperatorHelper.getInstance().handleAction(MyApplication.getInstance(), sequence, tagAliasBean);
+                            JumpUtils.simpJump(ActivityManagerUtils.getInstance().getCurrentActivity(), LogingActivity.class, false);
                             Toast.makeText(getApplicationContext(), "被踢下线，请重新登陆", Toast.LENGTH_SHORT).show();
                         }
                     }

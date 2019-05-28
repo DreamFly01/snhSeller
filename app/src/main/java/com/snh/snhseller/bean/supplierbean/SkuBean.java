@@ -15,6 +15,7 @@ public class SkuBean implements Parcelable {
     public String NormName;
     public String NormValue;
     public double Price;
+    public double MarketPrice;
     public int Inventory;
     public String Unit;
     public int total;
@@ -22,14 +23,19 @@ public class SkuBean implements Parcelable {
     public double NormPrice;
     public double NormSumPrice;
     public int NormNumber;
+
     protected SkuBean(Parcel in) {
         NormId = in.readInt();
         NormName = in.readString();
         NormValue = in.readString();
         Price = in.readDouble();
+        MarketPrice = in.readDouble();
         Inventory = in.readInt();
         Unit = in.readString();
         total = in.readInt();
+        NormPrice = in.readDouble();
+        NormSumPrice = in.readDouble();
+        NormNumber = in.readInt();
     }
 
     public static final Creator<SkuBean> CREATOR = new Creator<SkuBean>() {
@@ -55,8 +61,12 @@ public class SkuBean implements Parcelable {
         dest.writeString(NormName);
         dest.writeString(NormValue);
         dest.writeDouble(Price);
+        dest.writeDouble(MarketPrice);
         dest.writeInt(Inventory);
         dest.writeString(Unit);
         dest.writeInt(total);
+        dest.writeDouble(NormPrice);
+        dest.writeDouble(NormSumPrice);
+        dest.writeInt(NormNumber);
     }
 }

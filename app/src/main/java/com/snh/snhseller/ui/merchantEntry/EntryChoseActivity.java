@@ -1,9 +1,15 @@
 package com.snh.snhseller.ui.merchantEntry;
 
+import android.Manifest;
 import android.app.Activity;
+import android.content.pm.PackageManager;
 import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.app.ActivityCompat;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -11,6 +17,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.snh.snhseller.adapter.EntryCompanyAdapter;
 import com.snh.snhseller.bean.BaseResultBean;
@@ -31,6 +38,11 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import me.weyye.hipermission.HiPermission;
+import me.weyye.hipermission.PermissionActivity;
+import me.weyye.hipermission.PermissionCallback;
+import me.weyye.hipermission.PermissionItem;
+import pub.devrel.easypermissions.EasyPermissions;
 
 /**
  * <p>desc：<p>
@@ -39,7 +51,7 @@ import butterknife.OnClick;
  * <p>changeTime：2019/1/22<p>
  * <p>version：1<p>
  */
-public class EntryChoseActivity extends Activity {
+public class EntryChoseActivity extends AppCompatActivity {
     @BindView(R.id.heard_back)
     LinearLayout heardBack;
     @BindView(R.id.heard_title)
@@ -116,6 +128,11 @@ public class EntryChoseActivity extends Activity {
         IsBang.setImmerHeard(this, rlHeard, "#77a2f9");
         heardTitle.setText("选择店铺类型");
         getInSwich();
+        setBtn(tv03,iv03);
+        type = 3;
+        rlEntryPerson.setVisibility(View.VISIBLE);
+        rlEntryCompany.setVisibility(View.GONE);
+        tvPersonOrAer.setText(R.string.tip_aer);
     }
 
     private void setDatas() {
@@ -212,37 +229,39 @@ public class EntryChoseActivity extends Activity {
             case R.id.tv_commit:
                 bundle = new Bundle();
                 bundle.putString("phone", phone);
-                    if (check()) {
-                        if (type == 1) {
-                            if (null!=data&&"1".equals(data.inPersonal)) {
-                                bundle.putString("shopType", "3");
-                                JumpUtils.dataJump(this, PerfectPersonActivity.class, bundle, false);
-                            } else {
-                                dialogUtils.noBtnDialog("暂未开放此入驻");
-                            }
-
-
-                        } else if (type == 2) {
-                            if (null!=data&&"1".equals(data.inEnterprise)) {
-                                bundle.putString("ShopCategoryType", typeStr);
-                                bundle.putString("shopType", "2");
-                                JumpUtils.dataJump(this, PerfectCompanyActivity.class, bundle, false);
-                            } else {
-                                dialogUtils.noBtnDialog("暂未开放此入驻");
-                            }
-
-                        } else if (type == 3) {
-                            if (null!=data&&"1".equals(data.inLocal)) {
-                                bundle.putString("shopType", "1");
-                                bundle.putInt("flag", type);
-                                JumpUtils.dataJump(this, PerfectCompanyActivity.class, bundle, false);
-                            } else {
-                                dialogUtils.noBtnDialog("暂未开放此入驻");
-                            }
-
-
+                if (check()) {
+                    if (type == 1) {
+                        if (null != data && "1".equals(data.inPersonal)) {
+                            bundle.putString("shopType", "3");
+                            JumpUtils.dataJump(this, PerfectPersonActivity.class, bundle, false);
+                        } else {
+                            dialogUtils.noBtnDialog("暂未开放此入驻");
                         }
+
+
+                    } else if (type == 2) {
+                        if (null != data && "1".equals(data.inEnterprise)) {
+                            bundle.putString("ShopCategoryType", typeStr);
+                            bundle.putString("shopType", "2");
+                            JumpUtils.dataJump(this, PerfectCompanyActivity.class, bundle, false);
+                        } else {
+                            dialogUtils.noBtnDialog("暂未开放此入驻");
+                        }
+
+                    } else if (type == 3) {
+                        if (null != data && "1".equals(data.inLocal)) {
+                            bundle = new Bundle();
+                            bundle.putString("shopType", "1");
+                            bundle.putInt("flag", type);
+                            bundle.putString("phone", phone);
+                            requestPermision();
+                        } else {
+                            dialogUtils.noBtnDialog("暂未开放此入驻");
+                        }
+
+
                     }
+                }
 
 
                 break;
@@ -301,6 +320,53 @@ public class EntryChoseActivity extends Activity {
         super.onDestroy();
         if (null != immersionBar) {
             immersionBar.destroy();
+        }
+    }
+
+    private void requestPermision() {
+
+        String[] params = {Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.CAMERA,Manifest.permission.WRITE_EXTERNAL_STORAGE};
+        if (!EasyPermissions.hasPermissions(this, params)) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                ActivityCompat.requestPermissions(this, params, 10010);
+            }
+
+        } else {
+            JumpUtils.dataJump(EntryChoseActivity.this, PerfectLocalActivity.class, bundle, false);
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        boolean a = false;
+        if(requestCode == 10010){
+            for (int i = 0; i < grantResults.length; i++) {
+                if(grantResults[i]==-1){
+                    a = true;
+                    break;
+                }
+            }
+        }
+        if (requestCode == 10010) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                if (a) {
+                    boolean b = shouldShowRequestPermissionRationale(permissions[0]);
+                    boolean b1 = shouldShowRequestPermissionRationale(permissions[1]);
+                    boolean b2 = shouldShowRequestPermissionRationale(permissions[2]);
+                    if (b) {
+                        Toast.makeText(this, "请授予位置权限", Toast.LENGTH_SHORT).show();
+                    }
+                    if (b1) {
+                        Toast.makeText(this, "请授予相机权限", Toast.LENGTH_SHORT).show();
+                    }
+                    if(b2){
+                        Toast.makeText(this, "请授予读写权限", Toast.LENGTH_SHORT).show();
+                    }
+                } else {
+                    JumpUtils.dataJump(EntryChoseActivity.this, PerfectLocalActivity.class, bundle, false);
+                }
+            }
         }
     }
 }

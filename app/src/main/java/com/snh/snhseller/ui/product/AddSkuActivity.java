@@ -83,7 +83,7 @@ public class AddSkuActivity extends BaseActivity {
         heardTvMenu.setText("保存");
         if (null != bean) {
             et01.setText(bean.NormName);
-            et02.setText(bean.NormValue.substring(0, bean.NormValue.indexOf("*")));
+            et02.setText(bean.NormValue.substring(bean.NormValue.indexOf("*")+1,bean.NormValue.length()));
             et03.setText(StrUtils.moenyToDH(bean.Price + ""));
             et04.setText(StrUtils.moenyToDH(bean.RetailPrice + ""));
             et05.setText(bean.Inventory + "");
@@ -114,27 +114,44 @@ public class AddSkuActivity extends BaseActivity {
             showLongToast("请填写规格值");
             return false;
         }
-        if (StrUtils.isEmpty(et03.getText().toString().trim())) {
-            showLongToast("请填写二批价");
+//        if (StrUtils.isEmpty(et03.getText().toString().trim())) {
+//            showLongToast("请填写二批价");
+//            return false;
+//        }
+        if (!StrUtils.isEmpty(et03.getText().toString().trim())) {
+            if (Double.parseDouble(et03.getText().toString().trim()) <= 0) {
+                showLongToast("二批价必须大于零");
+                return false;
+            }
+        }
+//        if (StrUtils.isEmpty(et04.getText().toString().trim())) {
+//            showLongToast("请填写终端价");
+//            return false;
+//        }
+        if (!StrUtils.isEmpty(et04.getText().toString().trim())) {
+            if (Double.parseDouble(et04.getText().toString().trim()) <= 0) {
+                showLongToast("终端价必须大于零");
+                return false;
+            }
+        }
+        if (StrUtils.isEmpty(et03.getText().toString().trim()) && StrUtils.isEmpty(et04.getText().toString().trim())) {
+            dialogUtils.noBtnDialog("二批价与终端价必须输入一个");
             return false;
         }
-        if (StrUtils.isEmpty(et04.getText().toString().trim())) {
-            showLongToast("请填写终端价");
-            return false;
+        if (!StrUtils.isEmpty(et03.getText().toString().trim()) && !StrUtils.isEmpty(et04.getText().toString().trim())) {
+            if (Double.parseDouble(et03.getText().toString().trim()) > Double.parseDouble(et04.getText().toString().trim())) {
+                showLongToast("二批价不能大于终端价");
+                return false;
+            }
         }
         if (StrUtils.isEmpty(et05.getText().toString().trim())) {
             showLongToast("请填写库存");
             return false;
         }
-        if (!StrUtils.isEmpty(et05.getText().toString().trim())) {
-            if (Integer.parseInt(et05.getText().toString().trim()) <= 0) {
-                showLongToast("库存数量必须大于零");
-                return false;
-            }
-        }
+
         if (!StrUtils.isEmpty(et06.getText().toString().trim())) {
-            if (Integer.parseInt(et06.getText().toString().trim()) <= 0) {
-                showLongToast("运费必须大于零");
+            if (Double.parseDouble(et06.getText().toString().trim()) <= 0) {
+                showLongToast("重量必须大于零");
                 return false;
             }
         }
@@ -152,8 +169,16 @@ public class AddSkuActivity extends BaseActivity {
         map.put("ShopGoodsId", ShopGoodsId);
         map.put("NormName", et01.getText().toString().trim());
         map.put("NormValue", et02.getText().toString().trim());
-        map.put("Price", et03.getText().toString().trim());
-        map.put("MarketPrice", et04.getText().toString().trim());
+        if (StrUtils.isEmpty(et03.getText().toString().trim())) {
+            map.put("Price", et04.getText().toString().trim());
+        } else {
+            map.put("Price", et03.getText().toString().trim());
+        }
+        if (StrUtils.isEmpty(et04.getText().toString().trim())) {
+            map.put("MarketPrice", et03.getText().toString().trim());
+        } else {
+            map.put("MarketPrice", et04.getText().toString().trim());
+        }
         map.put("Inventory", et05.getText().toString().trim());
         if (!StrUtils.isEmpty(et06.getText().toString().trim())) {
             map.put("Weight", et06.getText().toString().trim());

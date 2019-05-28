@@ -17,14 +17,14 @@
 
         <LinearLayout
             android:id="@+id/heard_back"
-            android:layout_width="50pt"
-            android:layout_height="50pt"
-            android:gravity="center">
+            android:layout_width="100pt"
+            android:layout_height="60pt"
+            android:gravity="center_vertical">
 
             <ImageView
-                android:layout_width="20pt"
-                android:layout_height="31pt"
-                android:src="@drawable/left_back" />
+                android:layout_width="40pt"
+                android:layout_height="40pt"
+                android:background="@drawable/left_back" />
         </LinearLayout>
 
         <TextView

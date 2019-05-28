@@ -51,7 +51,7 @@ public class OrderNoticeActivity extends BaseActivity {
 
     private int index = 1;
 
-    private String[] titles = {"用户订单", "供销订单"};
+    private String[] titles = {"零售", "批发"};
     private Bundle bundle;
     private List<String> listTab = new ArrayList<>();
    public  static TabLayout tabOrder;
@@ -147,13 +147,13 @@ public class OrderNoticeActivity extends BaseActivity {
             switch (position)
             {
                 case 0:
-                    if(userOrderNum>99){
-                        tv_num.setText("99+");
-                    }else if(userOrderNum<=0){
+//                    if(userOrderNum>99){
+//                        tv_num.setText("99+");
+//                    }else if(userOrderNum<=0){
                         tv_num.setVisibility(View.GONE);
-                    }else {
-                        tv_num.setText(userOrderNum+"");
-                    }
+//                    }else {
+//                        tv_num.setText(userOrderNum+"");
+//                    }
                     break;
                 case 1:
                     if(supplierOrderNum>99){

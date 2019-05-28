@@ -1,6 +1,8 @@
 package com.snh.snhseller.ui.order;
 
 import android.os.Bundle;
+import android.os.PersistableBundle;
+import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -14,6 +16,7 @@ import com.snh.snhseller.BaseActivity;
 import com.snh.snhseller.R;
 import com.snh.snhseller.adapter.OrderSkuAdapter;
 import com.snh.snhseller.bean.BaseResultBean;
+import com.snh.snhseller.bean.MessageEventBean;
 import com.snh.snhseller.bean.OrderDetailBean;
 import com.snh.snhseller.requestApi.NetSubscriber;
 import com.snh.snhseller.requestApi.RequestClient;
@@ -25,6 +28,8 @@ import com.snh.snhseller.utils.JumpUtils;
 import com.snh.snhseller.utils.StrUtils;
 import com.snh.snhseller.utils.TimeUtils;
 import com.snh.snhseller.wediget.RecycleViewDivider;
+
+import org.greenrobot.eventbus.EventBus;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -106,6 +111,13 @@ public class OrderDetailsActivity extends BaseActivity {
     private OrderSkuAdapter adapter;
 
     private DialogUtils dialogUtils;
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState, @Nullable PersistableBundle persistentState) {
+        super.onCreate(savedInstanceState, persistentState);
+
+    }
+
     @Override
     protected void initContentView(Bundle savedInstanceState) {
         setContentView(R.layout.activity_orderdetails_layout);
@@ -122,6 +134,7 @@ public class OrderDetailsActivity extends BaseActivity {
     @Override
     public void setUpViews() {
         heardTitle.setText("订单详情");
+        OrderListFragment.isFrist = false;
         IsBang.setImmerHeard(this,rlHead);
         setRecyclerView();
         getData();
@@ -173,7 +186,7 @@ public class OrderDetailsActivity extends BaseActivity {
 
         tvCancleTime.setText(TimeUtils.secToString(bean.DPayPastDue));
         tvNamePhone.setText(bean.CommTenantName + "  " + bean.CommTenantPhone);
-        tvAddress.setText(bean.CommTenantAddress);
+        tvAddress.setText(bean.CommTenantProvince+bean.CommTenantCity+bean.CommTenantArea+" - "+bean.CommTenantAddress);
         ImageUtils.loadUrlImage(this, bean.SupplierIconUrl, ivShopLogo);
         tvShopName.setText(bean.SupplierName);
         ImageUtils.loadUrlImage(this, bean.CommodityIconUrl, ivProductLogo);
@@ -185,19 +198,19 @@ public class OrderDetailsActivity extends BaseActivity {
                 tvPayMethod.setText("待支付");
                 break;
             case 1:
-                tvPayMethod.setText("余额支付");
+                tvPayMethod.setText("余额");
                 break;
             case 2:
-                tvPayMethod.setText("混合支付（微信+余额）");
-                break;
-            case 3:
-                tvPayMethod.setText("混合支付（支付+余额）");
-                break;
-            case 4:
                 tvPayMethod.setText("微信");
                 break;
-            case 5:
+            case 3:
                 tvPayMethod.setText("支付宝");
+                break;
+            case 4:
+                tvPayMethod.setText("混合(微信+余额)");
+                break;
+            case 5:
+                tvPayMethod.setText("混合(支付宝+余额)");
                 break;
             case 6:
                 tvPayMethod.setText("货到付款");
@@ -211,7 +224,7 @@ public class OrderDetailsActivity extends BaseActivity {
         } else {
             tvYunfei.setText(bean.Freight + "");
         }
-        tvLiuyan.setText(bean.SuppLeave);
+//        tvLiuyan.setText(bean.SuppLeave);
 
         tvOrderNo.setText("订单编号:" + bean.OrderNo);
         tvCreatTime.setText("创建时间：" + bean.CreateTime);
@@ -326,12 +339,19 @@ public class OrderDetailsActivity extends BaseActivity {
         });
     }
     //确认收发货
-    private void cOrDOrder(int orderId, int type, final String content){
+    private void cOrDOrder(int orderId, final int type, final String content){
         RequestClient.AffirmSSStates(orderId, type, this, new NetSubscriber<BaseResultBean>(this,true) {
             @Override
             public void onResultNext(BaseResultBean model) {
-                Toast.makeText(OrderDetailsActivity.this, content, Toast.LENGTH_SHORT).show();
+                dialogUtils.simpleDialog(content, new DialogUtils.ConfirmClickLisener() {
+                    @Override
+                    public void onConfirmClick(View v) {
+                        dialogUtils.dismissDialog();
+                        OrderDetailsActivity.this.finish();
+                    }
+                },false);
             }
         });
     }
+
 }

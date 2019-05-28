@@ -15,14 +15,18 @@ import com.snh.snhseller.R;
 import com.snh.snhseller.adapter.OrderSukAdapter;
 import com.snh.snhseller.bean.BaseResultBean;
 import com.snh.snhseller.bean.NormsBean;
+import com.snh.snhseller.bean.beanDao.UserEntity;
 import com.snh.snhseller.bean.supplierbean.SkuBean;
 import com.snh.snhseller.requestApi.NetSubscriber;
 import com.snh.snhseller.requestApi.RequestClient;
 import com.snh.snhseller.db.DBManager;
+import com.snh.snhseller.ui.merchantEntry.PerfectMyLocalActivity;
+import com.snh.snhseller.utils.Contans;
 import com.snh.snhseller.utils.DialogUtils;
 import com.snh.snhseller.utils.ImageUtils;
 import com.snh.snhseller.utils.IsBang;
 import com.snh.snhseller.utils.JumpUtils;
+import com.snh.snhseller.utils.SPUtils;
 import com.snh.snhseller.utils.StrUtils;
 import com.snh.snhseller.wediget.RecycleViewDivider;
 
@@ -79,7 +83,7 @@ public class CommitOrderActivity extends BaseActivity {
     EditText etMsg;
 
     private String url;
-    private String productName,SupplierName,SupplierIconUrl;
+    private String productName, SupplierName, SupplierIconUrl;
     private int goodsId;
     private int shopId;
     private Bundle bundle;
@@ -110,16 +114,23 @@ public class CommitOrderActivity extends BaseActivity {
     @Override
     public void setUpViews() {
         heardTitle.setText("确认订单");
-        IsBang.setImmerHeard(this,rlHead);
-        tvNamePhone.setText(DBManager.getInstance(this).getUserInfo().Contacts + "   " + DBManager.getInstance(this).getUserInfo().ContactsTel);
-        tvAddress.setText(DBManager.getInstance(this).getUserInfo().Address);
+        IsBang.setImmerHeard(this, rlHead);
+        tvNamePhone.setText(DBManager.getInstance(this).getUserInfo().ShopName + "   " + DBManager.getInstance(this).getUserInfo().ContactsTel);
+        UserEntity userEntity = DBManager.getInstance(this).getUserInfo();
+        tvAddress.setText(userEntity.Province + userEntity.City + userEntity.Area + " - " + userEntity.Address);
         ImageUtils.loadUrlImage(this, SupplierIconUrl, ivShopLogo);
         ImageUtils.loadUrlImage(this, url, ivProductLogo);
         tvProductName.setText(productName);
         tvShopName.setText(SupplierName);
         setRecyclerView();
-        for (SkuBean bean : skudatas) {
-            totalMoney += bean.total * bean.Price;
+        if (skudatas.get(0).Price > 0) {
+            for (SkuBean bean : skudatas) {
+                totalMoney += bean.total * bean.Price;
+            }
+        } else {
+            for (SkuBean bean : skudatas) {
+                totalMoney += bean.total * bean.MarketPrice;
+            }
         }
         tvTotalMoney.setText(StrUtils.moenyToDH(totalMoney + ""));
     }
@@ -146,7 +157,7 @@ public class CommitOrderActivity extends BaseActivity {
 
     @OnClick({R.id.heard_back, R.id.tv_commit})
     public void onClick(View view) {
-        if(isFastClick()){
+        if (isFastClick()) {
             return;
         }
         switch (view.getId()) {
@@ -154,7 +165,22 @@ public class CommitOrderActivity extends BaseActivity {
                 this.finish();
                 break;
             case R.id.tv_commit:
-                postOrder();
+                if ("1".equals(SPUtils.getInstance(this).getString(Contans.IS_FULL))) {
+                    postOrder();
+                } else if ("0".equals(SPUtils.getInstance(this).getString(Contans.IS_FULL))) {
+                    dialogUtils.twoBtnDialog("是否马上完善店铺信息", new DialogUtils.ChoseClickLisener() {
+                        @Override
+                        public void onConfirmClick(View v) {
+                            dialogUtils.dismissDialog();
+                            JumpUtils.simpJump(CommitOrderActivity.this, PerfectMyLocalActivity.class, false);
+                        }
+
+                        @Override
+                        public void onCancelClick(View v) {
+                            dialogUtils.dismissDialog();
+                        }
+                    }, true);
+                }
                 break;
         }
     }
@@ -181,7 +207,6 @@ public class CommitOrderActivity extends BaseActivity {
             @Override
             public void onResultNext(BaseResultBean<String> model) {
                 if (StrUtils.isEmpty(payMethod)) {
-
                     bundle = new Bundle();
                     bundle.putString("orderNo", model.data);
                     bundle.putDouble("totalMoney", totalMoney);
@@ -192,7 +217,7 @@ public class CommitOrderActivity extends BaseActivity {
                         public void onConfirmClick(View v) {
                             CommitOrderActivity.this.finish();
                         }
-                    },false);
+                    }, false);
                 }
             }
         }));

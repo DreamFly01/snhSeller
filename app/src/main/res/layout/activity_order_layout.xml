@@ -10,7 +10,7 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-        <include layout="@layout/heard_layout"></include>
+        <include layout="@layout/heard_white_layout"></include>
         <android.support.design.widget.TabLayout
             app:tabTextAppearance="@android:style/TextAppearance.Holo.Small"
             android:id="@+id/tab_order"

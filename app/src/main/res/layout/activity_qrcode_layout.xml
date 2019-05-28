@@ -4,7 +4,7 @@
     android:layout_height="match_parent"
     android:background="@color/color_app_bg"
     android:orientation="vertical">
-<include layout="@layout/heard_layout"></include>
+<include layout="@layout/heard_white_layout"></include>
     <RelativeLayout
         android:background="@color/white"
         android:layout_marginTop="200pt"

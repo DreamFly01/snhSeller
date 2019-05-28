@@ -46,7 +46,8 @@
         android:text="-"
         android:textSize="@dimen/txtSize_30" />
 
-    <EditText
+    <com.snh.snhseller.wediget.RecycleViewEditText
+        android:inputType="number"
         android:id="@+id/et_num"
         android:layout_width="80pt"
         android:layout_height="40pt"

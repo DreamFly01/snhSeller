@@ -112,7 +112,7 @@ public class StoreActivity extends BaseActivity {
 
     @Override
     public void setUpViews() {
-        IsBang.setImmerHeard(this, rlHead);
+        IsBang.setImmerHeard(this, rlHead,"#F81131");
         heardTitle.setText("");
         tvName.setText(name);
         tvPhone.setText(phone);

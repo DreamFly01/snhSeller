@@ -130,7 +130,7 @@ public class IsBang {
             params.height = LinearLayout.LayoutParams.WRAP_CONTENT;
             heard.setLayoutParams(params);
             heard.setPadding(0, ImmersionBar.getActionBarHeight((Activity) context) / 2 + 10, 0, 20);
-            heard.setBackgroundColor(Color.parseColor("#F81131"));
+            heard.setBackgroundColor(Color.parseColor("#ffffff"));
         }
     }
 
@@ -144,7 +144,7 @@ public class IsBang {
                 params.height = LinearLayout.LayoutParams.WRAP_CONTENT;
                 heard.setLayoutParams(params);
                 heard.setPadding(0, ImmersionBar.getActionBarHeight((Activity) context) / 2 + 10, 0, 20);
-                heard.setBackgroundColor(Color.parseColor("#F81131"));
+                heard.setBackgroundColor(Color.parseColor("#ffffff"));
             }catch (Exception e) {
                 Log.e("没有适配","noTch");
             }
@@ -159,7 +159,7 @@ public class IsBang {
             heard.setPadding(0, ImmersionBar.getActionBarHeight((Activity) context) / 2 + 10, 0, 20);
             if(StrUtils.isEmpty(color)){
 
-            heard.setBackgroundColor(Color.parseColor("#2E8AFF"));
+            heard.setBackgroundColor(Color.parseColor("#ffffff"));
             }else {
                 heard.setBackgroundColor(Color.parseColor(color));
             }

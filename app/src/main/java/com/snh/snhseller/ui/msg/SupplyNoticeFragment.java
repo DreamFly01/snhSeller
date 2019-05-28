@@ -60,7 +60,6 @@ public class SupplyNoticeFragment extends BaseFragment {
     public void setUpViews(View view) {
         dialogUtils = new DialogUtils(getContext());
         setRecyclerView();
-        getData();
     }
 
     @Override
@@ -88,12 +87,11 @@ public class SupplyNoticeFragment extends BaseFragment {
                 switch (view.getId())
                 {
                     case R.id.tv_agree:
-                        agreeOrRefuse(datas.get(position).ApplyForId,1,"已同意");
-                        datas.remove(position);
+                        agreeOrRefuse(position,datas.get(position).ApplyForId,1,"已同意");
                         break;
                     case R.id.tv_refuse:
-                        agreeOrRefuse(datas.get(position).ApplyForId,2,"已拒绝");
-                        datas.remove(position);
+                        agreeOrRefuse(position,datas.get(position).ApplyForId,2,"已拒绝");
+
                         break;
                 }
                 if(datas.size()>0){
@@ -151,12 +149,25 @@ public class SupplyNoticeFragment extends BaseFragment {
             }
         }));
     }
-    private void agreeOrRefuse(int id, int type, final String content){
+    private void agreeOrRefuse(final int position, int id, int type, final String content){
         addSubscription(RequestClient.ConsentApplyFor(id, type, getContext(), new NetSubscriber<BaseResultBean>(getContext(),true) {
             @Override
             public void onResultNext(BaseResultBean model) {
                 dialogUtils.noBtnDialog(content);
+                datas.remove(position);
+                if(datas.size()>0){
+                    adapter.setNewData(datas);
+                }else {
+                    adapter.setNewData(null);
+                    adapter.setEmptyView(R.layout.empty_layout,recyclerView);
+                }
             }
         }));
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        getData();
     }
 }

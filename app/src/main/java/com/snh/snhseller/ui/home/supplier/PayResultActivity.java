@@ -6,9 +6,11 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.gyf.barlibrary.ImmersionBar;
 import com.snh.snhseller.BaseActivity;
 import com.snh.snhseller.R;
 import com.snh.snhseller.utils.FinishActivityManager;
+import com.snh.snhseller.utils.IsBang;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -51,6 +53,9 @@ public class PayResultActivity extends BaseActivity {
 
     @Override
     public void setUpViews() {
+        if (ImmersionBar.hasNotchScreen(this)) {
+            IsBang.setImmerHeard(this, rlHead,"#ffffff");
+        }
         heardTitle.setText("支付状态");
         tvPayResult.setText(result);
     }

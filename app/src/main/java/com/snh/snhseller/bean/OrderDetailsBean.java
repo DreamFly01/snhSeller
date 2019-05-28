@@ -36,5 +36,8 @@ public class OrderDetailsBean {
     public String ShopType;
     public String ServiceTel;
     public String PayTime;
-
+    public long ArriveTime;
+    public String Phone;
+    public String UserName;
+    public String CouponValue;
 }

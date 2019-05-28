@@ -1,6 +1,7 @@
 package com.snh.snhseller.requestApi;
 
 import android.content.Context;
+import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.snh.snhseller.BuildConfig;
@@ -23,6 +24,7 @@ import com.snh.snhseller.bean.OrderDetailBean;
 import com.snh.snhseller.bean.OrderDetailsBean;
 import com.snh.snhseller.bean.PayWxBean;
 import com.snh.snhseller.bean.ProductBean;
+import com.snh.snhseller.bean.RetailProductBean;
 import com.snh.snhseller.bean.ShopGoodsTypeBean;
 import com.snh.snhseller.bean.StoreClassficationBean;
 import com.snh.snhseller.bean.UserBean;
@@ -46,6 +48,7 @@ import com.snh.snhseller.utils.Contans;
 import com.snh.snhseller.utils.NetworkUtils;
 import com.snh.snhseller.utils.SPUtils;
 import com.snh.snhseller.utils.StrUtils;
+import com.snh.snhseller.utils.UriUtils;
 
 import java.io.File;
 import java.net.SocketTimeoutException;
@@ -84,12 +87,18 @@ public class RequestClient {
      */
     public static Subscription UpLoadFile(List<String> path, Context context, NetSubscriber<BaseResultBean> observer) {
         List<MultipartBody.Part> parts = new ArrayList<>();
-        for (int i = 0; i < path.size(); i++) {
-            File file = new File(path.get(i));
-            RequestBody fileBody = RequestBody.create(MediaType.parse("multipart/form-data"), file);
-            MultipartBody.Part part = MultipartBody.Part.createFormData("MultipartFile", file.getName(), fileBody);
-            parts.add(part);
+        try {
+            for (int i = 0; i < path.size(); i++) {
+//                File file = new File(UriUtils.getRealPathFromURI(context,path.get(i)));
+                File file = new File(path.get(i));
+                RequestBody fileBody = RequestBody.create(MediaType.parse("multipart/form-data"), file);
+                MultipartBody.Part part = MultipartBody.Part.createFormData("MultipartFile", file.getName(), fileBody);
+                parts.add(part);
+            }
+        } catch (Exception e) {
+            Toast.makeText(context, "图片上传失败", Toast.LENGTH_SHORT).show();
         }
+
         return doRequest(RetrofitProxy1.getApiService(context, "").UpLoadFile(parts), context, observer);
     }
 
@@ -99,7 +108,7 @@ public class RequestClient {
      * @param PhoneNumber
      * @param type        1 短信登录，
      *                    2 注册 ，
-     *                    3修改支付密码，
+     *                    3 绑定，
      *                    4修改手机号码，
      *                    5 忘记密码
      * @param context
@@ -125,7 +134,7 @@ public class RequestClient {
     public static Subscription SmsCode(String PhoneNumber, Context context, NetSubscriber<BaseResultBean> observer) {
         Map<String, Object> map = new TreeMap<>();
         map.put("PhoneNumber", PhoneNumber);
-        map.put("Type", 1);
+        map.put("Type", 2);
         return doRequest(RetrofitProxy.
                         getApiService(context, "").
                         SmsCode(map),
@@ -259,7 +268,7 @@ public class RequestClient {
         Map<String, Object> map = new TreeMap<>();
         map.put("PhoneNumber", PhoneNumber);
         map.put("Code", Code);
-        map.put("Type", 1);
+        map.put("Type", 2);
         return doRequest(RetrofitProxy.
                         getApiService(context, "").
                         MerchantLogin(map),
@@ -339,13 +348,16 @@ public class RequestClient {
      * @param observer
      * @return
      */
-    public static Subscription getOrderList(String orderStates, String payStates, int index, Context context, NetSubscriber<BaseResultBean<List<OrderBean>>> observer) {
+    public static Subscription getOrderList(String orderNo,String orderStates, String payStates, int index, Context context, NetSubscriber<BaseResultBean<List<OrderBean>>> observer) {
         Map<String, Object> map = new TreeMap<>();
         if (!StrUtils.isEmpty(orderStates)) {
             map.put("orderStates", orderStates);
         }
         if (!StrUtils.isEmpty(payStates)) {
             map.put("payStates", payStates);
+        }
+        if(!StrUtils.isEmpty(orderNo)){
+            map.put("orderNo", orderNo);
         }
         map.put("supplierId", DBManager.getInstance(context).getUseId());
         map.put("pageSize", 10);
@@ -464,11 +476,39 @@ public class RequestClient {
         } else {
             map.put("commtenantName", commtenantName);
         }
-        map.put("commType", commType);
+        if (commType == -2) {
+
+        } else {
+            map.put("commType", commType);
+        }
         map.put("pageIndex", pageIndex);
         return doRequest(RetrofitProxy.
                         getApiService(context, "").
                         GetSaleOfGoods(map),
+                context, observer);
+    }
+
+    /**
+     * 新版获取店铺零售商品
+     * @param commType
+     * @param context
+     * @param observer
+     * @return
+     */
+    public static Subscription GetSaleOfGoodsTwo(int commType,  Context context, NetSubscriber<BaseResultBean<List<RetailProductBean>>> observer) {
+        Map<String, Object> map = new TreeMap<>();
+        map.put("supplierId", DBManager.getInstance(context).getUseId());
+//        map.put("pageSize", 10);
+//        if (StrUtils.isEmpty(commtenantName)) {
+//            map.put("commtenantName", "");
+//        } else {
+//            map.put("commtenantName", commtenantName);
+//        }
+            map.put("commType", commType);
+//        map.put("pageIndex", pageIndex);
+        return doRequest(RetrofitProxy.
+                        getApiService(context, "").
+                        GetSaleOfGoodsTwo(map),
                 context, observer);
     }
 
@@ -689,7 +729,6 @@ public class RequestClient {
         Map<String, Object> map = new TreeMap<>();
         map.put("PhoneNumer", PhoneNumer);
         map.put("Type", Type);
-
         return doRequest(RetrofitProxy.
                         getApiService(context, "").
                         SaleSendSms(map),
@@ -1037,7 +1076,7 @@ public class RequestClient {
         Map<String, Object> map = new TreeMap<>();
         map.put("supplierId", supplierid);
         map.put("shopgoodsId", id);
-
+        map.put("mysupplierId", DBManager.getInstance(context).getUseId());
         return doRequest(RetrofitProxy.
                         getApiService(context, "").
                         ShopGoodsDetail(map),
@@ -1866,9 +1905,10 @@ public class RequestClient {
 
     /**
      * 获取消息通知
+     *
      * @param type（1用户订单通知、2供销通知商户订单通知、3供销通知申请通知、4资金通知、5系统通知）
      * @param pageIndex
-     * @param orderNo 订单编号用于查询
+     * @param orderNo                                         订单编号用于查询
      * @param context
      * @param observer
      * @return
@@ -1890,6 +1930,7 @@ public class RequestClient {
 
     /**
      * 获取消息条数
+     *
      * @param context
      * @param observer
      * @return
@@ -1902,6 +1943,24 @@ public class RequestClient {
                         .GetSupplierNoticeUnreadCount(map),
                 context, observer);
     }
+
+    /**
+     * 完善资料
+     *
+     * @param map
+     * @param context
+     * @param observer
+     * @return
+     */
+    public static Subscription UpdateSupplier(Map<String, Object> map, Context context, NetSubscriber<BaseResultBean> observer) {
+
+        map.put("PhoneNumber", DBManager.getInstance(context).getUserInfo().ContactsTel);
+        return doRequest(RetrofitProxy
+                        .getApiService(context, "")
+                        .UpdateSupplier(map),
+                context, observer);
+    }
+
 
     /***
      * 包装请求后再发起请求
@@ -1916,7 +1975,7 @@ public class RequestClient {
     private static <T> Subscription doRequest(Observable observable, Context context, NetSubscriber<T> observer) {
         return observable
                 .subscribeOn(Schedulers.io())
-                .onErrorReturn(new DealErroHttpFunc(context, null))
+                .onErrorReturn(new DealErroHttpFunc1(context, null))
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(observer);
     }

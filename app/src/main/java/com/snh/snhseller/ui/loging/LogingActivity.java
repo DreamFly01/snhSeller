@@ -20,6 +20,7 @@ import com.netease.nimlib.sdk.RequestCallback;
 import com.netease.nimlib.sdk.auth.AuthService;
 import com.netease.nimlib.sdk.auth.LoginInfo;
 import com.snh.snhseller.BaseActivity;
+import com.snh.snhseller.MainActivity;
 import com.snh.snhseller.R;
 import com.snh.snhseller.bean.AllUserBean;
 import com.snh.snhseller.bean.BaseResultBean;
@@ -28,7 +29,12 @@ import com.snh.snhseller.bean.WithdrawDetailsBean;
 import com.snh.snhseller.bean.salebean.SaleUserBean;
 import com.snh.snhseller.requestApi.NetSubscriber;
 import com.snh.snhseller.requestApi.RequestClient;
+import com.snh.snhseller.ui.home.HomeFragment;
+import com.snh.snhseller.ui.merchantEntry.CompleteActivity;
 import com.snh.snhseller.ui.merchantEntry.MerchantLogingActivity;
+import com.snh.snhseller.ui.msg.MsgFragment;
+import com.snh.snhseller.ui.order.OrderFragment;
+import com.snh.snhseller.ui.product.ProductFragment;
 import com.snh.snhseller.ui.salesmanManagement.SalesmanMainActivity;
 import com.snh.snhseller.utils.AnimUtil;
 import com.snh.snhseller.db.DBManager;
@@ -37,6 +43,7 @@ import com.snh.snhseller.utils.DialogUtils;
 import com.snh.snhseller.utils.IsBang;
 import com.snh.snhseller.utils.JumpUtils;
 import com.snh.snhseller.utils.Md5Utils;
+import com.snh.snhseller.utils.SPUtils;
 import com.snh.snhseller.utils.StrUtils;
 import com.snh.snhseller.wediget.IdentifyCodeView;
 
@@ -99,17 +106,11 @@ public class LogingActivity extends BaseActivity {
     private boolean accountOrPhone = true;//true 为账号密码登录 false 为手机验证码登录
     private DialogUtils dialogUtils;
     private int type = 1;//1:商家，2业务员
-    private Bundle bundle;
-    private String phone = "";
 
     @Override
     protected void initContentView(Bundle savedInstanceState) {
         setContentView(R.layout.activity_loging_layout);
         dialogUtils = new DialogUtils(this);
-        bundle = getIntent().getExtras();
-        if (null != bundle) {
-            phone = bundle.getString("phone");
-        }
     }
 
     //业务员账号：18374975750  13637315267  123456
@@ -117,7 +118,7 @@ public class LogingActivity extends BaseActivity {
     public void setUpViews() {
         IsBang.setImmerHeard(this, rlHead);
 //        tvOpreation.setVisibility(View.GONE);
-        etUserName.setText(phone);
+        etUserName.setText(SPUtils.getInstance(this).getString(Contans.PHONE));
 //        heardTvMenu.setText("入驻");
 //        heardTvMenu.setTextColor(Color.WHITE);
         heardBack.setVisibility(View.GONE);
@@ -256,8 +257,10 @@ public class LogingActivity extends BaseActivity {
             addSubscription(RequestClient.Login(etUserName.getText().toString().trim(), Md5Utils.md5(etUserPsw.getText().toString().trim()), etCode.getText().toString().trim(), this, new NetSubscriber<BaseResultBean<AllUserBean>>(this, true) {
                 @Override
                 public void onResultNext(BaseResultBean<AllUserBean> model) {
+                    SPUtils.getInstance(LogingActivity.this).saveData(Contans.PHONE,etUserName.getText().toString().trim());
                     if (model.data.type == 1) {
-                        DBManager.getInstance(LogingActivity.this).logingSuccess(model.data, LogingActivity.this);
+                        SPUtils.getInstance(LogingActivity.this).saveData(Contans.IS_FULL,model.data.isFull+"");
+                        DBManager.getInstance(LogingActivity.this).logingSuccess(model.data, LogingActivity.this,etUserPsw.getText().toString().trim(),etUserName.getText().toString().trim());
                     } else if (model.data.type == 2) {
                         SaleUserBean bean = new SaleUserBean();
                         bean.NickName = model.data.NickName;
@@ -275,8 +278,10 @@ public class LogingActivity extends BaseActivity {
             addSubscription(RequestClient.Login(etPhone.getText().toString().trim(), "", etCode.getText().toString().trim(), this, new NetSubscriber<BaseResultBean<AllUserBean>>(this, true) {
                 @Override
                 public void onResultNext(BaseResultBean<AllUserBean> model) {
+                    SPUtils.getInstance(LogingActivity.this).saveData(Contans.PHONE,etUserName.getText().toString().trim());
                     if (model.data.type == 1) {
-                        DBManager.getInstance(LogingActivity.this).logingSuccess(model.data, LogingActivity.this);
+                        SPUtils.getInstance(LogingActivity.this).saveData(Contans.IS_FULL,model.data.isFull+"");
+                        DBManager.getInstance(LogingActivity.this).logingSuccess(model.data, LogingActivity.this,etUserPsw.getText().toString().trim(),etUserName.getText().toString().trim());
                     } else if (model.data.type == 2) {
                         SaleUserBean bean = new SaleUserBean();
                         bean.NickName = model.data.NickName;
@@ -291,45 +296,6 @@ public class LogingActivity extends BaseActivity {
                 }
             }));
         }
-
-//        if (type == 1) {
-//            if (accountOrPhone) {
-//                addSubscription(RequestClient.LoginPhone(etUserName.getText().toString().trim(), "", Md5Utils.md5(etUserPsw.getText().toString().trim()), this, new NetSubscriber<BaseResultBean<UserBean>>(this, true) {
-//                    @Override
-//                    public void onResultNext(BaseResultBean<UserBean> model) {
-//                        DBManager.getInstance(LogingActivity.this).logingSuccess(model.data, LogingActivity.this);
-//                    }
-//                }));
-//            } else {
-//                addSubscription(RequestClient.LoginPhone(etPhone.getText().toString().trim(), etCode.getText().toString().trim(), "", this, new NetSubscriber<BaseResultBean<UserBean>>(this, true) {
-//                    @Override
-//                    public void onResultNext(BaseResultBean<UserBean> model) {
-//                        DBManager.getInstance(LogingActivity.this).logingSuccess(model.data, LogingActivity.this);
-//                    }
-//                }));
-//            }
-//        }
-//        if (type == 2) {
-//            if (accountOrPhone) {
-//                addSubscription(RequestClient.LoginSale(etUserName.getText().toString().trim(), Md5Utils.md5(etUserPsw.getText().toString().trim()), this, new NetSubscriber<BaseResultBean<SaleUserBean>>(this, true) {
-//                    @Override
-//                    public void onResultNext(BaseResultBean<SaleUserBean> model) {
-//                        DBManager.getInstance(LogingActivity.this).saveSaleUser(model.data);
-//                        JumpUtils.simpJump(LogingActivity.this, SalesmanMainActivity.class, true);
-//                    }
-//                }));
-//            } else {
-//                addSubscription(RequestClient.SalePhoneLogin(etPhone.getText().toString().trim(), etCode.getText().toString().trim(), this, new NetSubscriber<BaseResultBean<SaleUserBean>>(this, true) {
-//                    @Override
-//                    public void onResultNext(BaseResultBean<SaleUserBean> model) {
-//                        DBManager.getInstance(LogingActivity.this).saveSaleUser(model.data);
-//                        JumpUtils.simpJump(LogingActivity.this, SalesmanMainActivity.class, true);
-//                    }
-//                }));
-//            }
-//
-//        }
-
     }
 
 

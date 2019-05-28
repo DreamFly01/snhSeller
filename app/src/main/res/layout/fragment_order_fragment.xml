@@ -10,107 +10,121 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
-
         <LinearLayout
             android:id="@+id/rl_head"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/app_red"
+            android:layout_height="88pt"
+            android:background="@color/white"
             android:orientation="horizontal"
-            android:padding="10pt"
+            android:gravity="center"
             >
 
 
-                <LinearLayout
-                    android:id="@+id/ll_01"
-                    android:layout_weight="1"
-                    android:gravity="center"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical">
-                    <TextView
-                        android:id="@+id/tv_01"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textSize="@dimen/txtSize_28"
-                        android:text="客户订单"
-                        android:textColor="@color/white"
-                        />
-                    <ImageView
-                        android:id="@+id/iv_01"
-                        android:layout_marginTop="10pt"
-                        android:layout_width="110pt"
-                        android:layout_height="2pt"
-                        android:background="@color/white"/>
-                </LinearLayout>
-            <ImageView
-                android:layout_gravity="center"
-                android:layout_width="2pt"
-                android:layout_height="40pt"
-                android:background="@color/white"
-                />
-                <LinearLayout
-                    android:id="@+id/ll_02"
-                    android:layout_weight="1"
-                    android:gravity="center"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical">
-                    <TextView
-                        android:id="@+id/tv_02"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textSize="@dimen/txtSize_28"
-                        android:text="出库订单"
-                        android:textColor="@color/white"
-                        />
-                    <ImageView
-                        android:id="@+id/iv_02"
-                        android:visibility="invisible"
-                        android:layout_marginTop="10pt"
-                        android:layout_width="110pt"
-                        android:layout_height="4pt"
-                        android:background="@color/white"/>
-                </LinearLayout>
-            <ImageView
-                android:layout_gravity="center"
-                android:layout_width="2pt"
-                android:layout_height="40pt"
-                android:background="@color/white"
-                />
             <LinearLayout
-                android:id="@+id/ll_03"
+                android:id="@+id/ll_01"
                 android:layout_weight="1"
                 android:gravity="center"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
                 <TextView
-                    android:id="@+id/tv_03"
+                    android:layout_marginRight="30pt"
+                    android:layout_gravity="right"
+                    android:id="@+id/tv_01"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textSize="@dimen/txtSize_28"
-                    android:text="进货订单"
-                    android:textColor="@color/white"
+                    android:textSize="@dimen/txtSize_34"
+                    android:text="零售"
+                    android:textColor="@color/txt_dark"
                     />
-                <ImageView
-                    android:id="@+id/iv_03"
-                    android:visibility="invisible"
-                    android:layout_marginTop="10pt"
-                    android:layout_width="110pt"
-                    android:layout_height="4pt"
-                    android:background="@color/white"/>
             </LinearLayout>
+            <ImageView
+                android:layout_gravity="center"
+                android:layout_width="2pt"
+                android:layout_height="40pt"
+                android:background="@color/txt_dark"
+                />
+            <LinearLayout
+                android:gravity="center_vertical"
+                android:id="@+id/ll_02"
+                android:layout_weight="1"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
+                <TextView
+                    android:gravity="center_vertical"
+                    android:layout_weight="1"
+                    android:layout_marginLeft="30pt"
+                    android:layout_gravity="left"
+                    android:id="@+id/tv_02"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:textSize="@dimen/txtSize_34"
+                    android:text="批发"
+                    android:textColor="@color/gray_1"
+                    />
+                <RelativeLayout
+                    android:id="@+id/rl_search"
+                    android:layout_width="100pt"
+                    android:layout_height="88pt">
+
+                    <ImageView
+                        android:layout_centerInParent="true"
+                        android:layout_width="40pt"
+                        android:layout_height="40pt"
+                        android:background="@drawable/product_search_bg"
+                        />
+                </RelativeLayout>
+            </LinearLayout>
+            <ImageView
+                android:layout_gravity="center"
+                android:layout_width="2pt"
+                android:layout_height="40pt"
+                android:background="@color/white"
+                />
         </LinearLayout>
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="2pt"
+            android:background="@color/color_app_bg"/>
+<RelativeLayout
+    android:visibility="gone"
+    android:id="@+id/rl_state"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/white"
+    android:padding="30pt"
+    >
+    <TextView
+        android:id="@+id/tv_state"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="出库"
+        android:textSize="@dimen/txtSize_34"
+        android:textColor="#FF9600"
+        />
+    <ImageView
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="34pt"
+        android:layout_toRightOf="@+id/tv_state"
+        android:layout_width="36pt"
+        android:layout_height="36pt"
+        android:background="@drawable/product_change"
+        />
+</RelativeLayout>
     <android.support.design.widget.TabLayout
         app:tabTextAppearance="@android:style/TextAppearance.Holo.Small"
         android:id="@+id/tab_order"
+        android:background="@color/white"
         app:tabSelectedTextColor="@color/app_red"
         app:tabIndicatorColor="@color/app_red"
         android:layout_width="match_parent"
         android:layout_height="80pt">
     </android.support.design.widget.TabLayout>
-
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="4pt"
+            android:background="@color/color_app_bg"/>
     <android.support.v4.view.ViewPager
         android:id="@+id/tab_vp"
         android:layout_width="match_parent"

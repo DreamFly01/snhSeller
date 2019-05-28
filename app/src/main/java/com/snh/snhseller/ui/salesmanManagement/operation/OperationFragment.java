@@ -2,8 +2,10 @@ package com.snh.snhseller.ui.salesmanManagement.operation;
 
 import android.Manifest;
 import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.v4.app.ActivityCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -32,11 +34,14 @@ import com.snh.snhseller.bean.salebean.OperationBean;
 import com.snh.snhseller.db.DBManager;
 import com.snh.snhseller.requestApi.NetSubscriber;
 import com.snh.snhseller.requestApi.RequestClient;
+import com.snh.snhseller.ui.merchantEntry.EntryChoseActivity;
+import com.snh.snhseller.ui.merchantEntry.PerfectLocalActivity;
 import com.snh.snhseller.ui.salesmanManagement.adapter.OperationAdapter;
 import com.snh.snhseller.utils.Contans;
 import com.snh.snhseller.utils.DialogUtils;
 import com.snh.snhseller.utils.ImageUtils;
 import com.snh.snhseller.utils.IsBang;
+import com.snh.snhseller.utils.JumpUtils;
 import com.snh.snhseller.utils.SPUtils;
 import com.snh.snhseller.utils.StrUtils;
 import com.snh.snhseller.utils.UpdateAppHttpUtil;
@@ -106,15 +111,22 @@ public class OperationFragment extends BaseFragment {
     @Override
     public void setUpViews(View view) {
         ImmersionBar.setTitleBar(getActivity(), rlHead);
-        IsBang.setImmerHeard(getContext(), rlHead, "");
+        IsBang.setImmerHeard(getContext(), rlHead, "#2E8AFF");
         updataVersion();
         dialogUtils = new DialogUtils(getContext());
         heardTitle.setText("业务员管理");
         heardBack.setVisibility(View.GONE);
+        SPUtils.getInstance(getContext()).saveData(Contans.LATITUDE, "0");
+        SPUtils.getInstance(getContext()).saveData(Contans.LONGITUDE, "0");
         tvNick.setText("姓名："+DBManager.getInstance(getContext()).getSaleInfo().RealName);
-        ImageUtils.loadUrlImage(getContext(),DBManager.getInstance(getContext()).getSaleInfo().SalesmanLogo,ivLogo);
+        String logo = DBManager.getInstance(getContext()).getSaleInfo().SalesmanLogo;
+        String logo1 = logo.substring(1,logo.length());
+        String logo2 = "h"+logo1;
+        ImageUtils.loadUrlImage(getContext(),logo2,ivLogo);
         setRecyclerView();
-        checkPerm();
+        getData();
+        requestPermision();
+
     }
 
     @Override
@@ -125,7 +137,7 @@ public class OperationFragment extends BaseFragment {
             public void onRefresh(@NonNull RefreshLayout refreshLayout) {
                 index = 1;
 //                getData();
-                checkPerm();
+                requestPermision();
             }
         });
         adapter.setOnLoadMoreListener(new BaseQuickAdapter.RequestLoadMoreListener() {
@@ -267,21 +279,13 @@ public class OperationFragment extends BaseFragment {
 
     }
 
-    private void checkPerm() {
-        String[] params = {Manifest.permission.ACCESS_FINE_LOCATION};
-        if (EasyPermissions.hasPermissions(getContext(), params)) {
-            initLocation();
-        } else {
-            EasyPermissions.requestPermissions(this, "需要定位权限", 100, params);
-        }
-    }
 
     private void record(int id, String content) {
         addSubscription(RequestClient.RecordClockIn(id, content, 1, getContext(), new NetSubscriber<BaseResultBean>(getContext(), true) {
             @Override
             public void onResultNext(BaseResultBean model) {
                 dialogUtils.dismissDialog();
-                Toast.makeText(getContext(), "打卡成功", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), "拜访成功", Toast.LENGTH_SHORT).show();
             }
         }));
     }
@@ -394,5 +398,42 @@ public class OperationFragment extends BaseFragment {
                     }
                 });
     }
+    private void requestPermision() {
 
+        String[] params = {Manifest.permission.ACCESS_FINE_LOCATION};
+        if (!EasyPermissions.hasPermissions(getContext(), params)) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+             requestPermissions(params, 10020);
+            }
+        } else {
+            initLocation();
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        boolean a = false;
+        if(requestCode == 10020){
+            for (int i = 0; i < grantResults.length; i++) {
+                if(grantResults[i]==-1){
+                    a = true;
+                    break;
+                }
+            }
+        }
+        if (requestCode == 10020) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                if (a) {
+                    boolean b = shouldShowRequestPermissionRationale(permissions[0]);
+                    if (b) {
+                        Toast.makeText(getContext(), "请授予位置权限", Toast.LENGTH_SHORT).show();
+                    }
+                } else {
+                    initLocation();
+                }
+            }
+        }
+
+    }
 }

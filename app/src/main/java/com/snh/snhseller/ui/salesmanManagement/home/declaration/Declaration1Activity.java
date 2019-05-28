@@ -133,13 +133,13 @@ public class Declaration1Activity extends BaseActivity implements TakePhoto.Take
     protected void initContentView(Bundle savedInstanceState) {
         setContentView(R.layout.activity_declaration1_layout);
         takePhoto = getTakePhoto();
-        compressConfig = new CompressConfig.Builder().setMaxPixel(800).setMaxSize(2 * 1024).create();
+        compressConfig = new CompressConfig.Builder().setMaxPixel(800).setMaxSize(2 * 1024 * 1024).create();
         dialogUtils = new DialogUtils(this, this);
     }
 
     @Override
     public void setUpViews() {
-        IsBang.setImmerHeard(this, rlHead, "");
+        IsBang.setImmerHeard(this, rlHead, "#2E8AFF");
         heardTitle.setText("费用申请");
         btnCommit.setText("提交");
         getType();
@@ -263,7 +263,7 @@ public class Declaration1Activity extends BaseActivity implements TakePhoto.Take
         try {
             getTakePhoto().onActivityResult(requestCode, resultCode, data);
         } catch (Exception e) {
-            Toast.makeText(this,"请重新选择照片",Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "请重新选择照片", Toast.LENGTH_SHORT).show();
         }
 
     }

@@ -1,0 +1,198 @@
+Index: app/build.gradle
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/build.gradle	(date 1558712468467)
++++ app/build.gradle	(date 1558712468467)
+@@ -0,0 +1,190 @@
++apply plugin: 'com.android.application'
++apply plugin: 'com.jakewharton.butterknife'
++apply plugin: 'org.greenrobot.greendao'
++apply plugin: 'com.mob.sdk'
++android {
++    compileSdkVersion 27
++    defaultConfig {
++        applicationId "com.snh.snhseller"
++        minSdkVersion 19
++        targetSdkVersion 27
++        versionCode 9
++        versionName "1.0.9"
++        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
++        multiDexEnabled true
++        ndk {
++            //选择要添加的对应 cpu 类型的 .so 库。
++            abiFilters 'armeabi', 'armeabi-v7a', 'arm64-v8a'
++            // 还可以添加 'x86', 'x86_64', 'mips', 'mips64'
++        }
++        manifestPlaceholders = [
++                JPUSH_PKGNAME : "com.snh.snhseller",
++                JPUSH_APPKEY : "8324931e4b5c755903011bdd", //JPush 上注册的包名对应的 Appkey.
++                JPUSH_CHANNEL : "developer-default", //暂时填写默认值即可.
++        ]
++    }
++    signingConfigs {
++        release {
++            storeFile file("C:/Users/Administrator/Desktop/算你狠商家版/snhSeller.jks")
++            storePassword "snhs8888"
++            keyAlias "key0"
++            keyPassword "snhs8888"
++        }
++    }
++    buildTypes {
++        debug {
++            minifyEnabled false
++            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
++            signingConfig signingConfigs.release
++        }
++        release {
++            minifyEnabled false
++            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
++            signingConfig signingConfigs.release
++        }
++    }
++    buildToolsVersion '27.0.3'
++    sourceSets {
++        main {
++            jniLibs.srcDirs = ['libs']
++        }}
++
++
++
++}
++
++MobSDK {
++    appKey "d580ad56b4b5"
++    appSecret "7fcae59a62342e7e2759e9e397c82bdd"
++
++    ShareSDK {
++        devInfo {
++            Wechat {
++                appId "wxbffbb975260288cc"
++                appSecret "45d63fd78aa42e3f531a9050e7736dc8"
++            }
++            WechatMoments{
++                appId "wxbffbb975260288cc"
++                appSecret "45d63fd78aa42e3f531a9050e7736dc8"
++            }
++        }
++    }
++
++}
++greendao{
++    schemaVersion 6 // 数据库版本号
++    daoPackage  'com.snh.snhseller.greendao'//greenDao 自动生成的代码保存的包名
++    targetGenDir   'src/main/java' //自动生成的代码存储的路径，默认是 build/generated/source/greendao.
++    generateTests false //true的时候自动生成测试单元
++    targetGenDirTests 'src/androidTest/java'
++}
++dependencies {
++    implementation fileTree(include: ['*.jar'], dir: 'libs')
++
++    //微信
++    implementation 'com.tencent.mm.opensdk:wechat-sdk-android-without-mta:+'
++
++    //ui适配
++    implementation 'com.bulong.rudeness:rudeness:latest.release@aar'
++    implementation 'com.github.CymChad:BaseRecyclerViewAdapterHelper:2.9.46'
++
++    //rx
++    implementation 'com.squareup.retrofit2:retrofit:2.4.0'
++    implementation 'com.squareup.retrofit2:converter-gson:2.4.0'
++    implementation 'com.squareup.retrofit2:adapter-rxjava:2.4.0'
++    implementation 'io.reactivex:rxandroid:1.1.0'
++
++    //下拉刷新
++    implementation 'com.scwang.smartrefresh:SmartRefreshLayout:1.1.0-alpha-14'
++    implementation 'com.scwang.smartrefresh:SmartRefreshHeader:1.1.0-alpha-14'
++
++    //时间地区选择器
++    implementation 'com.contrarywind:Android-PickerView:4.1.6'
++
++    //baseAdapter
++    implementation 'com.github.CymChad:BaseRecyclerViewAdapterHelper:2.9.46'
++
++    //数据库的操作
++    implementation 'org.greenrobot:greendao:3.2.2'
++
++    //分包
++    implementation 'com.android.support:multidex:1.0.1'
++
++    //注解
++    implementation 'com.jakewharton:butterknife:8.4.0'
++    annotationProcessor 'com.jakewharton:butterknife-compiler:8.4.0'
++
++    //沉浸标题栏
++    implementation 'com.gyf.immersionbar:immersionbar:2.3.3-beta09'
++
++    //网络请求日志打印
++    implementation('com.github.ihsanbal:LoggingInterceptor:3.0.0') {
++        exclude group: 'org.json', module: 'json'
++    }
++
++    //动态请求权限
++    implementation 'pub.devrel:easypermissions:1.1.3'
++
++    //noinspection GradleCompatible
++    implementation 'com.android.support:recyclerview-v7:27.0.2'
++    implementation 'com.zhy:base-rvadapter:3.0.3'
++    implementation 'com.just.agentweb:agentweb:4.0.2'
++    implementation 'com.coolindicator.sdk:coolindicator:1.0.0-beta'
++    implementation 'com.bm.photoview:library:1.4.1'
++
++    //拍照
++    implementation 'com.jph.takephoto:takephoto_library:4.0.3'
++    implementation 'com.github.bumptech.glide:glide:4.8.0'
++    annotationProcessor 'com.github.bumptech.glide:compiler:4.8.0'
++    implementation files('libs/BaiduLBS_Android.jar')
++    implementation project(path: ':uikit')
++
++    //加载动画
++    implementation 'com.wang.avi:library:2.1.3'
++
++    //生成二维码
++    implementation 'cn.bingoogolapple:bga-qrcode-zxing:1.3.6'
++
++    //柱状图
++    implementation 'com.github.PhilJay:MPAndroidChart:v3.1.0-alpha'
++
++    //日历控件
++    implementation 'com.haibin:calendarview:3.5.4'
++    implementation 'com.github.todou:calendarpager:1.0.0'
++    implementation files('libs/commons-lang3-3.8.1.jar')
++
++    //悬浮按钮
++    implementation 'com.github.clans:fab:1.6.4'
++
++    //banner
++    implementation 'com.youth.banner:banner:1.4.10'
++    compile(name: 'alipaySdk-15.6.0-20190226104053', ext: 'aar')
++
++    //动态更改baseUrl
++    implementation 'me.jessyan:retrofit-url-manager:1.4.0'
++
++    //侧滑菜单
++    implementation 'com.github.mcxtzhang:SwipeDelMenuLayout:V1.3.0'
++
++    //版本更新
++    implementation 'com.qianwen:update-app:3.5.2'
++    implementation 'com.lzy.net:okgo:3.0.4'
++
++
++    // 此处以JPush 3.2.0 版本为例。
++    implementation 'cn.jiguang.sdk:jpush:3.2.0'
++    // 此处以JCore 1.2.7 版本为例。
++    implementation 'cn.jiguang.sdk:jcore:1.2.7'
++
++
++    implementation 'com.github.AriesHoo:RadiusView:1.1.0'
++    //greendao数据库更新
++    implementation 'com.github.yuweiguocn:GreenDaoUpgradeHelper:v2.1.0'
++
++    implementation 'com.tencent.bugly:crashreport:latest.release'
++    implementation 'com.tencent.bugly:nativecrashreport:latest.release'
++
++    implementation 'q.rorbin:badgeview:1.1.3'
++    implementation 'me.weyye.hipermission:library:1.0.7'
++//    implementation 'com.huangyz0918:androidwm:0.2.3'
++}

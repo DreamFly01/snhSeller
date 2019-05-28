@@ -56,17 +56,25 @@ public class ChangePswActivity extends BaseActivity {
     @BindView(R.id.btn_commit)
     Button btnCommit;
     private DialogUtils dialogUtils;
-
+    private Bundle bundle;
+    private String psw = "";
     @Override
     protected void initContentView(Bundle savedInstanceState) {
         setContentView(R.layout.activity_changepsw_layout);
         dialogUtils = new DialogUtils(this);
+        bundle = getIntent().getExtras();
+        if (null!=bundle) {
+            psw = bundle.getString("psw");
+        }
     }
 
     @Override
     public void setUpViews() {
         btnCommit.setText("提交");
         heardTitle.setText("修改密码");
+        if(!StrUtils.isEmpty(psw)){
+            etOld.setText(psw);
+        }
     }
 
     @Override
@@ -95,13 +103,13 @@ public class ChangePswActivity extends BaseActivity {
         addSubscription(RequestClient.OldPwdToNewPwd(oldPsw, newPsw, this, new NetSubscriber<BaseResultBean>(this, true) {
             @Override
             public void onResultNext(BaseResultBean model) {
-                dialogUtils.simpleDialog("密码修改成功", new DialogUtils.ConfirmClickLisener() {
+                dialogUtils.simpleDialog("密码修改成功，请重新登录", new DialogUtils.ConfirmClickLisener() {
                     @Override
                     public void onConfirmClick(View v) {
                         dialogUtils.dismissDialog();
                         DBManager.getInstance(ChangePswActivity.this).cleanUser();
                         NIMClient.getService(AuthService.class).logout();
-                        JumpUtils.simpJump(ChangePswActivity.this, LogingActivity.class, true);
+                        JumpUtils.simpJump(ChangePswActivity.this, LogingActivity.class,true);
                     }
                 }, false);
             }

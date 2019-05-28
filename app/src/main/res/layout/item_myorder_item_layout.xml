@@ -9,7 +9,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/color_app_bg"
+        android:background="@color/white"
         android:orientation="horizontal"
         android:padding="30pt">
 
@@ -53,7 +53,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="￥24"
+                    android:text="¥24"
                     android:textColor="@color/app_red"
                     android:textSize="@dimen/txtSize_28" />
 

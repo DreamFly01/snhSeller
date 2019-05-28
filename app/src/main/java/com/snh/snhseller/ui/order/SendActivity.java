@@ -118,9 +118,9 @@ public class SendActivity extends BaseActivity {
         for (int i = 0; i < bean.OrderGoodsList.size(); i++) {
             totalMoney = totalMoney + bean.OrderGoodsList.get(i).Price;
         }
-        tvTotalMoney1.setText("￥" + totalMoney);
+        tvTotalMoney1.setText("¥" + totalMoney);
         if (bean.Freight > 0) {
-            tvYoufei.setText("（含运费：￥" + bean.Freight + "）");
+            tvYoufei.setText("（含运费：¥" + bean.Freight + "）");
         } else {
             tvYoufei.setText("（包邮）");
         }

@@ -76,4 +76,22 @@
     <style name="TransparentDialog" parent="@android:style/Theme.Holo.Light.Dialog">
         <item name="android:windowBackground">@android:color/transparent</item>
     </style>
+
+    <style name="PermissionBlueStyle">
+        <item name="PermissionTitleColor">@color/txt_dark</item>
+        <item name="PermissionMsgColor">@color/txt_dark</item>
+        <item name="PermissionItemTextColor">@color/txt_dark</item>
+        <item name="PermissionButtonBackground">@color/app_red</item>
+        <item name="PermissionBackround">@drawable/shape_bg_white</item>
+        <item name="PermissionButtonTextColor">@android:color/white</item>
+    </style>
+    <style name="FullScreen" parent="AppTheme">
+        <item name="android:windowActionBar">false</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowFullscreen">true</item>
+        <!-- 适配android手机系统8.0(api26)，Only fullscreen opaque activities can request orientation -->
+        <!--用背景图消除启动白屏-->
+        <item name="android:windowIsTranslucent">false</item>
+    </style>
+
 </resources>

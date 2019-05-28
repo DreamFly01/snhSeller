@@ -20,10 +20,13 @@ import com.snh.snhseller.ui.home.set.QRcodeActivity;
 import com.snh.snhseller.ui.home.set.SetActivity;
 import com.snh.snhseller.ui.home.supplier.MySupplierActivity;
 import com.snh.snhseller.db.DBManager;
+import com.snh.snhseller.ui.merchantEntry.PerfectMyLocalActivity;
+import com.snh.snhseller.utils.Contans;
 import com.snh.snhseller.utils.DialogUtils;
 import com.snh.snhseller.utils.ImageUtils;
 import com.snh.snhseller.utils.IsBang;
 import com.snh.snhseller.utils.JumpUtils;
+import com.snh.snhseller.utils.SPUtils;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -73,11 +76,12 @@ public class HomeFragment extends BaseFragment {
     @Override
     public void setUpViews(View view) {
         dialogUtils = new DialogUtils(getContext());
-        ImmersionBar.setTitleBar(getActivity(), llHeard);
-        IsBang.setImmerHeard(getContext(), llHeard);
+//        ImmersionBar.setTitleBar(getActivity(), llHeard);
+//        IsBang.setImmerHeard(getContext(), llHeard,"#FF5959");
+        ImmersionBar.with(getActivity()).statusBarColor(R.color.app_red).statusBarDarkFont(false).init();
+
         ImageUtils.loadUrlCorners(getContext(), DBManager.getInstance(getContext()).getUserInfo().Logo, ivHeard);
         tvName.setText(DBManager.getInstance(getContext()).getUserInfo().ShopName);
-
     }
 
     @Override
@@ -147,5 +151,11 @@ public class HomeFragment extends BaseFragment {
             System.out.println(DBManager.getInstance(getContext()).getUserInfo().Logo);
             tvName.setText(DBManager.getInstance(getContext()).getUserInfo().ShopName);
         }
+    }
+
+    @Override
+    public void onHiddenChanged(boolean hidden) {
+        super.onHiddenChanged(hidden);
+        ImmersionBar.with(getActivity()).statusBarColor(R.color.app_red).statusBarDarkFont(false).init();
     }
 }

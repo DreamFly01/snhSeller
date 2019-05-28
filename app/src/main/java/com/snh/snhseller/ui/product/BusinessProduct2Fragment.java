@@ -96,7 +96,7 @@ public class BusinessProduct2Fragment extends BaseFragment {
                 Bundle bundle = new Bundle();
                 bundle.putInt("goodsId", datas.get(position).ShopgoodsId);
                 if (datas.get(position).IsSetNorm) {
-                    JumpUtils.dataJump(getActivity(), SkuListActivity.class, bundle, false);
+                    JumpUtils.dataJump(getActivity(), SkuList1Activity.class, bundle, false);
                 } else {
                     JumpUtils.dataJump(getActivity(), AddSkuActivity.class, bundle, false);
                 }

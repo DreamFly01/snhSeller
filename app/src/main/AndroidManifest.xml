@@ -6,6 +6,7 @@
     <permission
         android:name="com.snh.snhseller.permission.JPUSH_MESSAGE"
         android:protectionLevel="signature"></permission>
+
     <!-- Required -->
     <uses-permission android:name="com.snh.snhseller.permission.JPUSH_MESSAGE" />
     <uses-permission android:name="android.permission.RECEIVE_USER_PRESENT" />
@@ -15,7 +16,13 @@
         tools:ignore="ProtectedPermissions" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.VIBRATE" />
-
+    <uses-permission android:name="com.sonyericsson.home.permission.BROADCAST_BADGE"/>
+    <uses-permission android:name="com.sec.android.provider.badge.permission.READ"/>
+    <uses-permission android:name="com.sec.android.provider.badge.permission.WRITE"/>
+    <!-- 申请华为角标权限  -->
+    <uses-permission android:name="com.huawei.android.launcher.permission.CHANGE_BADGE"/>
+    <uses-permission android:name="com.huawei.android.launcher.permission.READ_SETTINGS" />
+    <uses-permission android:name="com.huawei.android.launcher.permission.WRITE_SETTINGS" />
     <!-- 外置存储存取权限 -->
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
@@ -321,10 +328,19 @@
         <activity
             android:name=".wxapi.WXPayEntryActivity"
             android:exported="true"
-            android:launchMode="singleTop"></activity>
+            android:launchMode="singleTop"
+            ></activity>
         <activity android:name=".ui.home.money.WithdrawListActivity"></activity>
         <activity android:name=".ui.home.money.WithdrawDetailsActivity"></activity>
-
+        <activity android:name=".ui.merchantEntry.PerfectLocalActivity"></activity>
+        <activity android:name=".ui.merchantEntry.PerfectMyLocalActivity"></activity>
+        <activity android:name=".ui.product.AddSku1Activity"></activity>
+        <activity android:name=".ui.product.SkuList1Activity"></activity>
+        <activity android:name=".ui.product.EditProduct1Activity"></activity>
+        <activity android:name=".ui.product.ProductAllActivity"></activity>
+        <activity android:name=".ui.product.WholesaleAllActivity"></activity>
+        <activity android:name=".ui.order.BToCOrderAllActivity"></activity>
+        <activity android:name=".ui.order.BToBOrderAllActivity"></activity>
     </application>
 
 

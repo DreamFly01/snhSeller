@@ -69,7 +69,8 @@ public class GlideCacheUtil {
     public void clearImageAllCache(Context context) {
         clearImageDiskCache(context);
         clearImageMemoryCache(context);
-        String ImageExternalCatchDir=getStorageDirectory()+"/GlideDisk";
+//        String ImageExternalCatchDir=getStorageDirectory()+"/GlideDisk";
+        String ImageExternalCatchDir=context.getExternalCacheDir()+"/GlideImgCache";
         deleteFolderFile(ImageExternalCatchDir, true);
     }
 
@@ -79,8 +80,13 @@ public class GlideCacheUtil {
      * @return CacheSize
      */
     public String getCacheSize(Context context) {
+//        try {
+//            return getFormatSize(getFolderSize(new File(getStorageDirectory()+"/GlideDisk")));
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
         try {
-            return getFormatSize(getFolderSize(new File(getStorageDirectory()+"/GlideDisk")));
+            return getFormatSize(getFolderSize(new File(context.getCacheDir() + "/"+"GlideImgCache")));
         } catch (Exception e) {
             e.printStackTrace();
         }

@@ -8,7 +8,7 @@
     android:focusableInTouchMode="true"
     >
 
-    <include layout="@layout/heard_layout"></include>
+    <include layout="@layout/heard_white_layout"></include>
 
     <include layout="@layout/search_layout"></include>
     <com.scwang.smartrefresh.layout.SmartRefreshLayout

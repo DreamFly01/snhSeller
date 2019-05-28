@@ -117,7 +117,11 @@ public class DialogUtils {
 
     public static DialogUtils getInstance(Context context) {
         if (instance == null) {
-            instance = new DialogUtils(context);
+            synchronized (DialogUtils.class) {
+                if (instance == null) {
+                    instance = new DialogUtils(context);
+                }
+            }
         }
         return instance;
     }

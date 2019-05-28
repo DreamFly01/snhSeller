@@ -92,19 +92,21 @@ public class FixPriceActivity extends BaseActivity {
         btnCommit.setText("提交");
         IsBang.setImmerHeard(this, rlHead);
 
-        tvPrice1.setText("实收：￥" + bean.OrderPrice);
-        tvYunfei.setText("运费：￥" + bean.Freight);
+        tvPrice1.setText("实收：¥" + bean.OrderPrice);
+        tvYunfei.setText("运费：¥" + bean.Freight);
         etPrice.setText(bean.OrderPrice + "");
         etYunfei.setText(bean.Freight + "");
+        etYunfei.setVisibility(View.GONE);
+        tvYunfei1.setVisibility(View.GONE);
         if (Double.parseDouble(etYunfei.getText().toString()) > 0) {
-            tvYunfei1.setText("（含运费：￥" + etYunfei.getText().toString() + "）");
+            tvYunfei1.setText("（含运费：¥" + etYunfei.getText().toString() + "）");
         } else {
-            tvYunfei1.setText("（包邮）");
+            tvYunfei1.setText("（到店自取）");
         }
         yunfei = bean.Freight + "";
         price = bean.OrderPrice + "";
         total = Double.parseDouble(etPrice.getText().toString()) + Double.parseDouble(etYunfei.getText().toString());
-        tvPrice2.setText("改后总价：￥" + total);
+        tvPrice2.setText("改后总价：¥" + total);
         adapter = new FixPriceAdapter(R.layout.item_fixprice_layout, bean.OrderGoodsList);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(adapter);
@@ -136,11 +138,17 @@ public class FixPriceActivity extends BaseActivity {
                         yunfei = "0";
                         total = 0;
                     } else {
-                        yunfei = etYunfei.getText().toString();
-                        total = Double.parseDouble(etPrice.getText().toString()) + Double.parseDouble(etYunfei.getText().toString());
+                        try{
+                            yunfei = etYunfei.getText().toString();
+                            total = Double.parseDouble(etPrice.getText().toString()) + Double.parseDouble(etYunfei.getText().toString());
+                        }catch (Exception e)
+                        {
+                            showShortToast("请输入正确的金额");
+                        }
+
                     }
                 }
-                tvPrice2.setText("改后总价：￥" + total);
+                tvPrice2.setText("改后总价：¥" + total);
             }
 
             @Override
@@ -175,7 +183,7 @@ public class FixPriceActivity extends BaseActivity {
                         total = Double.parseDouble(etPrice.getText().toString()) + Double.parseDouble(etYunfei.getText().toString());
                     }
                 }
-                tvPrice2.setText("改后总价：￥" + total);
+                tvPrice2.setText("改后总价：¥" + total);
             }
 
             @Override

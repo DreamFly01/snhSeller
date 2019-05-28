@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/ll_item"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/shape_white_20"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:id="@+id/ll_delete"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="30pt">
+
+        <TextView
+            android:id="@+id/tv_sku_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="规格"
+            android:textColor="@color/txt_dark"
+            android:textSize="@dimen/txtSize_30" />
+
+        <ImageView
+            android:layout_width="40pt"
+            android:layout_height="40pt"
+            android:layout_gravity="center"
+            android:layout_marginRight="10pt"
+            android:background="@drawable/delete_bg" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="15pt"
+            android:text="删除"
+            android:textColor="@color/txt_dark"
+            android:textSize="@dimen/txtSize_30" />
+    </LinearLayout>
+
+    <android.support.v7.widget.RecyclerView
+        android:layout_marginLeft="25pt"
+        android:layout_marginRight="25pt"
+        android:layout_marginBottom="25pt"
+        android:id="@+id/rv_sku_item"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"></android.support.v7.widget.RecyclerView>
+</LinearLayout>

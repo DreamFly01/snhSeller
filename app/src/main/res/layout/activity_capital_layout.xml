@@ -6,7 +6,7 @@
     android:background="@color/color_app_bg"
 
     >
-<include layout="@layout/heard_layout"></include>
+<include layout="@layout/heard_white_layout"></include>
     <LinearLayout
         android:id="@+id/ll_01"
         android:padding="50pt"
@@ -52,7 +52,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="￥"
+                android:text="¥"
                 android:textSize="30pt"
                 android:textColor="#161616"
                 />

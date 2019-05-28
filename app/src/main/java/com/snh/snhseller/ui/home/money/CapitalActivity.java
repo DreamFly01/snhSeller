@@ -13,7 +13,12 @@ import com.snh.snhseller.bean.BaseResultBean;
 import com.snh.snhseller.bean.MoneyBean;
 import com.snh.snhseller.requestApi.NetSubscriber;
 import com.snh.snhseller.requestApi.RequestClient;
+import com.snh.snhseller.ui.merchantEntry.PerfectMyLocalActivity;
+import com.snh.snhseller.utils.Contans;
+import com.snh.snhseller.utils.DialogUtils;
 import com.snh.snhseller.utils.IsBang;
+import com.snh.snhseller.utils.JumpUtils;
+import com.snh.snhseller.utils.SPUtils;
 import com.snh.snhseller.utils.StrUtils;
 
 import butterknife.BindView;
@@ -49,9 +54,11 @@ public class CapitalActivity extends BaseActivity {
 
     private int index = 1;
     public static boolean isForeground = true;
+    private DialogUtils dialogUtils;
     @Override
     protected void initContentView(Bundle savedInstanceState) {
         setContentView(R.layout.activity_capital_layout);
+        dialogUtils = new DialogUtils(this);
     }
 
     @Override
@@ -93,7 +100,23 @@ public class CapitalActivity extends BaseActivity {
                 this.finish();
                 break;
             case R.id.ll_01:
-                jumpActivity(WithdrawRecordActivity.class);
+                if ("1".equals(SPUtils.getInstance(this).getString(Contans.IS_FULL))) {
+                    jumpActivity(WithdrawRecordActivity.class);
+
+                } else if ("0".equals(SPUtils.getInstance(this).getString(Contans.IS_FULL))) {
+                    dialogUtils.twoBtnDialog("是否马上完善店铺信息", new DialogUtils.ChoseClickLisener() {
+                        @Override
+                        public void onConfirmClick(View v) {
+                            dialogUtils.dismissDialog();
+                            JumpUtils.simpJump(CapitalActivity.this, PerfectMyLocalActivity.class, false);
+                        }
+
+                        @Override
+                        public void onCancelClick(View v) {
+                            dialogUtils.dismissDialog();
+                        }
+                    }, true);
+                }
                 break;
             case R.id.ll_02:
                 jumpActivity(MyBanksActivity.class);

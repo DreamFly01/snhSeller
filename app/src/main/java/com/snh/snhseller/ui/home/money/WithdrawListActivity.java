@@ -118,23 +118,28 @@ public class WithdrawListActivity extends Activity {
         heardTitle.setText("明细");
         dialogUtils = new DialogUtils(this);
         IsBang.setImmerHeard(this,rlHead,"#ffffff");
-        for (int i = 0; i < 3; i++) {
+        for (int i = 0; i < 4; i++) {
             ChoseBean bean = new ChoseBean();
             switch (i) {
                 case 0:
                     bean.itemContent = "全部";
                     bean.type = 0;
-                    bean.imgRes = R.drawable.pay_selete;
+                    bean.imgRes = R.drawable.select_1_bg;
                     break;
                 case 1:
                     bean.itemContent = "收入";
                     bean.type = 1;
-                    bean.imgRes = R.drawable.pay_selete;
+                    bean.imgRes = R.drawable.select_2_bg;
                     break;
                 case 2:
                     bean.type = 2;
                     bean.itemContent = "支出";
-                    bean.imgRes = R.drawable.pay_selete;
+                    bean.imgRes = R.drawable.select_3_bg;
+                    break;
+                case 3:
+                    bean.type = 3;
+                    bean.itemContent = "提现";
+                    bean.imgRes = R.drawable.select_4_bg;
                     break;
             }
             choseBeanList.add(bean);
@@ -144,11 +149,11 @@ public class WithdrawListActivity extends Activity {
             switch (i) {
                 case 0:
                     bean.itemContent = "按月查询";
-                    bean.imgRes = R.drawable.pay_selete;
+//                    bean.imgRes = R.drawable.pay_selete;
                     break;
                 case 1:
                     bean.itemContent = "按日查询";
-                    bean.imgRes = R.drawable.pay_selete;
+//                    bean.imgRes = R.drawable.pay_selete;
                     break;
             }
             choseBean1List.add(bean);
@@ -222,6 +227,7 @@ public boolean isShow = true;
                         adapter.setNewData(datas);
                         adapter.loadMoreComplete();
                     } else {
+                        adapter.setNewData(null);
                         adapter.setEmptyView(R.layout.empty_layout,recyclerView);
                         adapter.loadMoreEnd();
                     }

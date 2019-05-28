@@ -88,9 +88,9 @@ public class RecordFragment extends BaseFragment implements CalendarView.OnCalen
     @Override
     public void setUpViews(View view) {
         ImmersionBar.setTitleBar(getActivity(), rlHead);
-        IsBang.setImmerHeard(getContext(), rlHead,"");
+        IsBang.setImmerHeard(getContext(), rlHead,"#2E8AFF");
         heardBack.setVisibility(View.GONE);
-        heardTitle.setText("打卡记录");
+        heardTitle.setText("拜访记录");
         heardTvMenu.setText("今天");
         heardTvMenu.setTextColor(Color.WHITE);
         calendarView.setOnCalendarSelectListener(this);

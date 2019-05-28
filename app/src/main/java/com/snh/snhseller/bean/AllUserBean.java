@@ -23,6 +23,7 @@ public class AllUserBean {
     public String NickName;
     public String RealName;
     public String SalesmanLogo;
+    public int isFull;//资料是否完整 1完整 0不完整
     public class Supp {
         public int Id;
         public String Username;
@@ -33,6 +34,9 @@ public class AllUserBean {
         public String Contacts;
         public String ContactsTel;
         public String ContactsQQ;
+        public String Province;
+        public String City;
+        public String Area;
         public String Address;
     }
     public class NimResult{

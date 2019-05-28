@@ -20,6 +20,8 @@ import com.snh.snhseller.bean.BaseResultBean;
 import com.snh.snhseller.bean.NoticeBean;
 import com.snh.snhseller.requestApi.NetSubscriber;
 import com.snh.snhseller.requestApi.RequestClient;
+import com.snh.snhseller.utils.Contans;
+import com.snh.snhseller.utils.SPUtils;
 import com.snh.snhseller.wediget.RecycleViewDivider;
 
 import java.util.ArrayList;
@@ -48,12 +50,34 @@ public class OrderNoticeFragment extends BaseFragment {
     private OrderNoticeAdapter adapter;
     private List<NoticeBean> datas = new ArrayList<>();
     private Bundle bundle;
+    private boolean mIsDataInited;
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         type = getArguments().getInt("type");
+        if (!mIsDataInited) {
+            if (getUserVisibleHint()) {
+                getData();
+                mIsDataInited = true;
+            }
+        }
     }
-
+    @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
+        //不预加载数据
+        if (isVisibleToUser && isVisible() && !mIsDataInited) {
+           getData();
+            mIsDataInited = true;
+        }
+    }
+    @Override
+    public void onHiddenChanged(boolean hidden) {
+        super.onHiddenChanged(hidden);
+        if (!hidden) {
+            getData();
+        }
+    }
     @Override
     public int initContentView() {
         return R.layout.fragment_applynotice_layout;
@@ -62,7 +86,7 @@ public class OrderNoticeFragment extends BaseFragment {
     @Override
     public void setUpViews(View view) {
         refreshLayout.setEnableLoadMore(false);
-    setRecyclerView();
+        setRecyclerView();
     }
 
     @Override
@@ -79,15 +103,15 @@ public class OrderNoticeFragment extends BaseFragment {
             @Override
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
                 if (type == 2) {
-                    OrderNoticeActivity.updataView(type,1);
+                    OrderNoticeActivity.updataView(type, 1);
                     bundle = new Bundle();
                     bundle.putInt("orderId", datas.get(position).OrderId);
 //                    bundle.putInt("type",datas.get(position).OrderStates);
 //                    bundle.putInt("orderType", orderType);
 //                    JumpUtils.dataJump(getActivity(), OrderDetailsActivity.class, bundle, false);
-                }else if(type ==1) {
+                } else if (type == 1) {
                     bundle = new Bundle();
-                    OrderNoticeActivity.updataView(type,1);
+                    OrderNoticeActivity.updataView(type, 1);
 //                    bundle.putString("orderid", datas.get(position).OrderId + "");
 //                    JumpUtils.dataJump(getActivity(), MyOrderDetailsActivity.class, bundle, false);
                 }
@@ -114,6 +138,7 @@ public class OrderNoticeFragment extends BaseFragment {
             }
         }, recyclerView);
     }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // TODO: inflate a fragment view
@@ -139,7 +164,7 @@ public class OrderNoticeFragment extends BaseFragment {
                         adapter.setNewData(model.data);
                     } else {
                         adapter.setNewData(null);
-                        adapter.setEmptyView(R.layout.empty_layout,recyclerView);
+                        adapter.setEmptyView(R.layout.empty_layout, recyclerView);
                     }
                 } else {
                     if (model.data.size() > 0) {
@@ -158,6 +183,6 @@ public class OrderNoticeFragment extends BaseFragment {
     @Override
     public void onResume() {
         super.onResume();
-        getData();
+//        getData();
     }
 }

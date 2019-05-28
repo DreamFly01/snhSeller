@@ -21,7 +21,7 @@ public class MoneyBean {
     public double MinMoney;
     public double MaxMoney;
     public double Rate;
-    public int AdMoney;
+    public double AdMoney;
     public List<CaptailsBean> MoneyDetail;
 
 }

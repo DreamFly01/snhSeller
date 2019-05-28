@@ -4,7 +4,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:background="@color/color_app_bg">
-<include layout="@layout/heard_layout"></include>
+<include layout="@layout/heard_white_layout"></include>
 
     <LinearLayout
         android:background="@color/white"
@@ -36,7 +36,7 @@
                 android:gravity="right"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="已认证"
+                android:text=""
                 android:textSize="@dimen/txtSize_26"
                 />
             <ImageView
@@ -318,7 +318,7 @@
             android:layout_height="wrap_content"
             android:textColor="@color/txt_dark"
             android:textSize="@dimen/txtSize_30"
-            android:text="货到付款"/>
+            android:text="支持货到付款"/>
         <TextView
             android:ellipsize="end"
             android:id="@+id/tv_08"

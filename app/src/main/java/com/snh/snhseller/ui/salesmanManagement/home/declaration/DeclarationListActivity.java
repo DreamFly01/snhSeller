@@ -67,10 +67,9 @@ public class DeclarationListActivity extends BaseActivity {
 
     @Override
     public void setUpViews() {
-        IsBang.setImmerHeard(this,rlHead,"");
+        IsBang.setImmerHeard(this,rlHead,"#2E8AFF");
         heardTitle.setText("申请记录");
         setRecyclerView();
-        getData();
     }
 
     private void setRecyclerView(){
@@ -131,6 +130,7 @@ public class DeclarationListActivity extends BaseActivity {
                         datas.addAll(model.data);
                         adapter.setNewData(model.data);
                     }else {
+                        adapter.setNewData(null);
                         adapter.setEmptyView(R.layout.empty1_layout,recyclerView);
                     }
                 }else{
@@ -142,5 +142,11 @@ public class DeclarationListActivity extends BaseActivity {
                 }
             }
         }));
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        getData();
     }
 }

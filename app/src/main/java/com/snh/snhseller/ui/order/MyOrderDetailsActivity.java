@@ -24,6 +24,7 @@ import com.snh.snhseller.utils.DialogUtils;
 import com.snh.snhseller.utils.IsBang;
 import com.snh.snhseller.utils.JumpUtils;
 import com.snh.snhseller.utils.StrUtils;
+import com.snh.snhseller.utils.TimeUtils;
 import com.zhy.adapter.recyclerview.MultiItemTypeAdapter;
 
 import butterknife.BindView;
@@ -103,11 +104,26 @@ public class MyOrderDetailsActivity extends BaseActivity {
     LinearLayout ll03;
     @BindView(R.id.ll_04)
     LinearLayout ll04;
+    @BindView(R.id.tv_LeaveWord)
+    TextView tvLeaveWord;
+    @BindView(R.id.ll_LeaveWord)
+    LinearLayout llLeaveWord;
+    @BindView(R.id.tv_arriveTime)
+    TextView tvArriveTime;
+    @BindView(R.id.tv_phone)
+    TextView tvPhone;
+    @BindView(R.id.ll_arrivetime)
+    LinearLayout llArrivetime;
+    @BindView(R.id.tv_seller_name)
+    TextView tvSellerName;
     private Bundle bundle;
     private String orderid;
     private OrderDetailsAdapter adapter;
     private DialogUtils dialogUtils;
-
+    @BindView(R.id.tv_couponValue)
+    TextView tvCouponValue;
+    @BindView(R.id.ll_coupon)
+    LinearLayout llCoupon;
     @Override
     protected void initContentView(Bundle savedInstanceState) {
         setContentView(R.layout.activity_myorderdetails_layout);
@@ -186,43 +202,67 @@ public class MyOrderDetailsActivity extends BaseActivity {
     private void fillView(OrderDetailsBean bean) {
         if ("6".equals(bean.ShopType)) {
             llAddress.setVisibility(View.GONE);
+            llArrivetime.setVisibility(View.VISIBLE);
+            tvSellerName.setText("昵称："+bean.UserName);
+            tvArriveTime.setText("到店时间 ：" + TimeUtils.timeStamp2Date(bean.ArriveTime + "", ""));
+            tvPhone.setText("预留手机号：" + bean.Phone);
             tvExtra.setText("到店自取");
         } else {
             llAddress.setVisibility(View.VISIBLE);
             if (bean.ExpressPrice > 0) {
-
-                tvExtra.setText("￥" + bean.ExpressPrice + "");
+                tvExtra.setText("¥" + bean.ExpressPrice + "");
             } else {
                 tvExtra.setText("包邮");
             }
+        }
+        if(StrUtils.isEmpty(bean.CouponValue)){
+            llCoupon.setVisibility(View.GONE);
+        }
+        if(bean.Integral<=0){
+            ll01.setVisibility(View.GONE);
         }
         if (bean.OrderState == 0 | bean.OrderState == 1) {
             ll01.setVisibility(View.GONE);
             ll03.setVisibility(View.GONE);
             ll04.setVisibility(View.GONE);
             tv01.setText("待付款");
+        }else if(bean.OrderState ==6){
+            ll03.setVisibility(View.GONE);
+            ll04.setVisibility(View.GONE);
         } else {
             tv01.setText("实付款");
         }
         switch (bean.PayType) {
-            //微信支付
+
             case 1:
-                tvPayState.setText("微信支付");
+                tvPayState.setText("余额");
                 break;
-            //余额支付
+
             case 2:
-                tvPayState.setText("余额支付");
+                tvPayState.setText("微信");
                 break;
-            //混合支付
+            case 3:
+                tvPayState.setText("支付宝");
+                break;
+            case 4:
+                tvPayState.setText("混合(微信+余额)");
+                break;
             case 5:
-                tvPayState.setText("混合支付(微信+余额)");
+                tvPayState.setText("混合(支付宝+余额)");
                 break;
+            case 6:
+                tvPayState.setText("货到付款");
+                break;
+
         }
+        tvLeaveWord.setText(bean.LeaveWord);
         tvPayTime.setText(bean.PayTime);
+
         tvAddress.setText(bean.ReceiverAddress);
-        tvIntegerl.setText("￥" + bean.Integral / 100 + "");
-        tvMoney.setText("￥" + StrUtils.moenyToDH(bean.TotalPrice + ""));
-        tvMoney2.setText("￥" + StrUtils.moenyToDH((bean.TotalPrice) + ""));
+        tvIntegerl.setText("-¥" + bean.Integral / 100 + "");
+        tvCouponValue.setText("-¥"+bean.CouponValue);
+        tvMoney.setText("¥" + StrUtils.moenyToDH(bean.GoodsTotalPrice + ""));
+        tvMoney2.setText("¥" + StrUtils.moenyToDH((bean.TotalPrice) + ""));
         tvName.setText(bean.ReceiverName);
         tvPhone1.setText(bean.ReceiverTelPhone);
         tvOrderNo.setText(bean.OrderNo);

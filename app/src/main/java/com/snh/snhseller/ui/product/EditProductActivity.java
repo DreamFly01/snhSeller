@@ -1,11 +1,14 @@
 package com.snh.snhseller.ui.product;
 
+import android.Manifest;
 import android.content.ContentValues;
 import android.content.Intent;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
+import android.support.v4.app.ActivityCompat;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -14,6 +17,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bigkoo.pickerview.builder.OptionsPickerBuilder;
 import com.bigkoo.pickerview.listener.OnOptionsSelectListener;
@@ -34,11 +38,14 @@ import com.snh.snhseller.bean.ProductBean;
 import com.snh.snhseller.bean.ShopGoodsTypeBean;
 import com.snh.snhseller.requestApi.NetSubscriber;
 import com.snh.snhseller.requestApi.RequestClient;
+import com.snh.snhseller.ui.merchantEntry.EntryChoseActivity;
+import com.snh.snhseller.ui.merchantEntry.PerfectLocalActivity;
 import com.snh.snhseller.utils.Contans;
 import com.snh.snhseller.db.DBManager;
 import com.snh.snhseller.utils.DialogUtils;
 import com.snh.snhseller.utils.ImageUtils;
 import com.snh.snhseller.utils.IsBang;
+import com.snh.snhseller.utils.JumpUtils;
 import com.snh.snhseller.utils.SPUtils;
 import com.snh.snhseller.utils.StrUtils;
 
@@ -51,6 +58,7 @@ import java.util.TreeMap;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import pub.devrel.easypermissions.EasyPermissions;
 
 /**
  * <p>desc：<p>
@@ -92,6 +100,7 @@ public class EditProductActivity extends BaseActivity implements TakePhoto.TakeR
     EditText et06;
 
     private int type;
+    private int isDel;
     private Bundle bundle;
     private TakePhoto takePhoto;
     private InvokeParam invokeParam;
@@ -99,7 +108,10 @@ public class EditProductActivity extends BaseActivity implements TakePhoto.TakeR
     private DialogUtils dialogUtils;
     private String path = "";
     private Map<String, Object> map = new TreeMap<>();
-    private ProductBean bean;
+
+    private String CommTenantIcon, CommTenantName, CategoryName, UnitsTitle;
+    private int Inventory, CommTenantId;
+    private double Price, MarketPrice;
 
     @Override
     protected void initContentView(Bundle savedInstanceState) {
@@ -107,10 +119,19 @@ public class EditProductActivity extends BaseActivity implements TakePhoto.TakeR
         bundle = getIntent().getExtras();
         if (null != bundle) {
             type = bundle.getInt("type");
-            bean = bundle.getParcelable("data");
+//            bean = bundle.getParcelable("data");
+            CommTenantIcon = bundle.getString("CommTenantIcon");
+            CommTenantName = bundle.getString("CommTenantName");
+            CategoryName = bundle.getString("CategoryName");
+            UnitsTitle = bundle.getString("UnitsTitle");
+            Inventory = bundle.getInt("Inventory");
+            Price = bundle.getDouble("Price");
+            MarketPrice = bundle.getDouble("MarketPrice");
+            CommTenantId = bundle.getInt("CommTenantId");
+            isDel = bundle.getInt("isDel");
         }
         takePhoto = getTakePhoto();
-        compressConfig = new CompressConfig.Builder().setMaxPixel(800).setMaxSize(2 * 1024).create();
+        compressConfig = new CompressConfig.Builder().setMaxPixel(800).setMaxSize(2 * 1024*1024).create();
         dialogUtils = new DialogUtils(this, this);
     }
 
@@ -124,21 +145,24 @@ public class EditProductActivity extends BaseActivity implements TakePhoto.TakeR
         } else {
             heardTitle.setText("编辑商品");
         }
-        if (null != bean) {
-            path = bean.CommTenantIcon;
-            ImageUtils.loadUrlImage(this, bean.CommTenantIcon, ivLogo);
-            et01.setText(bean.CommTenantName);
-            et01.setSelection(bean.CommTenantName.length());
-            et01.setFocusable(false);
-            et01.setFocusableInTouchMode(false);
-            et02.setText(bean.CategoryName);
-            et02.setEnabled(false);
-            et03.setText(bean.Price + "");
-            et03.setSelection((bean.Price + "").length());
-            et04.setText(bean.UnitsTitle);
-            et05.setText(bean.Inventory + "");
-            et05.setSelection((bean.Inventory + "").length());
-            et06.setText(bean.MarketPrice + "");
+        if (isDel == 2) {
+            heardTvMenu.setText("删除");
+        }
+        if (!StrUtils.isEmpty(CommTenantIcon)) {
+            path = CommTenantIcon;
+            ImageUtils.loadUrlImage(this, CommTenantIcon, ivLogo);
+            et01.setText(CommTenantName);
+            et01.setSelection(CommTenantName.length());
+//            et01.setFocusable(false);
+//            et01.setFocusableInTouchMode(false);
+            et02.setText(CategoryName);
+//            et02.setEnabled(false);
+            et03.setText(Price + "");
+            et03.setSelection((Price + "").length());
+            et04.setText(UnitsTitle);
+            et05.setText(Inventory + "");
+            et05.setSelection((Inventory + "").length());
+            et06.setText(MarketPrice + "");
         }
     }
 
@@ -154,9 +178,9 @@ public class EditProductActivity extends BaseActivity implements TakePhoto.TakeR
         ButterKnife.bind(this);
     }
 
-    @OnClick({R.id.heard_back, R.id.ll_01, R.id.btn_commit, R.id.et_02, R.id.et_04})
+    @OnClick({R.id.heard_back, R.id.ll_01, R.id.btn_commit, R.id.et_02, R.id.et_04, R.id.heard_tv_menu})
     public void onClick(View view) {
-        if(isFastClick()){
+        if (isFastClick()) {
             return;
         }
         switch (view.getId()) {
@@ -164,31 +188,8 @@ public class EditProductActivity extends BaseActivity implements TakePhoto.TakeR
                 this.finish();
                 break;
             case R.id.ll_01:
-                dialogUtils.headImgDialog(new DialogUtils.HeadImgChoseLisener() {
-                    @Override
-                    public void onCancelClick(View v) {
-                        dialogUtils.dismissDialog();
-                    }
+                requestPermision();
 
-                    @Override
-                    public void onPhotoClick(View v) {
-                        String name = "takePhoto" + System.currentTimeMillis();
-                        ContentValues contentValues = new ContentValues();
-                        contentValues.put(MediaStore.Images.Media.TITLE, name);
-                        contentValues.put(MediaStore.Images.Media.DISPLAY_NAME, name + ".jpeg");
-                        contentValues.put(MediaStore.Images.Media.MIME_TYPE, "image/jpeg");
-                        Uri uri = getContentResolver().insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, contentValues);
-                        takePhoto.onEnableCompress(compressConfig, true);
-                        takePhoto.onPickFromCapture(uri);
-                    }
-
-                    @Override
-                    public void onAlumClick(View v) {
-                        takePhoto.onEnableCompress(compressConfig, true);
-                        takePhoto.onPickFromGallery();
-
-                    }
-                }, true);
                 break;
             case R.id.btn_commit:
                 if (check()) {
@@ -205,6 +206,19 @@ public class EditProductActivity extends BaseActivity implements TakePhoto.TakeR
                 break;
             case R.id.et_04:
                 showPickView(2);
+                break;
+            case R.id.heard_tv_menu:
+                dialogUtils.twoBtnDialog("是否确定删除商品", new DialogUtils.ChoseClickLisener() {
+                    @Override
+                    public void onConfirmClick(View v) {
+                        delProduct(CommTenantId, "删除商品成功");
+                    }
+
+                    @Override
+                    public void onCancelClick(View v) {
+                        dialogUtils.dismissDialog();
+                    }
+                }, false);
                 break;
         }
     }
@@ -293,9 +307,35 @@ public class EditProductActivity extends BaseActivity implements TakePhoto.TakeR
             dialogUtils.noBtnDialog("请选择所属类目");
             return false;
         }
-        if (StrUtils.isEmpty(et03.getText().toString().trim())) {
-            dialogUtils.noBtnDialog("请输入终端价格");
+//        if (StrUtils.isEmpty(et03.getText().toString().trim())) {
+//            dialogUtils.noBtnDialog("请输入会员价格");
+//            return false;
+//        }
+        if (!StrUtils.isEmpty(et03.getText().toString().trim())) {
+            if (Double.parseDouble(et03.getText().toString().trim()) <= 0) {
+                dialogUtils.noBtnDialog("会员价格必须大于零");
+                return false;
+            }
+        }
+//        if (StrUtils.isEmpty(et06.getText().toString().trim())) {
+//            dialogUtils.noBtnDialog("请输入市场价格");
+//            return false;
+//        }
+        if (StrUtils.isEmpty(et03.getText().toString().trim()) && StrUtils.isEmpty(et06.getText().toString().trim())) {
+            dialogUtils.noBtnDialog("会员价与市场价必须输入一个");
             return false;
+        }
+        if (!StrUtils.isEmpty(et06.getText().toString().trim())) {
+            if (Double.parseDouble(et06.getText().toString().trim()) <= 0) {
+                dialogUtils.noBtnDialog("市场价格必须大于零");
+                return false;
+            }
+        }
+        if (!StrUtils.isEmpty(et03.getText().toString().trim()) && !StrUtils.isEmpty(et06.getText().toString().trim())) {
+            if (Double.parseDouble(et03.getText().toString().trim()) > Double.parseDouble(et06.getText().toString().trim())) {
+                dialogUtils.noBtnDialog("会员价不能大于市场价");
+                return false;
+            }
         }
         if (StrUtils.isEmpty(et04.getText().toString().trim())) {
             dialogUtils.noBtnDialog("请选择商品单位");
@@ -311,17 +351,26 @@ public class EditProductActivity extends BaseActivity implements TakePhoto.TakeR
     }
 
     private String typeId;
+
     private void setData() {
         map.put("SupplierId", DBManager.getInstance(this).getUseId());
         map.put("CommTenantIcon", path);
         map.put("CommTenantTitle", et01.getText().toString().trim());
         map.put("Category", typeId);
-        map.put("Price", et03.getText().toString().trim());
+        if (StrUtils.isEmpty(et03.getText().toString().trim())) {
+            map.put("Price", et06.getText().toString().trim());
+        } else {
+            map.put("Price", et03.getText().toString().trim());
+        }
         map.put("UnitsTitle", et04.getText().toString().trim());
         map.put("Inventory", et05.getText().toString().trim());
-        map.put("MarketPrice", et06.getText().toString().trim());
-        if (null != bean) {
-            map.put("GoodId", bean.CommTenantId);
+        if (StrUtils.isEmpty(et06.getText().toString().trim())) {
+            map.put("MarketPrice", et03.getText().toString().trim());
+        } else {
+            map.put("MarketPrice", et06.getText().toString().trim());
+        }
+        if (CommTenantId != 0) {
+            map.put("GoodId", CommTenantId);
         }
     }
 
@@ -378,8 +427,7 @@ public class EditProductActivity extends BaseActivity implements TakePhoto.TakeR
             options1Items.add("双");
             options1Items.add("条");
         } else {
-            for (ShopGoodsTypeBean bean:typeBeans)
-            {
+            for (ShopGoodsTypeBean bean : typeBeans) {
                 options1Items.add(bean.Name);
             }
         }
@@ -400,13 +448,62 @@ public class EditProductActivity extends BaseActivity implements TakePhoto.TakeR
         pvOptions.show();
     }
 
-    private List<ShopGoodsTypeBean> typeBeans ;
-    private void getTypeData(){
-        addSubscription(RequestClient.GetShopGoodsType(DBManager.getInstance(this).getUserInfo().suppType, this, new NetSubscriber<BaseResultBean<List<ShopGoodsTypeBean>>>(this,true) {
+    private List<ShopGoodsTypeBean> typeBeans;
+
+    private void getTypeData() {
+        addSubscription(RequestClient.GetShopGoodsType(DBManager.getInstance(this).getUserInfo().suppType, this, new NetSubscriber<BaseResultBean<List<ShopGoodsTypeBean>>>(this, true) {
             @Override
             public void onResultNext(BaseResultBean<List<ShopGoodsTypeBean>> model) {
                 typeBeans = model.data;
             }
         }));
+    }
+
+    private void delProduct(int commtenanId, final String content) {
+        addSubscription(RequestClient.DelProduct(commtenanId, this, new NetSubscriber<BaseResultBean>(this) {
+            @Override
+            public void onResultNext(BaseResultBean model) {
+                dialogUtils.dismissDialog();
+                Toast.makeText(EditProductActivity.this, content, Toast.LENGTH_SHORT).show();
+                EditProductActivity.this.finish();
+            }
+        }));
+    }
+
+    private void requestPermision() {
+
+        String[] params = {Manifest.permission.CAMERA,Manifest.permission.WRITE_EXTERNAL_STORAGE};
+        if (!EasyPermissions.hasPermissions(this, params)) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                ActivityCompat.requestPermissions(this, params, 10010);
+            }
+
+        } else {
+            dialogUtils.headImgDialog(new DialogUtils.HeadImgChoseLisener() {
+                @Override
+                public void onCancelClick(View v) {
+                    dialogUtils.dismissDialog();
+                }
+
+                @Override
+                public void onPhotoClick(View v) {
+                    String name = "takePhoto" + System.currentTimeMillis();
+                    ContentValues contentValues = new ContentValues();
+                    contentValues.put(MediaStore.Images.Media.TITLE, name);
+                    contentValues.put(MediaStore.Images.Media.DISPLAY_NAME, name + ".jpeg");
+                    contentValues.put(MediaStore.Images.Media.MIME_TYPE, "image/jpeg");
+                    Uri uri = getContentResolver().insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, contentValues);
+                    takePhoto.onEnableCompress(compressConfig, true);
+                    takePhoto.onPickFromCapture(uri);
+                }
+
+                @Override
+                public void onAlumClick(View v) {
+                    takePhoto.onEnableCompress(compressConfig, true);
+                    takePhoto.onPickFromGallery();
+
+                }
+            }, true);
+        }
     }
 }

@@ -39,6 +39,9 @@ public class UserEntityDao extends AbstractDao<UserEntity, Void> {
         public final static Property SuppType = new Property(12, String.class, "suppType", false, "SUPP_TYPE");
         public final static Property ContactsQQ = new Property(13, String.class, "ContactsQQ", false, "CONTACTS_QQ");
         public final static Property Address = new Property(14, String.class, "Address", false, "ADDRESS");
+        public final static Property Province = new Property(15, String.class, "Province", false, "PROVINCE");
+        public final static Property City = new Property(16, String.class, "City", false, "CITY");
+        public final static Property Area = new Property(17, String.class, "Area", false, "AREA");
     }
 
 
@@ -68,7 +71,10 @@ public class UserEntityDao extends AbstractDao<UserEntity, Void> {
                 "\"SUPP_FX_URL\" TEXT," + // 11: suppFxUrl
                 "\"SUPP_TYPE\" TEXT," + // 12: suppType
                 "\"CONTACTS_QQ\" TEXT," + // 13: ContactsQQ
-                "\"ADDRESS\" TEXT);"); // 14: Address
+                "\"ADDRESS\" TEXT," + // 14: Address
+                "\"PROVINCE\" TEXT," + // 15: Province
+                "\"CITY\" TEXT," + // 16: City
+                "\"AREA\" TEXT);"); // 17: Area
     }
 
     /** Drops the underlying database table. */
@@ -151,6 +157,21 @@ public class UserEntityDao extends AbstractDao<UserEntity, Void> {
         if (Address != null) {
             stmt.bindString(15, Address);
         }
+ 
+        String Province = entity.getProvince();
+        if (Province != null) {
+            stmt.bindString(16, Province);
+        }
+ 
+        String City = entity.getCity();
+        if (City != null) {
+            stmt.bindString(17, City);
+        }
+ 
+        String Area = entity.getArea();
+        if (Area != null) {
+            stmt.bindString(18, Area);
+        }
     }
 
     @Override
@@ -227,6 +248,21 @@ public class UserEntityDao extends AbstractDao<UserEntity, Void> {
         if (Address != null) {
             stmt.bindString(15, Address);
         }
+ 
+        String Province = entity.getProvince();
+        if (Province != null) {
+            stmt.bindString(16, Province);
+        }
+ 
+        String City = entity.getCity();
+        if (City != null) {
+            stmt.bindString(17, City);
+        }
+ 
+        String Area = entity.getArea();
+        if (Area != null) {
+            stmt.bindString(18, Area);
+        }
     }
 
     @Override
@@ -251,7 +287,10 @@ public class UserEntityDao extends AbstractDao<UserEntity, Void> {
             cursor.isNull(offset + 11) ? null : cursor.getString(offset + 11), // suppFxUrl
             cursor.isNull(offset + 12) ? null : cursor.getString(offset + 12), // suppType
             cursor.isNull(offset + 13) ? null : cursor.getString(offset + 13), // ContactsQQ
-            cursor.isNull(offset + 14) ? null : cursor.getString(offset + 14) // Address
+            cursor.isNull(offset + 14) ? null : cursor.getString(offset + 14), // Address
+            cursor.isNull(offset + 15) ? null : cursor.getString(offset + 15), // Province
+            cursor.isNull(offset + 16) ? null : cursor.getString(offset + 16), // City
+            cursor.isNull(offset + 17) ? null : cursor.getString(offset + 17) // Area
         );
         return entity;
     }
@@ -273,6 +312,9 @@ public class UserEntityDao extends AbstractDao<UserEntity, Void> {
         entity.setSuppType(cursor.isNull(offset + 12) ? null : cursor.getString(offset + 12));
         entity.setContactsQQ(cursor.isNull(offset + 13) ? null : cursor.getString(offset + 13));
         entity.setAddress(cursor.isNull(offset + 14) ? null : cursor.getString(offset + 14));
+        entity.setProvince(cursor.isNull(offset + 15) ? null : cursor.getString(offset + 15));
+        entity.setCity(cursor.isNull(offset + 16) ? null : cursor.getString(offset + 16));
+        entity.setArea(cursor.isNull(offset + 17) ? null : cursor.getString(offset + 17));
      }
     
     @Override

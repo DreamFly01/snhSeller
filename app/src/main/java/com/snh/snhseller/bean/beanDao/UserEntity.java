@@ -30,12 +30,15 @@ public class UserEntity {
     public String suppType;
     public String ContactsQQ;
     public String Address;
-    @Generated(hash = 1311986357)
+    public String Province;
+    public String City;
+    public String Area;
+    @Generated(hash = 364163677)
     public UserEntity(int Id, String Username, String ShopName,
             String BusinessActivities, String Logo, String Introduction,
             String Contacts, String ContactsTel, String shopTypeName, String Token,
             String Accid, String suppFxUrl, String suppType, String ContactsQQ,
-            String Address) {
+            String Address, String Province, String City, String Area) {
         this.Id = Id;
         this.Username = Username;
         this.ShopName = ShopName;
@@ -51,6 +54,9 @@ public class UserEntity {
         this.suppType = suppType;
         this.ContactsQQ = ContactsQQ;
         this.Address = Address;
+        this.Province = Province;
+        this.City = City;
+        this.Area = Area;
     }
     @Generated(hash = 1433178141)
     public UserEntity() {
@@ -145,4 +151,23 @@ public class UserEntity {
     public void setAddress(String Address) {
         this.Address = Address;
     }
+    public String getProvince() {
+        return this.Province;
+    }
+    public void setProvince(String Province) {
+        this.Province = Province;
+    }
+    public String getCity() {
+        return this.City;
+    }
+    public void setCity(String City) {
+        this.City = City;
+    }
+    public String getArea() {
+        return this.Area;
+    }
+    public void setArea(String Area) {
+        this.Area = Area;
+    }
+  
 }

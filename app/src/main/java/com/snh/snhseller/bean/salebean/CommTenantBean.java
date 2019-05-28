@@ -18,4 +18,17 @@ public class CommTenantBean {
     public String Longitude;
     public String Latitude;
     public boolean IsMyManager;
+
+
+    public String CommTenantIcon;
+    public String CategoryId;
+    public String CategoryName;
+    public int IsAuditing;
+    public String Reason;
+    public double Price;
+    public int Inventory;
+    public int SalesVolume;
+    public double MarketPrice;
+    public String UnitsTitle;
+    public int Status;
 }

@@ -33,21 +33,32 @@ public class GoodsAdapter extends BaseQuickAdapter<GoodsBean, BaseViewHolder> {
         ImageUtils.loadUrlImage(mContext, item.CommodityLogo, (ImageView) helper.getView(R.id.iv_logo));
         helper.setText(R.id.tv_name, item.CommodityName);
 
-            if (from != 2&&type==1) {
-                helper.setText(R.id.tv_price, "￥" + StrUtils.moenyToDH(item.Price+""));
-            } else {
+        if (from != 2 && type == 1) {
+            helper.setText(R.id.tv_price, "¥" + StrUtils.moenyToDH(item.Price + ""));
+            if (item.Price<=0) {
+                helper.setText(R.id.tv_state,"价格：");
                 helper.getView(R.id.ll_price).setVisibility(View.GONE);
-                helper.getView(R.id.tv_jh).setVisibility(View.GONE);
+                helper.getView(R.id.tv_price).setVisibility(View.GONE);
+            } else if(item.Price == item.MarketPrice){
+                helper.setText(R.id.tv_state,"价格：");
+                helper.getView(R.id.ll_price).setVisibility(View.GONE);
+                helper.getView(R.id.tv_price).setVisibility(View.GONE);
+            } else {
+                helper.setText(R.id.tv_state,"终端价：");
+                helper.getView(R.id.ll_price).setVisibility(View.VISIBLE);
+                helper.getView(R.id.tv_price).setVisibility(View.VISIBLE);
             }
-        helper.getView(R.id.ll_price).setVisibility(View.GONE);
-            helper.getView(R.id.tv_price).setVisibility(View.GONE);
-
-        helper.setText(R.id.tv_price1, "￥" + StrUtils.moenyToDH(item.MarketPrice+""));
+        } else {
+            helper.getView(R.id.ll_price1).setVisibility(View.GONE);
+            helper.getView(R.id.ll_price).setVisibility(View.GONE);
+            helper.getView(R.id.tv_jh).setVisibility(View.GONE);
+        }
+        helper.setText(R.id.tv_price1, "¥" + StrUtils.moenyToDH(item.MarketPrice + ""));
         helper.setText(R.id.tv_inventory, "库存：" + item.Repertory);
-        if(item.Repertory>0){
+        if (item.Repertory > 0) {
             helper.getView(R.id.tv_jh).setEnabled(true);
 
-        }else {
+        } else {
             helper.getView(R.id.tv_jh).setEnabled(false);
         }
     }

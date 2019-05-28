@@ -181,13 +181,13 @@ public class PerfectCompanyActivity extends BaseActivity implements TakePhoto.Ta
         switch (type) {
             case 1:
                 Glide.with(this).load(WaterImgUtils.createWaterMaskCenter(pathList.get(0), this)).into(ivChose1);
-                path = WaterImgUtils.saveBitmap(this, WaterImgUtils.createWaterMaskCenter(pathList.get(0), this));
+                path = WaterImgUtils.saveBitmap(this, WaterImgUtils.createWaterMaskCenter(pathList.get(0), this),pathList.get(0));
                 pathList.clear();
                 pathList.add(path);
                 break;
             case 2:
                 Glide.with(this).load(WaterImgUtils.createWaterMaskCenter(pathList.get(0), this)).into(ivChose2);
-                path = WaterImgUtils.saveBitmap(this, WaterImgUtils.createWaterMaskCenter(pathList.get(0), this));
+                path = WaterImgUtils.saveBitmap(this, WaterImgUtils.createWaterMaskCenter(pathList.get(0), this),pathList.get(0));
                 pathList.clear();
                 pathList.add(path);
                 break;

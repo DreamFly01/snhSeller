@@ -10,9 +10,9 @@ package com.snh.snhseller.utils;
 public class Contans {
 //    测试环境"http://test.snihen.com/api/";
     //正式环境"http://shop.snihen.com/api/"
-    public static final String HOST = "http://test.snihen.com/api/";
-//    public static final String HOST = "http://shop.snihen.com/api/";
-    public static final boolean debug = true;
+//    public static final String HOST = "http://test.snihen.com/api/";
+    public static final String HOST = "https://shop.snihen.com/api/";
+    public static final boolean debug = false;
     public static final String USER_INFO = "snh_seller_sp";
     public static final String LIST_BANNER_DATA = "bannerData";
     public static final String IM_ACCOUNT = "imAccount";
@@ -27,9 +27,13 @@ public class Contans {
     public static final String ORDER_IS_FRESH = "order";
     public static final String FRESH = "frsh";
     public static final String IS_HDFK = "IsHdfk";
+    public static final String IS_FULL = "isFull";
+    public static final String IS_REGIST="isRegist";
+    public static final String PSW ="psw";
+    public static final String PHONE = "phone";
+    public static final String RED_COUNT ="redCount";
     //是否存在地址表
     public static final String ADDRESS = "haveAddress1";
-
     //腾讯bugly配置
     public static final String BUGLY_ID="26a9bd4379";
     public static final String BUGLY_KEY="d2cec9df-0ee1-4bf5-9554-edfbfc7ed5bc";

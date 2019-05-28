@@ -18,6 +18,7 @@ import com.snh.snhseller.R;
 import com.snh.snhseller.adapter.MyMsgAdapter;
 import com.snh.snhseller.bean.BaseResultBean;
 import com.snh.snhseller.bean.MyMsgBean;
+import com.snh.snhseller.bean.NoticeBean;
 import com.snh.snhseller.requestApi.NetSubscriber;
 import com.snh.snhseller.requestApi.RequestClient;
 import com.snh.snhseller.utils.DialogUtils;
@@ -99,28 +100,54 @@ public class SystemNoticeFragment extends BaseFragment {
         super.onDestroyView();
         unbinder.unbind();
     }
-    private List<MyMsgBean> datas = new ArrayList<>();
-    private void getData() {
-        addSubscription(RequestClient.MyMsg(index, getContext(), new NetSubscriber<BaseResultBean<List<MyMsgBean>>>(getContext(), isShow) {
-            @Override
-            public void onResultNext(BaseResultBean<List<MyMsgBean>> model) {
-                refreshLayout.finishLoadMore();
-                refreshLayout.finishRefresh();
-                if (index == 1 && model.data.size() > 0) {
-                    datas = model.data;
-                    adapter.setNewData(model.data);
-                } else {
-                    if (index == 1 && model.data.size() <= 0) {
-                        adapter.setNewData(null);
-                        adapter.setEmptyView(R.layout.empty_layout, recyclerView);
-                    } else {
-                        if (model.data.size() > 0) {
-                            datas.addAll(model.data);
-                            adapter.setNewData(datas);
-                        }
-                    }
+    private List<NoticeBean> datas = new ArrayList<>();
+//    private void getData() {
+//        addSubscription(RequestClient.MyMsg(index, getContext(), new NetSubscriber<BaseResultBean<List<MyMsgBean>>>(getContext(), isShow) {
+//            @Override
+//            public void onResultNext(BaseResultBean<List<MyMsgBean>> model) {
+//                refreshLayout.finishLoadMore();
+//                refreshLayout.finishRefresh();
+//                if (index == 1 && model.data.size() > 0) {
+//                    datas = model.data;
+//                    adapter.setNewData(model.data);
+//                } else {
+//                    if (index == 1 && model.data.size() <= 0) {
+//                        adapter.setNewData(null);
+//                        adapter.setEmptyView(R.layout.empty_layout, recyclerView);
+//                    } else {
+//                        if (model.data.size() > 0) {
+//                            datas.addAll(model.data);
+//                            adapter.setNewData(datas);
+//                        }
+//                    }
+//
+//                }
+//            }
+//        }));
+//    }
 
+    private void getData() {
+        addSubscription(RequestClient.GetSupplierNotice(5, index, "", getContext(), new NetSubscriber<BaseResultBean<List<NoticeBean>>>(getContext(), isShow) {
+            @Override
+            public void onResultNext(BaseResultBean<List<NoticeBean>> model) {
+                if (index == 1) {
+                    if (model.data.size() > 0) {
+                        datas = model.data;
+                        adapter.setNewData(model.data);
+                    } else {
+                        adapter.setNewData(null);
+                        adapter.setEmptyView(R.layout.empty_layout,recyclerView);
+                    }
+                } else {
+                    if (model.data.size() > 0) {
+                        datas.addAll(model.data);
+                        adapter.setNewData(datas);
+                        adapter.loadMoreComplete();
+                    } else {
+                        adapter.loadMoreEnd();
+                    }
                 }
+                refreshLayout.finishRefresh();
             }
         }));
     }

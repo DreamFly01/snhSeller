@@ -94,9 +94,9 @@ public class SalesmanMainActivity extends UI {
         Drawable drawable2 = getResources().getDrawable(R.drawable.tab_sale2_selector);
         drawable2.setBounds(0, 0, 70, 70);
         Drawable drawable3 = getResources().getDrawable(R.drawable.tab_sale3_selector);
-        drawable3.setBounds(0, 0, 56, 70);
+        drawable3.setBounds(0, 0, 70, 70);
         Drawable drawable4 = getResources().getDrawable(R.drawable.tab_sale4_selector);
-        drawable4.setBounds(0, 0, 56, 70);
+        drawable4.setBounds(0, 0, 70, 70);
         radioChat.setCompoundDrawables(null, drawable1, null, null);
         radioOrder.setCompoundDrawables(null, drawable2, null, null);
         radioStore.setCompoundDrawables(null, drawable3, null, null);

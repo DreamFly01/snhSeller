@@ -5,7 +5,7 @@
     android:orientation="vertical"
 
     android:background="@drawable/merchant_review_bg">
-    <include layout="@layout/heard_layout"></include>
+    <include layout="@layout/heard_white_layout"></include>
     <ImageView
         android:layout_marginTop="50pt"
         android:layout_gravity="center"
@@ -60,10 +60,11 @@
             android:text="电脑登录地址："
             android:textSize="@dimen/txtSize_28"/>
         <TextView
+            android:id="@+id/tv_url"
             android:textColor="@color/gray_1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="http://shop.hnyunshang.com/pc_seller"
+            android:text="------------"
             android:textSize="@dimen/txtSize_28"/>
         <TextView
             android:textColor="@color/gray_1"

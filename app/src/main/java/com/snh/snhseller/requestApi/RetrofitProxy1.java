@@ -67,7 +67,7 @@ public class RetrofitProxy1 {
 
             retrofit = new Retrofit.Builder()
                     .addConverterFactory(GsonConverterFactory.create())//使用String作为数据转换器
-                    .baseUrl("http://shop.snihen.com:8080/")
+                    .baseUrl("https://shop.snihen.com:8448/")
                     .callbackExecutor(executor)
                     .client(mOkHttpClient)
                     .addCallAdapterFactory(RxJavaCallAdapterFactory.create())// 使用RxJava作为回调适配器

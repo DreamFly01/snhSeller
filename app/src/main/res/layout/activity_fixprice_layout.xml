@@ -5,7 +5,7 @@
     android:orientation="vertical"
     android:background="@color/color_app_bg"
     >
-    <include layout="@layout/heard_layout"></include>
+    <include layout="@layout/heard_white_layout"></include>
 
     <android.support.v4.widget.NestedScrollView
         android:layout_weight="1"
@@ -89,6 +89,7 @@
         android:orientation="vertical"
         android:background="@color/white">
         <TextView
+            android:visibility="gone"
             android:layout_marginLeft="30pt"
             android:padding="10pt"
             android:layout_width="wrap_content"
@@ -97,6 +98,7 @@
             android:textSize="@dimen/txtSize_30"
             android:textColor="@color/txt_dark"/>
         <TextView
+            android:visibility="gone"
             android:id="@+id/tv_yunfei"
             android:layout_marginLeft="30pt"
             android:padding="10pt"
@@ -106,6 +108,7 @@
             android:textSize="@dimen/txtSize_30"
             android:textColor="@color/txt_dark"/>
         <LinearLayout
+            android:visibility="gone"
             android:layout_marginBottom="10pt"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

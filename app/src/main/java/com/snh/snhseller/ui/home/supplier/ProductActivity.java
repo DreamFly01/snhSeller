@@ -92,6 +92,7 @@ public class ProductActivity extends BaseActivity {
     private Bundle bundle;
     private List<String> bannerUrls = new ArrayList<>();
     private int shopId;
+
     @Override
     protected void initContentView(Bundle savedInstanceState) {
         setContentView(R.layout.activity_product_layout);
@@ -106,7 +107,7 @@ public class ProductActivity extends BaseActivity {
 
     @Override
     public void setUpViews() {
-        IsBang.setImmerHeard(this,rlHead);
+        IsBang.setImmerHeard(this, rlHead);
         heardTitle.setText("产品详情");
         options1Items.clear();
         options1Items.add("在线支付");
@@ -140,7 +141,17 @@ public class ProductActivity extends BaseActivity {
     private void fillView(ProductBean bean) {
         tvName.setText(bean.ShopGoodsName);
         tvInventory.setText("总库存：" + bean.SumInventory);
-        tvPrice.setText("终端价：￥" + StrUtils.moenyToDH(bean.RetailPrice+""));
+        if (bean.Price <= 0) {
+            tvPrice.setText("价格：¥" + StrUtils.moenyToDH(bean.RetailPrice + ""));
+            tvPrice1.setVisibility(View.GONE);
+        } else if (bean.Price == bean.RetailPrice) {
+            tvPrice.setText("价格：¥" + StrUtils.moenyToDH(bean.RetailPrice + ""));
+            tvPrice1.setVisibility(View.GONE);
+        } else {
+            tvPrice1.setVisibility(View.VISIBLE);
+            tvPrice.setText("二批价：¥" + StrUtils.moenyToDH(bean.Price + ""));
+            tvPrice1.setText("终端价：¥" + StrUtils.moenyToDH(bean.RetailPrice + ""));
+        }
         tvPrice1.getPaint().setFlags(Paint.STRIKE_THRU_TEXT_FLAG);
         tvYunfei.setText("运费：送货上门");
         if (bean.IsHdfk) {
@@ -168,7 +179,7 @@ public class ProductActivity extends BaseActivity {
     private ProductBean bean;
 
     private void getData() {
-        addSubscription(RequestClient.GetGoodsDetail(id, shopId,this, new NetSubscriber<BaseResultBean<ProductBean>>(this, isShow) {
+        addSubscription(RequestClient.GetGoodsDetail(id, shopId, this, new NetSubscriber<BaseResultBean<ProductBean>>(this, isShow) {
             @Override
             public void onResultNext(BaseResultBean<ProductBean> model) {
                 fillView(model.data);
@@ -218,8 +229,8 @@ public class ProductActivity extends BaseActivity {
             bundle.putInt("shopId", shopId);
             bundle.putInt("goodsId", bean.ShopGoodsId);
             bundle.putInt("shopId", shopId);
-            bundle.putString("SupplierName",bean.SupplierName);
-            bundle.putString("SupplierIconUrl",bean.SupplierIconUrl);
+            bundle.putString("SupplierName", bean.SupplierName);
+            bundle.putString("SupplierIconUrl", bean.SupplierIconUrl);
             bundle.putString("payMethod", payMethod);
             JumpUtils.dataJump(this, CommitOrderActivity.class, bundle, false);
         } else {

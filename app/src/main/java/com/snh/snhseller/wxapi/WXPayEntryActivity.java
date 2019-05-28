@@ -53,8 +53,8 @@ public class WXPayEntryActivity extends Activity implements IWXAPIEventHandler {
         api = WXAPIFactory.createWXAPI(this, "wx223ecb204beddad4");//这里填入自己的微信APPID
         api.registerApp("wx223ecb204beddad4");
         api.handleIntent(getIntent(), this);
-        ImmersionBar.with(this).titleBar(rlHead).statusBarColor(R.color.app_red).init();
-        IsBang.setImmerHeard(this,rlHead);
+        ImmersionBar.with(this).titleBar(rlHead).statusBarColor(R.color.white).init();
+        IsBang.setImmerHeard(this,rlHead,"#ffffff");
     }
 
     @Override

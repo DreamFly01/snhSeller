@@ -3,7 +3,6 @@ package com.snh.snhseller.ui.home.money;
 import android.app.Activity;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -17,7 +16,6 @@ import com.snh.snhseller.bean.WithdrawDetailsBean;
 import com.snh.snhseller.requestApi.NetSubscriber;
 import com.snh.snhseller.requestApi.RequestClient;
 import com.snh.snhseller.utils.ImageUtils;
-import com.snh.snhseller.utils.ImgSaveUtils;
 import com.snh.snhseller.utils.IsBang;
 import com.snh.snhseller.utils.StrUtils;
 import com.snh.snhseller.utils.TimeUtils;
@@ -74,6 +72,8 @@ public class WithdrawDetailsActivity extends Activity {
     TextView tvMyMoney;
     @BindView(R.id.iv_process)
     ImageView ivProcess;
+    @BindView(R.id.tv_pay_time)
+    TextView tvPayTime;
     private int id;
     private int type;
     private Bundle bundle;
@@ -94,7 +94,7 @@ public class WithdrawDetailsActivity extends Activity {
     }
 
     private void setView() {
-        IsBang.setImmerHeard(this,rlHead,"#ffffff");
+        IsBang.setImmerHeard(this, rlHead, "#ffffff");
         if (type == 2 | type == 3) {
             heardTitle.setText("提现详情");
             ll02.setVisibility(View.VISIBLE);
@@ -117,8 +117,8 @@ public class WithdrawDetailsActivity extends Activity {
 
     private void fillView(WithdrawDetailsBean bean) {
         if (type == 2 || type == 3) {
-            tvMoney.setText("￥" + StrUtils.moenyToDH(bean.Money + ""));
-            tvSxf.setText("￥" + StrUtils.moenyToDH(bean.Poundage + ""));
+            tvMoney.setText("¥" + StrUtils.moenyToDH(bean.Money + ""));
+            tvSxf.setText("¥" + StrUtils.moenyToDH(bean.Poundage + ""));
             tvWithdrawTime.setText(TimeUtils.timeStamp2Date(bean.CreateTime + "", ""));
             tvBankCard.setText(bean.Bank + " 尾号" + bean.BankNo.substring(bean.BankNo.length() - 4, bean.BankNo.length()));
             switch (bean.CheckState) {
@@ -139,6 +139,7 @@ public class WithdrawDetailsActivity extends Activity {
             tvContent.setText(bean.ShopGoodsName);
             tvOrderNo.setText(bean.OrderNo);
             tvTime.setText(TimeUtils.timeStamp2Date(bean.CreateTime + "", ""));
+            tvPayTime.setText(TimeUtils.timeStamp2Date(bean.PayTime + "", ""));
             tvMyMoney.setText(bean.Money + "");
         }
     }

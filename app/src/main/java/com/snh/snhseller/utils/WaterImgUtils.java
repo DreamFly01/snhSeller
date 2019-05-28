@@ -8,6 +8,7 @@ import android.graphics.Canvas;
 import android.net.Uri;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.widget.Toast;
 
 import com.snh.snhseller.R;
 
@@ -25,7 +26,6 @@ import java.util.UUID;
  */
 public class WaterImgUtils {
 
-
     /**
      * 设置水印图片到中间
      * @return
@@ -34,6 +34,7 @@ public class WaterImgUtils {
         Bitmap src= BitmapFactory.decodeFile(file);
         Resources res = context.getResources();
         Bitmap watermark = BitmapFactory.decodeResource(res, R.drawable.waterpic_bg);
+
         return createWaterMaskBitmap(src, watermark,
                 (src.getWidth() - watermark.getWidth()) / 2,
                 (src.getHeight() - watermark.getHeight()) / 2);
@@ -46,19 +47,27 @@ public class WaterImgUtils {
         }
         int width = src.getWidth();
         int height = src.getHeight();
-        //创建一个bitmap
-        Bitmap newb = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);// 创建一个新的和SRC长度宽度一样的位图
-        //将该图片作为画布
-        Canvas canvas = new Canvas(newb);
-        //在画布 0，0坐标上开始绘制原始图片
-        canvas.drawBitmap(src, 0, 0, null);
-        //在画布上绘制水印图片
-        canvas.drawBitmap(watermark, paddingLeft, paddingTop, null);
-        // 保存
-        canvas.save(Canvas.ALL_SAVE_FLAG);
-        // 存储
-        canvas.restore();
-        return newb;
+        try {
+
+            Bitmap newb = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);// 创建一个新的和SRC长度宽度一样的位图
+
+            //将该图片作为画布
+            Canvas canvas = new Canvas(newb);
+            //在画布 0，0坐标上开始绘制原始图片
+            canvas.drawBitmap(src, 0, 0, null);
+            //在画布上绘制水印图片
+            canvas.drawBitmap(watermark, paddingLeft, paddingTop, null);
+            // 保存
+            canvas.save(Canvas.ALL_SAVE_FLAG);
+            // 存储
+            canvas.restore();
+            return newb;
+
+        }catch (Exception e)
+        {
+        //创建失败 返回原图
+            return src;
+        }
     }
 
     public static void saveBitmap(Bitmap bitmap,String path) {
@@ -98,7 +107,7 @@ public class WaterImgUtils {
         return UUID.randomUUID().toString();
     }
 
-    public static String saveBitmap(Context context, Bitmap mBitmap) {
+    public static String saveBitmap(Context context, Bitmap mBitmap,String path) {
         String savePath;
         File filePic;
         if (Environment.getExternalStorageState().equals(
@@ -122,7 +131,7 @@ public class WaterImgUtils {
         } catch (IOException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
-            return null;
+            return path;
         }
 
         return filePic.getAbsolutePath();

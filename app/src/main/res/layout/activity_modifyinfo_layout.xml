@@ -8,7 +8,7 @@
         android:layout_height="wrap_content"
         android:id="@+id/rl_head"
         android:orientation="vertical"
-        android:background="@color/app_red"
+        android:background="@color/white"
         >
 
     <RelativeLayout
@@ -26,9 +26,9 @@
             android:gravity="center">
 
             <ImageView
-                android:layout_width="20pt"
-                android:layout_height="31pt"
-                android:src="@drawable/left_black" />
+                android:layout_width="40pt"
+                android:layout_height="40pt"
+                android:background="@drawable/left_back" />
         </LinearLayout>
 
         <TextView
@@ -37,7 +37,7 @@
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
             android:text="title"
-            android:textColor="@color/white"
+            android:textColor="@color/txt_dark"
             android:textSize="36pt" />
 
         <FrameLayout
@@ -60,7 +60,11 @@
         </FrameLayout>
     </RelativeLayout>
     </LinearLayout>
-
+<ImageView
+    android:layout_width="match_parent"
+    android:layout_height="4pt"
+    android:background="@color/color_app_bg"
+    />
     <LinearLayout
         android:background="@color/white"
         android:gravity="center"

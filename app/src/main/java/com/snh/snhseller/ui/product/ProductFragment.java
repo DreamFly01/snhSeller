@@ -1,5 +1,6 @@
 package com.snh.snhseller.ui.product;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.TabLayout;
@@ -9,11 +10,13 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.text.TextPaint;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -23,9 +26,13 @@ import com.gyf.barlibrary.ImmersionBar;
 import com.snh.snhseller.BaseFragment;
 import com.snh.snhseller.R;
 import com.snh.snhseller.db.DBManager;
+import com.snh.snhseller.ui.home.set.ChangePswActivity;
+import com.snh.snhseller.ui.merchantEntry.PerfectMyLocalActivity;
+import com.snh.snhseller.utils.Contans;
 import com.snh.snhseller.utils.DialogUtils;
 import com.snh.snhseller.utils.IsBang;
 import com.snh.snhseller.utils.JumpUtils;
+import com.snh.snhseller.utils.SPUtils;
 import com.snh.snhseller.utils.StrUtils;
 import com.snh.snhseller.utils.UpdateAppHttpUtil;
 import com.vector.update_app.UpdateAppBean;
@@ -51,7 +58,6 @@ import butterknife.Unbinder;
  */
 public class ProductFragment extends BaseFragment {
 
-
     @BindView(R.id.tab_order)
     TabLayout tabOrder;
     @BindView(R.id.tab_vp)
@@ -61,19 +67,17 @@ public class ProductFragment extends BaseFragment {
     ImageView fab;
     @BindView(R.id.tv_01)
     TextView tv01;
-    @BindView(R.id.iv_01)
-    ImageView iv01;
     @BindView(R.id.ll_01)
     LinearLayout ll01;
     @BindView(R.id.tv_02)
     TextView tv02;
-    @BindView(R.id.iv_02)
-    ImageView iv02;
     @BindView(R.id.ll_02)
     LinearLayout ll02;
     @BindView(R.id.rl_head1)
     LinearLayout rlHead;
-    private String[] titles ;
+    @BindView(R.id.rl_search)
+    RelativeLayout rlSearch;
+    private String[] titles;
     private List<Fragment> list = new ArrayList<>();
     private Bundle bundle;
     private MyAdapter adapter;
@@ -83,6 +87,8 @@ public class ProductFragment extends BaseFragment {
     private List<String> data1 = new ArrayList<>();
     private List<Integer> data2 = new ArrayList<>();
     private int[] viewLocation = new int[2];
+    private int type = 0;
+    private TextPaint paint1, paint2;
 
     @Override
     public int initContentView() {
@@ -91,11 +97,14 @@ public class ProductFragment extends BaseFragment {
 
     @Override
     public void setUpViews(View view) {
-        IsBang.setImmerHeard(getContext(), rlHead);
-        ImmersionBar.setTitleBar(getActivity(), rlHead);
+//        IsBang.setImmerHeard(getContext(), rlHead);
+//        ImmersionBar.setTitleBar(getActivity(), rlHead);
+        ImmersionBar.with(getActivity()).statusBarColor(R.color.white).statusBarDarkFont(true).init();
         updataVersion();
-
+        paint1 = tv01.getPaint();
+        paint2 = tv02.getPaint();
         dialogUtils = new DialogUtils(getContext());
+        setIndicator(tabOrder,40,40);
         setType(0);
 
     }
@@ -119,23 +128,40 @@ public class ProductFragment extends BaseFragment {
         unbinder.unbind();
     }
 
-    @OnClick({R.id.fab, R.id.ll_01,R.id.ll_02})
+    @OnClick({R.id.fab, R.id.ll_01, R.id.ll_02, R.id.rl_search})
     public void onClick(View view) {
-        if(isFastClick()){
+        if (isFastClick()) {
             return;
         }
         switch (view.getId()) {
             case R.id.fab:
-                if (!StrUtils.isEmpty(DBManager.getInstance(getContext()).getUserInfo().suppType)) {
-                    if (DBManager.getInstance(getContext()).getUserInfo().suppType.equals("6") && DBManager.getInstance(getContext()).getUserInfo().BusinessActivities.equals("1")) {
-                        bundle = new Bundle();
-                        bundle.putInt("type", 1);
-                        JumpUtils.dataJump(getActivity(), EditProductActivity.class, bundle, false);
+                if ("1".equals(SPUtils.getInstance(getContext()).getString(Contans.IS_FULL))) {
+
+                    if (!StrUtils.isEmpty(DBManager.getInstance(getContext()).getUserInfo().suppType)) {
+                        if (DBManager.getInstance(getContext()).getUserInfo().suppType.equals("6") && DBManager.getInstance(getContext()).getUserInfo().BusinessActivities.equals("1")) {
+                            bundle = new Bundle();
+                            bundle.putInt("type", 1);
+                            ProductList1Fragment.isClick = true;
+                            JumpUtils.dataJump(getActivity(), EditProductActivity.class, bundle, false);
+                        } else {
+                            Toast.makeText(getContext(), "请前往电脑端添加", Toast.LENGTH_SHORT).show();
+                        }
                     } else {
                         Toast.makeText(getContext(), "请前往电脑端添加", Toast.LENGTH_SHORT).show();
                     }
-                } else {
-                    Toast.makeText(getContext(), "请前往电脑端添加", Toast.LENGTH_SHORT).show();
+                } else if ("0".equals(SPUtils.getInstance(getContext()).getString(Contans.IS_FULL))) {
+                    dialogUtils.twoBtnDialog("是否马上完善店铺信息", new DialogUtils.ChoseClickLisener() {
+                        @Override
+                        public void onConfirmClick(View v) {
+                            dialogUtils.dismissDialog();
+                            JumpUtils.simpJump(getActivity(), PerfectMyLocalActivity.class, false);
+                        }
+
+                        @Override
+                        public void onCancelClick(View v) {
+                            dialogUtils.dismissDialog();
+                        }
+                    }, true);
                 }
 
                 break;
@@ -155,14 +181,32 @@ public class ProductFragment extends BaseFragment {
 //                }, viewLocation[1] + heardMenu.getMeasuredHeight() / 2, viewLocation[0], heardMenu.getWidth(), data1, data2);
                 break;
             case R.id.ll_01:
+                type = 0;
                 setType(0);
-                iv01.setVisibility(View.VISIBLE);
-                iv02.setVisibility(View.INVISIBLE);
+
+                ll01.setEnabled(false);
+                ll02.setEnabled(true);
+                tv02.setTextColor(Color.parseColor("#6E6E6E"));
+                tv01.setTextColor(Color.parseColor("#1e1e1e"));
+
                 break;
             case R.id.ll_02:
+                type = 1;
+
                 setType(1);
-                iv01.setVisibility(View.INVISIBLE);
-                iv02.setVisibility(View.VISIBLE);
+                ll01.setEnabled(true);
+                ll02.setEnabled(false);
+                tv01.setTextColor(Color.parseColor("#6E6E6E"));
+                tv02.setTextColor(Color.parseColor("#1e1e1e"));
+
+                break;
+            case R.id.rl_search:
+                if (type == 0) {
+                    ProductList1Fragment.isClick = true;
+                    JumpUtils.simpJump(getActivity(), ProductAllActivity.class, false);
+                } else if (type == 1) {
+                    JumpUtils.simpJump(getActivity(), WholesaleAllActivity.class, false);
+                }
                 break;
         }
     }
@@ -208,9 +252,12 @@ public class ProductFragment extends BaseFragment {
 
         switch (orderType) {
             case 0:
-                titles = new String[]{"出售中", "审核中", "已下架"};
+                paint1.setFakeBoldText(true);
+                paint2.setFakeBoldText(false);
+                titles = new String[]{"出售中", "审核中", "商品库"};
+                fab.setVisibility(View.VISIBLE);
                 for (int i = 0; i < titles.length; i++) {
-                    ProductListFragment fragment = new ProductListFragment();
+                    ProductList1Fragment fragment = new ProductList1Fragment();
                     bundle = new Bundle();
                     switch (i) {
                         case 0:
@@ -229,8 +276,11 @@ public class ProductFragment extends BaseFragment {
                 }
                 break;
             case 1:
-                titles = new String[]{"出售中", "仓库中"};
-                BusinessProduct2Fragment businessProductFragment  = new BusinessProduct2Fragment();
+                paint1.setFakeBoldText(false);
+                paint2.setFakeBoldText(true);
+                titles = new String[]{"出售中", "商品库"};
+                fab.setVisibility(View.GONE);
+                BusinessProduct2Fragment businessProductFragment = new BusinessProduct2Fragment();
                 BusinessProduct1Fragment businessProduct1Fragment = new BusinessProduct1Fragment();
                 list.add(businessProductFragment);
                 list.add(businessProduct1Fragment);
@@ -255,6 +305,7 @@ public class ProductFragment extends BaseFragment {
         });
         tabVp.setOffscreenPageLimit(titles.length);
     }
+
     private void updataVersion() {
         new UpdateAppManager.Builder()
                 .setActivity(getActivity())
@@ -341,5 +392,13 @@ public class ProductFragment extends BaseFragment {
                         super.noNewApp(error);
                     }
                 });
+    }
+
+    @Override
+    public void onHiddenChanged(boolean hidden) {
+        super.onHiddenChanged(hidden);
+        if(!hidden){
+            ImmersionBar.with(getActivity()).statusBarColor(R.color.white).statusBarDarkFont(true).init();
+        }
     }
 }

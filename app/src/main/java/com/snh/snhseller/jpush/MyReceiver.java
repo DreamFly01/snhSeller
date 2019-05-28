@@ -9,6 +9,7 @@ import android.support.v4.content.LocalBroadcastManager;
 
 import com.alibaba.fastjson.JSONException;
 import com.snh.snhseller.MainActivity;
+import com.snh.snhseller.R;
 import com.snh.snhseller.WelcomActivity;
 import com.snh.snhseller.db.DBManager;
 import com.snh.snhseller.ui.home.money.CapitalActivity;
@@ -16,7 +17,10 @@ import com.snh.snhseller.ui.home.set.SetActivity;
 import com.snh.snhseller.ui.loging.LogingActivity;
 import com.snh.snhseller.ui.msg.SupplyNoticeActivity;
 import com.snh.snhseller.ui.msg.SystemNoticeActivity;
+import com.snh.snhseller.utils.BadgeUtils;
+import com.snh.snhseller.utils.Contans;
 import com.snh.snhseller.utils.JumpUtils;
+import com.snh.snhseller.utils.SPUtils;
 import com.snh.snhseller.utils.StrUtils;
 
 import org.json.JSONObject;
@@ -34,7 +38,7 @@ import cn.jpush.android.api.JPushInterface;
  */
 public class MyReceiver extends BroadcastReceiver {
     private static final String TAG = "JIGUANG-Example";
-
+    private int count ;
     @Override
     public void onReceive(Context context, Intent intent) {
         try {
@@ -54,26 +58,34 @@ public class MyReceiver extends BroadcastReceiver {
                 Logger.d(TAG, "[MyReceiver] 接收到推送下来的通知");
                 int notifactionId = bundle.getInt(JPushInterface.EXTRA_NOTIFICATION_ID);
                 Logger.d(TAG, "[MyReceiver] 接收到推送下来的通知的ID: " + notifactionId);
+                count = Integer.parseInt(SPUtils.getInstance(context).getString(Contans.RED_COUNT));
+                count+=1;
+                SPUtils.getInstance(context).saveData(Contans.RED_COUNT,count+"");
+                BadgeUtils.setBadgeCount(context,count, R.mipmap.logo);
 
             } else if (JPushInterface.ACTION_NOTIFICATION_OPENED.equals(intent.getAction())) {
                 Logger.d(TAG, "[MyReceiver] 用户点击打开了通知");
                 //打开自定义的Activity
 //                Logger.d(TAG,printBundle(bundle));
+                count = 0;
+                SPUtils.getInstance(context).saveData(Contans.RED_COUNT,count+"");
+                BadgeUtils.setBadgeCount(context,count, R.mipmap.logo);
                 if (DBManager.getInstance(context).getUseId() != 0&&bundle.getString(JPushInterface.EXTRA_EXTRA).contains("Categories")) {
                 JSONObject json = new JSONObject(bundle.getString(JPushInterface.EXTRA_EXTRA));
                 int Categories = json.getInt("Categories");
                 Intent i;
                 if (Categories == 101 || Categories == 102 || Categories == 201 || Categories == 202 || Categories == 203 || Categories == 204) {
-                    if (MainActivity.isForeground) {
                         bundle = new Bundle();
                         bundle.putInt(MainActivity.SHOW_FRAGMENT_INDEX, 1);
                         bundle.putInt("categories", Categories);
+                    if (MainActivity.isForeground) {
                         i = new Intent(context, MainActivity.class);
                         i.putExtras(bundle);
                         i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
                         context.startActivity(i);
                     } else {
-                        MainActivity.setTabSelection(0);
+                        MainActivity.setCategories(Categories);
+                        MainActivity.setTabSelection(1);
                     }
                 } else if (Categories == 301 || Categories == 302) {
                     if (SupplyNoticeActivity.isForeground) {

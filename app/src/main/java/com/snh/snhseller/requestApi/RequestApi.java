@@ -18,6 +18,7 @@ import com.snh.snhseller.bean.OrderDetailBean;
 import com.snh.snhseller.bean.OrderDetailsBean;
 import com.snh.snhseller.bean.PayWxBean;
 import com.snh.snhseller.bean.ProductBean;
+import com.snh.snhseller.bean.RetailProductBean;
 import com.snh.snhseller.bean.ShopGoodsTypeBean;
 import com.snh.snhseller.bean.SkuBean;
 import com.snh.snhseller.bean.StoreClassficationBean;
@@ -225,6 +226,13 @@ public interface RequestApi {
     @GET("SupplierCommTenant/GetSaleOfGoods")
     Observable<BaseResultBean<List<ProductBean>>> GetSaleOfGoods(@QueryMap Map<String,Object> params);
 
+    /**
+     * 新版获取店铺零售商品
+     * @param params
+     * @return
+     */
+    @GET("SupplierCommTenant/GetSaleOfGoodsTwo")
+    Observable<BaseResultBean<List<RetailProductBean>>> GetSaleOfGoodsTwo(@QueryMap Map<String,Object> params);
     /**
      * 商品上下架
      * @param params
@@ -507,7 +515,7 @@ public interface RequestApi {
      * @param params
      * @return
      */
-    @POST("webapi/Distribution/OnlinePay")
+    @POST("paynew/supperpay")
     Observable<BaseResultBean<PayWxBean>> OnlinePay(@Body Map<String,Object> params);
 
     /**
@@ -515,9 +523,9 @@ public interface RequestApi {
      * @param params
      * @return
      */
-    @POST("webapi/Distribution/OnlinePay")
+    @POST("paynew/supperpay")
     Observable<BaseResultBean> OnlinePay1(@Body Map<String,Object> params);
-    @POST("webapi/Distribution/OnlinePay")
+    @POST("paynew/supperpay")
     Observable<BaseResultBean<String>> OnlinePay2(@Body Map<String,Object> params);
 
     /**
@@ -834,4 +842,14 @@ public interface RequestApi {
      */
     @GET("webapi/Message/GetSupplierNoticeUnreadCount")
         Observable<BaseResultBean<NoticeNumBean>> GetSupplierNoticeUnreadCount(@QueryMap Map<String,Object> params);
+
+    /**
+     * 完善资料
+     * @param params
+     * @return
+     */
+    @POST("webapi/SupplierEnter/UpdateSupplier")
+    Observable<BaseResultBean> UpdateSupplier(@Body Map<String,Object> params);
+
+
 }

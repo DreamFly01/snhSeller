@@ -128,13 +128,13 @@ public class AboutActivity extends BaseActivity {
         }
     }
 
-    public static int getLocalVersion(Context ctx) {
-        int localVersion = 0;
+    public static String getLocalVersion(Context ctx) {
+        String localVersion = "1.0.0";
         try {
             PackageInfo packageInfo = ctx.getApplicationContext()
                     .getPackageManager()
                     .getPackageInfo(ctx.getPackageName(), 0);
-            localVersion = packageInfo.versionCode;
+            localVersion = packageInfo.versionName;
         } catch (PackageManager.NameNotFoundException e) {
             e.printStackTrace();
         }

@@ -383,7 +383,7 @@ public class PerfectCompanyThreeActivity extends BaseActivity implements TakePho
             dialogUtils.noBtnDialog("请输入公司名称");
             return false;
         }
-        if (et18code.getText().toString().trim().length() != 18) {
+        if (!(et18code.getText().toString().trim().length() == 18||et18code.getText().toString().trim().length() == 15)) {
             dialogUtils.noBtnDialog("请输入正确的社会信用代码");
             return false;
         }
@@ -510,7 +510,7 @@ public class PerfectCompanyThreeActivity extends BaseActivity implements TakePho
                 } else {
                     path = result.getImage().getOriginalPath();
                 }
-                String path1 = WaterImgUtils.saveBitmap(this, WaterImgUtils.createWaterMaskCenter(path, this));
+                String path1 = WaterImgUtils.saveBitmap(this, WaterImgUtils.createWaterMaskCenter(path, this),path);
                 imgDelagateBean.url = path1;
                 data.add(0, imgDelagateBean);
                 dataCopy.add(imgDelagateBean);
@@ -532,14 +532,14 @@ public class PerfectCompanyThreeActivity extends BaseActivity implements TakePho
             switch (type) {
                 case 1:
                     Glide.with(this).load(WaterImgUtils.createWaterMaskCenter(pathList.get(0), this)).into(ivChose1);
-                    path = WaterImgUtils.saveBitmap(this, WaterImgUtils.createWaterMaskCenter(pathList.get(0), this));
+                    path = WaterImgUtils.saveBitmap(this, WaterImgUtils.createWaterMaskCenter(pathList.get(0), this),pathList.get(0));
                     pathList.clear();
                     pathList.add(path);
 //                    allMap.put(1, pathMap1);
                     break;
                 case 2:
                     Glide.with(this).load(WaterImgUtils.createWaterMaskCenter(pathList.get(0), this)).into(ivChose2);
-                    path = WaterImgUtils.saveBitmap(this, WaterImgUtils.createWaterMaskCenter(pathList.get(0), this));
+                    path = WaterImgUtils.saveBitmap(this, WaterImgUtils.createWaterMaskCenter(pathList.get(0), this),pathList.get(0));
                     pathList.clear();
                     pathList.add(path);
 //                    allMap.put(2, pathMap2);
@@ -780,6 +780,7 @@ public class PerfectCompanyThreeActivity extends BaseActivity implements TakePho
                 bundle = new Bundle();
                 bundle.putString("phone", (String) dataMap.get("PhoneNumber"));
                 bundle.putString("psw", psw);
+                bundle.putString("pcUrl", (String) model.data);
                 JumpUtils.dataJump(PerfectCompanyThreeActivity.this, CompleteActivity.class, bundle, false);
             }
         }));

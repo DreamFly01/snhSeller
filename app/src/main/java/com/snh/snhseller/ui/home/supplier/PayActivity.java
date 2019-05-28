@@ -144,7 +144,7 @@ public class PayActivity extends BaseActivity {
         TextView title = (TextView) findViewById(R.id.heard_title);
         title.setText("支付");
         tvOrderNo.setText(orderid);
-        tvMoney.setText("￥" + StrUtils.moenyToDH(totalMoney+""));
+        tvMoney.setText("¥" + StrUtils.moenyToDH(totalMoney+""));
 
     }
 
@@ -270,7 +270,7 @@ public class PayActivity extends BaseActivity {
             @Override
             public void onResultNext(BaseResultBean<String> model) {
                 blance = Double.parseDouble(model.data);
-                tvBalance.setText("账户余额(￥ " + StrUtils.moenyToDH(model.data+"") + ")");
+                tvBalance.setText("账户余额(¥ " + StrUtils.moenyToDH(model.data+"") + ")");
             }
         }));
     }
@@ -317,22 +317,22 @@ public class PayActivity extends BaseActivity {
             syspaytype = 1;
         }
         if (isClick3 && !isClick2 && !isClick4) {
-            syspaytype = 4;
-        }
-        if (isClick4 && !isClick2 && !isClick3) {
-            syspaytype = 5;
-        }
-        if (isClick2 && isClick3 && !isClick4) {
             syspaytype = 2;
         }
-        if (isClick2 && isClick4 && !isClick3) {
+        if (isClick4 && !isClick2 && !isClick3) {
             syspaytype = 3;
+        }
+        if (isClick2 && isClick3 && !isClick4) {
+            syspaytype = 4;
+        }
+        if (isClick2 && isClick4 && !isClick3) {
+            syspaytype = 5;
         }
         if (!(isClick2 | isClick3 | isClick4)) {
             dialogUtils.noBtnDialog("请选择支付方式");
             return false;
         }
-        if (syspaytype == 2 | syspaytype == 3) {
+        if (syspaytype == 4 | syspaytype == 5) {
             if (blance > totalMoney) {
                 dialogUtils.noBtnDialog("账户资金足够，请勿混合支付");
                 return false;
@@ -349,12 +349,12 @@ public class PayActivity extends BaseActivity {
         PayReq req = new PayReq();//PayReq就是订单信息对象
         //给req对象赋值
         req.appId = "wxbffbb975260288cc";//APPID
-        req.partnerId = bean.mch_id;//    商户号
-        req.prepayId = bean.prepay_id;//  预付款ID
-        req.nonceStr = bean.nonce_str;//随机数
-        req.timeStamp = bean.timespan;//时间戳
+        req.partnerId = bean.partnerid;//    商户号
+        req.prepayId = bean.prepayid;//  预付款ID
+        req.nonceStr = bean.noncestr;//随机数
+        req.timeStamp = bean.timestamp;//时间戳
         req.packageValue = "Sign=WXPay";//固定值Sign=WXPay
-        req.sign = bean.app_sign;//签名
+        req.sign = bean.sign;//签名
         api.sendReq(req);//将订单信息对象发送给微信服务器，即发送支付请求
 
     }

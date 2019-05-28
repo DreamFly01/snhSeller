@@ -59,7 +59,7 @@ public class HomeFragment extends BaseFragment {
     public void setUpViews(View view) {
         heardTitle.setText("我的");
         heardBack.setVisibility(View.GONE);
-        IsBang.setImmerHeard(getContext(), rlHead, "");
+        IsBang.setImmerHeard(getContext(), rlHead, "#2E8AFF");
         ImmersionBar.setTitleBar(getActivity(), rlHead);
     }
 
