@@ -14,7 +14,7 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="#fc1a4e"
+            android:background="@color/app_red"
             android:paddingBottom="20pt">
             <LinearLayout
                 android:id="@+id/heard_back"

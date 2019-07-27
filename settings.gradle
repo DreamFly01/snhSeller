@@ -1,1 +1,1 @@
-include ':app', ':uikit'
+include ':app', ':uikit', ':moudle_coupons',':library_base', ':library_res', ':module_netapi'
