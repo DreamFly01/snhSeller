@@ -1,9 +1,7 @@
 package com.snh.snhseller.ui.home.accoutData;
 
 import android.graphics.Color;
-import android.graphics.Typeface;
 import android.os.Bundle;
-import android.text.format.DateFormat;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -19,21 +17,16 @@ import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
 import com.github.mikephil.charting.formatter.IAxisValueFormatter;
-import com.github.mikephil.charting.highlight.Highlight;
-import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
-import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
+import com.snh.module_netapi.requestApi.BaseResultBean;
+import com.snh.module_netapi.requestApi.NetSubscriber;
 import com.snh.snhseller.BaseActivity;
 import com.snh.snhseller.R;
-import com.snh.snhseller.bean.BaseResultBean;
 import com.snh.snhseller.bean.DataBean;
 import com.snh.snhseller.bean.DataListBean;
-import com.snh.snhseller.requestApi.NetSubscriber;
 import com.snh.snhseller.requestApi.RequestClient;
 import com.snh.snhseller.utils.IsBang;
 
-import java.text.DecimalFormat;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import butterknife.BindView;
@@ -146,7 +139,7 @@ public class DataStatisticsActivity extends BaseActivity {
         //设置X轴坐标之间的最小间隔
         xAxis.setGranularity(1f);
         //设置X轴的刻度数量，第二个参数为true,将会画出明确数量（带有小数点），但是可能值导致不均匀，默认（6，false）
-//        xAxis.setLabelCount(list.size() / 6, false);
+//        xAxis.setLabelCount(beans.size(), false);
         //设置X轴的值（最小值、最大值、然后会根据设置的刻度数量自动分配刻度显示）
         xAxis.setAxisMinimum(0f);
 //        xAxis.setAxisMaximum((float) list.size());

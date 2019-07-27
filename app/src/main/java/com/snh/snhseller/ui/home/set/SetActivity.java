@@ -8,11 +8,11 @@ import android.widget.TextView;
 
 import com.netease.nimlib.sdk.NIMClient;
 import com.netease.nimlib.sdk.auth.AuthService;
+import com.snh.library_base.db.DBManager;
 import com.snh.snhseller.BaseActivity;
 import com.snh.snhseller.R;
 import com.snh.snhseller.jpush.TagAliasOperatorHelper;
 import com.snh.snhseller.ui.loging.LogingActivity;
-import com.snh.snhseller.db.DBManager;
 import com.snh.snhseller.utils.DialogUtils;
 import com.snh.snhseller.utils.GlideCacheUtil;
 import com.snh.snhseller.utils.IsBang;
@@ -23,7 +23,6 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 import static com.snh.snhseller.jpush.TagAliasOperatorHelper.ACTION_DELETE;
-import static com.snh.snhseller.jpush.TagAliasOperatorHelper.ACTION_SET;
 import static com.snh.snhseller.jpush.TagAliasOperatorHelper.sequence;
 
 /**

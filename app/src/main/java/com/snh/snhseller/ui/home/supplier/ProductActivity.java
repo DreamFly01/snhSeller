@@ -19,13 +19,13 @@ import com.bigkoo.pickerview.builder.OptionsPickerBuilder;
 import com.bigkoo.pickerview.listener.OnOptionsSelectListener;
 import com.bigkoo.pickerview.view.OptionsPickerView;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
+import com.snh.module_netapi.requestApi.BaseResultBean;
+import com.snh.module_netapi.requestApi.NetSubscriber;
 import com.snh.snhseller.BaseActivity;
 import com.snh.snhseller.R;
 import com.snh.snhseller.adapter.ProductSkuAdapter;
-import com.snh.snhseller.bean.BaseResultBean;
 import com.snh.snhseller.bean.supplierbean.ProductBean;
 import com.snh.snhseller.bean.supplierbean.SkuBean;
-import com.snh.snhseller.requestApi.NetSubscriber;
 import com.snh.snhseller.requestApi.RequestClient;
 import com.snh.snhseller.utils.GlideImageLoader;
 import com.snh.snhseller.utils.IsBang;
@@ -102,7 +102,7 @@ public class ProductActivity extends BaseActivity {
             id = bundle.getInt("id");
             shopId = bundle.getInt("shopId");
         }
-        setImm(false);
+//        setImm(false);
     }
 
     @Override

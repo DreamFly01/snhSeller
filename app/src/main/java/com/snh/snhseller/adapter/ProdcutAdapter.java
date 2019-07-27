@@ -5,16 +5,11 @@ import android.support.annotation.Nullable;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.snh.snhseller.R;
-import com.snh.snhseller.bean.BaseResultBean;
 import com.snh.snhseller.bean.ProductBean;
-import com.snh.snhseller.requestApi.NetSubscriber;
-import com.snh.snhseller.requestApi.RequestClient;
-import com.snh.snhseller.utils.DialogUtils;
 import com.snh.snhseller.utils.ImageUtils;
 import com.snh.snhseller.utils.StrUtils;
 
@@ -69,10 +64,12 @@ public class ProdcutAdapter extends BaseQuickAdapter<ProductBean,BaseViewHolder>
             case 1:
                 tvEdit.setVisibility(View.VISIBLE);
                 tvXj.setVisibility(View.VISIBLE);
+                tvXj.setText("下架");
                 break;
             case 2:
                 tvEdit.setVisibility(View.VISIBLE);
                 tvXj.setVisibility(View.VISIBLE);
+                tvXj.setText("上架");
                 break;
             case 3:
                 tvEdit.setVisibility(View.GONE);

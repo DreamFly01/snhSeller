@@ -12,13 +12,12 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.snh.module_netapi.requestApi.BaseResultBean;
+import com.snh.module_netapi.requestApi.NetSubscriber;
 import com.snh.snhseller.BaseActivity;
 import com.snh.snhseller.R;
 import com.snh.snhseller.adapter.OrderSkuAdapter;
-import com.snh.snhseller.bean.BaseResultBean;
-import com.snh.snhseller.bean.MessageEventBean;
 import com.snh.snhseller.bean.OrderDetailBean;
-import com.snh.snhseller.requestApi.NetSubscriber;
 import com.snh.snhseller.requestApi.RequestClient;
 import com.snh.snhseller.ui.home.supplier.PayActivity;
 import com.snh.snhseller.utils.DialogUtils;
@@ -28,8 +27,6 @@ import com.snh.snhseller.utils.JumpUtils;
 import com.snh.snhseller.utils.StrUtils;
 import com.snh.snhseller.utils.TimeUtils;
 import com.snh.snhseller.wediget.RecycleViewDivider;
-
-import org.greenrobot.eventbus.EventBus;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;

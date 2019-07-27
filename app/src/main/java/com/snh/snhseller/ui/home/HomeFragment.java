@@ -8,7 +8,9 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.alibaba.android.arouter.launcher.ARouter;
 import com.gyf.barlibrary.ImmersionBar;
+import com.snh.library_base.router.RouterActivityPath;
 import com.snh.snhseller.BaseFragment;
 import com.snh.snhseller.R;
 import com.snh.snhseller.ui.home.account.ShopInfoActivity;
@@ -19,14 +21,9 @@ import com.snh.snhseller.ui.home.salesManagement.SalesManagementActivity;
 import com.snh.snhseller.ui.home.set.QRcodeActivity;
 import com.snh.snhseller.ui.home.set.SetActivity;
 import com.snh.snhseller.ui.home.supplier.MySupplierActivity;
-import com.snh.snhseller.db.DBManager;
-import com.snh.snhseller.ui.merchantEntry.PerfectMyLocalActivity;
-import com.snh.snhseller.utils.Contans;
 import com.snh.snhseller.utils.DialogUtils;
 import com.snh.snhseller.utils.ImageUtils;
-import com.snh.snhseller.utils.IsBang;
 import com.snh.snhseller.utils.JumpUtils;
-import com.snh.snhseller.utils.SPUtils;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -80,8 +77,8 @@ public class HomeFragment extends BaseFragment {
 //        IsBang.setImmerHeard(getContext(), llHeard,"#FF5959");
         ImmersionBar.with(getActivity()).statusBarColor(R.color.app_red).statusBarDarkFont(false).init();
 
-        ImageUtils.loadUrlCorners(getContext(), DBManager.getInstance(getContext()).getUserInfo().Logo, ivHeard);
-        tvName.setText(DBManager.getInstance(getContext()).getUserInfo().ShopName);
+        ImageUtils.loadUrlCorners(getContext(), com.snh.library_base.db.DBManager.getInstance(getContext()).getUserInfo().Logo, ivHeard);
+        tvName.setText(com.snh.library_base.db.DBManager.getInstance(getContext()).getUserInfo().ShopName);
     }
 
     @Override
@@ -103,7 +100,7 @@ public class HomeFragment extends BaseFragment {
         unbinder.unbind();
     }
 
-    @OnClick({R.id.ll_heard, R.id.ll_01, R.id.ll_02, R.id.ll_03, R.id.ll_04, R.id.ll_05, R.id.ll_06, R.id.ll_07,R.id.ll_08})
+    @OnClick({R.id.ll_heard, R.id.ll_01, R.id.ll_02, R.id.ll_03, R.id.ll_04, R.id.ll_05, R.id.ll_06, R.id.ll_07,R.id.ll_08,R.id.ll_09})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.ll_heard:
@@ -135,10 +132,13 @@ public class HomeFragment extends BaseFragment {
 
             case R.id.ll_07:
                 JumpUtils.simpJump(getActivity(), SetActivity.class, false);
-
                 break;
             case R.id.ll_08:
                 JumpUtils.simpJump(getActivity(), CostApplyActivity.class, false);
+                break;
+            case R.id.ll_09:
+//                JumpUtils.simpJump(getActivity(), MyCouponsActivity.class, false);
+                ARouter.getInstance().build(RouterActivityPath.Coupons.PATH_MY_COUPONS).navigation();
                 break;
         }
     }
@@ -147,9 +147,9 @@ public class HomeFragment extends BaseFragment {
     public void onResume() {
         super.onResume();
         if (!this.isHidden()) {
-            ImageUtils.loadUrlCorners(getContext(), DBManager.getInstance(getContext()).getUserInfo().Logo, ivHeard);
-            System.out.println(DBManager.getInstance(getContext()).getUserInfo().Logo);
-            tvName.setText(DBManager.getInstance(getContext()).getUserInfo().ShopName);
+            ImageUtils.loadUrlCorners(getContext(), com.snh.library_base.db.DBManager.getInstance(getContext()).getUserInfo().Logo, ivHeard);
+//            System.out.println(DBManager.getInstance(getContext()).getUserInfo().Logo);
+            tvName.setText(com.snh.library_base.db.DBManager.getInstance(getContext()).getUserInfo().ShopName);
         }
     }
 

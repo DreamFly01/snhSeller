@@ -11,10 +11,10 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.snh.library_base.db.DBManager;
+import com.snh.library_base.utils.Contans;
 import com.snh.snhseller.ui.loging.LogingActivity;
 import com.snh.snhseller.ui.salesmanManagement.SalesmanMainActivity;
-import com.snh.snhseller.utils.Contans;
-import com.snh.snhseller.db.DBManager;
 import com.snh.snhseller.utils.JumpUtils;
 import com.snh.snhseller.utils.SPUtils;
 import com.tencent.bugly.crashreport.CrashReport;
@@ -87,6 +87,8 @@ public class WelcomActivity extends BaseActivity {
         if (SPUtils.getInstance(this).getBoolean(Contans.LAUNCH_FRIST)) {
             ivWelcomeBg.setVisibility(View.GONE);
             activityWelcomePager.setVisibility(View.VISIBLE);
+            SPUtils.getInstance(this).saveData(Contans.SP_HOSt,Contans.HOST);
+
             initWelcom();
         } else {
             ivWelcomeBg.setVisibility(View.VISIBLE);
@@ -192,7 +194,7 @@ public class WelcomActivity extends BaseActivity {
             if (null != DBManager.getInstance(this).getUserInfo()) {
                 CrashReport.setUserId(DBManager.getInstance(this).getUseId()+"");
                 JumpUtils.dataJump(WelcomActivity.this, MainActivity.class, bundle, true);
-            } else if(null != DBManager.getInstance(this).getSaleInfo()){
+            } else if(null != com.snh.snhseller.db.DBManager.getInstance(this).getSaleInfo()){
                 JumpUtils.dataJump(WelcomActivity.this, SalesmanMainActivity.class, bundle, true);
             }else  {
                 JumpUtils.dataJump(WelcomActivity.this, LogingActivity.class, bundle, true);

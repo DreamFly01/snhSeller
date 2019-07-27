@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/color_app_bg"
+    android:fitsSystemWindows="true"
+    >
+<include layout="@layout/heard_white_layout"></include>
+    <include layout="@layout/line_layout"></include>
+    <LinearLayout
+        android:background="@color/white"
+        android:layout_width="match_parent"
+        android:layout_height="80pt"
+        android:orientation="horizontal"
+       android:gravity="center_vertical"
+        >
+<TextView
+    android:id="@+id/tv_01"
+    android:layout_weight="1"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center"
+    android:textColor="@color/txt_red"
+    android:textSize="30pt"
+    android:text="发放的优惠券"
+    />
+<ImageView
+    android:layout_width="2pt"
+    android:layout_height="40pt"
+    android:background="@color/line_color"
+    />
+        <TextView
+            android:id="@+id/tv_02"
+            android:gravity="center"
+            android:layout_weight="1"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:textColor="@color/txt_dark"
+            android:textSize="30pt"
+            android:text="参与的优惠券"
+            />
+    </LinearLayout>
+    <include layout="@layout/line_layout"></include>
+    <FrameLayout
+        android:layout_marginTop="20pt"
+        android:id="@+id/frame_coupons"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"></FrameLayout>
+</LinearLayout>

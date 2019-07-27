@@ -1,11 +1,8 @@
 package com.snh.snhseller.ui.merchantEntry;
 
-import android.Manifest;
 import android.content.ContentResolver;
 import android.content.ContentValues;
-import android.content.Context;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.location.Address;
 import android.location.Geocoder;
@@ -13,8 +10,6 @@ import android.location.LocationManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -45,17 +40,17 @@ import com.jph.takephoto.compress.CompressConfig;
 import com.jph.takephoto.model.InvokeParam;
 import com.jph.takephoto.model.TContextWrap;
 import com.jph.takephoto.model.TResult;
-import com.jph.takephoto.model.TakePhotoOptions;
 import com.jph.takephoto.permission.InvokeListener;
 import com.jph.takephoto.permission.PermissionManager;
 import com.jph.takephoto.permission.TakePhotoInvocationHandler;
+import com.snh.module_netapi.requestApi.BaseResultBean;
+import com.snh.module_netapi.requestApi.NetSubscriber;
 import com.snh.snhseller.BaseActivity;
 import com.snh.snhseller.R;
 import com.snh.snhseller.adapter.AddImgAdapter;
 import com.snh.snhseller.adapter.FootItemDelagateAdapter;
 import com.snh.snhseller.adapter.MyMultiItemAdapter;
 import com.snh.snhseller.bean.AreasBean;
-import com.snh.snhseller.bean.BaseResultBean;
 import com.snh.snhseller.bean.ImgDelagateBean;
 import com.snh.snhseller.bean.StoreClassficationBean;
 import com.snh.snhseller.bean.beanDao.AearBean;
@@ -63,9 +58,7 @@ import com.snh.snhseller.db.DBManager;
 import com.snh.snhseller.greendao.AearBeanDao;
 import com.snh.snhseller.greendao.DaoMaster;
 import com.snh.snhseller.greendao.DaoSession;
-import com.snh.snhseller.requestApi.NetSubscriber;
 import com.snh.snhseller.requestApi.RequestClient;
-import com.snh.snhseller.utils.Contans;
 import com.snh.snhseller.utils.DialogUtils;
 import com.snh.snhseller.utils.IsBang;
 import com.snh.snhseller.utils.JumpUtils;
@@ -75,7 +68,6 @@ import com.snh.snhseller.utils.WaterImgUtils;
 
 import java.io.File;
 import java.io.IOException;
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -295,6 +287,9 @@ public class PerfectLocalActivity extends BaseActivity implements TakePhoto.Take
     private void setData() {
         if (StrUtils.isEmpty(Province) || StrUtils.isEmpty(City) || StrUtils.isEmpty(Area)) {
             try {
+                daoMaster = new DaoMaster(DBManager.getInstance(this).getWritableDatabase());
+                daoSession = daoMaster.newSession();
+                aearBeanDao = daoSession.getAearBeanDao();
                 AearBean aearBean = aearBeanDao.queryBuilder().where(AearBeanDao.Properties.AddressName.eq(province)).unique();
                 Province = aearBean.id;
                 AearBean aearBean1 = aearBeanDao.queryBuilder().where(AearBeanDao.Properties.ParentID.eq(aearBean.id), AearBeanDao.Properties.AddressName.eq(city)).unique();
@@ -617,17 +612,17 @@ public class PerfectLocalActivity extends BaseActivity implements TakePhoto.Take
         }));
 
     }
-
     private String Province;
     private String City;
     private String Area;
-    DaoMaster daoMaster = new DaoMaster(DBManager.getInstance(this).getWritableDatabase());
-    DaoSession daoSession = daoMaster.newSession();
-    AearBeanDao aearBeanDao = daoSession.getAearBeanDao();
+    DaoMaster daoMaster;
+    DaoSession daoSession ;
+    AearBeanDao aearBeanDao ;
 
     private void showPickerView() {//条件选择器初始化
-
-
+        daoMaster = new DaoMaster(DBManager.getInstance(this).getWritableDatabase());
+        daoSession = daoMaster.newSession();
+        aearBeanDao = daoSession.getAearBeanDao();
         dialogUtils.Address1Dialog(new DialogUtils.Address1Chose() {
             @Override
             public void onAddressChose(AreasBean bean) {

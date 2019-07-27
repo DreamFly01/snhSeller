@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.content.res.Resources;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
-//import android.support.design.widget.TabLayout;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.FragmentActivity;
 import android.util.TypedValue;
@@ -17,13 +16,11 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
-
 import com.gyf.barlibrary.ImmersionBar;
-import com.snh.snhseller.bean.beanDao.UserEntity;
+import com.snh.library_base.db.UserEntity;
+import com.snh.snhseller.base.greendao.UserEntityDao;
 import com.snh.snhseller.greendao.DaoMaster;
 import com.snh.snhseller.greendao.DaoSession;
-import com.snh.snhseller.greendao.UserEntityDao;
-import com.snh.snhseller.db.DBManager;
 import com.snh.snhseller.utils.IsBang;
 
 import java.lang.reflect.Field;
@@ -33,6 +30,8 @@ import java.util.List;
 import butterknife.ButterKnife;
 import rx.Subscription;
 import rx.subscriptions.CompositeSubscription;
+
+//import android.support.design.widget.TabLayout;
 
 
 public abstract class BaseActivity extends FragmentActivity implements View.OnClickListener, AdapterView.OnItemClickListener {
@@ -65,13 +64,6 @@ public abstract class BaseActivity extends FragmentActivity implements View.OnCl
             immersionBar.statusBarDarkFont(true);
         }
         immersionBar.init();
-        db = DBManager.getInstance(this).getWritableDatabase();
-        daoMaster = new DaoMaster(db);
-        daoSession = daoMaster.newSession();
-    }
-
-    public DaoSession getDaoSession() {
-        return daoSession;
     }
 
     /**
@@ -254,7 +246,7 @@ public abstract class BaseActivity extends FragmentActivity implements View.OnCl
     }
 
     protected boolean isLogin() {
-        UserEntityDao userEntityDao = daoSession.getUserEntityDao();
+        UserEntityDao userEntityDao = com.snh.library_base.db.DBManager.getDaoSession().getUserEntityDao();
         List<UserEntity> userList = userEntityDao.queryBuilder().list();
         if (userList.size() > 0) {
 //            UserEntity user = userList.get(0);

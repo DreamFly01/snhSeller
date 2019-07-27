@@ -3,12 +3,14 @@ package com.snh.snhseller.requestApi;
 import android.content.Context;
 import android.widget.Toast;
 
-import com.google.gson.Gson;
+import com.snh.library_base.utils.Contans;
+import com.snh.module_netapi.requestApi.BaseResultBean;
+import com.snh.module_netapi.requestApi.NetSubscriber;
+import com.snh.module_netapi.requestApi.RetrofitProxy;
+import com.snh.module_netapi.requestApi.RetrofitProxy1;
 import com.snh.snhseller.BuildConfig;
 import com.snh.snhseller.bean.AgreementBean;
-import com.snh.snhseller.bean.AllUserBean;
 import com.snh.snhseller.bean.BanksBean;
-import com.snh.snhseller.bean.BaseResultBean;
 import com.snh.snhseller.bean.BusinessBean;
 import com.snh.snhseller.bean.CostApplyBean;
 import com.snh.snhseller.bean.DataBean;
@@ -44,11 +46,9 @@ import com.snh.snhseller.bean.supplierbean.AllSupplierBean;
 import com.snh.snhseller.bean.supplierbean.GoodsBean;
 import com.snh.snhseller.bean.supplierbean.SupplierBean;
 import com.snh.snhseller.db.DBManager;
-import com.snh.snhseller.utils.Contans;
 import com.snh.snhseller.utils.NetworkUtils;
 import com.snh.snhseller.utils.SPUtils;
 import com.snh.snhseller.utils.StrUtils;
-import com.snh.snhseller.utils.UriUtils;
 
 import java.io.File;
 import java.net.SocketTimeoutException;
@@ -99,7 +99,7 @@ public class RequestClient {
             Toast.makeText(context, "图片上传失败", Toast.LENGTH_SHORT).show();
         }
 
-        return doRequest(RetrofitProxy1.getApiService(context, "").UpLoadFile(parts), context, observer);
+        return doRequest(RetrofitProxy1.init(context).create(RequestApi.class).UpLoadFile(parts), context, observer);
     }
 
     /**
@@ -120,7 +120,7 @@ public class RequestClient {
         map.put("PhoneNumber", PhoneNumber);
         map.put("Type", type);
         return doRequest(RetrofitProxy.
-                        getApiService(context, "").
+                        init(context).create(RequestApi.class).
                         PostSms(map),
                 context, observer);
     }
@@ -136,7 +136,7 @@ public class RequestClient {
         map.put("PhoneNumber", PhoneNumber);
         map.put("Type", 2);
         return doRequest(RetrofitProxy.
-                        getApiService(context, "").
+                        init(context).create(RequestApi.class).
                         SmsCode(map),
                 context, observer);
     }
@@ -164,7 +164,7 @@ public class RequestClient {
             map.put("Pwd", psw);
         }
         return doRequest(RetrofitProxy.
-                        getApiService(context, "").
+                        init(context).create(RequestApi.class).
                         LoginPhone(map),
                 context, observer);
     }
@@ -184,7 +184,7 @@ public class RequestClient {
         map.put("PhoneNumber", PhoneNumber);
         map.put("Code", code);
         return doRequest(RetrofitProxy.
-                        getApiService(context, "").
+                        init(context).create(RequestApi.class).
                         VerifyPhone(map),
                 context, observer);
     }
@@ -203,7 +203,7 @@ public class RequestClient {
         map.put("PhoneNumber", PhoneNumber);
         map.put("NewPwd", NewPwd);
         return doRequest(RetrofitProxy.
-                        getApiService(context, "").
+                        init(context).create(RequestApi.class).
                         ForgetPwd(map),
                 context, observer);
     }
@@ -221,7 +221,7 @@ public class RequestClient {
         Map<String, Object> map = new TreeMap<>();
         map.put("type", type);
         return doRequest(RetrofitProxy.
-                        getApiService(context, "").
+                        init(context).create(RequestApi.class).
                         GetShopType(map),
                 context, observer);
     }
@@ -236,7 +236,7 @@ public class RequestClient {
     public static Subscription GetInSwitch(Context context, NetSubscriber<BaseResultBean<InSwitchBean>> observer) {
         Map<String, Object> map = new TreeMap<>();
         return doRequest(RetrofitProxy.
-                        getApiService(context, "").
+                        init(context).create(RequestApi.class).
                         GetInSwitch(map),
                 context, observer);
     }
@@ -250,7 +250,7 @@ public class RequestClient {
         Map<String, Object> map = new TreeMap<>();
         map.put("shopTypeId", shopTypeId);
         return doRequest(RetrofitProxy.
-                        getApiService(context, "").
+                        init(context).create(RequestApi.class).
                         GetShopGoodsType(map),
                 context, observer);
     }
@@ -270,7 +270,7 @@ public class RequestClient {
         map.put("Code", Code);
         map.put("Type", 2);
         return doRequest(RetrofitProxy.
-                        getApiService(context, "").
+                        init(context).create(RequestApi.class).
                         MerchantLogin(map),
                 context, observer);
     }
@@ -286,7 +286,7 @@ public class RequestClient {
     public static Subscription MerchantLocalEnter(Map<String, Object> map, Context context, NetSubscriber<BaseResultBean> observer) {
         map.put("InvitingCode", SPUtils.getInstance(context).getString(Contans.REFEREE));
         return doRequest(RetrofitProxy.
-                        getApiService(context, "").
+                        init(context).create(RequestApi.class).
                         MerchantLocalEnter(map),
                 context, observer);
     }
@@ -302,7 +302,7 @@ public class RequestClient {
     public static Subscription MerchantPersonEnter(Map<String, Object> map, Context context, NetSubscriber<BaseResultBean> observer) {
         map.put("InvitingCode", SPUtils.getInstance(context).getString(Contans.REFEREE));
         return doRequest(RetrofitProxy.
-                        getApiService(context, "").
+                        init(context).create(RequestApi.class).
                         MerchantPersonEnter(map),
                 context, observer);
     }
@@ -318,7 +318,7 @@ public class RequestClient {
     public static Subscription MerchantCompanyEntry(Map<String, Object> map, Context context, NetSubscriber<BaseResultBean> observer) {
         map.put("InvitingCode", SPUtils.getInstance(context).getString(Contans.REFEREE));
         return doRequest(RetrofitProxy.
-                        getApiService(context, "").
+                        init(context).create(RequestApi.class).
                         MerchantCompanyEntry(map),
                 context, observer);
     }
@@ -332,7 +332,7 @@ public class RequestClient {
      */
     public static Subscription GetAgreementList(Context context, NetSubscriber<BaseResultBean<List<AgreementBean>>> observer) {
         return doRequest(RetrofitProxy.
-                        getApiService(context, "").
+                        init(context).create(RequestApi.class).
                         GetAgreementList(),
                 context, observer);
     }
@@ -359,11 +359,11 @@ public class RequestClient {
         if(!StrUtils.isEmpty(orderNo)){
             map.put("orderNo", orderNo);
         }
-        map.put("supplierId", DBManager.getInstance(context).getUseId());
+        map.put("supplierId", com.snh.library_base.db.DBManager.getInstance(context).getUseId());
         map.put("pageSize", 10);
         map.put("pageIndex", index);
         return doRequest(RetrofitProxy.
-                        getApiService(context, "").
+                        init(context).create(RequestApi.class).
                         getOrderList(map),
                 context, observer);
     }
@@ -384,11 +384,11 @@ public class RequestClient {
         if (!StrUtils.isEmpty(condition)) {
             map.put("condition", condition);
         }
-        map.put("supplierId", DBManager.getInstance(context).getUseId());
+        map.put("supplierId", com.snh.library_base.db.DBManager.getInstance(context).getUseId());
         map.put("pageSize", 10);
         map.put("pageIndex", index);
         return doRequest(RetrofitProxy.
-                        getApiService(context, "").
+                        init(context).create(RequestApi.class).
                         MyShipmentOrderList(map),
                 context, observer);
     }
@@ -409,11 +409,11 @@ public class RequestClient {
         if (!StrUtils.isEmpty(condition)) {
             map.put("condition", condition);
         }
-        map.put("supplierId", DBManager.getInstance(context).getUseId());
+        map.put("supplierId", com.snh.library_base.db.DBManager.getInstance(context).getUseId());
         map.put("pageSize", 10);
         map.put("pageIndex", index);
         return doRequest(RetrofitProxy.
-                        getApiService(context, "").
+                        init(context).create(RequestApi.class).
                         MyStockOrderList(map),
                 context, observer);
     }
@@ -435,7 +435,7 @@ public class RequestClient {
         map.put("Price", Price);
         map.put("Freight", Freight);
         return doRequest(RetrofitProxy.
-                        getApiService(context, "").
+                        init(context).create(RequestApi.class).
                         ChangePrice(map),
                 context, observer);
     }
@@ -452,7 +452,7 @@ public class RequestClient {
     public static Subscription ConfirmShipment(Map<String, Object> map, Context context, NetSubscriber<BaseResultBean> observer) {
 
         return doRequest(RetrofitProxy.
-                        getApiService(context, "").
+                        init(context).create(RequestApi.class).
                         ConfirmShipment(map),
                 context, observer);
     }
@@ -469,7 +469,7 @@ public class RequestClient {
      */
     public static Subscription GetSaleOfGoods(int commType, int pageIndex, String commtenantName, Context context, NetSubscriber<BaseResultBean<List<ProductBean>>> observer) {
         Map<String, Object> map = new TreeMap<>();
-        map.put("supplierId", DBManager.getInstance(context).getUseId());
+        map.put("supplierId", com.snh.library_base.db.DBManager.getInstance(context).getUseId());
         map.put("pageSize", 10);
         if (StrUtils.isEmpty(commtenantName)) {
             map.put("commtenantName", "");
@@ -483,7 +483,7 @@ public class RequestClient {
         }
         map.put("pageIndex", pageIndex);
         return doRequest(RetrofitProxy.
-                        getApiService(context, "").
+                        init(context).create(RequestApi.class).
                         GetSaleOfGoods(map),
                 context, observer);
     }
@@ -497,7 +497,7 @@ public class RequestClient {
      */
     public static Subscription GetSaleOfGoodsTwo(int commType,  Context context, NetSubscriber<BaseResultBean<List<RetailProductBean>>> observer) {
         Map<String, Object> map = new TreeMap<>();
-        map.put("supplierId", DBManager.getInstance(context).getUseId());
+        map.put("supplierId", com.snh.library_base.db.DBManager.getInstance(context).getUseId());
 //        map.put("pageSize", 10);
 //        if (StrUtils.isEmpty(commtenantName)) {
 //            map.put("commtenantName", "");
@@ -507,7 +507,7 @@ public class RequestClient {
             map.put("commType", commType);
 //        map.put("pageIndex", pageIndex);
         return doRequest(RetrofitProxy.
-                        getApiService(context, "").
+                        init(context).create(RequestApi.class).
                         GetSaleOfGoodsTwo(map),
                 context, observer);
     }
@@ -523,11 +523,11 @@ public class RequestClient {
      */
     public static Subscription UpOrDownProduct(int CommtenantId, int Type, Context context, NetSubscriber<BaseResultBean> observer) {
         Map<String, Object> map = new TreeMap<>();
-        map.put("SupplierId", DBManager.getInstance(context).getUseId());
+        map.put("SupplierId", com.snh.library_base.db.DBManager.getInstance(context).getUseId());
         map.put("CommtenantId", CommtenantId);
         map.put("Type", Type);
         return doRequest(RetrofitProxy.
-                        getApiService(context, "").
+                        init(context).create(RequestApi.class).
                         UpOrDownProduct(map),
                 context, observer);
     }
@@ -542,10 +542,10 @@ public class RequestClient {
      */
     public static Subscription DelProduct(int CommtenantId, Context context, NetSubscriber<BaseResultBean> observer) {
         Map<String, Object> map = new TreeMap<>();
-        map.put("SupplierId", DBManager.getInstance(context).getUseId());
+        map.put("SupplierId", com.snh.library_base.db.DBManager.getInstance(context).getUseId());
         map.put("CommtenantId", CommtenantId);
         return doRequest(RetrofitProxy.
-                        getApiService(context, "").
+                        init(context).create(RequestApi.class).
                         DelProduct(map),
                 context, observer);
     }
@@ -561,7 +561,7 @@ public class RequestClient {
     public static Subscription AddProduct(Map<String, Object> map, Context context, NetSubscriber<BaseResultBean> observer) {
 
         return doRequest(RetrofitProxy.
-                        getApiService(context, "").
+                        init(context).create(RequestApi.class).
                         AddProduct(map),
                 context, observer);
     }
@@ -577,7 +577,7 @@ public class RequestClient {
     public static Subscription EditProduct(Map<String, Object> map, Context context, NetSubscriber<BaseResultBean> observer) {
 
         return doRequest(RetrofitProxy.
-                        getApiService(context, "").
+                        init(context).create(RequestApi.class).
                         EditProduct(map),
                 context, observer);
     }
@@ -592,10 +592,10 @@ public class RequestClient {
      */
     public static Subscription ModifShopLogo(String Icon, Context context, NetSubscriber<BaseResultBean> observer) {
         Map<String, Object> map = new TreeMap<>();
-        map.put("SupplierId", DBManager.getInstance(context).getUseId());
+        map.put("SupplierId", com.snh.library_base.db.DBManager.getInstance(context).getUseId());
         map.put("Icon", Icon);
         return doRequest(RetrofitProxy.
-                        getApiService(context, "").
+                        init(context).create(RequestApi.class).
                         ModifShopLogo(map),
                 context, observer);
     }
@@ -611,7 +611,7 @@ public class RequestClient {
     public static Subscription ModifInfo(Map<String, Object> map, Context context, NetSubscriber<BaseResultBean> observer) {
 
         return doRequest(RetrofitProxy.
-                        getApiService(context, "").
+                        init(context).create(RequestApi.class).
                         ModifInfo(map),
                 context, observer);
     }
@@ -626,10 +626,10 @@ public class RequestClient {
      */
     public static Subscription ModifDesc(String Describe, Context context, NetSubscriber<BaseResultBean> observer) {
         Map<String, Object> map = new TreeMap<>();
-        map.put("SupplierId", DBManager.getInstance(context).getUseId());
+        map.put("SupplierId", com.snh.library_base.db.DBManager.getInstance(context).getUseId());
         map.put("Describe", Describe);
         return doRequest(RetrofitProxy.
-                        getApiService(context, "").
+                        init(context).create(RequestApi.class).
                         ModifDesc(map),
                 context, observer);
     }
@@ -646,11 +646,11 @@ public class RequestClient {
      */
     public static Subscription OldPwdToNewPwd(String OldPwd, String NewPwd, Context context, NetSubscriber<BaseResultBean> observer) {
         Map<String, Object> map = new TreeMap<>();
-        map.put("SupplierId", DBManager.getInstance(context).getUseId());
+        map.put("SupplierId", com.snh.library_base.db.DBManager.getInstance(context).getUseId());
         map.put("OldPwd", OldPwd);
         map.put("NewPwd", NewPwd);
         return doRequest(RetrofitProxy.
-                        getApiService(context, "").
+                        init(context).create(RequestApi.class).
                         OldPwdToNewPwd(map),
                 context, observer);
     }
@@ -668,12 +668,12 @@ public class RequestClient {
 
     public static Subscription CommitFeedBack(String Starlevel, String ImgUrlList, String Content, Context context, NetSubscriber<BaseResultBean> observer) {
         Map<String, Object> map = new TreeMap<>();
-        map.put("SupplierId", DBManager.getInstance(context).getUseId());
+        map.put("SupplierId", com.snh.library_base.db.DBManager.getInstance(context).getUseId());
         map.put("Starlevel", Starlevel);
         map.put("ImgUrlList", ImgUrlList);
         map.put("Content", Content);
         return doRequest(RetrofitProxy.
-                        getApiService(context, "").
+                        init(context).create(RequestApi.class).
                         CommitFeedBack(map),
                 context, observer);
     }
@@ -688,9 +688,9 @@ public class RequestClient {
      */
     public static Subscription DataStatistics(Context context, NetSubscriber<BaseResultBean<DataBean>> observer) {
         Map<String, Object> map = new TreeMap<>();
-        map.put("SupplierId", DBManager.getInstance(context).getUseId());
+        map.put("SupplierId", com.snh.library_base.db.DBManager.getInstance(context).getUseId());
         return doRequest(RetrofitProxy.
-                        getApiService(context, "").
+                        init(context).create(RequestApi.class).
                         DataStatistics(map),
                 context, observer);
     }
@@ -711,7 +711,7 @@ public class RequestClient {
         map.put("PassWord", psw);
 
         return doRequest(RetrofitProxy.
-                        getApiService(context, "").
+                        init(context).create(RequestApi.class).
                         LoginSale(map),
                 context, observer);
     }
@@ -730,7 +730,7 @@ public class RequestClient {
         map.put("PhoneNumer", PhoneNumer);
         map.put("Type", Type);
         return doRequest(RetrofitProxy.
-                        getApiService(context, "").
+                        init(context).create(RequestApi.class).
                         SaleSendSms(map),
                 context, observer);
     }
@@ -751,7 +751,7 @@ public class RequestClient {
         map.put("Code", Code);
 
         return doRequest(RetrofitProxy.
-                        getApiService(context, "").
+                        init(context).create(RequestApi.class).
                         SalePhoneLogin(map),
                 context, observer);
     }
@@ -773,7 +773,7 @@ public class RequestClient {
         map.put("NewPwd", NewPwd);
 
         return doRequest(RetrofitProxy.
-                        getApiService(context, "").
+                        init(context).create(RequestApi.class).
                         OldPwdAlterNewPwd(map),
                 context, observer);
     }
@@ -796,7 +796,7 @@ public class RequestClient {
             map.put("condition", condition);
         }
         return doRequest(RetrofitProxy.
-                        getApiService(context, "").
+                        init(context).create(RequestApi.class).
                         CommTenantList(map),
                 context, observer);
     }
@@ -817,7 +817,7 @@ public class RequestClient {
 
 
         return doRequest(RetrofitProxy.
-                        getApiService(context, "").
+                        init(context).create(RequestApi.class).
                         MyManagerCommtenantList(map),
                 context, observer);
     }
@@ -836,7 +836,7 @@ public class RequestClient {
         map.put("CommtenantId", CommtenantId);
 
         return doRequest(RetrofitProxy.
-                        getApiService(context, "").
+                        init(context).create(RequestApi.class).
                         AddToMyCommtenant(map),
                 context, observer);
     }
@@ -855,7 +855,7 @@ public class RequestClient {
         map.put("CommtenantId", CommtenantId);
 
         return doRequest(RetrofitProxy.
-                        getApiService(context, "").
+                        init(context).create(RequestApi.class).
                         DelMyCommtenant(map),
                 context, observer);
     }
@@ -881,7 +881,7 @@ public class RequestClient {
         }
         map.put("Type", Type);
         return doRequest(RetrofitProxy.
-                        getApiService(context, "").
+                        init(context).create(RequestApi.class).
                         RecordClockIn(map),
                 context, observer);
     }
@@ -902,7 +902,7 @@ public class RequestClient {
         map.put("pageSize", 20);
         map.put("time", time);
         return doRequest(RetrofitProxy.
-                        getApiService(context, "").
+                        init(context).create(RequestApi.class).
                         GetClockInRecord(map),
                 context, observer);
     }
@@ -917,7 +917,7 @@ public class RequestClient {
      */
     public static Subscription PostApply(Map<String, Object> map, Context context, NetSubscriber<BaseResultBean> observer) {
         return doRequest(RetrofitProxy.
-                        getApiService(context, "").
+                        init(context).create(RequestApi.class).
                         PostApply(map),
                 context, observer);
     }
@@ -931,7 +931,7 @@ public class RequestClient {
      */
     public static Subscription GetTypeList(Context context, NetSubscriber<BaseResultBean<List<TypeBean>>> observer) {
         return doRequest(RetrofitProxy.
-                        getApiService(context, "").
+                        init(context).create(RequestApi.class).
                         GetTypeList(),
                 context, observer);
     }
@@ -950,7 +950,7 @@ public class RequestClient {
         map.put("pageSize", 10);
         map.put("pageIndex", pageIndex);
         return doRequest(RetrofitProxy.
-                        getApiService(context, "").
+                        init(context).create(RequestApi.class).
                         GetApplyList(map),
                 context, observer);
     }
@@ -967,7 +967,7 @@ public class RequestClient {
         Map<String, Object> map = new TreeMap<>();
         map.put("costId", costId);
         return doRequest(RetrofitProxy.
-                        getApiService(context, "").
+                        init(context).create(RequestApi.class).
                         GetCostDetail(map),
                 context, observer);
     }
@@ -986,7 +986,7 @@ public class RequestClient {
         map.put("costId", costId);
         map.put("remark", remark);
         return doRequest(RetrofitProxy.
-                        getApiService(context, "").
+                        init(context).create(RequestApi.class).
                         AgainCommit(map),
                 context, observer);
     }
@@ -1004,7 +1004,7 @@ public class RequestClient {
         map.put("costId", costId);
         map.put("salesmanId", DBManager.getInstance(context).getSaleInfo().SalesmanId);
         return doRequest(RetrofitProxy.
-                        getApiService(context, "").
+                        init(context).create(RequestApi.class).
                         RevocationApply(map),
                 context, observer);
     }
@@ -1024,7 +1024,7 @@ public class RequestClient {
      */
     public static Subscription MySupplier(int pageIndex, int type, String condition, Context context, NetSubscriber<BaseResultBean<List<SupplierBean>>> observer) {
         Map<String, Object> map = new TreeMap<>();
-        map.put("supplierId", DBManager.getInstance(context).getUseId());
+        map.put("supplierId", com.snh.library_base.db.DBManager.getInstance(context).getUseId());
         map.put("pageIndex", pageIndex);
         map.put("pageSize", 20);
         if (!StrUtils.isEmpty(condition)) {
@@ -1032,7 +1032,7 @@ public class RequestClient {
         }
         map.put("type", type);
         return doRequest(RetrofitProxy.
-                        getApiService(context, "").
+                        init(context).create(RequestApi.class).
                         MySupplier(map),
                 context, observer);
     }
@@ -1049,7 +1049,7 @@ public class RequestClient {
      */
     public static Subscription GetGoodsList(int id, int pageIndex, int type, String condition, Context context, NetSubscriber<BaseResultBean<List<GoodsBean>>> observer) {
         Map<String, Object> map = new TreeMap<>();
-        map.put("mysupplierId", DBManager.getInstance(context).getUseId());
+        map.put("mysupplierId", com.snh.library_base.db.DBManager.getInstance(context).getUseId());
         map.put("supplierId", id);
         map.put("pageIndex", pageIndex);
         map.put("pageSize", 20);
@@ -1058,7 +1058,7 @@ public class RequestClient {
         }
         map.put("type", type);
         return doRequest(RetrofitProxy.
-                        getApiService(context, "").
+                        init(context).create(RequestApi.class).
                         CommTenantDetail(map),
                 context, observer);
     }
@@ -1076,9 +1076,9 @@ public class RequestClient {
         Map<String, Object> map = new TreeMap<>();
         map.put("supplierId", supplierid);
         map.put("shopgoodsId", id);
-        map.put("mysupplierId", DBManager.getInstance(context).getUseId());
+        map.put("mysupplierId", com.snh.library_base.db.DBManager.getInstance(context).getUseId());
         return doRequest(RetrofitProxy.
-                        getApiService(context, "").
+                        init(context).create(RequestApi.class).
                         ShopGoodsDetail(map),
                 context, observer);
     }
@@ -1096,9 +1096,9 @@ public class RequestClient {
      * @param observer
      * @return
      */
-    public static Subscription PostOrder(int TargetSupplierId, int ShopGoodsId, double SumPrice, String LeaveWord, String PayMethod, List<NormsBean> NormsList, Context context, NetSubscriber<BaseResultBean<String>> observer) {
+    public static Subscription PostOrder(int TargetSupplierId, int ShopGoodsId, double SumPrice, String LeaveWord, String PayMethod, List<NormsBean> NormsList,String CouponCodeIds, Context context, NetSubscriber<BaseResultBean<String>> observer) {
         Map<String, Object> map = new TreeMap<>();
-        map.put("SupplierId", DBManager.getInstance(context).getUseId());
+        map.put("SupplierId", com.snh.library_base.db.DBManager.getInstance(context).getUseId());
         map.put("TargetSupplierId", TargetSupplierId);
         map.put("ShopGoodsId", ShopGoodsId);
         if (!StrUtils.isEmpty(LeaveWord)) {
@@ -1107,10 +1107,13 @@ public class RequestClient {
         if (!StrUtils.isEmpty(PayMethod)) {
             map.put("PayMethod", PayMethod);
         }
+        if(!StrUtils.isEmpty(CouponCodeIds)){
+            map.put("CouponCodeIds",CouponCodeIds);
+        }
         map.put("SumPrice", SumPrice);
         map.put("NormsList", NormsList);
         return doRequest(RetrofitProxy.
-                        getApiService(context, "").
+                        init(context).create(RequestApi.class).
                         PostOrder(map),
                 context, observer);
     }
@@ -1124,10 +1127,10 @@ public class RequestClient {
      */
     public static Subscription GetMoney(Context context, NetSubscriber<BaseResultBean<String>> observer) {
         Map<String, Object> map = new TreeMap<>();
-        map.put("supplierId", DBManager.getInstance(context).getUseId());
+        map.put("supplierId", com.snh.library_base.db.DBManager.getInstance(context).getUseId());
 
         return doRequest(RetrofitProxy.
-                        getApiService(context, "").
+                        init(context).create(RequestApi.class).
                         GetSupplierBalance(map),
                 context, observer);
     }
@@ -1146,12 +1149,12 @@ public class RequestClient {
     //含有微信支付的支付方式
     public static Subscription Pay(String OrderNo, int PayMethod, Context context, NetSubscriber<BaseResultBean<PayWxBean>> observer) {
         Map<String, Object> map = new TreeMap<>();
-        map.put("SupplierId", DBManager.getInstance(context).getUseId());
+        map.put("SupplierId", com.snh.library_base.db.DBManager.getInstance(context).getUseId());
         map.put("OrderNo", OrderNo);
         map.put("PayMethod", PayMethod + "");
 
         return doRequest(RetrofitProxy.
-                        getApiService(context, "").
+                        init(context).create(RequestApi.class).
                         OnlinePay(map),
                 context, observer);
     }
@@ -1159,12 +1162,12 @@ public class RequestClient {
     //余额支付
     public static Subscription Pay1(String OrderNo, int PayMethod, Context context, NetSubscriber<BaseResultBean> observer) {
         Map<String, Object> map = new TreeMap<>();
-        map.put("SupplierId", DBManager.getInstance(context).getUseId());
+        map.put("SupplierId", com.snh.library_base.db.DBManager.getInstance(context).getUseId());
         map.put("OrderNo", OrderNo);
         map.put("PayMethod", PayMethod + "");
 
         return doRequest(RetrofitProxy.
-                        getApiService(context, "").
+                        init(context).create(RequestApi.class).
                         OnlinePay1(map),
                 context, observer);
     }
@@ -1172,12 +1175,12 @@ public class RequestClient {
     //含有支付宝的支付方式
     public static Subscription Pay2(String OrderNo, int PayMethod, Context context, NetSubscriber<BaseResultBean<String>> observer) {
         Map<String, Object> map = new TreeMap<>();
-        map.put("SupplierId", DBManager.getInstance(context).getUseId());
+        map.put("SupplierId", com.snh.library_base.db.DBManager.getInstance(context).getUseId());
         map.put("OrderNo", OrderNo);
         map.put("PayMethod", PayMethod + "");
 
         return doRequest(RetrofitProxy.
-                        getApiService(context, "").
+                        init(context).create(RequestApi.class).
                         OnlinePay2(map),
                 context, observer);
     }
@@ -1193,7 +1196,7 @@ public class RequestClient {
      */
     public static Subscription SeekCommTenant(int pageIndex, String condition, int channel, Context context, NetSubscriber<BaseResultBean<List<AllSupplierBean>>> observer) {
         Map<String, Object> map = new TreeMap<>();
-        map.put("supplierId", DBManager.getInstance(context).getUseId());
+        map.put("supplierId", com.snh.library_base.db.DBManager.getInstance(context).getUseId());
         map.put("pageIndex", pageIndex);
         map.put("pageSize", 10);
         map.put("channel", channel);
@@ -1201,7 +1204,7 @@ public class RequestClient {
             map.put("condition", condition);
         }
         return doRequest(RetrofitProxy
-                        .getApiService(context, "")
+                        .init(context).create(RequestApi.class)
                         .SeekCommTenant(map),
                 context, observer);
     }
@@ -1218,13 +1221,13 @@ public class RequestClient {
      */
     public static Subscription ApplyFor(int TargetSupplierId, int Type, Context context, NetSubscriber<BaseResultBean> observer) {
         Map<String, Object> map = new TreeMap<>();
-        map.put("SupplierId", DBManager.getInstance(context).getUseId());
+        map.put("SupplierId", com.snh.library_base.db.DBManager.getInstance(context).getUseId());
         map.put("TargetSupplierId", TargetSupplierId);
         map.put("Type", Type);
 
 
         return doRequest(RetrofitProxy
-                        .getApiService(context, "")
+                        .init(context).create(RequestApi.class)
                         .ApplyFor(map),
                 context, observer);
     }
@@ -1238,13 +1241,13 @@ public class RequestClient {
      */
     public static Subscription DelMySupplier(int TargetSupplierId, int Type, Context context, NetSubscriber<BaseResultBean> observer) {
         Map<String, Object> map = new TreeMap<>();
-        map.put("SupplierId", DBManager.getInstance(context).getUseId());
+        map.put("SupplierId", com.snh.library_base.db.DBManager.getInstance(context).getUseId());
         map.put("TargetSupplierId", TargetSupplierId);
         map.put("Type", Type);
 
 
         return doRequest(RetrofitProxy
-                        .getApiService(context, "")
+                        .init(context).create(RequestApi.class)
                         .DelMySupplier(map),
                 context, observer);
     }
@@ -1260,11 +1263,11 @@ public class RequestClient {
      */
     public static Subscription CancelOrder(int OrderId, Context context, NetSubscriber<BaseResultBean> observer) {
         Map<String, Object> map = new TreeMap<>();
-        map.put("SupplierId", DBManager.getInstance(context).getUseId());
+        map.put("SupplierId", com.snh.library_base.db.DBManager.getInstance(context).getUseId());
         map.put("OrderId", OrderId);
 
         return doRequest(RetrofitProxy
-                        .getApiService(context, "")
+                        .init(context).create(RequestApi.class)
                         .CancelOrder(map),
                 context, observer);
     }
@@ -1280,12 +1283,12 @@ public class RequestClient {
      */
     public static Subscription AffirmSSStates(int OrderId, int Type, Context context, NetSubscriber<BaseResultBean> observer) {
         Map<String, Object> map = new TreeMap<>();
-        map.put("SupplierId", DBManager.getInstance(context).getUseId());
+        map.put("SupplierId", com.snh.library_base.db.DBManager.getInstance(context).getUseId());
         map.put("OrderId", OrderId);
         map.put("Type", Type);
 
         return doRequest(RetrofitProxy
-                        .getApiService(context, "")
+                        .init(context).create(RequestApi.class)
                         .AffirmSSStates(map),
                 context, observer);
     }
@@ -1302,7 +1305,7 @@ public class RequestClient {
         Map<String, Object> map = new TreeMap<>();
         map.put("OrderId", OrderId);
         return doRequest(RetrofitProxy
-                        .getApiService(context, "")
+                        .init(context).create(RequestApi.class)
                         .Remind(map),
                 context, observer);
     }
@@ -1322,7 +1325,7 @@ public class RequestClient {
         map.put("orderId", OrderId);
         map.put("type", type);
         return doRequest(RetrofitProxy
-                        .getApiService(context, "")
+                        .init(context).create(RequestApi.class)
                         .GetOrderDetail(map),
                 context, observer);
     }
@@ -1338,7 +1341,7 @@ public class RequestClient {
     public static Subscription GetMyOrderDetail(String orderid, Context context, NetSubscriber<BaseResultBean<OrderDetailsBean>> observer) {
         Map<String, Object> map = new TreeMap<>();
         map.put("orderid", orderid);
-        return doRequest(RetrofitProxy.getApiService(context, "").GetMyOrderDetail(map), context, observer);
+        return doRequest(RetrofitProxy.init(context).create(RequestApi.class).GetMyOrderDetail(map), context, observer);
     }
 
     /**
@@ -1352,7 +1355,7 @@ public class RequestClient {
 
     public static Subscription MyCommodityList(int index, String condition, int filtrate, Context context, NetSubscriber<BaseResultBean<List<BusinessBean>>> observer) {
         Map<String, Object> map = new TreeMap<>();
-        map.put("supplierId", DBManager.getInstance(context).getUseId());
+        map.put("supplierId", com.snh.library_base.db.DBManager.getInstance(context).getUseId());
         map.put("pageIndex", index);
         map.put("pageSize", 20);
         if (!StrUtils.isEmpty(condition)) {
@@ -1360,7 +1363,7 @@ public class RequestClient {
         }
         map.put("filtrate", filtrate);
         return doRequest(RetrofitProxy
-                        .getApiService(context, "")
+                        .init(context).create(RequestApi.class)
                         .MyCommodityList(map),
                 context, observer);
     }
@@ -1375,10 +1378,10 @@ public class RequestClient {
      */
     public static Subscription GetNormList(int shopgoodsId, Context context, NetSubscriber<BaseResultBean<List<com.snh.snhseller.bean.SkuBean>>> observer) {
         Map<String, Object> map = new TreeMap<>();
-        map.put("supplierId", DBManager.getInstance(context).getUseId());
+        map.put("supplierId", com.snh.library_base.db.DBManager.getInstance(context).getUseId());
         map.put("shopgoodsId", shopgoodsId);
         return doRequest(RetrofitProxy
-                        .getApiService(context, "")
+                        .init(context).create(RequestApi.class)
                         .GetNormList(map),
                 context, observer);
     }
@@ -1396,7 +1399,7 @@ public class RequestClient {
         Map<String, Object> map = new TreeMap<>();
         map.put("normId", normId);
         return doRequest(RetrofitProxy
-                        .getApiService(context, "")
+                        .init(context).create(RequestApi.class)
                         .DelNorm(map),
                 context, observer);
     }
@@ -1411,7 +1414,7 @@ public class RequestClient {
      */
     public static Subscription EditeNorm(Map<String, Object> map, Context context, NetSubscriber<BaseResultBean> observer) {
         return doRequest(RetrofitProxy
-                        .getApiService(context, "")
+                        .init(context).create(RequestApi.class)
                         .EditeNorm(map),
                 context, observer);
     }
@@ -1426,7 +1429,7 @@ public class RequestClient {
      */
     public static Subscription AddNorm(Map<String, Object> map, Context context, NetSubscriber<BaseResultBean> observer) {
         return doRequest(RetrofitProxy
-                        .getApiService(context, "")
+                        .init(context).create(RequestApi.class)
                         .AddNorm(map),
                 context, observer);
     }
@@ -1441,11 +1444,11 @@ public class RequestClient {
      */
     public static Subscription GetApplyForList(int pageIndex, Context context, NetSubscriber<BaseResultBean<List<com.snh.snhseller.bean.ApplyBean>>> observer) {
         Map<String, Object> map = new TreeMap<>();
-        map.put("supplierId", DBManager.getInstance(context).getUseId());
+        map.put("supplierId", com.snh.library_base.db.DBManager.getInstance(context).getUseId());
         map.put("pageSize", 20);
         map.put("pageIndex", pageIndex);
         return doRequest(RetrofitProxy
-                        .getApiService(context, "")
+                        .init(context).create(RequestApi.class)
                         .GetApplyForList(map),
                 context, observer);
     }
@@ -1463,9 +1466,9 @@ public class RequestClient {
         Map<String, Object> map = new TreeMap<>();
         map.put("ApplyId", ApplyId);
         map.put("Type", Type);
-        map.put("SupplierId", DBManager.getInstance(context).getUseId());
+        map.put("SupplierId", com.snh.library_base.db.DBManager.getInstance(context).getUseId());
         return doRequest(RetrofitProxy
-                        .getApiService(context, "")
+                        .init(context).create(RequestApi.class)
                         .ConsentApplyFor(map),
                 context, observer);
     }
@@ -1482,9 +1485,9 @@ public class RequestClient {
         Map<String, Object> map = new TreeMap<>();
         map.put("pageIndex", pageIndex);
         map.put("pageSize", 20);
-        map.put("supplierId", DBManager.getInstance(context).getUseId());
+        map.put("supplierId", com.snh.library_base.db.DBManager.getInstance(context).getUseId());
         return doRequest(RetrofitProxy
-                        .getApiService(context, "")
+                        .init(context).create(RequestApi.class)
                         .MyMsg(map),
                 context, observer);
     }
@@ -1505,9 +1508,9 @@ public class RequestClient {
         map.put("pageIndex", pageIndex);
         map.put("pageSize", 20);
         map.put("condition", condition);
-        map.put("supplierId", DBManager.getInstance(context).getUseId());
+        map.put("supplierId", com.snh.library_base.db.DBManager.getInstance(context).getUseId());
         return doRequest(RetrofitProxy
-                        .getApiService(context, "")
+                        .init(context).create(RequestApi.class)
                         .SalesmanList(map),
                 context, observer);
     }
@@ -1523,9 +1526,9 @@ public class RequestClient {
     public static Subscription DelSalesman(int SalesmanId, Context context, NetSubscriber<BaseResultBean> observer) {
         Map<String, Object> map = new TreeMap<>();
         map.put("SalesmanId", SalesmanId);
-        map.put("SupplierId", DBManager.getInstance(context).getUseId());
+        map.put("SupplierId", com.snh.library_base.db.DBManager.getInstance(context).getUseId());
         return doRequest(RetrofitProxy
-                        .getApiService(context, "")
+                        .init(context).create(RequestApi.class)
                         .DelSalesman(map),
                 context, observer);
     }
@@ -1544,9 +1547,9 @@ public class RequestClient {
         Map<String, Object> map = new TreeMap<>();
         map.put("SalesmanId", SalesmanId);
         map.put("Type", Type);
-        map.put("SupplierId", DBManager.getInstance(context).getUseId());
+        map.put("SupplierId", com.snh.library_base.db.DBManager.getInstance(context).getUseId());
         return doRequest(RetrofitProxy
-                        .getApiService(context, "")
+                        .init(context).create(RequestApi.class)
                         .LockSalesman(map),
                 context, observer);
     }
@@ -1560,9 +1563,9 @@ public class RequestClient {
      * @return
      */
     public static Subscription AddSalesman(Map<String, Object> map, Context context, NetSubscriber<BaseResultBean> observer) {
-        map.put("SupplierId", DBManager.getInstance(context).getUseId());
+        map.put("SupplierId", com.snh.library_base.db.DBManager.getInstance(context).getUseId());
         return doRequest(RetrofitProxy
-                        .getApiService(context, "")
+                        .init(context).create(RequestApi.class)
                         .AddSalesman(map),
                 context, observer);
     }
@@ -1577,7 +1580,7 @@ public class RequestClient {
      */
     public static Subscription EditSalesman(Map<String, Object> map, Context context, NetSubscriber<BaseResultBean> observer) {
         return doRequest(RetrofitProxy
-                        .getApiService(context, "")
+                        .init(context).create(RequestApi.class)
                         .EditSalesman(map),
                 context, observer);
     }
@@ -1591,9 +1594,9 @@ public class RequestClient {
      */
     public static Subscription NoManagerCommtenantLis(Context context, NetSubscriber<BaseResultBean<List<NoManagerBean>>> observer) {
         Map<String, Object> map = new TreeMap<>();
-        map.put("supplierId", DBManager.getInstance(context).getUseId());
+        map.put("supplierId", com.snh.library_base.db.DBManager.getInstance(context).getUseId());
         return doRequest(RetrofitProxy
-                        .getApiService(context, "")
+                        .init(context).create(RequestApi.class)
                         .NoManagerCommtenantLis(map),
                 context, observer);
     }
@@ -1610,13 +1613,13 @@ public class RequestClient {
      */
     public static Subscription ClockInRecord(int salesmanId, String time, int pageIndex, Context context, NetSubscriber<BaseResultBean<List<SalesRecodeBean>>> observer) {
         Map<String, Object> map = new TreeMap<>();
-        map.put("supplierId", DBManager.getInstance(context).getUseId());
+        map.put("supplierId", com.snh.library_base.db.DBManager.getInstance(context).getUseId());
         map.put("salesmanId", salesmanId);
         map.put("time", time);
         map.put("pageIndex", pageIndex);
         map.put("pageSize", 20);
         return doRequest(RetrofitProxy
-                        .getApiService(context, "")
+                        .init(context).create(RequestApi.class)
                         .ClockInRecord(map),
                 context, observer);
     }
@@ -1632,12 +1635,12 @@ public class RequestClient {
      */
     public static Subscription SalesClockInRecord(String time, int pageIndex, Context context, NetSubscriber<BaseResultBean<List<SalesCountBean>>> observer) {
         Map<String, Object> map = new TreeMap<>();
-        map.put("supplierId", DBManager.getInstance(context).getUseId());
+        map.put("supplierId", com.snh.library_base.db.DBManager.getInstance(context).getUseId());
         map.put("time", time);
         map.put("pageIndex", pageIndex);
         map.put("pageSize", 20);
         return doRequest(RetrofitProxy
-                        .getApiService(context, "")
+                        .init(context).create(RequestApi.class)
                         .SalesClockInRecord(map),
                 context, observer);
     }
@@ -1651,12 +1654,12 @@ public class RequestClient {
      */
     public static Subscription GetSalesmanCostList(int type, int pageIndex, Context context, NetSubscriber<BaseResultBean<List<CostApplyBean>>> observer) {
         Map<String, Object> map = new TreeMap<>();
-        map.put("supplierId", DBManager.getInstance(context).getUseId());
+        map.put("supplierId", com.snh.library_base.db.DBManager.getInstance(context).getUseId());
         map.put("type", type);
         map.put("pageIndex", pageIndex);
         map.put("pageSize", 20);
         return doRequest(RetrofitProxy
-                        .getApiService(context, "")
+                        .init(context).create(RequestApi.class)
                         .GetSalesmanCostList(map),
                 context, observer);
     }
@@ -1674,12 +1677,12 @@ public class RequestClient {
      */
     public static Subscription ConsentCostApply(int CostId, int SalesmanId, int Type, Context context, NetSubscriber<BaseResultBean> observer) {
         Map<String, Object> map = new TreeMap<>();
-        map.put("SupplierId", DBManager.getInstance(context).getUseId());
+        map.put("SupplierId", com.snh.library_base.db.DBManager.getInstance(context).getUseId());
         map.put("CostId", CostId);
         map.put("SalesmanId", SalesmanId);
         map.put("Type", Type);
         return doRequest(RetrofitProxy
-                        .getApiService(context, "")
+                        .init(context).create(RequestApi.class)
                         .ConsentCostApply(map),
                 context, observer);
     }
@@ -1700,7 +1703,7 @@ public class RequestClient {
         map.put("SalesmanId", SalesmanId);
         map.put("ReMark", ReMark);
         return doRequest(RetrofitProxy
-                        .getApiService(context, "")
+                        .init(context).create(RequestApi.class)
                         .AddReMark(map),
                 context, observer);
     }
@@ -1715,11 +1718,11 @@ public class RequestClient {
      */
     public static Subscription SetPayMethod(int Type, Context context, NetSubscriber<BaseResultBean> observer) {
         Map<String, Object> map = new TreeMap<>();
-        map.put("SupplierId", DBManager.getInstance(context).getUseId());
+        map.put("SupplierId", com.snh.library_base.db.DBManager.getInstance(context).getUseId());
         map.put("Type", Type);
 
         return doRequest(RetrofitProxy
-                        .getApiService(context, "")
+                        .init(context).create(RequestApi.class)
                         .SetPayMethod(map),
                 context, observer);
     }
@@ -1736,11 +1739,11 @@ public class RequestClient {
      */
     public static Subscription GetAccountMoney(int pageIndex, Context context, NetSubscriber<BaseResultBean<MoneyBean>> observer) {
         Map<String, Object> map = new TreeMap<>();
-        map.put("supplierId", DBManager.getInstance(context).getUseId());
+        map.put("supplierId", com.snh.library_base.db.DBManager.getInstance(context).getUseId());
         map.put("pageIndex", pageIndex);
         map.put("pageSize", 20);
         return doRequest(RetrofitProxy
-                        .getApiService(context, "")
+                        .init(context).create(RequestApi.class)
                         .GetAccountMoney(map),
                 context, observer);
     }
@@ -1754,9 +1757,9 @@ public class RequestClient {
      */
     public static Subscription GetSupplierBankCards(Context context, NetSubscriber<BaseResultBean<List<MyBankBean>>> observer) {
         Map<String, Object> map = new TreeMap<>();
-        map.put("supplierId", DBManager.getInstance(context).getUseId());
+        map.put("supplierId", com.snh.library_base.db.DBManager.getInstance(context).getUseId());
         return doRequest(RetrofitProxy
-                        .getApiService(context, "")
+                        .init(context).create(RequestApi.class)
                         .GetSupplierBankCards(map),
                 context, observer);
     }
@@ -1771,10 +1774,10 @@ public class RequestClient {
      */
     public static Subscription DeleteSupplierBankCard(int BankCardIds, Context context, NetSubscriber<BaseResultBean> observer) {
         Map<String, Object> map = new TreeMap<>();
-//        map.put("supplierId", DBManager.getInstance(context).getUseId());
+//        map.put("supplierId", com.snh.library_base.db.DBManager.getInstance(context).getUseId());
         map.put("BankCardIds", BankCardIds);
         return doRequest(RetrofitProxy
-                        .getApiService(context, "")
+                        .init(context).create(RequestApi.class)
                         .DeleteSupplierBankCard(map),
                 context, observer);
     }
@@ -1789,12 +1792,12 @@ public class RequestClient {
      */
     public static Subscription GetBanks(String BankCardIds, Context context, NetSubscriber<BaseResultBean<List<BanksBean>>> observer) {
         Map<String, Object> map = new TreeMap<>();
-//        map.put("supplierId", DBManager.getInstance(context).getUseId());
+//        map.put("supplierId", com.snh.library_base.db.DBManager.getInstance(context).getUseId());
         if (!StrUtils.isEmpty(BankCardIds)) {
             map.put("id", BankCardIds);
         }
         return doRequest(RetrofitProxy
-                        .getApiService(context, "")
+                        .init(context).create(RequestApi.class)
                         .GetBanks(map),
                 context, observer);
     }
@@ -1808,9 +1811,9 @@ public class RequestClient {
      * @return
      */
     public static Subscription AddSupplierBankCard(Map<String, Object> map, Context context, NetSubscriber<BaseResultBean> observer) {
-        map.put("SupplierId", DBManager.getInstance(context).getUseId());
+        map.put("SupplierId", com.snh.library_base.db.DBManager.getInstance(context).getUseId());
         return doRequest(RetrofitProxy
-                        .getApiService(context, "")
+                        .init(context).create(RequestApi.class)
                         .AddSupplierBankCard(map),
                 context, observer);
     }
@@ -1824,9 +1827,9 @@ public class RequestClient {
      * @return
      */
     public static Subscription Withdrawal(Map<String, Object> map, Context context, NetSubscriber<BaseResultBean> observer) {
-        map.put("SupplierId", DBManager.getInstance(context).getUseId());
+        map.put("SupplierId", com.snh.library_base.db.DBManager.getInstance(context).getUseId());
         return doRequest(RetrofitProxy
-                        .getApiService(context, "")
+                        .init(context).create(RequestApi.class)
                         .Withdrawal(map),
                 context, observer);
     }
@@ -1844,13 +1847,13 @@ public class RequestClient {
     public static Subscription GetSupplierMoneyLog(String data, int type, int index,
                                                    Context context, NetSubscriber<BaseResultBean<WithdrawBean>> observer) {
         Map<String, Object> map = new TreeMap<>();
-        map.put("supplierId", DBManager.getInstance(context).getUseId());
+        map.put("supplierId", com.snh.library_base.db.DBManager.getInstance(context).getUseId());
         map.put("date", data);
         map.put("type", type);
         map.put("pageIndex", index);
         map.put("pageSize", 20);
         return doRequest(RetrofitProxy
-                        .getApiService(context, "")
+                        .init(context).create(RequestApi.class)
                         .GetSupplierMoneyLog(map),
                 context, observer);
     }
@@ -1868,7 +1871,7 @@ public class RequestClient {
         map.put("logId", logId);
 
         return doRequest(RetrofitProxy
-                        .getApiService(context, "")
+                        .init(context).create(RequestApi.class)
                         .GetSupplierMoneyDetails(map),
                 context, observer);
     }
@@ -1883,7 +1886,7 @@ public class RequestClient {
      * @param observer
      * @return
      */
-    public static Subscription Login(String UserName, String PassWord, String Code, Context context, NetSubscriber<BaseResultBean<AllUserBean>> observer) {
+    public static Subscription Login(String UserName, String PassWord, String Code, Context context, NetSubscriber<BaseResultBean<com.snh.library_base.db.AllUserBean>> observer) {
         Map<String, Object> map = new TreeMap<>();
         map.put("UserName", UserName);
         if (StrUtils.isEmpty(PassWord)) {
@@ -1898,7 +1901,7 @@ public class RequestClient {
         }
 
         return doRequest(RetrofitProxy
-                        .getApiService(context, "")
+                        .init(context).create(RequestApi.class)
                         .Login(map),
                 context, observer);
     }
@@ -1915,7 +1918,7 @@ public class RequestClient {
      */
     public static Subscription GetSupplierNotice(int type, int pageIndex, String orderNo, Context context, NetSubscriber<BaseResultBean<List<NoticeBean>>> observer) {
         Map<String, Object> map = new TreeMap<>();
-        map.put("supplierId", DBManager.getInstance(context).getUseId());
+        map.put("supplierId", com.snh.library_base.db.DBManager.getInstance(context).getUseId());
         map.put("type", type);
         map.put("pageIndex", pageIndex);
         map.put("pageSize", 20);
@@ -1923,7 +1926,7 @@ public class RequestClient {
             map.put("orderNo", orderNo);
         }
         return doRequest(RetrofitProxy
-                        .getApiService(context, "")
+                        .init(context).create(RequestApi.class)
                         .GetSupplierNotice(map),
                 context, observer);
     }
@@ -1937,9 +1940,9 @@ public class RequestClient {
      */
     public static Subscription GetSupplierNoticeUnreadCount(Context context, NetSubscriber<BaseResultBean<NoticeNumBean>> observer) {
         Map<String, Object> map = new TreeMap<>();
-        map.put("supplierId", DBManager.getInstance(context).getUseId());
+        map.put("supplierId", com.snh.library_base.db.DBManager.getInstance(context).getUseId());
         return doRequest(RetrofitProxy
-                        .getApiService(context, "")
+                        .init(context).create(RequestApi.class)
                         .GetSupplierNoticeUnreadCount(map),
                 context, observer);
     }
@@ -1954,9 +1957,9 @@ public class RequestClient {
      */
     public static Subscription UpdateSupplier(Map<String, Object> map, Context context, NetSubscriber<BaseResultBean> observer) {
 
-        map.put("PhoneNumber", DBManager.getInstance(context).getUserInfo().ContactsTel);
+        map.put("PhoneNumber", com.snh.library_base.db.DBManager.getInstance(context).getUserInfo().ContactsTel);
         return doRequest(RetrofitProxy
-                        .getApiService(context, "")
+                        .init(context).create(RequestApi.class)
                         .UpdateSupplier(map),
                 context, observer);
     }

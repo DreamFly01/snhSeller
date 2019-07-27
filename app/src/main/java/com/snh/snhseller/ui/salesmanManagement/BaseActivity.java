@@ -14,22 +14,15 @@ import android.widget.Toast;
 
 import com.gyf.barlibrary.ImmersionBar;
 import com.snh.snhseller.R;
-import com.snh.snhseller.bean.beanDao.UserEntity;
+import com.snh.snhseller.db.DBManager;
 import com.snh.snhseller.greendao.DaoMaster;
 import com.snh.snhseller.greendao.DaoSession;
-import com.snh.snhseller.greendao.UserEntityDao;
-import com.snh.snhseller.db.DBManager;
 
 import java.util.Calendar;
-import java.util.List;
 
 import butterknife.ButterKnife;
 import rx.Subscription;
 import rx.subscriptions.CompositeSubscription;
-
-//import android.support.design.widget.TabLayout;
-
-
 public abstract class BaseActivity extends FragmentActivity implements View.OnClickListener, AdapterView.OnItemClickListener {
     public static final int MIN_CLICK_DELAY_TIME = 500;
     private long lastClickTime = 0;
@@ -244,48 +237,6 @@ public abstract class BaseActivity extends FragmentActivity implements View.OnCl
 
         }
     }
-
-    protected boolean isLogin() {
-        UserEntityDao userEntityDao = daoSession.getUserEntityDao();
-        List<UserEntity> userList = userEntityDao.queryBuilder().list();
-        if (userList.size() > 0) {
-//            UserEntity user = userList.get(0);
-            return true;
-        } else {
-            return false;
-        }
-    }
-
-//    public static void setIndicator(TabLayout tabs, int leftDip, int rightDip) {
-//        Class<?> tabLayout = tabs.getClass();
-//        Field tabStrip = null;
-//        try {
-//            tabStrip = tabLayout.getDeclaredField("mTabStrip");
-//        } catch (NoSuchFieldException e) {
-//            e.printStackTrace();
-//        }
-//
-//        tabStrip.setAccessible(true);
-//        LinearLayout llTab = null;
-//        try {
-//            llTab = (LinearLayout) tabStrip.get(tabs);
-//        } catch (IllegalAccessException e) {
-//            e.printStackTrace();
-//        }
-//
-//        int left = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, leftDip, Resources.getSystem().getDisplayMetrics());
-//        int right = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, rightDip, Resources.getSystem().getDisplayMetrics());
-//
-//        for (int i = 0; i < llTab.getChildCount(); i++) {
-//            View child = llTab.getChildAt(i);
-//            child.setPadding(0, 0, 0, 0);
-//            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.MATCH_PARENT, 1);
-//            params.leftMargin = left;
-//            params.rightMargin = right;
-//            child.setLayoutParams(params);
-//            child.invalidate();
-//        }
-//    }
 
     //控件初始化
     protected <T extends View> T findView(int id) {

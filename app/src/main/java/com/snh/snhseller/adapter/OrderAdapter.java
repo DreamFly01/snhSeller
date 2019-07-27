@@ -3,11 +3,9 @@ package com.snh.snhseller.adapter;
 import android.app.Activity;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.os.Parcelable;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -15,26 +13,24 @@ import android.widget.Toast;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
+import com.snh.library_base.db.DBManager;
+import com.snh.library_base.utils.Contans;
+import com.snh.module_netapi.requestApi.BaseResultBean;
+import com.snh.module_netapi.requestApi.NetSubscriber;
 import com.snh.snhseller.R;
-import com.snh.snhseller.bean.BaseResultBean;
 import com.snh.snhseller.bean.NoticeNumBean;
 import com.snh.snhseller.bean.OrderBean;
-import com.snh.snhseller.requestApi.NetSubscriber;
 import com.snh.snhseller.requestApi.RequestClient;
 import com.snh.snhseller.ui.home.supplier.PayActivity;
 import com.snh.snhseller.ui.order.FixPriceActivity;
 import com.snh.snhseller.ui.order.MyOrderDetailsActivity;
 import com.snh.snhseller.ui.order.OrderFragment;
-import com.snh.snhseller.ui.order.OrderListFragment;
 import com.snh.snhseller.ui.order.SendActivity;
-import com.snh.snhseller.db.DBManager;
-import com.snh.snhseller.utils.Contans;
 import com.snh.snhseller.utils.ImageUtils;
 import com.snh.snhseller.utils.JumpUtils;
 import com.snh.snhseller.utils.SPUtils;
 import com.snh.snhseller.utils.StrUtils;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
@@ -96,13 +92,13 @@ public class OrderAdapter extends BaseQuickAdapter<OrderBean, BaseViewHolder> {
                         helper.getView(R.id.tv_state1).setVisibility(View.GONE);
                         break;
                     case 2:
-                        helper.setText(R.id.tv_state, "待发货");
+                        helper.setText(R.id.tv_state, "待备货");
                         helper.getView(R.id.tv_state1).setVisibility(View.VISIBLE);
                         tvState.setTextColor(Color.parseColor("#F81131"));
-                        helper.setText(R.id.tv_state1, "发货");
+                        helper.setText(R.id.tv_state1, "备货");
                         break;
                     case 3:
-                        helper.setText(R.id.tv_state, "待收货");
+                        helper.setText(R.id.tv_state, "待取货");
                         helper.getView(R.id.tv_state1).setVisibility(View.GONE);
                         break;
                     case 4:

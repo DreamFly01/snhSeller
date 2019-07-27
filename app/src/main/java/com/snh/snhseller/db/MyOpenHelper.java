@@ -4,10 +4,10 @@ import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 
 import com.github.yuweiguocn.library.greendao.MigrationHelper;
+import com.snh.snhseller.base.greendao.UserEntityDao;
 import com.snh.snhseller.greendao.AearBeanDao;
 import com.snh.snhseller.greendao.DaoMaster;
 import com.snh.snhseller.greendao.SaleUserBeanDao;
-import com.snh.snhseller.greendao.UserEntityDao;
 
 import org.greenrobot.greendao.database.Database;
 

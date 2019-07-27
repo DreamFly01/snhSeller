@@ -1,5 +1,6 @@
 package com.snh.snhseller.ui.home.supplier;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -10,18 +11,21 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.alibaba.android.arouter.launcher.ARouter;
+import com.snh.library_base.db.DBManager;
+import com.snh.library_base.router.RouterActivityPath;
+import com.snh.library_base.utils.Contans;
+import com.snh.module_netapi.requestApi.BaseResultBean;
+import com.snh.module_netapi.requestApi.NetSubscriber;
+import com.snh.moudle_coupons.bean.SupplierCouponBean;
+import com.snh.moudle_coupons.ui.activity.AvailableCouponsActivity;
 import com.snh.snhseller.BaseActivity;
 import com.snh.snhseller.R;
 import com.snh.snhseller.adapter.OrderSukAdapter;
-import com.snh.snhseller.bean.BaseResultBean;
 import com.snh.snhseller.bean.NormsBean;
-import com.snh.snhseller.bean.beanDao.UserEntity;
 import com.snh.snhseller.bean.supplierbean.SkuBean;
-import com.snh.snhseller.requestApi.NetSubscriber;
 import com.snh.snhseller.requestApi.RequestClient;
-import com.snh.snhseller.db.DBManager;
 import com.snh.snhseller.ui.merchantEntry.PerfectMyLocalActivity;
-import com.snh.snhseller.utils.Contans;
 import com.snh.snhseller.utils.DialogUtils;
 import com.snh.snhseller.utils.ImageUtils;
 import com.snh.snhseller.utils.IsBang;
@@ -30,6 +34,7 @@ import com.snh.snhseller.utils.SPUtils;
 import com.snh.snhseller.utils.StrUtils;
 import com.snh.snhseller.wediget.RecycleViewDivider;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -81,6 +86,10 @@ public class CommitOrderActivity extends BaseActivity {
     TextView tvCommit;
     @BindView(R.id.et_msg)
     EditText etMsg;
+    @BindView(R.id.ll_coupons)
+    LinearLayout choseCoupons;
+    @BindView(R.id.tv_coupons_content)
+    TextView couponsContent;
 
     private String url;
     private String productName, SupplierName, SupplierIconUrl;
@@ -116,7 +125,7 @@ public class CommitOrderActivity extends BaseActivity {
         heardTitle.setText("确认订单");
         IsBang.setImmerHeard(this, rlHead);
         tvNamePhone.setText(DBManager.getInstance(this).getUserInfo().ShopName + "   " + DBManager.getInstance(this).getUserInfo().ContactsTel);
-        UserEntity userEntity = DBManager.getInstance(this).getUserInfo();
+        com.snh.library_base.db.UserEntity userEntity = DBManager.getInstance(this).getUserInfo();
         tvAddress.setText(userEntity.Province + userEntity.City + userEntity.Area + " - " + userEntity.Address);
         ImageUtils.loadUrlImage(this, SupplierIconUrl, ivShopLogo);
         ImageUtils.loadUrlImage(this, url, ivProductLogo);
@@ -133,6 +142,11 @@ public class CommitOrderActivity extends BaseActivity {
             }
         }
         tvTotalMoney.setText(StrUtils.moenyToDH(totalMoney + ""));
+        if (StrUtils.isEmpty(payMethod)) {
+            choseCoupons.setVisibility(View.VISIBLE);
+        }else {
+            choseCoupons.setVisibility(View.GONE);
+        }
     }
 
     @Override
@@ -155,7 +169,7 @@ public class CommitOrderActivity extends BaseActivity {
         ButterKnife.bind(this);
     }
 
-    @OnClick({R.id.heard_back, R.id.tv_commit})
+    @OnClick({R.id.heard_back, R.id.tv_commit,R.id.ll_coupons})
     public void onClick(View view) {
         if (isFastClick()) {
             return;
@@ -182,6 +196,18 @@ public class CommitOrderActivity extends BaseActivity {
                     }, true);
                 }
                 break;
+            case R.id.ll_coupons:
+//                Intent intent = new Intent(this,AvailableCouponsActivity.class);
+//                intent.putExtra("id",shopId);
+//                intent.putExtra("name",productName);
+//                startActivityForResult(intent,100);
+                ARouter.getInstance().build(RouterActivityPath.Coupons.PATH_AVAILABLE_COUPONS)
+                        .withInt("id",shopId)
+                        .withString("name",productName)
+                            .withDouble("money",totalMoney)
+                        .navigation(this,100);
+
+                break;
         }
     }
 
@@ -202,14 +228,27 @@ public class CommitOrderActivity extends BaseActivity {
     private void postOrder() {
         setData();
         levelWord = etMsg.getText().toString().trim();
-
-        addSubscription(RequestClient.PostOrder(shopId, goodsId, totalMoney, levelWord, payMethod, data, this, new NetSubscriber<BaseResultBean<String>>(this, true) {
+        String CouponCodeIds = "";
+        if(null!=couponBean){
+            CouponCodeIds = couponBean.CouponCodeIds;
+        }
+        BigDecimal totalDecimal = new BigDecimal(Double.toString(totalMoney));
+        BigDecimal couponsDecimal = new BigDecimal(Double.toString(couponsMoney));
+        BigDecimal resultDecimal = totalDecimal.subtract(couponsDecimal);
+        double resultMoney =0;
+        if(resultDecimal.doubleValue()>0){
+            resultMoney = resultDecimal.setScale(2,BigDecimal.ROUND_HALF_UP).doubleValue();
+        }else
+        {
+            resultMoney = 0;
+        }
+        addSubscription(RequestClient.PostOrder(shopId, goodsId, resultMoney, levelWord, payMethod, data,CouponCodeIds, this, new NetSubscriber<BaseResultBean<String>>(this, true) {
             @Override
             public void onResultNext(BaseResultBean<String> model) {
                 if (StrUtils.isEmpty(payMethod)) {
                     bundle = new Bundle();
                     bundle.putString("orderNo", model.data);
-                    bundle.putDouble("totalMoney", totalMoney);
+                    bundle.putDouble("totalMoney", totalMoney-couponsMoney);
                     JumpUtils.dataJump(CommitOrderActivity.this, PayActivity.class, bundle, true);
                 } else {
                     dialogUtils.simpleDialog("下单成功", new DialogUtils.ConfirmClickLisener() {
@@ -221,5 +260,26 @@ public class CommitOrderActivity extends BaseActivity {
                 }
             }
         }));
+    }
+
+    private SupplierCouponBean couponBean;
+    private double couponsMoney;
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(requestCode==100&&resultCode==100){
+            if(null!=data){
+                couponBean = data.getExtras().getParcelable("data");
+                couponsMoney = couponBean.TotalAmount;
+                if(totalMoney-couponBean.TotalAmount>0){
+
+                tvTotalMoney.setText(StrUtils.moenyToDH((totalMoney-couponBean.TotalAmount)+""));
+                }else
+                {
+                    tvTotalMoney.setText(StrUtils.moenyToDH(0+""));
+                }
+                couponsContent.setText(" 优惠："+couponBean.TotalAmount);
+            }
+        }
     }
 }

@@ -265,4 +265,19 @@
         android:background="@drawable/shape_range_red_right_bg"
         />
 </LinearLayout>
+    <TextView
+        android:visibility="gone"
+        android:layout_gravity="center"
+        android:paddingLeft="20pt"
+        android:paddingRight="20pt"
+        android:paddingTop="10pt"
+        android:paddingBottom="10pt"
+        android:id="@+id/tv_qh"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="正式"
+        android:textColor="@color/app_red"
+        android:background="@drawable/shape_red_20_bg"
+        android:layout_marginRight="30pt"
+        android:textSize="30pt" />
 </LinearLayout>

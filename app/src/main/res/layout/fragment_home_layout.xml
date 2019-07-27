@@ -266,7 +266,34 @@
                 android:layout_height="25pt"
                 android:background="@drawable/img_aray_right" />
         </LinearLayout>
+        <LinearLayout
+            android:id="@+id/ll_09"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20pt"
+            android:background="@color/white"
+            android:gravity="center"
+            android:padding="30pt">
 
+            <ImageView
+                android:layout_width="30pt"
+                android:layout_height="30pt"
+                android:background="@drawable/set_five_bg" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20pt"
+                android:layout_weight="1"
+                android:text="优惠劵"
+                android:textColor="@color/txt_dark"
+                android:textSize="30pt" />
+
+            <ImageView
+                android:layout_width="15pt"
+                android:layout_height="25pt"
+                android:background="@drawable/img_aray_right" />
+        </LinearLayout>
         <LinearLayout
             android:id="@+id/ll_07"
             android:layout_width="match_parent"

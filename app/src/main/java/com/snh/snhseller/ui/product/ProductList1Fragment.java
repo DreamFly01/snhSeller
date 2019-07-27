@@ -17,18 +17,18 @@ import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
+import com.snh.library_base.utils.Contans;
+import com.snh.module_netapi.requestApi.BaseResultBean;
+import com.snh.module_netapi.requestApi.NetSubscriber;
 import com.snh.snhseller.BaseFragment;
 import com.snh.snhseller.R;
 import com.snh.snhseller.adapter.ProdcutAdapter;
 import com.snh.snhseller.adapter.ScrollLeftAdapter;
 import com.snh.snhseller.adapter.ScrollRightAdapter;
-import com.snh.snhseller.bean.BaseResultBean;
 import com.snh.snhseller.bean.ProductBean;
 import com.snh.snhseller.bean.RetailProductBean;
 import com.snh.snhseller.bean.ScrollBean;
-import com.snh.snhseller.requestApi.NetSubscriber;
 import com.snh.snhseller.requestApi.RequestClient;
-import com.snh.snhseller.utils.Contans;
 import com.snh.snhseller.utils.DialogUtils;
 import com.snh.snhseller.utils.JumpUtils;
 import com.snh.snhseller.utils.SPUtils;
@@ -185,7 +185,9 @@ public class ProductList1Fragment extends BaseFragment {
             public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
                 super.onScrollStateChanged(recyclerView, newState);
                 //获取右侧title的高度
-                tHeight = rightTitle.getHeight();
+                if(null!=rightTitle){
+                    tHeight = rightTitle.getHeight();
+                }
             }
 
             @Override
@@ -282,15 +284,15 @@ public class ProductList1Fragment extends BaseFragment {
                         ProductList1Fragment.isClick = true;
                         Bundle bundle = new Bundle();
                         bundle.putInt("type", 2);
-                        bundle.putInt("isDel",right.get(position).t.status);
-                        bundle.putString("CommTenantIcon",right.get(position).t.CommTenantIcon);
-                        bundle.putString("CommTenantName",right.get(position).t.CommTenantName);
-                        bundle.putString("CategoryName",right.get(position).t.CategoryName);
-                        bundle.putString("UnitsTitle",right.get(position).t.UnitsTitle);
+                        bundle.putInt("isDel", right.get(position).t.status);
+                        bundle.putString("CommTenantIcon", right.get(position).t.CommTenantIcon);
+                        bundle.putString("CommTenantName", right.get(position).t.CommTenantName);
+                        bundle.putString("CategoryName", right.get(position).t.CategoryName);
+                        bundle.putString("UnitsTitle", right.get(position).t.UnitsTitle);
                         bundle.putInt("Inventory", (int) right.get(position).t.Inventory);
-                        bundle.putDouble("Price",right.get(position).t.Price);
-                        bundle.putDouble("MarketPrice",right.get(position).t.MarketPrice);
-                        bundle.putInt("CommTenantId",right.get(position).t.CommTenantId);
+                        bundle.putDouble("Price", right.get(position).t.Price);
+                        bundle.putDouble("MarketPrice", right.get(position).t.MarketPrice);
+                        bundle.putInt("CommTenantId", right.get(position).t.CommTenantId);
                         JumpUtils.dataJump(getActivity(), EditProductActivity.class, bundle, false);
                         break;
                 }
@@ -413,13 +415,15 @@ public class ProductList1Fragment extends BaseFragment {
     }
 
     public static boolean isClick = false;
+
     @Override
     public void onResume() {
         super.onResume();
-        if(isClick&&myIsVisible){
+        if (isClick && myIsVisible) {
             getData();
         }
     }
+
 
     @Override
     public void onDestroyView() {

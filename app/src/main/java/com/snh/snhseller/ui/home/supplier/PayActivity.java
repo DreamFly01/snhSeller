@@ -1,12 +1,8 @@
 package com.snh.snhseller.ui.home.supplier;
 
-import android.Manifest;
-import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.ImageView;
@@ -14,13 +10,13 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.alipay.sdk.app.AuthTask;
 import com.alipay.sdk.app.PayTask;
+import com.snh.module_netapi.requestApi.BaseResultBean;
+import com.snh.module_netapi.requestApi.NetSubscriber;
+import com.snh.moudle_coupons.bean.MsgEventBean;
 import com.snh.snhseller.BaseActivity;
 import com.snh.snhseller.R;
-import com.snh.snhseller.bean.BaseResultBean;
 import com.snh.snhseller.bean.PayWxBean;
-import com.snh.snhseller.requestApi.NetSubscriber;
 import com.snh.snhseller.requestApi.RequestClient;
 import com.snh.snhseller.ui.order.OrderFragment;
 import com.snh.snhseller.utils.DialogUtils;
@@ -31,6 +27,8 @@ import com.snh.snhseller.utils.StrUtils;
 import com.tencent.mm.opensdk.modelpay.PayReq;
 import com.tencent.mm.opensdk.openapi.IWXAPI;
 import com.tencent.mm.opensdk.openapi.WXAPIFactory;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.util.Map;
 
@@ -106,6 +104,7 @@ public class PayActivity extends BaseActivity {
 //                        showAlert(PayDemoActivity.this, getString(R.string.pay_success) + payResult);
                         bundle = new Bundle();
                         bundle.putString("result", "支付成功");
+                        EventBus.getDefault().post(new MsgEventBean("refresh"));
                         OrderFragment.updataView(2,1);
                         JumpUtils.dataJump(PayActivity.this, PayResultActivity.class, bundle, true);
                     } else {
@@ -303,6 +302,7 @@ public class PayActivity extends BaseActivity {
                 public void onResultNext(BaseResultBean model) {
                     bundle = new Bundle();
                     bundle.putString("result", "支付成功");
+                    EventBus.getDefault().post(new MsgEventBean("refresh"));
                     OrderFragment.updataView(2,1);
                     JumpUtils.dataJump(PayActivity.this, PayResultActivity.class, bundle, true);
                 }

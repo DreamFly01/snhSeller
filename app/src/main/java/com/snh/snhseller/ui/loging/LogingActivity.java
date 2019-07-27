@@ -13,32 +13,19 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.netease.nim.uikit.common.util.log.LogUtil;
-import com.netease.nim.uikit.impl.NimUIKitImpl;
-import com.netease.nimlib.sdk.NIMClient;
-import com.netease.nimlib.sdk.RequestCallback;
-import com.netease.nimlib.sdk.auth.AuthService;
-import com.netease.nimlib.sdk.auth.LoginInfo;
+import com.snh.library_base.utils.Contans;
+import com.snh.module_netapi.requestApi.BaseResultBean;
+import com.snh.module_netapi.requestApi.NetSubscriber;
 import com.snh.snhseller.BaseActivity;
 import com.snh.snhseller.MainActivity;
 import com.snh.snhseller.R;
-import com.snh.snhseller.bean.AllUserBean;
-import com.snh.snhseller.bean.BaseResultBean;
-import com.snh.snhseller.bean.UserBean;
-import com.snh.snhseller.bean.WithdrawDetailsBean;
 import com.snh.snhseller.bean.salebean.SaleUserBean;
-import com.snh.snhseller.requestApi.NetSubscriber;
+import com.snh.snhseller.jpush.TagAliasOperatorHelper;
 import com.snh.snhseller.requestApi.RequestClient;
-import com.snh.snhseller.ui.home.HomeFragment;
-import com.snh.snhseller.ui.merchantEntry.CompleteActivity;
 import com.snh.snhseller.ui.merchantEntry.MerchantLogingActivity;
-import com.snh.snhseller.ui.msg.MsgFragment;
-import com.snh.snhseller.ui.order.OrderFragment;
-import com.snh.snhseller.ui.product.ProductFragment;
 import com.snh.snhseller.ui.salesmanManagement.SalesmanMainActivity;
 import com.snh.snhseller.utils.AnimUtil;
 import com.snh.snhseller.db.DBManager;
-import com.snh.snhseller.utils.Contans;
 import com.snh.snhseller.utils.DialogUtils;
 import com.snh.snhseller.utils.IsBang;
 import com.snh.snhseller.utils.JumpUtils;
@@ -47,12 +34,13 @@ import com.snh.snhseller.utils.SPUtils;
 import com.snh.snhseller.utils.StrUtils;
 import com.snh.snhseller.wediget.IdentifyCodeView;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import me.jessyan.retrofiturlmanager.RetrofitUrlManager;
+
+import static com.snh.snhseller.jpush.TagAliasOperatorHelper.ACTION_SET;
+import static com.snh.snhseller.jpush.TagAliasOperatorHelper.sequence;
 
 /**
  * <p>desc：<p>
@@ -102,7 +90,8 @@ public class LogingActivity extends BaseActivity {
     RelativeLayout rlMenu;
     @BindView(R.id.tv_rz)
     TextView tvRz;
-
+    @BindView(R.id.tv_qh)
+    TextView tvQh;
     private boolean accountOrPhone = true;//true 为账号密码登录 false 为手机验证码登录
     private DialogUtils dialogUtils;
     private int type = 1;//1:商家，2业务员
@@ -127,6 +116,14 @@ public class LogingActivity extends BaseActivity {
         tvRegist.getPaint().setFlags(Paint.UNDERLINE_TEXT_FLAG);
         icGetCode.setActivity(this);
         icGetCode.setEt_tel(etPhone);
+        if(Contans.debug){
+            tvQh.setVisibility(View.VISIBLE);
+        }
+        if(Contans.HOST.equals(SPUtils.getInstance(this).getString(Contans.SP_HOSt))){
+            tvQh.setText("正式");
+        }else {
+            tvQh.setText("测试");
+        }
     }
 
     @Override
@@ -139,7 +136,7 @@ public class LogingActivity extends BaseActivity {
         });
     }
 
-    @OnClick({R.id.tv_rz, R.id.tv_foget_psw, R.id.btn_commit, R.id.tv_phone, R.id.tv_regist, R.id.tv_opreation, R.id.tv_store})
+    @OnClick({R.id.tv_rz, R.id.tv_foget_psw, R.id.btn_commit, R.id.tv_phone, R.id.tv_regist, R.id.tv_opreation, R.id.tv_store,R.id.tv_qh})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.tv_rz:
@@ -193,6 +190,17 @@ public class LogingActivity extends BaseActivity {
                 tvPhone.setText("用手机验证码登录");
                 tvFogetPsw.setEnabled(true);
                 tvPhone.setEnabled(true);
+                break;
+            case R.id.tv_qh:
+                if(tvQh.getText().toString().trim().equals("正式")){
+                    tvQh.setText("测试");
+//                    RetrofitUrlManager.getInstance().setGlobalDomain(Contans.HOST_TEST);
+                    SPUtils.getInstance(this).saveData(Contans.SP_HOSt,Contans.HOST_TEST);
+                }else {
+                    tvQh.setText("正式");
+//                    RetrofitUrlManager.getInstance().setGlobalDomain(Contans.HOST);
+                    SPUtils.getInstance(this).saveData(Contans.SP_HOSt,Contans.HOST);
+                }
                 break;
         }
     }
@@ -254,13 +262,26 @@ public class LogingActivity extends BaseActivity {
 
     private void loggin() {
         if (accountOrPhone) {
-            addSubscription(RequestClient.Login(etUserName.getText().toString().trim(), Md5Utils.md5(etUserPsw.getText().toString().trim()), etCode.getText().toString().trim(), this, new NetSubscriber<BaseResultBean<AllUserBean>>(this, true) {
+            addSubscription(RequestClient.Login(etUserName.getText().toString().trim(), Md5Utils.md5(etUserPsw.getText().toString().trim()), etCode.getText().toString().trim(), this, new NetSubscriber<BaseResultBean<com.snh.library_base.db.AllUserBean>>(this, true) {
                 @Override
-                public void onResultNext(BaseResultBean<AllUserBean> model) {
+                public void onResultNext(BaseResultBean<com.snh.library_base.db.AllUserBean> model) {
                     SPUtils.getInstance(LogingActivity.this).saveData(Contans.PHONE,etUserName.getText().toString().trim());
                     if (model.data.type == 1) {
+                        boolean isAliasAction = true;
+                        int action = ACTION_SET;
+                        TagAliasOperatorHelper.TagAliasBean tagAliasBean = new TagAliasOperatorHelper.TagAliasBean();
+                        tagAliasBean.action = action;
+                        sequence++;
+                        if (isAliasAction) {
+                            tagAliasBean.alias = model.data.supp.Id + "";
+                        } else {
+//            tagAliasBean.tags = 1;
+                        }
+                        tagAliasBean.isAliasAction = isAliasAction;
+                        TagAliasOperatorHelper.getInstance().handleAction(LogingActivity.this, sequence, tagAliasBean);
                         SPUtils.getInstance(LogingActivity.this).saveData(Contans.IS_FULL,model.data.isFull+"");
-                        DBManager.getInstance(LogingActivity.this).logingSuccess(model.data, LogingActivity.this,etUserPsw.getText().toString().trim(),etUserName.getText().toString().trim());
+                        com.snh.library_base.db.DBManager.getInstance(LogingActivity.this).logingSuccess(model.data, LogingActivity.this,etUserPsw.getText().toString().trim(),etUserName.getText().toString().trim());
+                        JumpUtils.simpJump(LogingActivity.this, MainActivity.class, true);
                     } else if (model.data.type == 2) {
                         SaleUserBean bean = new SaleUserBean();
                         bean.NickName = model.data.NickName;
@@ -275,13 +296,26 @@ public class LogingActivity extends BaseActivity {
                 }
             }));
         }else {
-            addSubscription(RequestClient.Login(etPhone.getText().toString().trim(), "", etCode.getText().toString().trim(), this, new NetSubscriber<BaseResultBean<AllUserBean>>(this, true) {
+            addSubscription(RequestClient.Login(etPhone.getText().toString().trim(), "", etCode.getText().toString().trim(), this, new NetSubscriber<BaseResultBean<com.snh.library_base.db.AllUserBean>>(this, true) {
                 @Override
-                public void onResultNext(BaseResultBean<AllUserBean> model) {
+                public void onResultNext(BaseResultBean<com.snh.library_base.db.AllUserBean> model) {
                     SPUtils.getInstance(LogingActivity.this).saveData(Contans.PHONE,etUserName.getText().toString().trim());
                     if (model.data.type == 1) {
+                        boolean isAliasAction = true;
+                        int action = ACTION_SET;
+                        TagAliasOperatorHelper.TagAliasBean tagAliasBean = new TagAliasOperatorHelper.TagAliasBean();
+                        tagAliasBean.action = action;
+                        sequence++;
+                        if (isAliasAction) {
+                            tagAliasBean.alias = model.data.supp.Id + "";
+                        } else {
+//            tagAliasBean.tags = 1;
+                        }
+                        tagAliasBean.isAliasAction = isAliasAction;
+                        TagAliasOperatorHelper.getInstance().handleAction(LogingActivity.this, sequence, tagAliasBean);
                         SPUtils.getInstance(LogingActivity.this).saveData(Contans.IS_FULL,model.data.isFull+"");
-                        DBManager.getInstance(LogingActivity.this).logingSuccess(model.data, LogingActivity.this,etUserPsw.getText().toString().trim(),etUserName.getText().toString().trim());
+                        com.snh.library_base.db.DBManager.getInstance(LogingActivity.this).logingSuccess(model.data, LogingActivity.this,etUserPsw.getText().toString().trim(),etUserName.getText().toString().trim());
+                        JumpUtils.simpJump(LogingActivity.this, MainActivity.class, true);
                     } else if (model.data.type == 2) {
                         SaleUserBean bean = new SaleUserBean();
                         bean.NickName = model.data.NickName;

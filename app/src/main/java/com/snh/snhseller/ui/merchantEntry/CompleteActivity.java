@@ -9,25 +9,18 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.netease.nim.uikit.common.util.log.LogUtil;
-import com.netease.nim.uikit.impl.NimUIKitImpl;
 import com.netease.nimlib.sdk.NIMClient;
-import com.netease.nimlib.sdk.RequestCallback;
 import com.netease.nimlib.sdk.auth.AuthService;
-import com.netease.nimlib.sdk.auth.LoginInfo;
+import com.snh.library_base.db.AllUserBean;
+import com.snh.library_base.db.DBManager;
+import com.snh.library_base.utils.Contans;
+import com.snh.module_netapi.requestApi.BaseResultBean;
+import com.snh.module_netapi.requestApi.NetSubscriber;
 import com.snh.snhseller.BaseActivity;
+import com.snh.snhseller.MainActivity;
 import com.snh.snhseller.R;
-import com.snh.snhseller.bean.AllUserBean;
-import com.snh.snhseller.bean.BaseResultBean;
-import com.snh.snhseller.bean.UserBean;
-import com.snh.snhseller.bean.salebean.SaleUserBean;
-import com.snh.snhseller.db.DBManager;
 import com.snh.snhseller.jpush.TagAliasOperatorHelper;
-import com.snh.snhseller.requestApi.NetSubscriber;
 import com.snh.snhseller.requestApi.RequestClient;
-import com.snh.snhseller.ui.loging.LogingActivity;
-import com.snh.snhseller.ui.salesmanManagement.SalesmanMainActivity;
-import com.snh.snhseller.utils.Contans;
 import com.snh.snhseller.utils.IsBang;
 import com.snh.snhseller.utils.JumpUtils;
 import com.snh.snhseller.utils.Md5Utils;
@@ -38,6 +31,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 import static com.snh.snhseller.jpush.TagAliasOperatorHelper.ACTION_DELETE;
+import static com.snh.snhseller.jpush.TagAliasOperatorHelper.ACTION_SET;
 import static com.snh.snhseller.jpush.TagAliasOperatorHelper.sequence;
 
 /**
@@ -157,19 +151,26 @@ public class CompleteActivity extends BaseActivity {
     }
 
     private void loging() {
-//        addSubscription(RequestClient.LoginPhone(phone, "", Md5Utils.md5(psw), this, new NetSubscriber<BaseResultBean<UserBean>>(this, true) {
-//            @Override
-//            public void onResultNext(BaseResultBean<UserBean> model) {
-//                DBManager.getInstance(CompleteActivity.this).logingSuccess(model.data, CompleteActivity.this);
-//            }
-//        }));
         addSubscription(RequestClient.Login(phone, Md5Utils.md5(psw), "", this, new NetSubscriber<BaseResultBean<AllUserBean>>(this, true) {
             @Override
             public void onResultNext(BaseResultBean<AllUserBean> model) {
                 if (model.data.type == 1) {
+                    boolean isAliasAction = true;
+                    int action = ACTION_SET;
+                    TagAliasOperatorHelper.TagAliasBean tagAliasBean = new TagAliasOperatorHelper.TagAliasBean();
+                    tagAliasBean.action = action;
+                    sequence++;
+                    if (isAliasAction) {
+                        tagAliasBean.alias = model.data.supp.Id + "";
+                    } else {
+//            tagAliasBean.tags = 1;
+                    }
+                    tagAliasBean.isAliasAction = isAliasAction;
+                    TagAliasOperatorHelper.getInstance().handleAction(CompleteActivity.this, sequence, tagAliasBean);
                     SPUtils.getInstance(CompleteActivity.this).saveData(Contans.IS_FULL,model.data.isFull+"");
                     SPUtils.getInstance(CompleteActivity.this).savaBoolean(Contans.IS_REGIST,true).commit();
-                    DBManager.getInstance(CompleteActivity.this).logingSuccess(model.data, CompleteActivity.this,psw,phone);
+                    com.snh.library_base.db.DBManager.getInstance(CompleteActivity.this).logingSuccess(model.data, CompleteActivity.this,psw,phone);
+                    JumpUtils.simpJump(CompleteActivity.this, MainActivity.class, true);
                 }
             }
         }));

@@ -1,0 +1,280 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:orientation="vertical"
+    android:paddingLeft="20pt"
+    android:paddingRight="20pt">
+
+    <include layout="@layout/line_layout"></include>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="80pt"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="优惠券名称:"
+            android:textColor="@color/txt_dark"
+            android:textSize="26pt" />
+
+        <EditText
+            android:id="@+id/coupons_et_name"
+            android:layout_width="400pt"
+            android:layout_height="60pt"
+            android:layout_marginLeft="30pt"
+            android:background="@drawable/coupons_select_bg"
+            android:gravity="center_vertical"
+            android:hint="请输入名称"
+            android:paddingLeft="20pt"
+            android:textColor="@color/txt_dark"
+            android:textColorHint="@color/gray_1"
+            android:textSize="26pt" />
+    </LinearLayout>
+
+    <include layout="@layout/line_layout"></include>
+
+    <LinearLayout
+        android:id="@+id/coupons_ll_product"
+        android:layout_width="match_parent"
+        android:layout_height="80pt"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="指定优惠产品"
+            android:textColor="@color/txt_dark"
+            android:textSize="26pt" />
+
+        <ImageView
+            android:layout_width="40pt"
+            android:layout_height="40pt"
+            android:layout_marginLeft="40pt"
+            android:background="@drawable/coupons_addproduct_bg" />
+    </LinearLayout>
+
+    <android.support.v7.widget.RecyclerView
+        android:layout_marginBottom="10pt"
+        android:id="@+id/coupons_rcl"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"></android.support.v7.widget.RecyclerView>
+
+    <include layout="@layout/line_layout"></include>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="60pt"
+        android:layout_marginTop="20pt"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="优  惠  金  额"
+            android:textColor="@color/txt_dark"
+            android:textSize="26pt" />
+
+        <EditText
+            android:id="@+id/coupons_tv_money"
+            android:layout_width="400pt"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="30pt"
+            android:background="@drawable/coupons_select_bg"
+            android:gravity="center_vertical"
+            android:hint="请输入优惠金额"
+            android:inputType="numberDecimal"
+            android:paddingLeft="20pt"
+            android:textColor="@color/txt_dark"
+            android:textColorHint="@color/gray_1"
+            android:textSize="26pt" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20pt"
+            android:text="元"
+            android:textColor="@color/txt_dark"
+            android:textSize="26pt" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:visibility="visible"
+        android:layout_width="match_parent"
+        android:layout_height="60pt"
+        android:layout_marginTop="10pt"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="使用条件*满"
+            android:textColor="@color/txt_dark"
+            android:textSize="26pt" />
+
+        <EditText
+            android:id="@+id/coupons_et_condition"
+            android:layout_width="400pt"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="30pt"
+            android:background="@drawable/coupons_select_bg"
+            android:gravity="center_vertical"
+            android:hint="请输入条件满多少元使用"
+            android:inputType="numberDecimal"
+            android:paddingLeft="20pt"
+            android:textColor="@color/txt_dark"
+            android:textColorHint="@color/gray_1"
+            android:textSize="26pt" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20pt"
+            android:text="元使用"
+            android:textColor="@color/txt_dark"
+            android:textSize="26pt" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="60pt"
+        android:layout_marginTop="10pt"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="发 行 总数量"
+            android:textColor="@color/txt_dark"
+            android:textSize="26pt" />
+
+        <EditText
+            android:id="@+id/coupons_et_num"
+            android:layout_width="400pt"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="30pt"
+            android:background="@drawable/coupons_select_bg"
+            android:gravity="center_vertical"
+            android:hint="请输入优惠劵总数"
+            android:inputType="number"
+            android:paddingLeft="20pt"
+            android:textColor="@color/txt_dark"
+            android:textColorHint="@color/gray_1"
+            android:textSize="26pt" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20pt"
+            android:text="张"
+            android:textColor="@color/txt_dark"
+            android:textSize="26pt" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="60pt"
+        android:layout_marginTop="10pt"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="有效日期"
+            android:textColor="@color/txt_dark"
+            android:textSize="26pt" />
+
+        <TextView
+            android:id="@+id/coupons_tv_startTime"
+            android:layout_width="200pt"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="30pt"
+            android:background="@drawable/coupons_select_bg"
+            android:gravity="center_vertical"
+            android:hint="年/月/日/时"
+            android:inputType="number"
+            android:paddingLeft="20pt"
+            android:textColor="@color/txt_dark"
+            android:textColorHint="@color/gray_1"
+            android:textSize="26pt" />
+
+        <ImageView
+            android:layout_width="10pt"
+            android:layout_height="2pt"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="14pt"
+            android:background="@color/txt_dark"
+            android:textSize="26pt" />
+
+        <TextView
+            android:id="@+id/coupons_tv_endTime"
+            android:layout_width="200pt"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="14pt"
+            android:background="@drawable/coupons_select_bg"
+            android:gravity="center_vertical"
+            android:hint="年/月/日/时"
+            android:inputType="number"
+            android:paddingLeft="20pt"
+            android:textColor="@color/txt_dark"
+            android:textColorHint="@color/gray_1"
+            android:textSize="26pt" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="60pt"
+        android:layout_marginTop="10pt"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="过期提醒"
+            android:textColor="@color/txt_dark"
+            android:textSize="26pt" />
+
+        <TextView
+            android:id="@+id/coupons_tv_overdue"
+            android:layout_width="200pt"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="30pt"
+            android:background="@drawable/coupons_select_bg"
+            android:gravity="center_vertical"
+            android:hint="年/月/日/时"
+            android:inputType="number"
+            android:paddingLeft="20pt"
+            android:textColor="@color/txt_dark"
+            android:textColorHint="@color/gray_1"
+            android:textSize="26pt" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="60pt"
+        android:layout_marginTop="10pt"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="是否展示"
+            android:textColor="@color/txt_dark"
+            android:textSize="26pt" />
+
+        <ImageView
+            android:id="@+id/coupons_iv_isOpen"
+            android:layout_width="151pt"
+            android:layout_height="60pt"
+            android:layout_marginLeft="10pt"
+            android:background="@drawable/coupons_open_bg" />
+
+    </LinearLayout>
+</LinearLayout>

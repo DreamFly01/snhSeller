@@ -10,8 +10,13 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.support.multidex.MultiDex;
 import android.util.DisplayMetrics;
+import android.view.Gravity;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import com.alibaba.android.arouter.launcher.ARouter;
 import com.baidu.mapapi.CoordType;
 import com.baidu.mapapi.SDKInitializer;
 import com.bulong.rudeness.RudenessScreenHelper;
@@ -40,19 +45,20 @@ import com.scwang.smartrefresh.layout.api.RefreshHeader;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.footer.ClassicsFooter;
 import com.scwang.smartrefresh.layout.header.ClassicsHeader;
+import com.snh.library_base.utils.Contans;
+import com.snh.library_base.wediget.ToastMgr;
 import com.snh.snhseller.jpush.TagAliasOperatorHelper;
 import com.snh.snhseller.ui.loging.LogingActivity;
 import com.snh.snhseller.utils.ActivityManagerUtils;
-import com.snh.snhseller.utils.BadgeUtils;
-import com.snh.snhseller.utils.Contans;
-import com.snh.snhseller.db.DBManager;
 import com.snh.snhseller.utils.JumpUtils;
+import com.snh.snhseller.utils.SPUtils;
 import com.snh.snhseller.utils.StrUtils;
 import com.tencent.bugly.crashreport.CrashReport;
 import com.tencent.mm.opensdk.openapi.IWXAPI;
 import com.tencent.mm.opensdk.openapi.WXAPIFactory;
 
 import cn.jpush.android.api.JPushInterface;
+import me.jessyan.retrofiturlmanager.RetrofitUrlManager;
 
 import static com.snh.snhseller.jpush.TagAliasOperatorHelper.ACTION_DELETE;
 import static com.snh.snhseller.jpush.TagAliasOperatorHelper.sequence;
@@ -153,8 +159,17 @@ public class MyApplication extends Application {
                 CrashReport.initCrashReport(getApplicationContext(), Contans.BUGLY_ID, true);
             }
         }
+        initRouter(this);
+        ToastMgr.builder.init(getApplicationContext());
     }
 
+    public static void initRouter(Application application) {
+        if (BuildConfig.DEBUG) {
+            ARouter.openLog();     // 打印日志
+            ARouter.openDebug();   // 开启调试模式(如果在InstantRun模式下运行，必须开启调试模式！线上版本需要关闭,否则有安全风险)
+        }
+        ARouter.init(application);
+    }
     private void initUiKit() {
 
         // 初始化
@@ -195,7 +210,7 @@ public class MyApplication extends Application {
                     public void onEvent(StatusCode status) {
                         if (status == StatusCode.KICKOUT | status == StatusCode.KICK_BY_OTHER_CLIENT) {
                             // 被踢出、账号被禁用、密码错误等情况，自动登录失败，需要返回到登录界面进行重新登录操作
-                            DBManager.getInstance(ActivityManagerUtils.getInstance().getCurrentActivity()).cleanUser();
+                            com.snh.library_base.db.DBManager.getInstance(ActivityManagerUtils.getInstance().getCurrentActivity()).cleanUser();
                             NIMClient.getService(AuthService.class).logout();
                             boolean isAliasAction = true;
                             int action = ACTION_DELETE;
@@ -203,7 +218,7 @@ public class MyApplication extends Application {
                             tagAliasBean.action = action;
                             sequence++;
                             if (isAliasAction) {
-                                tagAliasBean.alias = DBManager.getInstance(ActivityManagerUtils.getInstance().getCurrentActivity()).getUseId() + "";
+                                tagAliasBean.alias = com.snh.library_base.db.DBManager.getInstance(ActivityManagerUtils.getInstance().getCurrentActivity()).getUseId() + "";
                             } else {
 //            tagAliasBean.tags = 1;
                             }
@@ -322,9 +337,9 @@ public class MyApplication extends Application {
 
     // 如果已经存在用户登录信息，返回LoginInfo，否则返回null即可
     private LoginInfo loginInfo() {
-        if (null != DBManager.getInstance(this).getUserInfo()) {
-            String account = DBManager.getInstance(this).getUserInfo().Accid;
-            String token = DBManager.getInstance(this).getUserInfo().Token;
+        if (null != com.snh.library_base.db.DBManager.getInstance(this).getUserInfo()) {
+            String account = com.snh.library_base.db.DBManager.getInstance(this).getUserInfo().Accid;
+            String token = com.snh.library_base.db.DBManager.getInstance(this).getUserInfo().Token;
             NimUIKitImpl.setAccount(account);
             return new LoginInfo(account, token);
         } else {

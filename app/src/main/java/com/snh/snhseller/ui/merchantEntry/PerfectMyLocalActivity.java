@@ -25,23 +25,22 @@ import com.jph.takephoto.model.TResult;
 import com.jph.takephoto.permission.InvokeListener;
 import com.jph.takephoto.permission.PermissionManager;
 import com.jph.takephoto.permission.TakePhotoInvocationHandler;
+import com.snh.library_base.db.DBManager;
+import com.snh.library_base.db.UserEntity;
+import com.snh.library_base.utils.Contans;
+import com.snh.module_netapi.requestApi.BaseResultBean;
+import com.snh.module_netapi.requestApi.NetSubscriber;
 import com.snh.snhseller.BaseActivity;
 import com.snh.snhseller.R;
-import com.snh.snhseller.bean.BaseResultBean;
-import com.snh.snhseller.bean.beanDao.UserEntity;
-import com.snh.snhseller.greendao.UserEntityDao;
-import com.snh.snhseller.requestApi.NetSubscriber;
+import com.snh.snhseller.base.greendao.UserEntityDao;
 import com.snh.snhseller.requestApi.RequestClient;
-import com.snh.snhseller.utils.Contans;
 import com.snh.snhseller.utils.DialogUtils;
 import com.snh.snhseller.utils.IsBang;
-import com.snh.snhseller.utils.JumpUtils;
 import com.snh.snhseller.utils.SPUtils;
 import com.snh.snhseller.utils.StrUtils;
 import com.snh.snhseller.utils.WaterImgUtils;
 
 import java.io.File;
-import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -352,7 +351,7 @@ public class PerfectMyLocalActivity extends BaseActivity implements TakePhoto.Ta
         addSubscription(RequestClient.UpdateSupplier(dataMap, this, new NetSubscriber<BaseResultBean>(this, true) {
             @Override
             public void onResultNext(BaseResultBean model) {
-                UserEntityDao userEntityDao = getDaoSession().getUserEntityDao();
+                UserEntityDao userEntityDao = DBManager.getDaoSession().getUserEntityDao();
                 List<UserEntity> list = userEntityDao.queryBuilder().list();
                 UserEntity userEntity = list.get(0);
                 userEntityDao.deleteAll();

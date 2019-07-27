@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
-import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.Window;
@@ -17,19 +16,17 @@ import android.widget.Toast;
 
 import com.gyf.barlibrary.ImmersionBar;
 import com.netease.nim.uikit.common.activity.UI;
-import com.snh.snhseller.bean.BaseResultBean;
+import com.snh.library_base.utils.Contans;
+import com.snh.module_netapi.requestApi.BaseResultBean;
+import com.snh.module_netapi.requestApi.NetSubscriber;
 import com.snh.snhseller.bean.NoticeNumBean;
-import com.snh.snhseller.db.DBManager;
-import com.snh.snhseller.requestApi.NetSubscriber;
 import com.snh.snhseller.requestApi.RequestClient;
 import com.snh.snhseller.ui.home.HomeFragment;
 import com.snh.snhseller.ui.home.set.ChangePswActivity;
 import com.snh.snhseller.ui.msg.MsgFragment;
 import com.snh.snhseller.ui.order.OrderFragment;
-import com.snh.snhseller.ui.order.OrderListFragment;
 import com.snh.snhseller.ui.product.ProductFragment;
 import com.snh.snhseller.utils.BadgeUtils;
-import com.snh.snhseller.utils.Contans;
 import com.snh.snhseller.utils.DialogUtils;
 import com.snh.snhseller.utils.JumpUtils;
 import com.snh.snhseller.utils.SPUtils;
@@ -38,8 +35,6 @@ import com.snh.snhseller.utils.StrUtils;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import q.rorbin.badgeview.Badge;
-import q.rorbin.badgeview.QBadgeView;
 
 public class MainActivity extends UI {
 
@@ -363,7 +358,7 @@ public class MainActivity extends UI {
         ll04.setEnabled(true);
         if(SPUtils.getInstance(this).getBoolean(Contans.IS_REGIST)&&!StrUtils.isEmpty(SPUtils.getInstance(this).getString(Contans.PSW))){
             psw = SPUtils.getInstance(this).getString(Contans.PSW);
-            String str = DBManager.getInstance(this).getUserInfo().getContactsTel();
+            String str = com.snh.library_base.db.DBManager.getInstance(this).getUserInfo().getContactsTel();
             String psw1 ="snh"+ str.substring(str.length()-4,str.length());
             if (!StrUtils.isEmpty(psw)&&psw.equals(psw1)) {
                 dialogUtils.twoBtnDialog("当前密码为默认密码，为了您的账户安全，是否前去修改密码？", new DialogUtils.ChoseClickLisener() {

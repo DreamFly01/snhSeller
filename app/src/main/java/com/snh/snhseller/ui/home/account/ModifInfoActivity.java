@@ -9,14 +9,12 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.snh.module_netapi.requestApi.BaseResultBean;
+import com.snh.module_netapi.requestApi.NetSubscriber;
 import com.snh.snhseller.BaseActivity;
 import com.snh.snhseller.R;
-import com.snh.snhseller.bean.BaseResultBean;
-import com.snh.snhseller.bean.beanDao.UserEntity;
-import com.snh.snhseller.greendao.UserEntityDao;
-import com.snh.snhseller.requestApi.NetSubscriber;
+import com.snh.snhseller.base.greendao.UserEntityDao;
 import com.snh.snhseller.requestApi.RequestClient;
-import com.snh.snhseller.db.DBManager;
 import com.snh.snhseller.utils.DialogUtils;
 import com.snh.snhseller.utils.IsBang;
 import com.snh.snhseller.utils.StrUtils;
@@ -143,7 +141,7 @@ public class ModifInfoActivity extends BaseActivity {
     }
 
     private void setData() {
-        map.put("SupplierId", DBManager.getInstance(this).getUseId());
+        map.put("SupplierId", com.snh.library_base.db.DBManager.getInstance(this).getUseId());
         if (!StrUtils.isEmpty(name)) {
             map.put("BuinourName", etInfo.getText().toString().trim());
         }
@@ -170,8 +168,8 @@ public class ModifInfoActivity extends BaseActivity {
                 dialogUtils.simpleDialog("修改成功", new DialogUtils.ConfirmClickLisener() {
                     @Override
                     public void onConfirmClick(View v) {
-                        UserEntityDao userEntityDao = DBManager.getInstance(ModifInfoActivity.this).getDaoSession().getUserEntityDao();
-                        UserEntity userEntity = userEntityDao.queryBuilder().build().list().get(0);
+                        UserEntityDao userEntityDao = com.snh.library_base.db.DBManager.getInstance(ModifInfoActivity.this).getDaoSession().getUserEntityDao();
+                        com.snh.library_base.db.UserEntity userEntity = userEntityDao.queryBuilder().build().list().get(0);
                         userEntityDao.deleteAll();
                         userEntity.Introduction = etInfo.getText().toString().trim();
                         userEntityDao.insert(userEntity);
@@ -191,8 +189,8 @@ public class ModifInfoActivity extends BaseActivity {
                 dialogUtils.simpleDialog("修改成功", new DialogUtils.ConfirmClickLisener() {
                     @Override
                     public void onConfirmClick(View v) {
-                        UserEntityDao userEntityDao = DBManager.getInstance(ModifInfoActivity.this).getDaoSession().getUserEntityDao();
-                        UserEntity userEntity = userEntityDao.queryBuilder().build().list().get(0);
+                        UserEntityDao userEntityDao = com.snh.library_base.db.DBManager.getInstance(ModifInfoActivity.this).getDaoSession().getUserEntityDao();
+                        com.snh.library_base.db.UserEntity userEntity = userEntityDao.queryBuilder().build().list().get(0);
                         userEntityDao.deleteAll();
                         switch (type) {
                             case 1:
@@ -209,7 +207,7 @@ public class ModifInfoActivity extends BaseActivity {
                                 break;
                         }
                         userEntityDao.insert(userEntity);
-                        List<UserEntity> list = userEntityDao.queryBuilder().list();
+                        List<com.snh.library_base.db.UserEntity> list = userEntityDao.queryBuilder().list();
                         dialogUtils.dismissDialog();
                         ModifInfoActivity.this.finish();
                     }

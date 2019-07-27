@@ -20,15 +20,14 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.gyf.barlibrary.ImmersionBar;
+import com.snh.module_netapi.requestApi.BaseResultBean;
+import com.snh.module_netapi.requestApi.NetSubscriber;
 import com.snh.snhseller.BaseFragment;
 import com.snh.snhseller.MainActivity;
 import com.snh.snhseller.R;
-import com.snh.snhseller.bean.BaseResultBean;
 import com.snh.snhseller.bean.NoticeNumBean;
-import com.snh.snhseller.requestApi.NetSubscriber;
 import com.snh.snhseller.requestApi.RequestClient;
 import com.snh.snhseller.utils.DialogUtils;
-import com.snh.snhseller.utils.IsBang;
 import com.snh.snhseller.utils.JumpUtils;
 
 import java.util.ArrayList;
@@ -302,7 +301,7 @@ public class OrderFragment extends BaseFragment {
                 tv02.setTextColor(Color.parseColor("#6E6E6E"));
                 tv01.setTextColor(Color.parseColor("#1e1e1e"));
 //                heardTitle.setText("用户订单");
-                titles = new String[]{"全部", "待支付", "待发货", "退款中", "已发货", "已完成"};
+                titles = new String[]{"全部", "待支付", "待备货", "退款中", "已备货", "已完成"};
 //                iv01.setVisibility(View.VISIBLE);
 //                iv02.setVisibility(View.INVISIBLE);
 //                iv03.setVisibility(View.INVISIBLE);

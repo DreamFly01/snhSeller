@@ -1,9 +1,9 @@
 package com.snh.snhseller.requestApi;
 
+import com.snh.library_base.db.AllUserBean;
+import com.snh.module_netapi.requestApi.BaseResultBean;
 import com.snh.snhseller.bean.AgreementBean;
-import com.snh.snhseller.bean.AllUserBean;
 import com.snh.snhseller.bean.BanksBean;
-import com.snh.snhseller.bean.BaseResultBean;
 import com.snh.snhseller.bean.BusinessBean;
 import com.snh.snhseller.bean.CostApplyBean;
 import com.snh.snhseller.bean.DataBean;
@@ -39,7 +39,6 @@ import com.snh.snhseller.bean.supplierbean.AllSupplierBean;
 import com.snh.snhseller.bean.supplierbean.GoodsBean;
 import com.snh.snhseller.bean.supplierbean.SupplierBean;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 

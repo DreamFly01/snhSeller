@@ -1,8 +1,6 @@
 package com.snh.snhseller.ui.merchantEntry;
 
 import android.Manifest;
-import android.app.Activity;
-import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
@@ -19,11 +17,11 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.snh.module_netapi.requestApi.BaseResultBean;
+import com.snh.module_netapi.requestApi.NetSubscriber;
 import com.snh.snhseller.adapter.EntryCompanyAdapter;
-import com.snh.snhseller.bean.BaseResultBean;
 import com.snh.snhseller.bean.CompanyBean;
 import com.snh.snhseller.bean.InSwitchBean;
-import com.snh.snhseller.requestApi.NetSubscriber;
 import com.snh.snhseller.requestApi.RequestClient;
 import com.snh.snhseller.utils.DialogUtils;
 import com.snh.snhseller.utils.IsBang;
@@ -38,10 +36,6 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import me.weyye.hipermission.HiPermission;
-import me.weyye.hipermission.PermissionActivity;
-import me.weyye.hipermission.PermissionCallback;
-import me.weyye.hipermission.PermissionItem;
 import pub.devrel.easypermissions.EasyPermissions;
 
 /**

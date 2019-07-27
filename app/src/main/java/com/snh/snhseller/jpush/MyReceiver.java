@@ -1,6 +1,5 @@
 package com.snh.snhseller.jpush;
 
-import android.app.Activity;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -8,18 +7,15 @@ import android.os.Bundle;
 import android.support.v4.content.LocalBroadcastManager;
 
 import com.alibaba.fastjson.JSONException;
+import com.snh.library_base.db.DBManager;
+import com.snh.library_base.utils.Contans;
 import com.snh.snhseller.MainActivity;
 import com.snh.snhseller.R;
-import com.snh.snhseller.WelcomActivity;
-import com.snh.snhseller.db.DBManager;
 import com.snh.snhseller.ui.home.money.CapitalActivity;
-import com.snh.snhseller.ui.home.set.SetActivity;
 import com.snh.snhseller.ui.loging.LogingActivity;
 import com.snh.snhseller.ui.msg.SupplyNoticeActivity;
 import com.snh.snhseller.ui.msg.SystemNoticeActivity;
 import com.snh.snhseller.utils.BadgeUtils;
-import com.snh.snhseller.utils.Contans;
-import com.snh.snhseller.utils.JumpUtils;
 import com.snh.snhseller.utils.SPUtils;
 import com.snh.snhseller.utils.StrUtils;
 

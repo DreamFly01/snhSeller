@@ -37,7 +37,7 @@ public class ImageUtils {
                 .diskCacheStrategy(DiskCacheStrategy.ALL)
                 .error(R.drawable.img_load_error)
                 .placeholder(R.drawable.img_load_error);
-        GlideApp.with(context).load(url).apply(options).into(imageView);
+        com.snh.library_base.utils.GlideApp.with(context).load(url).apply(options).into(imageView);
     }
 
     public static void loadUrlImage1(Context context, String url, ImageView imageView) {
@@ -46,7 +46,7 @@ public class ImageUtils {
                 .error(R.drawable.img_load_error)
                 .placeholder(R.drawable.img_load_error)
                 .override(187, 300);
-        GlideApp.with(context).load(url).apply(options).into(imageView);
+        com.snh.library_base.utils.GlideApp.with(context).load(url).apply(options).into(imageView);
     }
 
     /**
@@ -89,7 +89,7 @@ public class ImageUtils {
                 .circleCrop()
                 .error(R.drawable.img_load_error)
                 .placeholder(R.drawable.img_load_error);
-        GlideApp.with(context).load(url).apply(RequestOptions.bitmapTransform(new CircleCrop())).apply(options).into(imageView);
+        com.snh.library_base.utils.GlideApp.with(context).load(url).apply(RequestOptions.bitmapTransform(new CircleCrop())).apply(options).into(imageView);
     }
 
     /**
@@ -123,7 +123,7 @@ public class ImageUtils {
         RequestOptions options = RequestOptions.bitmapTransform(roundedCorners).override(300, 300).error(R.drawable.img_load_error)
                 .placeholder(R.drawable.img_load_error)
                 .diskCacheStrategy(DiskCacheStrategy.ALL);
-        GlideApp.with(context).load(url).apply(options).into(imageView);
+        com.snh.library_base.utils.GlideApp.with(context).load(url).apply(options).into(imageView);
 
 
     }

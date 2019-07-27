@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/color_app_bg"
+    android:fitsSystemWindows="true"
+    >
+    <include layout="@layout/heard_white_layout"></include>
+<android.support.v7.widget.RecyclerView
+    android:id="@+id/coupons_rcl"
+    android:layout_marginTop="2pt"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"></android.support.v7.widget.RecyclerView>
+</LinearLayout>

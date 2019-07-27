@@ -25,6 +25,7 @@ import android.widget.Toast;
 
 import com.alibaba.fastjson.JSON;
 import com.chad.library.adapter.base.BaseQuickAdapter;
+import com.snh.library_base.utils.Contans;
 import com.snh.snhseller.R;
 import com.snh.snhseller.adapter.AearsAdapter;
 import com.snh.snhseller.adapter.ChoseAdapter;

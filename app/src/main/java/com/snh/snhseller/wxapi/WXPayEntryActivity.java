@@ -8,6 +8,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.gyf.barlibrary.ImmersionBar;
+import com.snh.moudle_coupons.bean.MsgEventBean;
 import com.snh.snhseller.R;
 import com.snh.snhseller.ui.home.supplier.PayActivity;
 import com.snh.snhseller.ui.order.OrderFragment;
@@ -20,6 +21,8 @@ import com.tencent.mm.opensdk.modelbase.BaseResp;
 import com.tencent.mm.opensdk.openapi.IWXAPI;
 import com.tencent.mm.opensdk.openapi.IWXAPIEventHandler;
 import com.tencent.mm.opensdk.openapi.WXAPIFactory;
+
+import org.greenrobot.eventbus.EventBus;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -71,6 +74,7 @@ public class WXPayEntryActivity extends Activity implements IWXAPIEventHandler {
             int errCord = baseResp.errCode;
             if (errCord == 0) {
                 tvPayResult.setText("支付成功");
+                EventBus.getDefault().post(new MsgEventBean("refresh"));
                 OrderFragment.updataView(2,1);
 //                Bundle bundle = new Bundle();
 //                bundle.putInt("cord",errCord);

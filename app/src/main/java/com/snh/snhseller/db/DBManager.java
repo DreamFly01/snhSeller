@@ -1,37 +1,14 @@
 package com.snh.snhseller.db;
 
-import android.app.Activity;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
-import android.os.Bundle;
 
-import com.netease.nim.uikit.common.util.log.LogUtil;
-import com.netease.nim.uikit.impl.NimUIKitImpl;
-import com.netease.nimlib.sdk.NIMClient;
-import com.netease.nimlib.sdk.RequestCallback;
-import com.netease.nimlib.sdk.auth.AuthService;
-import com.netease.nimlib.sdk.auth.LoginInfo;
-import com.snh.snhseller.MainActivity;
-import com.snh.snhseller.bean.AllUserBean;
-import com.snh.snhseller.bean.UserBean;
-import com.snh.snhseller.bean.beanDao.UserEntity;
 import com.snh.snhseller.bean.salebean.SaleUserBean;
 import com.snh.snhseller.greendao.DaoMaster;
 import com.snh.snhseller.greendao.DaoSession;
 import com.snh.snhseller.greendao.SaleUserBeanDao;
-import com.snh.snhseller.greendao.UserEntityDao;
-import com.snh.snhseller.jpush.TagAliasOperatorHelper;
-import com.snh.snhseller.utils.Contans;
-import com.snh.snhseller.utils.JumpUtils;
-import com.snh.snhseller.utils.SPUtils;
-import com.snh.snhseller.utils.StrUtils;
 
 import java.util.List;
-
-import cn.jpush.android.api.JPushInterface;
-
-import static com.snh.snhseller.jpush.TagAliasOperatorHelper.ACTION_SET;
-import static com.snh.snhseller.jpush.TagAliasOperatorHelper.sequence;
 
 /**
  * <p>desc：<p>
@@ -130,67 +107,9 @@ public class DBManager {
         return daoSession;
     }
 
-
-    public void logingSuccess(AllUserBean userBean, final Activity activity, String psw, String phone) {
-        UserEntityDao userEntityDao = getDaoSession().getUserEntityDao();
-        UserEntity userEntity = new UserEntity();
-        userEntity.Id = userBean.supp.Id;
-        userEntity.BusinessActivities = userBean.supp.BusinessActivities;
-        userEntity.Contacts = userBean.supp.Contacts ;
-        userEntity.ContactsTel = phone;
-        userEntity.Introduction = userBean.supp.Introduction;
-        userEntity.Logo = userBean.supp.Logo;
-        userEntity.ShopName = userBean.supp.ShopName;
-        userEntity.suppFxUrl = userBean.suppFxUrl;
-        userEntity.Username = userBean.supp.Username;
-        userEntity.suppType = userBean.suppType;
-        userEntity.Province = userBean.supp.Province;
-        userEntity.City = userBean.supp.City;
-        userEntity.Area = userBean.supp.Area;
-        userEntity.Address = userBean.supp.Address;
-        userEntity.ContactsQQ = userBean.supp.ContactsQQ;
-        userEntity.shopTypeName = userBean.shopTypeName;
-
-        if (null != userBean.nimResult) {
-            userEntity.Accid = userBean.nimResult.Accid;
-            userEntity.Token = userBean.nimResult.Token;
-        }
-        userEntityDao.insert(userEntity);
-        SPUtils.getInstance(activity).savaBoolean(Contans.IS_HDFK, userBean.IsHdfk).commit();
-        boolean isAliasAction = true;
-        int action = ACTION_SET;
-        TagAliasOperatorHelper.TagAliasBean tagAliasBean = new TagAliasOperatorHelper.TagAliasBean();
-        tagAliasBean.action = action;
-        sequence++;
-        if (isAliasAction) {
-            tagAliasBean.alias = userBean.supp.Id + "";
-        } else {
-//            tagAliasBean.tags = 1;
-        }
-        tagAliasBean.isAliasAction = isAliasAction;
-        TagAliasOperatorHelper.getInstance().handleAction(activity, sequence, tagAliasBean);
-        imLoging(context);
-        SPUtils.getInstance(context).saveData(Contans.PSW, psw);
-        SPUtils.getInstance(context).saveData(Contans.PHONE,phone);
-        SPUtils.getInstance(context).savaBoolean(Contans.IS_REGIST, true).commit();
-        JumpUtils.simpJump(activity, MainActivity.class, true);
-    }
-
     public void saveSaleUser(SaleUserBean bean) {
         SaleUserBeanDao userBeanDao = getDaoSession().getSaleUserBeanDao();
         userBeanDao.insert(bean);
-    }
-
-    public int getUseId() {
-        UserEntityDao userEntityDao = getDaoSession().getUserEntityDao();
-        List<UserEntity> list = userEntityDao.queryBuilder().list();
-        return list.size() > 0 ? list.get(0).Id : 0;
-    }
-
-    public UserEntity getUserInfo() {
-        UserEntityDao userEntityDao = getDaoSession().getUserEntityDao();
-        List<UserEntity> list = userEntityDao.queryBuilder().list();
-        return list.size() > 0 ? list.get(0) : null;
     }
 
     public SaleUserBean getSaleInfo() {
@@ -199,36 +118,9 @@ public class DBManager {
         return list.size() > 0 ? list.get(0) : null;
     }
 
-    public void cleanUser() {
-        UserEntityDao userEntityDao = getDaoSession().getUserEntityDao();
-        userEntityDao.deleteAll();
-    }
 
     public void cleanSale() {
         SaleUserBeanDao userBeanDao = getDaoSession().getSaleUserBeanDao();
         userBeanDao.deleteAll();
-    }
-
-    private void imLoging(Context context) {
-        LoginInfo info = new LoginInfo(DBManager.getInstance(context).getUserInfo().Accid, DBManager.getInstance(context).getUserInfo().Token); // config...
-        RequestCallback<LoginInfo> callback = new RequestCallback<LoginInfo>() {
-            @Override
-            public void onSuccess(LoginInfo param) {
-                LogUtil.audio("success");
-                NimUIKitImpl.setAccount(param.getAccount());
-            }
-
-            @Override
-            public void onFailed(int code) {
-                LogUtil.audio("failed");
-            }
-
-            @Override
-            public void onException(Throwable exception) {
-                LogUtil.audio("esception" + exception.getMessage());
-            }
-        };
-        NIMClient.getService(AuthService.class).login(info)
-                .setCallback(callback);
     }
 }

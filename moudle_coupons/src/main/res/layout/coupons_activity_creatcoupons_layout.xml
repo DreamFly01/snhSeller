@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/color_app_bg"
+    tools:ignore="MissingDefaultResource"
+    android:fitsSystemWindows="true"
+    >
+<include layout="@layout/heard_white_layout"></include>
+    <include layout="@layout/line_layout"></include>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:orientation="vertical"
+        android:paddingTop="30pt"
+        android:paddingRight="30pt"
+        android:paddingLeft="30pt"
+        android:paddingBottom="50pt"
+        >
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+
+            >
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/txt_dark"
+                android:textSize="30pt"
+                android:text="选择分类"
+                />
+            <TextView
+                android:id="@+id/coupons_tv_01"
+                android:layout_marginLeft="44pt"
+                android:gravity="center"
+                android:layout_width="200pt"
+                android:layout_height="60pt"
+                android:textColor="@color/white"
+                android:textSize="26pt"
+                android:text="零售优惠劵"
+                android:background="@color/txt_red"
+                />
+            <TextView
+                android:id="@+id/coupons_tv_02"
+                android:layout_marginLeft="70pt"
+                android:gravity="center"
+                android:layout_width="200pt"
+                android:layout_height="60pt"
+                android:textColor="@color/txt_dark"
+                android:textSize="26pt"
+                android:text="批发优惠券"
+                android:background="@drawable/coupons_select_bg"
+                />
+
+        </LinearLayout>
+        <TextView
+            android:layout_marginTop="40pt"
+            android:layout_marginLeft="20pt"
+            android:layout_marginRight="20pt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/coupons_tips"
+            android:textColor="@color/txt_gray1"
+            android:textSize="24pt"
+            />
+    </LinearLayout>
+    <include layout="@layout/line_layout"></include>
+    <FrameLayout
+        android:layout_marginTop="20pt"
+        android:id="@+id/frame_coupons"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"></FrameLayout>
+</LinearLayout>

@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/color_app_bg"
+    android:orientation="vertical"
+    android:fitsSystemWindows="true"
+    >
+<include layout="@layout/heard_white_layout"></include>
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/white">
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/coupons_rec_right"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+        <TextView
+            android:id="@+id/coupons_right_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/white"
+            android:paddingLeft="13pt"
+            android:paddingTop="10pt"
+            android:paddingRight="10pt"
+            android:paddingBottom="10pt"
+            android:singleLine="true"
+            android:textColor="@color/txt_dark"
+            android:textSize="30pt" />
+    </FrameLayout>
+</LinearLayout>

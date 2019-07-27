@@ -13,17 +13,17 @@ import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
+import com.snh.library_base.utils.Contans;
+import com.snh.module_netapi.requestApi.BaseResultBean;
+import com.snh.module_netapi.requestApi.NetSubscriber;
+import com.snh.moudle_coupons.bean.MsgEventBean;
 import com.snh.snhseller.BaseFragment;
 import com.snh.snhseller.MainActivity;
 import com.snh.snhseller.R;
 import com.snh.snhseller.adapter.OrderAdapter;
-import com.snh.snhseller.bean.BaseResultBean;
-import com.snh.snhseller.bean.MessageEventBean;
 import com.snh.snhseller.bean.NoticeNumBean;
 import com.snh.snhseller.bean.OrderBean;
-import com.snh.snhseller.requestApi.NetSubscriber;
 import com.snh.snhseller.requestApi.RequestClient;
-import com.snh.snhseller.utils.Contans;
 import com.snh.snhseller.utils.JumpUtils;
 import com.snh.snhseller.utils.SPUtils;
 import com.snh.snhseller.wediget.RecycleViewDivider;
@@ -146,6 +146,7 @@ public class OrderListFragment extends BaseFragment {
         // TODO: inflate a fragment view
         View rootView = super.onCreateView(inflater, container, savedInstanceState);
         unbinder = ButterKnife.bind(this, rootView);
+        EventBus.getDefault().register(this);
         return rootView;
     }
 
@@ -342,28 +343,23 @@ public class OrderListFragment extends BaseFragment {
     public void onHiddenChanged(boolean hidden) {
         super.onHiddenChanged(hidden);
         this.hidden = hidden;
-        if (!hidden) {
-            getCount();
-        }
     }
 
     private boolean isShow = true;
 
-        @Override
-    public void onResume() {
-        super.onResume();
-        if (!isFrist && mIsDataInited) {
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void refreshData(MsgEventBean bean){
+        if(bean.getMsg().equals("refresh")&&getUserVisibleHint()){
             index = 1;
             isShow = true;
             getCount();
         }
-        isFrist = true;
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
-
+        EventBus.getDefault().unregister(this);
     }
 
 }
